@@ -1,5 +1,10 @@
 # Project Git Convention
 
+```
+Commit 남길때 Commit 내용 뒤에 자기 이름 적기!
+ex) $ git commit -m "upload feat_login_fe_Yoon GWan"
+```
+
 ### 1. Master에 push하지 않는다!
 
 * Setting에서 push 못하도록 해두었습니다.
