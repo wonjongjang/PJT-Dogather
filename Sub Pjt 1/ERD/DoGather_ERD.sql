@@ -170,7 +170,8 @@ CREATE TABLE `product` (
 	`name`	varchar2(50)	NOT NULL,
 	`detail`	text	NULL,
 	`path`	varchar2(4000)	NULL,
-	`price`	int	NULL
+	`price`	int	NULL,
+	`origin_price`	int	NULL
 );
 
 CREATE TABLE `FAQ` (
