@@ -4,7 +4,7 @@
 
     <insert  id="userRegister" parameterType="com.dogather.pjtserver.dto.UserDto">
         insert into user (   user_id,   user_pw,  user_name,  user_nickname, user_addr, user_addr_detail, user_zip, user_tel, user_email )
-        values (  #{userId}, #{userPw}, #{username}, #{userNickname} , #{userAddr} , #{userAddrDetail} , #{userZip} ,#{userTel} , #{userEmail} )
+        values (  #{userId}, #{userPw}, #{userName}, #{userNickname} , #{userAddr} , #{userAddrDetail} , #{userZip} ,#{userTel} , #{userEmail} )
     </insert>
 
 <!--    <update id="userUpdate" parameterType="com.dogather.pjtserver.dto.UserDto">-->
