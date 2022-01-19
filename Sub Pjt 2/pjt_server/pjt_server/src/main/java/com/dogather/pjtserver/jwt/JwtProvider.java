@@ -12,54 +12,54 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
 public class JwtProvider {
-	
+
 	// Secret for key
 	private static String secret = "DoGatherJwtTokenSecretStringDoGatherJwtTokenSecretString";
 	// Key for JWT Token
 	private static SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
-	
-	// userdto¸¦ ÀÌ¿ëÇÏ¿© Token Á¦ÀÛ ¹× ¹İÈ¯
+
+	// userdtoë¥¼ ì´ìš©í•˜ì—¬ Token ì œì‘ ë° ë°˜í™˜
 	public static String getToken(String userId) {
 		String Subject = "Dogather";
 		String payload = userId;
 		int duration = 30 * 60 * 1000;
 		Date expiration = new Date(System.currentTimeMillis() + duration); // 30m
 //		Date expiration = new Date(System.currentTimeMillis() + 0); // 30m
-		
+
 		String token = Jwts.builder()
 				.setSubject(Subject)
 				.setExpiration(expiration)
 				.claim("payload", payload)
 				.signWith(key)
 				.compact();
-		
+
 		return token;
 	}
-	
+
 	public static String validateToken(String token, String userId) {
 		String ret = "InvalidToken";
 		try {
-			
+
 			Claims claims = Jwts.parserBuilder()
 					.setSigningKey(key)
 					.requireSubject("Dogather")
 					.build()
 					.parseClaimsJws(token)
 					.getBody();
-			
-			ret = (String) claims.get("payload");	
-			
+
+			ret = (String) claims.get("payload");
+
 		} catch( ExpiredJwtException e) {
-			
-			System.err.println("±â°£ÀÌ ¸¸·áµÈ ÅäÅ«ÀÔ´Ï´Ù.");
-			ret = "´Ù½Ã·Î±×ÀÎÇÏ¼¼¿ä!";
-			
+
+			System.err.println("ê¸°ê°„ì´ ë§Œë£Œëœ í† í°ì…ë‹ˆë‹¤.");
+			ret = "ë‹¤ì‹œë¡œê·¸ì¸í•˜ì„¸ìš”!";
+
 		} catch (Exception e) {
-			System.err.println("Àß¸øµÈ ÅäÅ«ÀÔ´Ï´Ù.");
-			
+			System.err.println("ì˜ëª»ëœ í† í°ì…ë‹ˆë‹¤.");
+
 		}
-	
+
 		return ret;
 	}
-	
+
 }

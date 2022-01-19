@@ -4,8 +4,6 @@ import com.dogather.pjtserver.dto.UserDto;
 import com.dogather.pjtserver.jwt.JwtProvider;
 import com.dogather.pjtserver.jwt.JwtRet;
 import com.dogather.pjtserver.service.UserService;
-import com.dogather.pjtserver.service.UserServiceImpl;
-import com.mysql.cj.xdevapi.JsonArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,67 +20,67 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    UserService userService;
+	@Autowired
+	UserService userService;
 
-    //È¸¿ø°¡ÀÔ
-    @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@RequestBody UserDto userDto){
-    	System.err.println("User Controller Register Method run!");
-    	
-        int created = userService.userRegister(userDto);
-        
-        if (created == 1){
-            return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<UserDto>(userDto, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    
-    //·Î±×ÀÎ 
-    @PostMapping("/login")
-    public ResponseEntity<JwtRet> login(@RequestBody UserDto userDto){
-    	System.err.println("User Controller Login Method run!");
-    	JwtRet ret =  new JwtRet(); //return value for client by JSON
-    	
-    	// ·Î±×
-    	UserDto loginResult = userService.userLogin(userDto); // userService¿¡ ·Î±×ÀÎ ¿äÃ»
-    	if (loginResult != null) {
-    		// ÀÖ´Â ¾ÆÀÌµğ
-    		if (loginResult.getUserNo() == 0) {
-    			// ºñ¹Ğ¹øÈ£ Æ²¸²
-    			System.err.println("·Î±×ÀÎ ¿äÃ» : ºñ¹Ğ¹øÈ£ Æ²¸²!!!");
-    			ret.setMsg("wrongPw");
-    			return new ResponseEntity<JwtRet>(ret, HttpStatus.NOT_FOUND);
-    		}else {
-    			// ·Î±×ÀÎ ¼º°ø 
-    			String jwt = JwtProvider.getToken(loginResult.getUserId());
-    			loginResult.setUserPw(null);
-    			ret.setJwt(jwt);
-    			ret.setMsg("success");
-    			ret.setUserInfo(loginResult);
-    	    	return new ResponseEntity<JwtRet>(ret, HttpStatus.OK);
-    		}
-    	}else { 
-    		//¾ø´Â ¾ÆÀÌµğ
-    		System.err.println("·Î±×ÀÎ ¿äÃ» : ºñ¹Ğ¹øÈ£ Æ²¸²!!!");
-    		ret.setMsg("wrongid");
-    		return new ResponseEntity<JwtRet>(ret, HttpStatus.NOT_FOUND);
-    	}
-    	
-    }
-    
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> find(@PathVariable String userId, @RequestHeader String jwt){
-    	System.err.println("User Controller Find Method run!");
-    	String validationResult = JwtProvider.validateToken(jwt, userId);
-    	if(userId.equals(validationResult)) {
-    		UserDto userInfo = userService.userFind(userId);
-    		userInfo.setUserPw(null);
-    		return ResponseEntity.status(HttpStatus.OK).body(userInfo);//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
-    	}else {
-    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
-    	}
-    }
-  
+	//íšŒì›ê°€ì…
+	@PostMapping("/register")
+	public ResponseEntity<UserDto> register(@RequestBody UserDto userDto){
+		System.err.println("User Controller Register Method run!");
+
+		int created = userService.userRegister(userDto);
+
+		if (created == 1){
+			return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+		}else{
+			return new ResponseEntity<UserDto>(userDto, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	//ë¡œê·¸ì¸
+	@PostMapping("/login")
+	public ResponseEntity<JwtRet> login(@RequestBody UserDto userDto){
+		System.err.println("User Controller Login Method run!");
+		JwtRet ret =  new JwtRet(); //return value for client by JSON
+
+		// ë¡œê·¸
+		UserDto loginResult = userService.userLogin(userDto); // userServiceì— ë¡œê·¸ì¸ ìš”ì²­
+		if (loginResult != null) {
+			// ìˆëŠ” ì•„ì´ë””
+			if (loginResult.getUserNo() == 0) {
+				// ë¹„ë°€ë²ˆí˜¸ í‹€ë¦¼
+				System.err.println("ë¡œê·¸ì¸ ìš”ì²­ : ë¹„ë°€ë²ˆí˜¸ í‹€ë¦¼!!!");
+				ret.setMsg("wrongPw");
+				return new ResponseEntity<JwtRet>(ret, HttpStatus.NOT_FOUND);
+			}else {
+				// ë¡œê·¸ì¸ ì„±ê³µ
+				String jwt = JwtProvider.getToken(loginResult.getUserId());
+				loginResult.setUserPw(null);
+				ret.setJwt(jwt);
+				ret.setMsg("success");
+				ret.setUserInfo(loginResult);
+				return new ResponseEntity<JwtRet>(ret, HttpStatus.OK);
+			}
+		}else {
+			//ì—†ëŠ” ì•„ì´ë””
+			System.err.println("ë¡œê·¸ì¸ ìš”ì²­ : ë¹„ë°€ë²ˆí˜¸ í‹€ë¦¼!!!");
+			ret.setMsg("wrongid");
+			return new ResponseEntity<JwtRet>(ret, HttpStatus.NOT_FOUND);
+		}
+
+	}
+
+	@GetMapping("/{userId}")
+	public ResponseEntity<UserDto> find(@PathVariable String userId, @RequestHeader String jwt){
+		System.err.println("User Controller Find Method run!");
+		String validationResult = JwtProvider.validateToken(jwt, userId);
+		if(userId.equals(validationResult)) {
+			UserDto userInfo = userService.userFind(userId);
+			userInfo.setUserPw(null);
+			return ResponseEntity.status(HttpStatus.OK).body(userInfo);//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+		}else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+		}
+	}
+
 }

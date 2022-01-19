@@ -8,5 +8,5 @@ import lombok.Data;
 public class JwtRet {
 	private String msg; // message
 	private String jwt; // jwt token
-	private UserDto userInfo; // 유저정보
+	private UserDto userInfo; //
 }

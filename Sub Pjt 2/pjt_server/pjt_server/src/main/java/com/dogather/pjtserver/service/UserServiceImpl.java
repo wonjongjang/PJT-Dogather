@@ -8,39 +8,39 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService{
 
-    @Autowired
-    UserDao userDao;
-
-    @Override
-    public int userRegister(UserDto userDto) {
-        int created = userDao.userRegister(userDto);
-        if( created == 1){
-            return 1;
-        }else{
-            return 0;
-        }
-    }
+	@Autowired
+	UserDao userDao;
 
 	@Override
-	public UserDto userLogin(UserDto userDto) { // ·Î±×ÀÎ
-		UserDto user = userDao.userFind(userDto.getUserId()); // À¯ÀúÀÇ ¾ÆÀÌµğ¸¦ ÅëÇØ Á¤º¸ ¾ò¾î¿È
-		if(user != null){// ÀÖ´Â ¾ÆÀÌµğ
+	public int userRegister(UserDto userDto) {
+		int created = userDao.userRegister(userDto);
+		if( created == 1){
+			return 1;
+		}else{
+			return 0;
+		}
+	}
+
+	@Override
+	public UserDto userLogin(UserDto userDto) { // ë¡œê·¸ì¸
+		UserDto user = userDao.userFind(userDto.getUserId()); // ìœ ì €ì˜ ì•„ì´ë””ë¥¼ í†µí•´ ì •ë³´ ì–»ì–´ì˜´
+		if(user != null){// ìˆëŠ” ì•„ì´ë””
 			//PW check
 			if(user.getUserPw().equals(userDto.getUserPw())) {
-				//·Î±×ÀÎ ¼º°ø
+				//ë¡œê·¸ì¸ ì„±ê³µ
 				return user;
 			}else {
-				//·Î±×ÀÎ ½ÇÆĞ
+				//ë¡œê·¸ì¸ ì‹¤íŒ¨
 				return userDto; // => pk : 0
 			}
 		}else {
-			// ¾ø´Â ¾ÆÀÌµğ
+			// ì—†ëŠ” ì•„ì´ë””
 			return null;
 		}
 	}
 
 	@Override
 	public UserDto userFind(String userId) {
-		return userDao.userFind(userId); // À¯ÀúÀÇ ¾ÆÀÌµğ¸¦ ÅëÇØ À¯ÀúÁ¤º¸ ¾ò¾î¿È
+		return userDao.userFind(userId); // ìœ ì €ì˜ ì•„ì´ë””ë¥¼ í†µí•´ ìœ ì €ì •ë³´ ì–»ì–´ì˜´
 	}
 }
