@@ -6,4 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserDao {
     public int userRegister(UserDto userDto);
+    public UserDto userFind(String userId);
 }
