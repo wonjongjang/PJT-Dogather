@@ -43,4 +43,16 @@ public class UserServiceImpl implements UserService{
 	public UserDto userFind(String userId) {
 		return userDao.userFind(userId); // 유저의 아이디를 통해 유저정보 얻어옴
 	}
+
+	@Override
+	public int userUpdate(UserDto userDto){
+		int created = userDao.userUpdate(userDto);
+		return created;
+	}
+
+	@Override
+	public void userDelete(String userId){
+		userDao.userDelete(userId);
+	}
+
 }
