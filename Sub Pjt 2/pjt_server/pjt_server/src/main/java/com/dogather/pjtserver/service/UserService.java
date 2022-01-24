@@ -8,4 +8,5 @@ public interface UserService {
     public UserDto userFind(String userId);
     public int userUpdate(UserDto userDto);
     public void userDelete(String userId);
+    public String userIdCheck(String id);
 }
