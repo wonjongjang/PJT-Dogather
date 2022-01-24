@@ -85,6 +85,7 @@ public class UserController {
 
 	@DeleteMapping("/{userId}/delete")
 	public ResponseEntity<String> delete(@PathVariable String userId, @RequestHeader String jwt){
+		System.err.println("(Delete)User Controller delete Method run!");
 		String validationResult = JwtProvider.validateToken(jwt, userId);
 		if(userId.equals(validationResult)) {
 			userService.userDelete(userId);
@@ -106,6 +107,13 @@ public class UserController {
 		}else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 		}
+	}
+
+	@GetMapping("/idcheck")
+	public ResponseEntity<String> idCheck(@RequestBody UserDto id){
+		System.err.println("(Get)User Controller idCheck Method run!");
+		String result = userService.userIdCheck(id.getUserId());
+		return ResponseEntity.status(HttpStatus.OK).body("{\n\t\"result\":\""+result+"\"\n}");//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 	}
 
 

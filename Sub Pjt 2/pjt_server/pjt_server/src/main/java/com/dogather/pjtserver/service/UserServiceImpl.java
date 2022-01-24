@@ -55,4 +55,13 @@ public class UserServiceImpl implements UserService{
 		userDao.userDelete(userId);
 	}
 
+	@Override
+	public String userIdCheck(String id){
+		String result = "사용가능";
+		UserDto check = userDao.userFind(id);
+		if(check != null){
+			result = "이미 있는 아이디 입니다.";
+		}
+		return result;
+	}
 }
