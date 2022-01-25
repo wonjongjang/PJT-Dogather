@@ -5,6 +5,9 @@ import com.dogather.pjtserver.jwt.JwtProvider;
 import com.dogather.pjtserver.jwt.JwtRet;
 import com.dogather.pjtserver.service.UserService;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,7 +67,7 @@ public class UserController {
 		}
 
 	}
-	@PutMapping("/{userId}/update")
+	@PutMapping("/{userId}")
 	public ResponseEntity<UserDto> update(@PathVariable String userId, @RequestHeader String jwt, @RequestBody UserDto userDto){
 		System.err.println("(Put)User Controller Update Method run!");
 		//JWT token check
@@ -83,7 +86,7 @@ public class UserController {
 		}
 	}
 
-	@DeleteMapping("/{userId}/delete")
+	@DeleteMapping("/{userId}")
 	public ResponseEntity<String> delete(@PathVariable String userId, @RequestHeader String jwt){
 		System.err.println("(Delete)User Controller delete Method run!");
 		String validationResult = JwtProvider.validateToken(jwt, userId);
@@ -110,10 +113,14 @@ public class UserController {
 	}
 
 	@GetMapping("/idcheck")
-	public ResponseEntity<String> idCheck(@RequestBody UserDto id){
+	public ResponseEntity<String> idCheck(@RequestBody UserDto dto){
 		System.err.println("(Get)User Controller idCheck Method run!");
-		String result = userService.userIdCheck(id.getUserId());
-		return ResponseEntity.status(HttpStatus.OK).body("{\n\t\"result\":\""+result+"\"\n}");//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+		String id = dto.getUserId();
+		String result = userService.userIdCheck(id);
+		JSONObject json = new JSONObject();
+		json.put("result", result);
+		json.put("requested_id", id);
+		return ResponseEntity.status(HttpStatus.OK).body(json.toString());//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 	}
 
 

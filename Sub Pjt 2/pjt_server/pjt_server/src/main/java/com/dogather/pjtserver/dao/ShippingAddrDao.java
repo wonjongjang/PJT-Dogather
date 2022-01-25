@@ -1,5 +1,5 @@
 package com.dogather.pjtserver.dao;
 
-public class ShippingAddrDao {
+public interface ShippingAddrDao {
 
 }
