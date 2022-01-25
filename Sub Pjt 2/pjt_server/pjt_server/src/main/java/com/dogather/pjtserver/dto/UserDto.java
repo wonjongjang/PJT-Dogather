@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDto {
+    private String msg;
     private int userNo;
     private String userId;
     private String userPw;
@@ -88,4 +89,3 @@ public class UserDto {
 //		}
 //    
 }
- 

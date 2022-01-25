@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/pjt_server.pjt_server.iml" filepath="$PROJECT_DIR$/.idea/modules/pjt_server.pjt_server.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/pjt_server.pjt_server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/pjt_server.pjt_server.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/pjt_server.pjt_server.test.iml" filepath="$PROJECT_DIR$/.idea/modules/pjt_server.pjt_server.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/pjt_server.iml" filepath="$PROJECT_DIR$/.idea/pjt_server.iml" />
     </modules>
   </component>
 </project>

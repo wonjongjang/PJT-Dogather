@@ -8,13 +8,7 @@ import com.dogather.pjtserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -26,11 +20,12 @@ public class UserController {
 	//회원가입
 	@PostMapping("/register")
 	public ResponseEntity<UserDto> register(@RequestBody UserDto userDto){
-		System.err.println("User Controller Register Method run!");
+		System.err.println("(Post)User Controller Register Method run!");
 
 		int created = userService.userRegister(userDto);
 
 		if (created == 1){
+			userDto.setMsg("가입완료");
 			return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 		}else{
 			return new ResponseEntity<UserDto>(userDto, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -40,7 +35,7 @@ public class UserController {
 	//로그인
 	@PostMapping("/login")
 	public ResponseEntity<JwtRet> login(@RequestBody UserDto userDto){
-		System.err.println("User Controller Login Method run!");
+		System.err.println("(Post)User Controller Login Method run!");
 		JwtRet ret =  new JwtRet(); //return value for client by JSON
 
 		// 로그
@@ -69,10 +64,41 @@ public class UserController {
 		}
 
 	}
+	@PutMapping("/{userId}/update")
+	public ResponseEntity<UserDto> update(@PathVariable String userId, @RequestHeader String jwt, @RequestBody UserDto userDto){
+		System.err.println("(Put)User Controller Update Method run!");
+		//JWT token check
+		String validationResult = JwtProvider.validateToken(jwt, userId);
+		if(userId.equals(validationResult)) {
+			userDto.setUserId(userId);
+			int created = userService.userUpdate(userDto);
+			if (created == 1 ){
+				// 수정완료
+				return ResponseEntity.status(HttpStatus.OK).body(userDto);//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+			}
+			//그외 오류?
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+		}else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+		}
+	}
+
+	@DeleteMapping("/{userId}/delete")
+	public ResponseEntity<String> delete(@PathVariable String userId, @RequestHeader String jwt){
+		System.err.println("(Delete)User Controller delete Method run!");
+		String validationResult = JwtProvider.validateToken(jwt, userId);
+		if(userId.equals(validationResult)) {
+			userService.userDelete(userId);
+			return ResponseEntity.status(HttpStatus.OK).body(userId + " deleted completely!");
+		}else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
 
 	@GetMapping("/{userId}")
 	public ResponseEntity<UserDto> find(@PathVariable String userId, @RequestHeader String jwt){
-		System.err.println("User Controller Find Method run!");
+		System.err.println("(Get)User Controller Find Method run!");
+		//JWT token check
 		String validationResult = JwtProvider.validateToken(jwt, userId);
 		if(userId.equals(validationResult)) {
 			UserDto userInfo = userService.userFind(userId);
@@ -82,5 +108,14 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 		}
 	}
+
+	@GetMapping("/idcheck")
+	public ResponseEntity<String> idCheck(@RequestBody UserDto id){
+		System.err.println("(Get)User Controller idCheck Method run!");
+		String result = userService.userIdCheck(id.getUserId());
+		return ResponseEntity.status(HttpStatus.OK).body("{\n\t\"result\":\""+result+"\"\n}");//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+	}
+
+
 
 }
