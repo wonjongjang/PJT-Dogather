@@ -1,5 +1,4 @@
 package com.dogather.pjtserver.controller;
 
-public class ShippingAddrController {
-
+public class FAQController {
 }

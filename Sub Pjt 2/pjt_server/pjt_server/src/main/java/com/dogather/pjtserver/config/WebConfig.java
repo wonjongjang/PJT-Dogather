@@ -3,10 +3,10 @@ package com.dogather.pjtserver.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
     //CORS SETTING!
     @Override
     public void addCorsMappings(CorsRegistry registry) {
