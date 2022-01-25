@@ -12,5 +12,12 @@
         <module name="pjt_server.pjt_server.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="pjt_server.pjt_server" target="11" />
+      <module name="pjt_server.pjt_server.main" target="11" />
+      <module name="pjt_server.pjt_server.main~1" target="11" />
+      <module name="pjt_server.pjt_server.test" target="11" />
+      <module name="pjt_server.pjt_server.test~1" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
