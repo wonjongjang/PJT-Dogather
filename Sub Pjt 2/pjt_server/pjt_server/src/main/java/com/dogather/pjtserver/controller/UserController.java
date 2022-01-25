@@ -120,7 +120,7 @@ public class UserController {
 		JSONObject json = new JSONObject();
 		json.put("result", result);
 		json.put("requested_id", id);
-		return ResponseEntity.status(HttpStatus.OK).body(json.toString());//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).body(json.toString()).;//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 	}
 
 
