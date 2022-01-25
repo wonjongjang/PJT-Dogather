@@ -100,6 +100,7 @@ public class UserController {
 
 	@GetMapping("/{userId}")
 	public ResponseEntity<UserDto> find(@PathVariable String userId, @RequestHeader String jwt){
+		// 현재는 userId method jwt token 있어야 확인가능 => 본인것만 확인가능
 		System.err.println("(Get)User Controller Find Method run!");
 		//JWT token check
 		String validationResult = JwtProvider.validateToken(jwt, userId);
@@ -120,7 +121,7 @@ public class UserController {
 		JSONObject json = new JSONObject();
 		json.put("result", result);
 		json.put("requested_id", id);
-		return ResponseEntity.status(HttpStatus.OK).body(json.toString()).;//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).body(json.toString());//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 	}
 
 

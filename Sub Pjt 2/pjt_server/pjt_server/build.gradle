@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.dogather'
-version = '0.0.3-SNAPSHOT'
+version = '0.0.4-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
@@ -46,11 +46,6 @@ dependencies {
 
 	//json
 	implementation 'org.json:json:20211205'
-
-	// swagger
-	implementation 'io.springfox:springfox-swagger2:3.0.0'
-	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
-	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
 }
 
