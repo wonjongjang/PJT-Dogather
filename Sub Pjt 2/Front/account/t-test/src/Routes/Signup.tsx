@@ -12,6 +12,18 @@ function Singup() {
   const [phone, setPhone] = useState<string>("");
   const [email, setEmail] = useState<string>("");
 
+  const newZip = parseInt(zip);
+  const json =         JSON.stringify({
+          userId: id,
+          userPw: password,
+          userName: name,
+          userNickname: nickname,
+          userAddr: address1,
+          userAddrDetail: address2,
+          userZip: newZip,
+          userTel: phone,
+          userEmail: email,
+        })
   const register = (event: React.FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
 
@@ -27,23 +39,16 @@ function Singup() {
       phone,
       email
     );
-    const newZip = parseInt(zip);
+ 
 
-    axios
-      .post(
-        "http://i6e104.p.ssafy.io:8080/user/register",
-        JSON.stringify({
-          userId: id,
-          userPw: password,
-          userName: name,
-          userNickname: nickname,
-          userAddr: address1,
-          userAddrDetail: address2,
-          userZip: newZip,
-          userTel: phone,
-          userEmail: email,
-        })
-      )
+    axios({
+      method: "POST",
+      url: "http://i6e104.p.ssafy.io:8080/user/register",
+      data: json,
+      headers:{
+            "Content-Type": "application/json"
+        }
+    })
       .then((response) => {
         // 성공시
         console.log(response);
