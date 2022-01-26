@@ -171,7 +171,7 @@ export default Singup;
 
     axios({
       method: "POST",
-      url: "http://i6e104.p.ssafy.io:8080/user/register",
+      url: "http://i6e104.p.ssafy.io/user/register",
       data: json,
       headers:{
             "Content-Type": "application/json"
