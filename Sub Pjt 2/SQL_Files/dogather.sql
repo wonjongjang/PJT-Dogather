@@ -1,10 +1,5 @@
--- dogather database 만듬
-create database dogather;
+use testdogather;
 
--- dogather database 사용
-use dogather;
-
--- user table 만듬
 CREATE TABLE `user` (
   `user_no` int NOT NULL AUTO_INCREMENT,
   `user_id` varchar(20) NOT NULL,
@@ -20,7 +15,6 @@ CREATE TABLE `user` (
   UNIQUE KEY `user_id_UNIQUE` (`user_id`), -- 아이디 중복 x
   UNIQUE KEY `user_nickname_UNIQUE` (`user_nickname`) -- 닉네임 중복 x
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 
 CREATE TABLE `group` (
   `group_no` int NOT NULL AUTO_INCREMENT,
@@ -49,7 +43,6 @@ CREATE TABLE `product` (
   KEY `group_no_idx` (`group_no`),
   CONSTRAINT `group_no` FOREIGN KEY (`group_no`) REFERENCES `group` (`group_no`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 
 CREATE TABLE `user_group` (
   `user_no` int NOT NULL,
@@ -92,6 +85,12 @@ CREATE TABLE `product_price` (
   CONSTRAINT `change_price_product_no` FOREIGN KEY (`product_no`) REFERENCES `product` (`product_no`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE `category` (
+  `category_no` int NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(20) NOT NULL,
+  PRIMARY KEY (`category_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 CREATE TABLE `product_category` (
   `category_no` int NOT NULL,
   `product_no` int NOT NULL,
@@ -99,21 +98,6 @@ CREATE TABLE `product_category` (
   KEY `product_no_idx` (`product_no`),
   CONSTRAINT `category_no` FOREIGN KEY (`category_no`) REFERENCES `category` (`category_no`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `product_no6` FOREIGN KEY (`product_no`) REFERENCES `product` (`product_no`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `category` (
-  `category_no` int NOT NULL AUTO_INCREMENT,
-  `category_name` varchar(20) NOT NULL,
-  PRIMARY KEY (`category_no`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `user_interest` (
-  `user_no` int NOT NULL,
-  `group_no` int NOT NULL,
-  KEY `interest_user_no_idx` (`user_no`),
-  KEY `interest_group_no_idx` (`group_no`),
-  CONSTRAINT `interest_group_no` FOREIGN KEY (`group_no`) REFERENCES `group` (`group_no`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `interest_user_no` FOREIGN KEY (`user_no`) REFERENCES `user` (`user_no`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `group-media` (
@@ -125,6 +109,12 @@ CREATE TABLE `group-media` (
   PRIMARY KEY (`media_no`),
   KEY `group_fk_idx` (`group_no`),
   CONSTRAINT `group_fk4` FOREIGN KEY (`group_no`) REFERENCES `group` (`group_no`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `faq_category` (
+  `category_no` int NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(40) NOT NULL,
+  PRIMARY KEY (`category_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `faq` (
@@ -155,12 +145,6 @@ CREATE TABLE `faq_media` (
   CONSTRAINT `category_fk1` FOREIGN KEY (`category_no`) REFERENCES `faq_category` (`category_no`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `faq_fk` FOREIGN KEY (`faq_no`) REFERENCES `faq` (`faq_no`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `group_fk3` FOREIGN KEY (`group_no`) REFERENCES `group` (`group_no`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `faq_category` (
-  `category_no` int NOT NULL AUTO_INCREMENT,
-  `category_name` varchar(40) NOT NULL,
-  PRIMARY KEY (`category_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `board` (
@@ -262,6 +246,12 @@ CREATE TABLE `user_follow` (
   CONSTRAINT `followee` FOREIGN KEY (`followee`) REFERENCES `user` (`user_no`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE `role` (
+  `role_no` int NOT NULL AUTO_INCREMENT,
+  `role` varchar(50) NOT NULL,
+  PRIMARY KEY (`role_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 CREATE TABLE `user_role` (
   `user_no` int NOT NULL,
   `role_no` int NOT NULL,
@@ -272,8 +262,15 @@ CREATE TABLE `user_role` (
   CONSTRAINT `use_no` FOREIGN KEY (`user_no`) REFERENCES `user` (`user_no`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `role` (
-  `role_no` int NOT NULL AUTO_INCREMENT,
-  `role` varchar(50) NOT NULL,
-  PRIMARY KEY (`role_no`)
+CREATE TABLE `group-history` (
+  `history_no` int NOT NULL AUTO_INCREMENT,
+  `group_no` int DEFAULT NULL,
+  `updated` datetime DEFAULT NULL,
+  `deadline` datetime DEFAULT NULL,
+  `max_people` int DEFAULT NULL,
+  `changed_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`history_no`),
+  KEY `group_fk8_idx` (`group_no`),
+  CONSTRAINT `group_fk8` FOREIGN KEY (`group_no`) REFERENCES `group` (`group_no`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
