@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
     //CORS SETTING!
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -13,4 +14,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("*")//), "http://127.0.0.1:5500/")// 나중에 변경해야함 일단은 모두에게서 허용
                 .allowedMethods("*");
     }
+
 }

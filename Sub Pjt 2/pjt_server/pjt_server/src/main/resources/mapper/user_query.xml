@@ -22,4 +22,8 @@
         where user_id = #{userId}
     </delete>
 
+    <select id="userIdCheck" parameterType="String" resultType="int">
+        select count(*) from user where user_id = #{userId}
+    </select>
+
 </mapper>

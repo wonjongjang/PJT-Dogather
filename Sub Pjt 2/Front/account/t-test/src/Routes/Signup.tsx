@@ -1,7 +1,135 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import styled from "styled-components";
+
+interface ISignUpForm {
+  userId: string;
+  userPw: string;
+  checkPw: string;
+  userName: string;
+  userNickname: string;
+  userAddr: string;
+  userAddrDetail: string;
+  userZip: number;
+  userTel: string;
+  userEmail: string;
+}
+
+const SignUpForm = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
 
 function Singup() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<ISignUpForm>();
+
+  const onValid = (data: ISignUpForm) => {
+    console.log(data);
+    if (data.userPw !== data.checkPw) {
+      setError(
+        "checkPw",
+        { message: "비밀번호가 다릅니다" },
+        { shouldFocus: true } // error 발생 시 입력위치 이동
+      );
+    } else {
+      axios({
+        method: "POST",
+        url: "http://i6e104.p.ssafy.io/user/register",
+        data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          // 성공시
+          console.log(response);
+        })
+        .catch((error) => {
+          // 실패시
+          console.log(error.response);
+        })
+        .finally(() => {});
+    }
+  };
+  console.log(errors);
+
+  return (
+    <>
+      <h1>회원 가입</h1>
+      <SignUpForm onSubmit={handleSubmit(onValid)}>
+        <input
+          {...register("userId", {
+            required: "ID는 필수입니다.",
+            minLength: { value: 4, message: "아이디가 너무 짧습니다." },
+          })}
+          placeholder="id"
+        />
+        <span>{errors?.userId?.message}</span>
+        <input
+          {...register("userPw", { required: "비밀번호는 필수입니다." })}
+          placeholder="password"
+        />
+        <span>{errors?.userPw?.message}</span>
+        <input
+          {...register("checkPw", { required: "비밀번호 확인 필수입니다." })}
+          placeholder="비밀번호 확인"
+        />
+        <span>{errors?.checkPw?.message}</span>
+        <input
+          {...register("userName", { required: "이름은 필수입니다." })}
+          placeholder="name"
+        />
+        <span>{errors?.userName?.message}</span>
+        <input
+          {...register("userNickname", { required: "닉네임은 필수입니다." })}
+          placeholder="nickname"
+        />
+        <span>{errors?.userNickname?.message}</span>
+        <input
+          {...register("userAddr", { required: "주소는 필수입니다." })}
+          placeholder="address1"
+        />
+        <span>{errors?.userAddr?.message}</span>
+        <input
+          {...register("userAddrDetail", { required: "주소는 필수입니다." })}
+          placeholder="address2"
+        />
+        <span>{errors?.userAddrDetail?.message}</span>
+        <input
+          {...register("userZip", {
+            required: "우편번호는 필수입니다.",
+            pattern: {
+              value: /^[0-9]+$/,
+              message: "우편번호는 숫자만 입력 가능합니다.",
+            },
+          })}
+          placeholder="zip"
+        />
+        <span>{errors?.userZip?.message}</span>
+        <input
+          {...register("userTel", { required: "전화번호는 필수입니다." })}
+          placeholder="000-0000-0000"
+        />
+        <span>{errors?.userTel?.message}</span>
+        <input
+          {...register("userEmail", { required: "이메일은 필수입니다." })}
+          placeholder="email"
+        />
+        <span>{errors?.userEmail?.message}</span>
+        <button>가입</button>
+      </SignUpForm>
+    </>
+  );
+}
+export default Singup;
+
+/* function Singup() {
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -200,4 +328,4 @@ function Singup() {
   );
 }
 
-export default Singup;
+export default Singup; */

@@ -1,47 +1,34 @@
 import jwt_decode from "jwt-decode";
 import React, { useState } from "react";
 import axios from "axios";
+import { useForm } from "react-hook-form"
+import styled from "styled-components";
+
+interface ILoginForm {
+  userId: string;
+  userPw: string;
+}
+
+const LoginForm = styled.form`
+  display:flex;
+  flex-direction: column;
+`
+  
 
 function Login() {
-  const [id, setId] = useState("")
-  const [password, setPassword] = useState("")
-  const [isMouseEnter, setMouseEnter] = useState(false)
-  
-  const json = JSON.stringify({
-    userId: id,
-    userPw: password,
-  })
-  
-  const onChangeIdInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault()
-    setId(e.target.value)
-  }
-
-  const onChangePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault()
-    setPassword(e.target.value)
-  }
-
-  type MemberType = {
-    userId: string;
-    userPassword: string;
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ILoginForm>();
 
 
-  const login = (event: React.FormEvent<HTMLFormElement>) => {
-    event?.preventDefault();
-
-    console.log(
-      "login",
-      id,
-      password,
-    );
-    console.log(json)
-
+  const signin = (data: ILoginForm) => {
+    console.log(data)
     axios({
       method: "POST",
       url: "http://i6e104.p.ssafy.io/user/login",
-      data: json,
+      data,
       headers:{
         "Content-Type": "application/json"
       }
@@ -52,23 +39,46 @@ function Login() {
         console.log(response.data)
         const JWT = jwt_decode(response.data.jwt)
         console.log(JWT)
-        localStorage.setItem('token', response.data.jwt)
+        // localStorage.setItem('token', response.data.jwt)
       })
       .catch((error) => {
         // 실패시
         console.log(error.response);
+        const errorMessage = error.response.data.msg
+        if (errorMessage === "wrongPw") {
+          alert("비밀번호가 틀렸습니다.")
+        } else {
+          alert("존재하지 않는 아이디입니다.")
+        }
+          
       })
       .finally(() => {});
   };
   return (
+    <>
     <div>
       <h1>Login</h1>
-      <form onSubmit={login}>
-        <input value={id} onChange={onChangeIdInput} type="text" placeholder="아이디를 입력하세요." /><br />
-        <input value={password} onChange={onChangePasswordInput} type="text" placeholder="비밀번호를 입력하세요." />
+      <LoginForm onSubmit={handleSubmit(signin)}>
+        <input
+            {...register("userId", {
+              required: "ID는 필수입력사항입니다.",
+              minLength: {value: 4, message: "아이디가 너무 짧습니다."},
+            })}
+          placeholder="id"
+        />
+        <span>{ errors?.userId?.message }</span>
+        <br />
+        <input
+            {...register("userPw", {
+              required: "비밀번호는 필수입력사항입니다.",
+            })}
+          placeholder="Password"
+        />
+        <span>{ errors?.userPw?.message }</span>
         <button>드가자</button>
-      </form>
-    </div>
+        </LoginForm>
+      </div>
+      </>
   );
 }
 
