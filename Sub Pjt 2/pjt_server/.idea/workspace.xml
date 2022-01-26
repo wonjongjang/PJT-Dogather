@@ -6,11 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="f21d74f0-23f7-4ef6-abee-9eb8b8119c74" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/pjt_server.pjt_server.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/pjt_server.pjt_server.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/pjt_server.pjt_server.test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/ProductController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dao/ProductDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dao/ProductDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dto/ProductDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dto/ProductDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/resources/config/mybatis-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/resources/config/mybatis-config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/resources/static/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +83,7 @@
       <recent name="C:\Users\SSAFY\Desktop\DoGather\Sub Pjt 2\pjt_server\pjt_server" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.PjtServerApplication">
+  <component name="RunManager" selected="Spring Boot.PjtServerApplication (1)">
     <configuration name="'pjt_server.pjt_server'에 있는 테스트" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -119,6 +124,21 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="gradlew" type="ShConfigurationType" temporary="true">
+      <option name="SCRIPT_TEXT" value="" />
+      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+      <option name="SCRIPT_PATH" value="$PROJECT_DIR$/pjt_server/gradlew" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$/pjt_server" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="EXECUTE_IN_TERMINAL" value="true" />
+      <option name="EXECUTE_SCRIPT_FILE" value="true" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <configuration name="PjtServerApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="pjt_server.pjt_server.main~1" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.dogather.pjtserver.PjtServerApplication" />
@@ -141,9 +161,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.PjtServerApplication" />
-        <item itemvalue="Gradle.'pjt_server.pjt_server'에 있는 테스트" />
         <item itemvalue="Gradle.pjt_server" />
+        <item itemvalue="Gradle.'pjt_server.pjt_server'에 있는 테스트" />
+        <item itemvalue="Spring Boot.PjtServerApplication" />
+        <item itemvalue="Shell Script.gradlew" />
       </list>
     </recent_temporary>
   </component>
@@ -158,7 +179,9 @@
       <workItem from="1642985696151" duration="2503000" />
       <workItem from="1643001030721" duration="6666000" />
       <workItem from="1643073369334" duration="825000" />
-      <workItem from="1643075613111" duration="11816000" />
+      <workItem from="1643075613111" duration="14567000" />
+      <workItem from="1643095450239" duration="1357000" />
+      <workItem from="1643158437584" duration="10310000" />
     </task>
     <servers />
   </component>
