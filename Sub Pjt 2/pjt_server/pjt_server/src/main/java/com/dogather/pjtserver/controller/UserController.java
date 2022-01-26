@@ -5,8 +5,6 @@ import com.dogather.pjtserver.jwt.JwtProvider;
 import com.dogather.pjtserver.jwt.JwtRet;
 import com.dogather.pjtserver.service.UserService;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,7 +39,7 @@ public class UserController {
 		System.err.println("(Post)User Controller Login Method run!");
 		JwtRet ret =  new JwtRet(); //return value for client by JSON
 
-		// 로그
+		// 로그인
 		UserDto loginResult = userService.userLogin(userDto); // userService에 로그인 요청
 		if (loginResult != null) {
 			// 있는 아이디
