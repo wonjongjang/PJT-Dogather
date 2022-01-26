@@ -1,11 +1,13 @@
 plugins {
+	// 스웨거 2.9.2와 스프링부트 2.6.2 충돌로 인해 스웨거 사용시 2.5.2사용
+	// id 'org.springframework.boot' version '2.5.2'
 	id 'org.springframework.boot' version '2.6.2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
 
 group = 'com.dogather'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.4-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
@@ -21,6 +23,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.1'
+
 	// lombok
 	compileOnly 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
@@ -32,14 +35,18 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2',
             // Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
             //'org.bouncycastle:bcprov-jdk15on:1.60',
-            'io.jsonwebtoken:jjwt-jackson:0.11.2' // or 'io.jsonwebtoken:jjwt-gson:0.11.2' for gson
+			"io.jsonwebtoken:jjwt-jackson:0.11.2" // or 'io.jsonwebtoken:jjwt-gson:0.11.2' for gson
 	// JWT Token => DateTypeConverter
 	implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
 	
 	
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'mysql:mysql-connector-java'
+	implementation 'mysql:mysql-connector-java'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	//json
+	implementation 'org.json:json:20211205'
+
 }
 
 test {
