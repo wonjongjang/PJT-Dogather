@@ -22,6 +22,12 @@ function Login() {
     setPassword(e.target.value)
   }
 
+  type MemberType = {
+    userId: string;
+    userPassword: string;
+  };
+
+
   const login = (event: React.FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
 
@@ -34,15 +40,19 @@ function Login() {
 
     axios({
       method: "POST",
-      url: "http://i6e104.p.ssafy.io:8080/user/login",
+      url: "http://i6e104.p.ssafy.io/user/login",
       data: json,
       headers:{
-            "Content-Type": "application/json"
-        }
+        "Content-Type": "application/json"
+      }
     })
       .then((response) => {
         // 성공시
         console.log(response);
+        console.log(response.data)
+        const JWT = jwt_decode(response.data.jwt)
+        console.log(JWT)
+        localStorage.setItem('token', response.data.jwt)
       })
       .catch((error) => {
         // 실패시

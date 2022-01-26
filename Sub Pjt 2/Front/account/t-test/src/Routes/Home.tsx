@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+123
 const Btn = styled.button`
   background-color: black;
   color: white;
