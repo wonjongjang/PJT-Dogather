@@ -1,7 +1,10 @@
 import axios from "axios";
-import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+
+const Container = styled.div`
+  padding: 0px 20px;
+`;
 
 interface ISignUpForm {
   userId: string;
@@ -19,6 +22,7 @@ interface ISignUpForm {
 const SignUpForm = styled.form`
   display: flex;
   flex-direction: column;
+  padding: 0px 20px;
 `;
 
 function Singup() {
@@ -61,7 +65,9 @@ function Singup() {
 
   return (
     <>
-      <h1>회원 가입</h1>
+      <Container>
+        <h1>회원 가입</h1>
+      </Container>
       <SignUpForm onSubmit={handleSubmit(onValid)}>
         <input
           {...register("userId", {
@@ -171,7 +177,7 @@ export default Singup;
 
     axios({
       method: "POST",
-      url: "http://i6e104.p.ssafy.io:8080/user/register",
+      url: "http://i6e104.p.ssafy.io/user/register",
       data: json,
       headers:{
             "Content-Type": "application/json"

@@ -1,13 +1,12 @@
 plugins {
-	// 스웨거 2.9.2와 스프링부트 2.6.2 충돌로 인해 스웨거 사용시 2.5.2사용
-	// id 'org.springframework.boot' version '2.5.2'
 	id 'org.springframework.boot' version '2.6.2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id "org.asciidoctor.convert" version "1.5.9.2"
 }
 
 group = 'com.dogather'
-version = '0.0.4-SNAPSHOT'
+version = '0.0.5-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
@@ -33,9 +32,7 @@ dependencies {
 	
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2',
-            // Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
-            //'org.bouncycastle:bcprov-jdk15on:1.60',
-			"io.jsonwebtoken:jjwt-jackson:0.11.2" // or 'io.jsonwebtoken:jjwt-gson:0.11.2' for gson
+			"io.jsonwebtoken:jjwt-jackson:0.11.2"
 	// JWT Token => DateTypeConverter
 	implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
 	
@@ -47,8 +44,39 @@ dependencies {
 	//json
 	implementation 'org.json:json:20211205'
 
+	//Spring Doc
+	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+}
+
+ext {
+	snippetsDir = file('build/generated-snippets')
 }
 
 test {
 	useJUnitPlatform()
+	outputs.dir snippetsDir
+}
+
+asciidoctor {
+	inputs.dir snippetsDir
+	dependsOn test
+}
+
+bootJar {
+	dependsOn asciidoctor
+	from ("${asciidoctor.outputDir}/html5") {
+		into 'static/docs'
+	}
+}
+
+task copyDocument(type: Copy) {
+	dependsOn asciidoctor
+
+	from file("build/asciidoc/html5/")
+	into file("src/main/resources/static/docs")
+}
+
+build {
+	dependsOn copyDocument
 }
