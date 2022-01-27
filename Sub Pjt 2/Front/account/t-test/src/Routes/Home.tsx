@@ -13,6 +13,10 @@ const StyledLink = styled(Link)`
   color: inherit;
 `;
 
+const H1 = styled.h1`
+  font-size: 100px;
+`;
+
 function Home() {
   return (
     <div>

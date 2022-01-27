@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dogather.pjtserver.dao.GroupDao">
+
+    <insert id="groupRegister" parameterType="com.dogather.pjtserver.dto.GroupDto">
+        insert into group (group_leader, deadline, max_people, status)
+        values (#{groupLeader}, #{deadline}, #{maxPeople}, #{status})
+    </insert>
+
+    <update id="groupUpdate" parameterType="com.dogather.pjtserver.dto.GroupDto">
+        update group
+        set updated = current_timestamp(), deadline = #{deadline}, max_people = #{maxPeople}, end = #{end}, status = #{status}
+        where group_no = #{groupNo}
+    </update>
+
+    <delete id="groupDelete" parameterType="int">
+        delete from group
+        where group_no = #{groupNo}
+    </delete>
+
+    <select id="group" parameterType="int" resultType="com.dogather.pjtserver.dto.GroupDto">
+        select * from group where group_no = #{groupNo}
+    </select>
+
+    <insert id="groupEnter" parameterType="com.dogather.pjtserver.dto.GroupEnterDto">
+        insert into user_group (user_no, group_no, group_leader, product_no)
+        values (#{userNo}, #{groupNo}, #{groupLeader}, #{productNo})
+    </insert>
+
+    <delete id="groupOut" parameterType="com.dogather.pjtserver.dto.GroupEnterDto">
+        delete from user_group
+        where user_no = #{userNo}
+          and group_leader = #{groupLeader}
+          and group_no = #{groupNo}
+          and product_no = #{productNo}
+    </delete>
+
+
+
+</mapper>
