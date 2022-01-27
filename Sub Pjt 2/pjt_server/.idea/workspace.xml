@@ -5,15 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f21d74f0-23f7-4ef6-abee-9eb8b8119c74" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pjt_server/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dao/UserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/resources/mapper/user_query.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/resources/mapper/user_query.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/test/java/com/dogather/pjtserver/PjtServerApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/restdoc.md" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,7 +210,7 @@
       <workItem from="1643075613111" duration="14567000" />
       <workItem from="1643095450239" duration="1357000" />
       <workItem from="1643158437584" duration="10310000" />
-      <workItem from="1643248929349" duration="7094000" />
+      <workItem from="1643248929349" duration="10359000" />
     </task>
     <servers />
   </component>
