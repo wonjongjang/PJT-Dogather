@@ -34,8 +34,8 @@ export default function BasicCard() {
       <div>
             <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-        <Grid item xs={3}>
-        <Card sx={{ minWidth: 275 }}>
+            <Grid item xs={3}>
+                      <Card sx={{ minWidth: 275 }}>
           <CardContent>
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
               Word of the Day
