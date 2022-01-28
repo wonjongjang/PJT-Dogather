@@ -1,5 +1,6 @@
 package com.dogather.pjtserver.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,7 @@ public class GroupDto {
     private int groupLeader;
     private LocalDateTime updated;
     private LocalDateTime created;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deadline;
     private int maxPeople;
     private int end;
