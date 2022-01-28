@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
@@ -18,31 +17,35 @@ interface ISignUpForm {
 function Singup() {
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors },
     setError,
   } = useForm<ISignUpForm>();
+
+  // console.log(register);
+  // const
 
   const onValid = (data: ISignUpForm) => {
     console.log(data);
     if (data.userPw !== data.checkPw) {
       setError(
         "checkPw",
-        { message: "비밀번호가 다릅니다" },
+        { message: "비밀번호가 일치하지 않습니다." },
         { shouldFocus: true } // error 발생 시 입력위치 이동
       );
     } else {
-      axios({
+      fetch("http://i6e104.p.ssafy.io:8090/user/register", {
         method: "POST",
-        url: "http://i6e104.p.ssafy.io/user/register",
-        data,
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify(data),
       })
         .then((response) => {
           // 성공
           console.log(response);
+          // 로그인 페이지로 이동
         })
         .catch((error) => {
           // 실패
@@ -51,88 +54,158 @@ function Singup() {
         .finally(() => {});
     }
   };
-  console.log(errors);
+  // console.log(register("userId"));
+  // console.log(register.length);
+  console.log(watch().userPw);
+  // console.log(errors);
+
+  function idCheck(value: string) {
+    console.log(value);
+  }
 
   return (
     <SignUpForm onSubmit={handleSubmit(onValid)}>
       <SignUpTitle>회원가입</SignUpTitle>
-
-      <input
-        {...register("userId", {
-          required: "ID는 필수입니다.",
-          minLength: { value: 4, message: "아이디가 너무 짧습니다." },
-        })}
-        placeholder="id"
-      />
-      <span>{errors?.userId?.message}</span>
-      <input
-        {...register("userPw", { required: "비밀번호는 필수입니다." })}
-        placeholder="password"
-      />
-      <span>{errors?.userPw?.message}</span>
-      <input
-        {...register("checkPw", { required: "비밀번호 확인 필수입니다." })}
-        placeholder="비밀번호 확인"
-      />
-      <span>{errors?.checkPw?.message}</span>
-      <input
-        {...register("userName", { required: "이름은 필수입니다." })}
-        placeholder="name"
-      />
-      <span>{errors?.userName?.message}</span>
-      <input
-        {...register("userNickname", { required: "닉네임은 필수입니다." })}
-        placeholder="nickname"
-      />
-      <span>{errors?.userNickname?.message}</span>
-      <input
-        {...register("userAddr", { required: "주소는 필수입니다." })}
-        placeholder="address1"
-      />
-      <span>{errors?.userAddr?.message}</span>
-      <input
-        {...register("userAddrDetail", { required: "주소는 필수입니다." })}
-        placeholder="address2"
-      />
-      <span>{errors?.userAddrDetail?.message}</span>
-      <input
-        {...register("userZip", {
-          required: "우편번호는 필수입니다.",
-          pattern: {
-            value: /^[0-9]+$/,
-            message: "우편번호는 숫자만 입력 가능합니다.",
-          },
-        })}
-        placeholder="zip"
-      />
-      <span>{errors?.userZip?.message}</span>
-      <input
-        {...register("userTel", { required: "전화번호는 필수입니다." })}
-        placeholder="000-0000-0000"
-      />
-      <span>{errors?.userTel?.message}</span>
-      <input
-        {...register("userEmail", { required: "이메일은 필수입니다." })}
-        placeholder="email"
-      />
-      <span>{errors?.userEmail?.message}</span>
-      <button>가입</button>
+      <InputDiv>
+        <InputTitle>아이디</InputTitle>
+        <Input
+          {...register("userId", {
+            required: "필수 정보입니다.",
+            minLength: {
+              value: 4,
+              message: "4~10자의 영문 소문자, 숫자만 사용 가능합니다.",
+            },
+            maxLength: {
+              value: 10,
+              message: "4~10자의 영문 소문자, 숫자만 사용 가능합니다.",
+            },
+          })}
+          placeholder="영문/숫자 4~10자"
+          maxLength={10}
+        />
+        <ErrorMessage>{errors?.userId?.message}</ErrorMessage>
+      </InputDiv>
+      <InputDiv>
+        <InputTitle>비밀번호</InputTitle>
+        <Input
+          {...register("userPw", {
+            required: "필수 정보입니다.",
+            minLength: {
+              value: 8,
+              message:
+                "8~16자의 영문 대 소문자, 숫자, 특수문자만 사용 가능합니다.",
+            },
+            maxLength: {
+              value: 16,
+              message:
+                "8~16자의 영문 대 소문자, 숫자, 특수문자만 사용 가능합니다.",
+            },
+          })}
+          placeholder="영문/숫자/특수문자 조합 8~16자"
+          type="password"
+          maxLength={16}
+        />
+        <ErrorMessage>{errors?.userPw?.message}</ErrorMessage>
+      </InputDiv>
+      <InputDiv>
+        <InputTitle>비밀번호 확인</InputTitle>
+        <Input
+          {...register("checkPw", {
+            required: "필수 정보입니다.",
+            // validate: {
+            //   passwordCheck: (value) => (idCheck(value) ? "" : ""),
+            // },
+          })}
+          placeholder="비밀번호와 동일하게 입력해주세요."
+          type="password"
+          maxLength={16}
+        />
+        <ErrorMessage>{errors?.checkPw?.message}</ErrorMessage>
+      </InputDiv>
+      <InputDiv>
+        <InputTitle>이름</InputTitle>
+        <Input
+          {...register("userName", { required: "필수 정보입니다." })}
+          placeholder="장원종"
+        />
+        <ErrorMessage>{errors?.userName?.message}</ErrorMessage>
+      </InputDiv>
+      <InputDiv>
+        <InputTitle>닉네임</InputTitle>
+        <Input
+          {...register("userNickname", {
+            required: "필수 정보입니다.",
+            minLength: {
+              value: 2,
+              message: "2~10자의 한글, 영문 대 소문자, 숫자만 사용 가능합니다.",
+            },
+            maxLength: {
+              value: 10,
+              message: "2~10자의 한글, 영문 대 소문자, 숫자만 사용 가능합니다.",
+            },
+          })}
+          placeholder="한글/영문/숫자 2~10자"
+          maxLength={10}
+        />
+        <ErrorMessage>{errors?.userNickname?.message}</ErrorMessage>
+      </InputDiv>
+      <InputDiv>
+        <InputTitle>주소</InputTitle>
+        <Input {...register("userAddr", { required: "필수 정보입니다." })} />
+        <ErrorMessage>{errors?.userAddr?.message}</ErrorMessage>
+      </InputDiv>
+      <InputDiv>
+        <InputTitle>상세 주소</InputTitle>
+        <Input
+          {...register("userAddrDetail", { required: "필수 정보입니다." })}
+        />
+        <ErrorMessage>{errors?.userAddrDetail?.message}</ErrorMessage>
+      </InputDiv>
+      <InputDiv>
+        <InputTitle>우편번호</InputTitle>
+        <Input
+          {...register("userZip", {
+            required: "필수 정보입니다.",
+            pattern: {
+              value: /^[0-9]+$/,
+              message: "우편번호는 숫자만 입력 가능합니다.",
+            },
+          })}
+        />
+        <ErrorMessage>{errors?.userZip?.message}</ErrorMessage>
+      </InputDiv>
+      <InputDiv>
+        <InputTitle>전화번호</InputTitle>
+        <Input
+          {...register("userTel", {
+            required: "필수 정보입니다.",
+            pattern: {
+              value: /^[0-9]+-[0-9]+-[0-9]+$/,
+              message: "전화번호 양식을 지켜주세요.",
+            },
+          })}
+          placeholder="000-0000-0000"
+        />
+        <ErrorMessage>{errors?.userTel?.message}</ErrorMessage>
+      </InputDiv>
+      <InputDiv>
+        <InputTitle>이메일</InputTitle>
+        <Input
+          {...register("userEmail", {
+            required: "필수 정보입니다.",
+            pattern: {
+              value: /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+              message: "이메일 양식을 지켜주세요.",
+            },
+          })}
+          placeholder="dogather@email.com"
+        />
+        <ErrorMessage>{errors?.userEmail?.message}</ErrorMessage>
+      </InputDiv>
+      <SignUpButton>가입하기</SignUpButton>
     </SignUpForm>
   );
 }
-export default Singup;
-
-const Container = styled.div`
-  margin: 0px 134.5px;
-  padding: 0px 40px;
-`;
-
-const Header = styled.header`
-  height: 10vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 const SignUpTitle = styled.h2`
   font-weight: bold;
@@ -143,8 +216,53 @@ const SignUpTitle = styled.h2`
 const SignUpForm = styled.form`
   display: flex;
   flex-direction: column;
-  /* margin-top: 68px; */
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 68px;
+  /* margin: 0 400px; */
 `;
+
+const InputDiv = styled.div`
+  margin-bottom: 20px;
+`;
+
+const InputTitle = styled.div`
+  text-align: left;
+  font-size: 14px;
+  font-weight: bold;
+`;
+
+const Input = styled.input`
+  margin-top: 5px;
+  margin-bottom: 1px;
+  width: 400px;
+  height: 45px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-width: 1px;
+`;
+
+const ErrorMessage = styled.p`
+  text-align: left;
+  font-size: 11px;
+  color: #ff3f34;
+`;
+
+const SignUpButton = styled.button`
+  margin-top: 35px;
+  border-radius: 10px;
+  border: none;
+  width: 400px;
+  height: 55px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #1e272e;
+  color: white;
+`;
+
+export default Singup;
 
 /* function Singup() {
   const [id, setId] = useState<string>("");
