@@ -1,6 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import BasicCard from '../components/card';
 
 const Btn = styled.button`
   background-color: black;
@@ -19,23 +20,17 @@ const H1 = styled.h1`
 function Home() {
   return (
     <div>
-      <div>
-        <H1>Home</H1>
-        <H1>Home</H1>
-        <H1>Home</H1>
-        <H1>Home</H1>
-        <H1>Home</H1>
-        <H1>Home</H1>
-        <H1>Home</H1>
-        <H1>Home</H1>
-        <H1>Home</H1>
-        <H1>Home</H1>
-        <H1>Home</H1>
-        <H1>Home</H1>
-        <H1>Home</H1>
-        <H1>Home</H1>
+    <div>
+      <h1>Home</h1>
+      <Btn>
+        <StyledLink to="/login">Login</StyledLink>
+      </Btn>
+      <Btn>
+        <StyledLink to="/Signup">Signup</StyledLink>
+      </Btn>
       </div>
-    </div>
+      <BasicCard />
+      </div>
   );
 }
 
