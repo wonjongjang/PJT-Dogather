@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/Group")
+@RequestMapping("/group")
 public class GroupController {
 
     @Autowired
@@ -71,5 +71,6 @@ public class GroupController {
             return new ResponseEntity<Integer>(out, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
 }
