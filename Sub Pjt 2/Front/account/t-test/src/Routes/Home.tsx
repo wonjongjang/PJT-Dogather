@@ -1,8 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { Card } from '@mui/material';
-import BasicCard from '../components/card';
+import React from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 const Btn = styled.button`
   background-color: black;
@@ -14,20 +12,30 @@ const StyledLink = styled(Link)`
   color: inherit;
 `;
 
+const H1 = styled.h1`
+  font-size: 100px;
+`;
+
 function Home() {
   return (
     <div>
-    <div>
-      <h1>Home</h1>
-      <Btn>
-        <StyledLink to="/login">Login</StyledLink>
-      </Btn>
-      <Btn>
-        <StyledLink to="/Signup">Signup</StyledLink>
-      </Btn>
+      <div>
+        <H1>Home</H1>
+        <H1>Home</H1>
+        <H1>Home</H1>
+        <H1>Home</H1>
+        <H1>Home</H1>
+        <H1>Home</H1>
+        <H1>Home</H1>
+        <H1>Home</H1>
+        <H1>Home</H1>
+        <H1>Home</H1>
+        <H1>Home</H1>
+        <H1>Home</H1>
+        <H1>Home</H1>
+        <H1>Home</H1>
       </div>
-      {/* <BasicCard /> */}
-      </div>
+    </div>
   );
 }
 

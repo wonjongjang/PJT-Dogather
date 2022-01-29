@@ -2,10 +2,6 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
-const Container = styled.div`
-  padding: 0px 20px;
-`;
-
 interface ISignUpForm {
   userId: string;
   userPw: string;
@@ -18,12 +14,6 @@ interface ISignUpForm {
   userTel: string;
   userEmail: string;
 }
-
-const SignUpForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  padding: 0px 20px;
-`;
 
 function Singup() {
   const {
@@ -51,11 +41,11 @@ function Singup() {
         },
       })
         .then((response) => {
-          // 성공시
+          // 성공
           console.log(response);
         })
         .catch((error) => {
-          // 실패시
+          // 실패
           console.log(error.response);
         })
         .finally(() => {});
@@ -64,76 +54,97 @@ function Singup() {
   console.log(errors);
 
   return (
-    <>
-      <Container>
-        <h1>회원 가입</h1>
-      </Container>
-      <SignUpForm onSubmit={handleSubmit(onValid)}>
-        <input
-          {...register("userId", {
-            required: "ID는 필수입니다.",
-            minLength: { value: 4, message: "아이디가 너무 짧습니다." },
-          })}
-          placeholder="id"
-        />
-        <span>{errors?.userId?.message}</span>
-        <input
-          {...register("userPw", { required: "비밀번호는 필수입니다." })}
-          placeholder="password"
-        />
-        <span>{errors?.userPw?.message}</span>
-        <input
-          {...register("checkPw", { required: "비밀번호 확인 필수입니다." })}
-          placeholder="비밀번호 확인"
-        />
-        <span>{errors?.checkPw?.message}</span>
-        <input
-          {...register("userName", { required: "이름은 필수입니다." })}
-          placeholder="name"
-        />
-        <span>{errors?.userName?.message}</span>
-        <input
-          {...register("userNickname", { required: "닉네임은 필수입니다." })}
-          placeholder="nickname"
-        />
-        <span>{errors?.userNickname?.message}</span>
-        <input
-          {...register("userAddr", { required: "주소는 필수입니다." })}
-          placeholder="address1"
-        />
-        <span>{errors?.userAddr?.message}</span>
-        <input
-          {...register("userAddrDetail", { required: "주소는 필수입니다." })}
-          placeholder="address2"
-        />
-        <span>{errors?.userAddrDetail?.message}</span>
-        <input
-          {...register("userZip", {
-            required: "우편번호는 필수입니다.",
-            pattern: {
-              value: /^[0-9]+$/,
-              message: "우편번호는 숫자만 입력 가능합니다.",
-            },
-          })}
-          placeholder="zip"
-        />
-        <span>{errors?.userZip?.message}</span>
-        <input
-          {...register("userTel", { required: "전화번호는 필수입니다." })}
-          placeholder="000-0000-0000"
-        />
-        <span>{errors?.userTel?.message}</span>
-        <input
-          {...register("userEmail", { required: "이메일은 필수입니다." })}
-          placeholder="email"
-        />
-        <span>{errors?.userEmail?.message}</span>
-        <button>가입</button>
-      </SignUpForm>
-    </>
+    <SignUpForm onSubmit={handleSubmit(onValid)}>
+      <SignUpTitle>회원가입</SignUpTitle>
+
+      <input
+        {...register("userId", {
+          required: "ID는 필수입니다.",
+          minLength: { value: 4, message: "아이디가 너무 짧습니다." },
+        })}
+        placeholder="id"
+      />
+      <span>{errors?.userId?.message}</span>
+      <input
+        {...register("userPw", { required: "비밀번호는 필수입니다." })}
+        placeholder="password"
+      />
+      <span>{errors?.userPw?.message}</span>
+      <input
+        {...register("checkPw", { required: "비밀번호 확인 필수입니다." })}
+        placeholder="비밀번호 확인"
+      />
+      <span>{errors?.checkPw?.message}</span>
+      <input
+        {...register("userName", { required: "이름은 필수입니다." })}
+        placeholder="name"
+      />
+      <span>{errors?.userName?.message}</span>
+      <input
+        {...register("userNickname", { required: "닉네임은 필수입니다." })}
+        placeholder="nickname"
+      />
+      <span>{errors?.userNickname?.message}</span>
+      <input
+        {...register("userAddr", { required: "주소는 필수입니다." })}
+        placeholder="address1"
+      />
+      <span>{errors?.userAddr?.message}</span>
+      <input
+        {...register("userAddrDetail", { required: "주소는 필수입니다." })}
+        placeholder="address2"
+      />
+      <span>{errors?.userAddrDetail?.message}</span>
+      <input
+        {...register("userZip", {
+          required: "우편번호는 필수입니다.",
+          pattern: {
+            value: /^[0-9]+$/,
+            message: "우편번호는 숫자만 입력 가능합니다.",
+          },
+        })}
+        placeholder="zip"
+      />
+      <span>{errors?.userZip?.message}</span>
+      <input
+        {...register("userTel", { required: "전화번호는 필수입니다." })}
+        placeholder="000-0000-0000"
+      />
+      <span>{errors?.userTel?.message}</span>
+      <input
+        {...register("userEmail", { required: "이메일은 필수입니다." })}
+        placeholder="email"
+      />
+      <span>{errors?.userEmail?.message}</span>
+      <button>가입</button>
+    </SignUpForm>
   );
 }
 export default Singup;
+
+const Container = styled.div`
+  margin: 0px 134.5px;
+  padding: 0px 40px;
+`;
+
+const Header = styled.header`
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SignUpTitle = styled.h2`
+  font-weight: bold;
+  font-size: 32px;
+  margin: 55px;
+`;
+
+const SignUpForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  /* margin-top: 68px; */
+`;
 
 /* function Singup() {
   const [id, setId] = useState<string>("");

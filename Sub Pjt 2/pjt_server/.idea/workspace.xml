@@ -5,17 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f21d74f0-23f7-4ef6-abee-9eb8b8119c74" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dao/ProductDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dao/ProductDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dto/ProductDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dto/ProductDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/resources/config/mybatis-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/resources/config/mybatis-config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/restdoc.md" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +44,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -76,14 +70,72 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="모듈" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\SSAFY\Desktop\DoGather\Sub Pjt 2\pjt_server\pjt_server" />
     </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.dogather.pjtserver.controller" />
+    </key>
   </component>
   <component name="RunManager" selected="Spring Boot.PjtServerApplication (1)">
+    <configuration name="PjtServerApplicationTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/pjt_server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;com.dogather.pjtserver.PjtServerApplicationTests&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="UserControllerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/pjt_server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;com.dogather.pjtserver.controller.UserControllerTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="'pjt_server.pjt_server'에 있는 테스트" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -124,19 +176,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="gradlew" type="ShConfigurationType" temporary="true">
-      <option name="SCRIPT_TEXT" value="" />
-      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
-      <option name="SCRIPT_PATH" value="$PROJECT_DIR$/pjt_server/gradlew" />
-      <option name="SCRIPT_OPTIONS" value="" />
-      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
-      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$/pjt_server" />
-      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
-      <option name="INTERPRETER_PATH" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="EXECUTE_IN_TERMINAL" value="true" />
-      <option name="EXECUTE_SCRIPT_FILE" value="true" />
-      <envs />
+    <configuration name="com.dogather.pjtserver.controller.UserControllerTest.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/pjt_server/pjt_server.pjt_server/build/reports/tests/test/classes/com.dogather.pjtserver.controller.UserControllerTest.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
     <configuration name="PjtServerApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
@@ -146,25 +186,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PjtServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="pjt_server.pjt_server.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.dogather.pjtserver.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.dogather.pjtserver.PjtServerApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.pjt_server" />
+        <item itemvalue="JavaScript 디버그.com.dogather.pjtserver.controller.UserControllerTest.html" />
+        <item itemvalue="Gradle.UserControllerTest" />
+        <item itemvalue="Gradle.PjtServerApplicationTests" />
         <item itemvalue="Gradle.'pjt_server.pjt_server'에 있는 테스트" />
-        <item itemvalue="Spring Boot.PjtServerApplication" />
-        <item itemvalue="Shell Script.gradlew" />
+        <item itemvalue="Gradle.pjt_server" />
       </list>
     </recent_temporary>
   </component>
@@ -182,6 +210,7 @@
       <workItem from="1643075613111" duration="14567000" />
       <workItem from="1643095450239" duration="1357000" />
       <workItem from="1643158437584" duration="10310000" />
+      <workItem from="1643248929349" duration="10359000" />
     </task>
     <servers />
   </component>

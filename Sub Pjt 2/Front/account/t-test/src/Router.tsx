@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Footer from "./Components/Footer";
 import Header from "./Components/Header";
 import Home from "./Routes/Home";
 import Login from "./Routes/Login";
@@ -15,6 +16,7 @@ function Router() {
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/search" element={<Search />}></Route>
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }

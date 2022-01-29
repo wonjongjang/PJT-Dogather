@@ -112,16 +112,22 @@ public class UserController {
 	}
 
 	@GetMapping("/idcheck")
-	public ResponseEntity<String> idCheck(@RequestBody UserDto dto){
+	public ResponseEntity<String> idCheck(@RequestParam String id){
 		System.err.println("(Get)User Controller idCheck Method run!");
-		String id = dto.getUserId();
 		String result = userService.userIdCheck(id);
 		JSONObject json = new JSONObject();
 		json.put("result", result);
 		json.put("requested_id", id);
-		return ResponseEntity.status(HttpStatus.OK).body(json.toString());//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).body(json.toString(4));//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 	}
 
-
+	@GetMapping("/nickcheck")
+	public ResponseEntity<String> nickCheck(@RequestParam String nick){
+		String result = userService.userNickCheck(nick);
+		JSONObject json = new JSONObject();
+		json.put("result", result);
+		json.put("requested_id", nick);
+		return new ResponseEntity<String>(json.toString(4), HttpStatus.OK);
+	}
 
 }
