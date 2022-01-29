@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Card } from '@mui/material';
 import BasicCard from '../components/card';
 
 const Btn = styled.button`
@@ -12,6 +11,10 @@ const Btn = styled.button`
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: inherit;
+`;
+
+const H1 = styled.h1`
+  font-size: 100px;
 `;
 
 function Home() {
@@ -26,7 +29,7 @@ function Home() {
         <StyledLink to="/Signup">Signup</StyledLink>
       </Btn>
       </div>
-      {/* <BasicCard /> */}
+      <BasicCard />
       </div>
   );
 }

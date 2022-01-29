@@ -64,4 +64,14 @@ public class UserServiceImpl implements UserService{
 		}
 		return result;
 	}
+
+	@Override
+	public String userNickCheck(String nick) {
+		String result = "사용가능";
+		int count= userDao.userNickCheck(nick);
+		if(count > 0){
+			result = "이미 있는 닉네임 입니다.";
+		}
+		return result;
+	}
 }
