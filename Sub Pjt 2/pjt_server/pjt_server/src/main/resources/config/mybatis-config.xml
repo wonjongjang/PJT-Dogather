@@ -11,5 +11,7 @@
          <mapper resource="mapper/user_query.xml" />
          <mapper resource="mapper/product_query.xml" />
          <mapper resource="mapper/group_query.xml" />
+         <mapper resource="mapper/faq_query.xml" />
+
     </mappers>
 </configuration>
