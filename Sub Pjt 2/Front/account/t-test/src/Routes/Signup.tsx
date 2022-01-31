@@ -1,5 +1,8 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useQuery } from "react-query";
 import styled from "styled-components";
+import { fetchNickname } from "../api";
 
 interface ISignUpForm {
   userId: string;
@@ -14,6 +17,11 @@ interface ISignUpForm {
   userEmail: string;
 }
 
+interface ICheckNickname {
+  result: string;
+  requested_id: string;
+}
+
 function Singup() {
   const {
     register,
@@ -21,47 +29,42 @@ function Singup() {
     handleSubmit,
     formState: { errors },
     setError,
+    getValues,
   } = useForm<ISignUpForm>();
 
-  // console.log(register);
-  // const
+  const onValid = (formData: ISignUpForm) => {
+    console.log(formData.userId);
 
-  const onValid = (data: ISignUpForm) => {
-    console.log(data);
-    if (data.userPw !== data.checkPw) {
-      setError(
-        "checkPw",
-        { message: "비밀번호가 일치하지 않습니다." },
-        { shouldFocus: true } // error 발생 시 입력위치 이동
-      );
-    } else {
-      fetch("http://i6e104.p.ssafy.io:8090/user/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+    // fetch(`http://i6e104.p.ssafy.io/user/idcheck?id=${formData.userId}`)
+    //   .then((response) => {
+    //     // 성공
+    //     console.log(response);
+    //     // 로그인 페이지로 이동
+    //   })
+    //   .catch((error) => {
+    //     // 실패
+    //     console.log(error.response);
+    //   })
+    //   .finally(() => {});
+
+    fetch("http://i6e104.p.ssafy.io:8090/user/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => {
+        // 성공
+        console.log(response);
+        // 로그인 페이지로 이동
       })
-        .then((response) => {
-          // 성공
-          console.log(response);
-          // 로그인 페이지로 이동
-        })
-        .catch((error) => {
-          // 실패
-          console.log(error.response);
-        })
-        .finally(() => {});
-    }
+      .catch((error) => {
+        // 실패
+        console.log(error.response);
+      })
+      .finally(() => {});
   };
-  // console.log(register("userId"));
-  // console.log(register.length);
-  console.log(watch().userPw);
-  // console.log(errors);
-
-  function idCheck(value: string) {
-    console.log(value);
-  }
 
   return (
     <SignUpForm onSubmit={handleSubmit(onValid)}>
@@ -79,6 +82,15 @@ function Singup() {
               value: 10,
               message: "4~10자의 영문 소문자, 숫자만 사용 가능합니다.",
             },
+            // validate: {
+            //   checkId: async (value) => {
+            //     const data = await fetch(
+            //       `http://i6e104.p.ssafy.io/user/idcheck?id=${value}`
+            //     );
+            //     return data.result;
+            //   },
+
+            // },
           })}
           placeholder="영문/숫자 4~10자"
           maxLength={10}
@@ -112,9 +124,12 @@ function Singup() {
         <Input
           {...register("checkPw", {
             required: "필수 정보입니다.",
-            // validate: {
-            //   passwordCheck: (value) => (idCheck(value) ? "" : ""),
-            // },
+            validate: {
+              checkPassword: (value) => {
+                const { userPw } = getValues();
+                return userPw === value || "비밀번호가 일치하지 않습니다.";
+              },
+            },
           })}
           placeholder="비밀번호와 동일하게 입력해주세요."
           type="password"
@@ -193,10 +208,10 @@ function Singup() {
         <Input
           {...register("userEmail", {
             required: "필수 정보입니다.",
-            pattern: {
-              value: /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-              message: "이메일 양식을 지켜주세요.",
-            },
+            // pattern: {
+            //   value: /^[a-zA-Z0-9+-_.]+@[a-z]+\.[a-z]+$/,
+            //   message: "이메일 양식을 지켜주세요.",
+            // },
           })}
           placeholder="dogather@email.com"
         />
