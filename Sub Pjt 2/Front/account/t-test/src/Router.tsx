@@ -4,6 +4,9 @@ import Home from "./Routes/Home";
 import Login from "./Routes/Login";
 import Search from "./Routes/Search";
 import Signup from "./Routes/Signup";
+import Community from "./Routes/Community";
+import NoticeCommunity from "./Routes/NoticeCommunity";
+import SaleCommunity from "./Routes/SaleCommunity";
 
 function Router() {
   return (
@@ -14,6 +17,9 @@ function Router() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/search" element={<Search />}></Route>
+        <Route path="/community" element={<Community />}></Route>
+        <Route path="/noticecommunity" element={<NoticeCommunity />}></Route>
+        <Route path="/salecommunity" element={<SaleCommunity />}></Route>
       </Routes>
     </BrowserRouter>
   );
