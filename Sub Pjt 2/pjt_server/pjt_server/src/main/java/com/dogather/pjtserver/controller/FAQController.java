@@ -17,12 +17,13 @@ import java.util.Map;
 
 @RestController
 @Slf4j
+@RequestMapping("/faq")
 public class FAQController {
 
     @Autowired
     FAQService faqService;
 
-    @RequestMapping(value = {"/faq/{groupNo}", "/faq/{groupNo}/{faqNo}"}, method = {RequestMethod.POST, RequestMethod.PUT})
+    @RequestMapping(value = {"/{groupNo}", "/{groupNo}/{faqNo}"}, method = {RequestMethod.POST, RequestMethod.PUT})
     public ResponseEntity<String> registerFaq (@PathVariable(value = "faqNo", required = false) Long faqNo,
                                                @PathVariable(value = "groupNo") int groupNo,
                                                @RequestBody FAQDto faqDto){
@@ -60,7 +61,7 @@ public class FAQController {
         }
     }
 
-    @DeleteMapping("/faq/{groupNo}/{faqNo}")
+    @DeleteMapping("/{groupNo}/{faqNo}")
     public ResponseEntity<String> deleteFaq(@PathVariable("groupNo") int groupNo,
                                             @PathVariable("faqNo") int faqNo) {
         JSONObject jsonObj = new JSONObject();

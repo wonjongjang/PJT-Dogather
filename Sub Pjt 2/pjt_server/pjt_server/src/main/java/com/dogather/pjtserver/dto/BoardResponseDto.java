@@ -3,9 +3,10 @@ package com.dogather.pjtserver.dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
-public class BoardDto {
+public class BoardResponseDto {
 
     private int postNo;
 
@@ -23,4 +24,5 @@ public class BoardDto {
 
     private int boardView;
 
+    private List<int[]> mediaNo;
 }
