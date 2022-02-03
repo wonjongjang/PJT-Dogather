@@ -25,7 +25,9 @@ public class FAQServiceImpl implements FAQService{
         if (faqDto.getFaqNo() != 0){
             queryResult = faqDao.updateFaq(faqDto);
         } else {
+            log.info("등록 시작");
             queryResult = faqDao.createFaq(faqDto);
+            log.info("등록 끝");
         }
         return (queryResult == 1) ? true : false;
     }

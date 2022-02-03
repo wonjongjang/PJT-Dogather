@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dogather.pjtserver.dao.BoardMediaDao">
+
+    <insert id="insertFile" parameterType="list">
+        insert into board_media
+        (media_no, post_no, media_title, media_savename, media_filesize, insert_date)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.mediaNo},
+            #{item.postNo},
+            #{item.mediaTitile},
+            #{item.mediaSavename},
+            #{item.mediaFilesize},
+            #{item.insertDate}
+            )
+        </foreach>
+    </insert>
+
+    <select id="findAllFile" parameterType="int" resultType="com.dogather.pjtserver.dto.BoardMediaDto">
+        select * from board_media where board_no = #{boardNo}
+    </select>
+
+
+</mapper>
