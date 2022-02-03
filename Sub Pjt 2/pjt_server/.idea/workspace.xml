@@ -5,10 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f21d74f0-23f7-4ef6-abee-9eb8b8119c74" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/modules/pjt_server.pjt_server.test~1.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pjt_server/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pjt_server/dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/restdoc.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dao/ProductDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dao/ProductDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/resources/mapper/product_query.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/resources/mapper/product_query.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/test/java/com/dogather/pjtserver/controller/UserControllerTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,13 +50,21 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -186,12 +201,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="PjtServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="pjt_server.pjt_server.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.dogather.pjtserver.PjtServerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JavaScript 디버그.com.dogather.pjtserver.controller.UserControllerTest.html" />
-        <item itemvalue="Gradle.UserControllerTest" />
         <item itemvalue="Gradle.PjtServerApplicationTests" />
         <item itemvalue="Gradle.'pjt_server.pjt_server'에 있는 테스트" />
+        <item itemvalue="JavaScript 디버그.com.dogather.pjtserver.controller.UserControllerTest.html" />
+        <item itemvalue="Gradle.UserControllerTest" />
         <item itemvalue="Gradle.pjt_server" />
       </list>
     </recent_temporary>
@@ -210,7 +232,10 @@
       <workItem from="1643075613111" duration="14567000" />
       <workItem from="1643095450239" duration="1357000" />
       <workItem from="1643158437584" duration="10310000" />
-      <workItem from="1643248929349" duration="10359000" />
+      <workItem from="1643248929349" duration="10635000" />
+      <workItem from="1643357946009" duration="732000" />
+      <workItem from="1643607939169" duration="4914000" />
+      <workItem from="1643851830673" duration="3527000" />
     </task>
     <servers />
   </component>
