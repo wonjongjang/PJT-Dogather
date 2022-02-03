@@ -1,6 +1,6 @@
 FROM openjdk:11
 
-ARG JAR_FILE=build/libs/pjt_server-0.0.7-SNAPSHOT.jar
+ARG JAR_FILE=build/libs/pjt_server-0.0.8-SNAPSHOT.jar
 
 COPY ${JAR_FILE} app.jar
 
