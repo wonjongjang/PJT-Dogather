@@ -1,6 +1,7 @@
 package com.dogather.pjtserver.controller;
 
 import com.dogather.pjtserver.dto.ProductDto;
+import com.dogather.pjtserver.dto.ProductOptionDto;
 import com.dogather.pjtserver.jwt.JwtRet;
 import com.dogather.pjtserver.service.ProductService;
 import org.json.JSONObject;
@@ -38,18 +39,27 @@ public class ProductController {
 
     }
 
-    @PutMapping("/{ProductNo}")
-    public ResponseEntity<String> update(@RequestBody ProductDto productDto){
+    @PutMapping("/{productNo}")
+    public ResponseEntity<String> update(@PathVariable int productNo, @RequestBody ProductDto productDto){
         System.err.println("(Put) Product Controller update Method run!");
+        // 히스토리 남김
+        productService.addProductHistory(productNo);
+        // 수정
         productService.productUpdate(productDto);
         return new ResponseEntity<String>("Product Updated Successfully!",HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/{ProductNo}")
-    public ResponseEntity<String> delete(@RequestBody ProductDto productDto){
+    @DeleteMapping("/{productNo}")
+    public ResponseEntity<String> delete(@PathVariable int productNo){
         System.err.println("(Delete) Product Controller delete Method run!");
-        productService.productDelete(productDto.getProductNo());
+        productService.productDelete(productNo);
         return new ResponseEntity<String>("Product deleted Successfully!",HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("{productNo}")
+    public ResponseEntity<String> setOption(@RequestBody ProductOptionDto optionDto){
+        productService.setOption(optionDto);
+        return new ResponseEntity<String>("",HttpStatus.CREATED);
     }
 
 }

@@ -21,4 +21,20 @@
         delete from product
         where product_no = #{productNo}
     </delete>
+
+    <select id="getProduct" parameterType="int" resultType="com.dogather.pjtserver.dto.ProductDto">
+        select * from product
+        where product_no = #{productNo}
+    </select>
+
+    <insert id="addPriceHistory" parameterType="com.dogather.pjtserver.dto.ProductDto">
+        insert into product_price (product_no, group_no, change_price)
+        values (#{productNo}, #{groupNo}, #{productPrice})
+    </insert>
+    
+    <insert id="setOption" parameterType="com.dogather.pjtserver.dto.ProductOptionDto">
+        insert into product_option (product_no, option_name, option_price)
+        value (#{productNo}, #{optionName}, #{optionPrice})
+    </insert>
+
 </mapper>
