@@ -25,7 +25,7 @@ public class GroupController {
     @PostMapping("/register")
     public ResponseEntity<Integer> register(@RequestBody GroupDto groupDto){
         int created = groupService.groupRegister(groupDto);
-        if(created == 1){
+        if(created != 0){
             return new ResponseEntity<Integer>(created, HttpStatus.OK);
         }else{
             return new ResponseEntity<Integer>(created, HttpStatus.INTERNAL_SERVER_ERROR);

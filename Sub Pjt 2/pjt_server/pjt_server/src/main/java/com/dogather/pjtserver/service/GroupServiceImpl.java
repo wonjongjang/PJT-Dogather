@@ -16,7 +16,7 @@ public class GroupServiceImpl implements GroupService {
     public int groupRegister(GroupDto groupDto) {
         int created = groupDao.groupRegister(groupDto);
         if(created == 1){
-            return 1;
+            return groupDto.getGroupNo();
         }else{
             return 0;
         }
