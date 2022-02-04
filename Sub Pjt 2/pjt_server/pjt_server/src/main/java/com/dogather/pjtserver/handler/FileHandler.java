@@ -2,11 +2,13 @@ package com.dogather.pjtserver.handler;
 
 import com.dogather.pjtserver.dto.BoardMediaDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -23,7 +25,9 @@ public class FileHandler {
 
     private final LocalDate today = LocalDate.now();
 
-    private final String uploadPath = Paths.get("/Users", "jamiehong", "Documents", "UPLOAD", today.format(DateTimeFormatter.ofPattern("yyMMdd"))).toString();
+//    private final String uploadPath = Paths.get("/Users", "jamiehong", "Documents", "UPLOAD", today.format(DateTimeFormatter.ofPattern("yyMMdd"))).toString();
+    public String uploadPath = new File("").getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "upload" + File.separator;
+
 
 
     private final String getRandomString() {
@@ -32,13 +36,14 @@ public class FileHandler {
 
 
     public List<BoardMediaDto> uploadFiles(List<MultipartFile> files, int postNo) throws IOException {
-
+        log.info("===============경로 시작!!!!");
+    log.info(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")));
         if(CollectionUtils.isEmpty(files) == true) {
             return Collections.emptyList();
         }
         List<BoardMediaDto> fileList = new ArrayList<>();
 
-        File dir = new File(uploadPath);
+        File dir = new File(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")));
         if(!dir.exists()) {
             dir.mkdirs();
         }
@@ -60,7 +65,7 @@ public class FileHandler {
                     break;
             }
             String saveName = getRandomString() + originalFileExtension;
-            File target = new File(uploadPath, saveName);
+            File target = new File(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")), saveName);
             file.transferTo(target);
 
             BoardMediaDto fileDto = new BoardMediaDto();

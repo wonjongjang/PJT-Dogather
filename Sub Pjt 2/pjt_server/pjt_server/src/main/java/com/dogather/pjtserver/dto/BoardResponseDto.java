@@ -1,11 +1,14 @@
 package com.dogather.pjtserver.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 public class BoardResponseDto {
 
     private int postNo;
@@ -24,5 +27,7 @@ public class BoardResponseDto {
 
     private int boardView;
 
-    private List<int[]> mediaNo;
+    private List<Integer> mediaNo;
+
+    private List<CommentDto> commentList;
 }

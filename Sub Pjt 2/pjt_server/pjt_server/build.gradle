@@ -47,6 +47,10 @@ dependencies {
 	//Spring Doc
 	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+	// apache commons IO
+	implementation 'commons-io:commons-io:2.6'
+
 }
 
 ext {

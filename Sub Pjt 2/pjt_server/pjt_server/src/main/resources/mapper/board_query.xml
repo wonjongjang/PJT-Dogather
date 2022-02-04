@@ -3,13 +3,29 @@
 <mapper namespace="com.dogather.pjtserver.dao.BoardDao">
 
     <insert id="createBoard" useGeneratedKeys="true" keyProperty="postNo">
-        insert into Board
+        insert into board
         (writer_no, board_title, board_content, created)
         values
         (#{writerNo}, #{boardTitle}, #{boardContent}, #{created})
     </insert>
 
+    <select id="findBoard" parameterType="int" resultType="com.dogather.pjtserver.dto.BoardResponseDto">
+        select * from board where post_no = #{postNo}
+    </select>
 
+    <update id="updateBoard" parameterType="com.dogather.pjtserver.dto.BoardResponseDto">
+        update board
+        set board_title = #{boardTitle}, board_content = #{boardContent}, updated = #{updated}
+        where post_no = #{postNo}
+    </update>
+
+    <update id="upView" parameterType="int">
+        <selectKey keyColumn= "board_view" resultType="java.lang.Integer" order="AFTER">
+            select board_view from board where post_no = #{postNo}
+        </selectKey>
+        update board
+        set board_view = board_view+1 where post_no = #{postNo}
+    </update>
 
 
 </mapper>
