@@ -10,5 +10,5 @@ import java.util.List;
 @Setter
 @ToString
 public class GroupListDto {
-    private List<GroupDto> list;
+    private List<GroupReturnDto> list;
 }
