@@ -2,8 +2,8 @@ FROM openjdk:11
 
 VOLUME /tmp
 
-# ARG JAR_FILE=build/libs/pjt_server-1.0.0-RELEASE.jar
-ARG JAR_FILE=build/libs/Jenkins-deploy-1.0.0.jar
+ARG JAR_FILE=build/libs/pjt_server-1.0.0-RELEASE.jar
+# ARG JAR_FILE=build/libs/Jenkins-deploy-1.0.0.jar
 
 COPY ${JAR_FILE} app.jar
 
