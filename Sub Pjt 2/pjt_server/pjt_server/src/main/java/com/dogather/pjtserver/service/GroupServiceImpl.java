@@ -6,6 +6,8 @@ import com.dogather.pjtserver.dto.GroupEnterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GroupServiceImpl implements GroupService {
 
@@ -66,5 +68,10 @@ public class GroupServiceImpl implements GroupService {
         }else{
             return 0;
         }
+    }
+
+    @Override
+    public List<GroupDto> getList() {
+        return groupDao.getList();
     }
 }

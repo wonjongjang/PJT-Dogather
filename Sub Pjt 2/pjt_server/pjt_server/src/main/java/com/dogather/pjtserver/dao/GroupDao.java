@@ -4,6 +4,8 @@ import com.dogather.pjtserver.dto.GroupDto;
 import com.dogather.pjtserver.dto.GroupEnterDto;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface GroupDao {
     public int groupRegister(GroupDto groupDto);
@@ -12,4 +14,5 @@ public interface GroupDao {
     public GroupDto group(int groupNo);
     public int groupEnter(GroupEnterDto dto);
     public int groupOut(GroupEnterDto dto);
+    public List<GroupDto> getList();
 }
