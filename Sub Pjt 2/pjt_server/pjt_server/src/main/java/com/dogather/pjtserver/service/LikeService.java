@@ -1,10 +1,14 @@
-//package com.dogather.pjtserver.service;
-//
-//import com.dogather.pjtserver.dto.LikeDto;
-//
-//public interface LikeService {
-//
-//    public int updateLike(LikeDto likeDto);
-//
-//
-//}
+package com.dogather.pjtserver.service;
+
+import com.dogather.pjtserver.dto.LikeDto;
+
+import java.util.List;
+
+public interface LikeService {
+
+    public int like(LikeDto likeDto);
+
+    public int unlike(LikeDto likeDto);
+
+    public List<Integer> findLikeAtBoard(int postNo);
+}
