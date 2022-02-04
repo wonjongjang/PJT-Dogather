@@ -2,6 +2,7 @@ package com.dogather.pjtserver.controller;
 
 import com.dogather.pjtserver.dto.GroupDto;
 import com.dogather.pjtserver.dto.GroupEnterDto;
+import com.dogather.pjtserver.dto.GroupInterestDto;
 import com.dogather.pjtserver.service.GroupService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.attribute.GroupPrincipal;
 import java.util.List;
 
 @RestController
@@ -75,14 +75,34 @@ public class GroupController {
     }
 
     @DeleteMapping("/out")
-    public ResponseEntity<Integer> out(@RequestBody GroupEnterDto dto){
+    public ResponseEntity<Integer> out(@RequestBody GroupEnterDto dto) {
         int out = groupService.groupOut(dto);
-        if(out == 1){
+        if (out == 1) {
             return new ResponseEntity<Integer>(out, HttpStatus.OK);
-        }else{
+        } else {
             return new ResponseEntity<Integer>(out, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    @PostMapping("interest")
+    public ResponseEntity<Integer> interest(@RequestBody GroupInterestDto dto){
+        int result = groupService.interest(dto);
+        if(result == 1){
+            return new ResponseEntity<Integer>(result, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<Integer>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("interestlist/{userNo}")
+    public ResponseEntity<List<GroupInterestDto>> interestlist(@PathVariable int userNo){
+        List<GroupInterestDto> dto = groupService.interestlist(userNo);
+        if(dto != null){
+            dto = groupService.interestlistdetail(dto);
+            return new ResponseEntity<List<GroupInterestDto>>(dto, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<List<GroupInterestDto>>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

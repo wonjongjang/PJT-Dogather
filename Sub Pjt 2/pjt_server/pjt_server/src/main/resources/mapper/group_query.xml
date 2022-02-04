@@ -42,6 +42,14 @@
           and product_no = #{productNo}
     </delete>
 
+    <select id="interestlist" parameterType="int" resultType="com.dogather.pjtserver.dto.GroupInterestDto">
+        select user_no, group_no from dogather.user_interest where user_no = #{userNo}
+    </select>
 
+    <select id="interestlistdetail" parameterType="java.util.List" resultType="com.dogather.pjtserver.dto.GroupInterestDto">
+        select p.product_name, p.product_price, g.max_people, g.deadline
+          from p.group_no = g.group_no
+        and p.group_no = #{groupNo};
+    </select>
 
 </mapper>
