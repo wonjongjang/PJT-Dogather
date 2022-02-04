@@ -3,7 +3,11 @@
 <mapper namespace="com.dogather.pjtserver.dao.GroupDao">
 
     <select id="getList" resultType="com.dogather.pjtserver.dto.GroupDto">
-        select * from dogather.group
+        select g.group_no, g.group_leader, g.deadline, g.max_people, g.view, g.status, p.product_no, product_name, product_price, c.category_no, c.category_name
+        from dogather.group AS g
+            left join product AS p on p.group_no = g.group_no
+            left join product_category pc on p.product_no = pc.product_no
+            left join category as c on pc.category_no = c.category_no
     </select>
 
     <insert id="groupRegister" parameterType="com.dogather.pjtserver.dto.GroupDto">
