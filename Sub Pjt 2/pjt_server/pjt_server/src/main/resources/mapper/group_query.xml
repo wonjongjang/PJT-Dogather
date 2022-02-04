@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dogather.pjtserver.dao.GroupDao">
 
-    <select id="getList" resultType="com.dogather.pjtserver.dto.GroupDto">
+    <select id="getList" resultType="com.dogather.pjtserver.dto.GroupReturnDto">
         select g.group_no, g.group_leader, g.deadline, g.max_people, g.view, g.status, p.product_no, product_name, product_price, c.category_no, c.category_name
         from dogather.group AS g
             left join product AS p on p.group_no = g.group_no
