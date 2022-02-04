@@ -13,7 +13,7 @@
 * Product 등록
 
   ```
-   url : http://i6e104.p.ssafy.io:8090/product/{groupNo}
+   url : http://i6e104.p.ssafy.io:8090/product/register
    method: post
    body:
   {
