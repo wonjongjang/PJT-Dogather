@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f21d74f0-23f7-4ef6-abee-9eb8b8119c74" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/../Front/account/t-test/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Front/account/t-test/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front/account/t-test/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Front/account/t-test/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI_Product.md" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI_Product.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/UserController.java" afterDir="false" />
-    </list>
+    <list default="true" id="f21d74f0-23f7-4ef6-abee-9eb8b8119c74" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -228,7 +220,7 @@
       <workItem from="1643868167879" duration="2383000" />
       <workItem from="1643870662908" duration="226000" />
       <workItem from="1643871714653" duration="1998000" />
-      <workItem from="1643942563970" duration="1498000" />
+      <workItem from="1643942563970" duration="2095000" />
     </task>
     <servers />
   </component>

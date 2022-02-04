@@ -22,7 +22,7 @@
       "productDetail": "test detail",
       "productLink": "test link",
       "productName": "test",
-      "productPrice": "500"
+      "productPrice": "500",
   }
   
   ```

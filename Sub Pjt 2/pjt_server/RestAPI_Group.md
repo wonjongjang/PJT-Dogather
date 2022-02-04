@@ -12,7 +12,7 @@
 
     "maxPeople" : 100,
 
-    "status" : "공구진행중"
+    "status" : "공구진행중",
 
   }
 
@@ -30,7 +30,7 @@
 
     "maxPeople" : 100,
 
-    "status" : "공구진행중"
+    "status" : "공구진행중",
 
   }
 
