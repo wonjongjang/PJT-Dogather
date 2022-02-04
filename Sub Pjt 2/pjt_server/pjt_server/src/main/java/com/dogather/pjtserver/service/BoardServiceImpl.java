@@ -8,6 +8,7 @@ import com.dogather.pjtserver.dto.BoardResponseDto;
 import com.dogather.pjtserver.handler.FileHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,8 +17,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Service
 @Slf4j
+@Service
 public class BoardServiceImpl implements BoardService {
 
     @Autowired

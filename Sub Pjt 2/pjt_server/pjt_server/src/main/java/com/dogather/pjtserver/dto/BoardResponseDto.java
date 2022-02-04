@@ -30,4 +30,6 @@ public class BoardResponseDto {
     private List<Integer> mediaNo;
 
     private List<CommentDto> commentList;
+
+    private List<Integer> likeUsers;
 }

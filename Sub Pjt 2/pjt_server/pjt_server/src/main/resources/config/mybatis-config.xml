@@ -15,7 +15,7 @@
          <mapper resource="mapper/board_query.xml" />
          <mapper resource="mapper/board_media_query.xml" />
          <mapper resource="mapper/comment_query.xml" />
-<!--         <mapper resource="mapper/like_query.xml" />-->
+         <mapper resource="mapper/like_query.xml" />
 
     </mappers>
 </configuration>

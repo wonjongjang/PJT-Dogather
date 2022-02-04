@@ -6,6 +6,7 @@ import com.dogather.pjtserver.dto.BoardResponseDto;
 import com.dogather.pjtserver.service.BoardMediaService;
 import com.dogather.pjtserver.service.BoardService;
 import com.dogather.pjtserver.service.CommentService;
+import com.dogather.pjtserver.service.LikeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,9 @@ public class BoardController {
     @Autowired
     public CommentService commentService;
 
+    @Autowired
+    public LikeService likeService;
+
     @PostMapping
     public int createBoard(
             @RequestPart(value = "BoardDto")BoardDto boardDto,
@@ -44,7 +48,6 @@ public class BoardController {
     public ResponseEntity<BoardResponseDto> getBoard(@PathVariable int postNo) {
         List<BoardMediaDto> mediaDtoList = mediaService.findAllMedia(postNo);
 
-
         List<Integer> mediaList = new ArrayList<Integer>();
 
         for (BoardMediaDto mediaDto : mediaDtoList) {
@@ -55,6 +58,7 @@ public class BoardController {
             // viewcount + 1 부분 수정 필요
             boardResponseDto.setBoardView(boardService.upView(postNo));
             boardResponseDto.setCommentList(commentService.findAllComment(postNo));
+            boardResponseDto.setLikeUsers(likeService.findLikeAtBoard(postNo));
             boardResponseDto.setMediaNo(mediaList);
         }
 
