@@ -20,11 +20,11 @@ public class GroupController {
     GroupService groupService;
 
     @GetMapping("/list")
-    public ResponseEntity<String> list(){
+    public ResponseEntity<JSONObject> list(){
         List<GroupDto> list = groupService.getList();
         JSONObject json = new JSONObject();
         json.put("group_list",list);
-        return new ResponseEntity<String>(json.toString(4),HttpStatus.OK);
+        return new ResponseEntity<JSONObject>(json,HttpStatus.OK);
     }
 
     @GetMapping("/{groupNo}")
