@@ -84,7 +84,7 @@ public class GroupController {
         }
     }
 
-    @PostMapping("interest")
+    @PostMapping("/interest")
     public ResponseEntity<Integer> interest(@RequestBody GroupInterestDto dto){
         int result = groupService.interest(dto);
         if(result == 1){
@@ -94,7 +94,7 @@ public class GroupController {
         }
     }
 
-    @GetMapping("interestlist/{userNo}")
+    @GetMapping("/interestlist/{userNo}")
     public ResponseEntity<List<GroupInterestDto>> interestlist(@PathVariable int userNo){
         List<GroupInterestDto> dto = groupService.interestlist(userNo);
         if(dto != null){
