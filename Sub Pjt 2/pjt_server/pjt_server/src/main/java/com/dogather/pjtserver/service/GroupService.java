@@ -15,6 +15,7 @@ public interface GroupService {
     public GroupDto group(int groupNo);
     public int groupEnter(GroupEnterDto dto);
     public int groupOut(GroupEnterDto dto);
+    public List<GroupDto> getList();
     public int interest(GroupInterestDto dto);
     public List<GroupInterestDto> interestlist(int userNo);
     public List<GroupInterestDto> interestlistdetail(List<GroupInterestDto> dto);

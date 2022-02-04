@@ -72,6 +72,11 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public List<GroupDto> getList() {
+        return groupDao.getList();
+    }
+
+    @Override
     public int interest(GroupInterestDto dto) {
         int result = groupDao.interest(dto);
         if(result == 1){
