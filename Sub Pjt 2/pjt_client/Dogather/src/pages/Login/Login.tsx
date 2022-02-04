@@ -1,7 +1,8 @@
+import styled from "styled-components";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
-import { useForm } from "react-hook-form";
-import styled from "styled-components";
 
 interface ILoginForm {
   userId: string;
@@ -9,6 +10,8 @@ interface ILoginForm {
 }
 
 function Login() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -17,33 +20,54 @@ function Login() {
 
   const signin = (data: ILoginForm) => {
     console.log(data);
-    axios({
+
+    fetch("http://i6e104.p.ssafy.io:8090/user/login", {
       method: "POST",
-      url: "http://i6e104.p.ssafy.io:8090/user/login",
-      data,
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify(data),
     })
-      .then((response) => {
-        // 성공시
-        console.log(response);
-        console.log(response.data);
-        const JWT = jwt_decode(response.data.jwt);
+      .then((response) => response.json())
+      .then((result) => {
+        // console.log(result.jwt);
+        const JWT = jwt_decode(result.jwt);
         console.log(JWT);
-        // localStorage.setItem('token', response.data.jwt)
+        // navigate("/");
       })
       .catch((error) => {
-        // 실패시
-        console.log(error.response);
-        const errorMessage = error.response.data.msg;
-        if (errorMessage === "wrongPw") {
-          alert("비밀번호가 틀렸습니다.");
-        } else {
-          alert("존재하지 않는 아이디입니다.");
-        }
-      })
-      .finally(() => {});
+        // 실패
+        console.log(error);
+      });
+
+    // axios({
+    //   method: "POST",
+    //   url: "http://i6e104.p.ssafy.io:8090/user/login",
+    //   data,
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // })
+    //   .then((response) => {
+    //     // 성공시
+    //     console.log(response);
+    //     console.log(response.data);
+    //     const JWT = jwt_decode(response.data.jwt);
+    //     console.log(JWT);
+    //     // navigate("/");
+    //     // localStorage.setItem('token', response.data.jwt)
+    //   })
+    //   .catch((error) => {
+    //     // 실패시
+    //     console.log(error.response);
+    //     const errorMessage = error.response.data.msg;
+    //     if (errorMessage === "wrongPw") {
+    //       alert("비밀번호가 틀렸습니다.");
+    //     } else {
+    //       alert("존재하지 않는 아이디입니다.");
+    //     }
+    //   })
+    //   .finally(() => {});
   };
   return (
     <LoginForm onSubmit={handleSubmit(signin)}>
