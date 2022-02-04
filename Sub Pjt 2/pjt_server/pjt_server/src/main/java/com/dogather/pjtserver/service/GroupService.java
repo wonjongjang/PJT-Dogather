@@ -6,6 +6,8 @@ import com.dogather.pjtserver.dto.GroupInterestDto;
 
 import java.util.List;
 
+import java.util.List;
+
 public interface GroupService {
     public int groupRegister(GroupDto groupDto);
     public int groupUpdate(GroupDto groupDto);

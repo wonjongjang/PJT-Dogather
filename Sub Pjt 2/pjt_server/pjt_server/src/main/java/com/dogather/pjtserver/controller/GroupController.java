@@ -4,6 +4,7 @@ import com.dogather.pjtserver.dto.GroupDto;
 import com.dogather.pjtserver.dto.GroupEnterDto;
 import com.dogather.pjtserver.dto.GroupInterestDto;
 import com.dogather.pjtserver.service.GroupService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,14 @@ public class GroupController {
 
     @Autowired
     GroupService groupService;
+
+    @GetMapping("/list")
+    public ResponseEntity<String> list(){
+        List<GroupDto> list = groupService.getList();
+        JSONObject json = new JSONObject();
+        json.put("group_list",list);
+        return new ResponseEntity<String>(json.toString(4),HttpStatus.OK);
+    }
 
     @GetMapping("/{groupNo}")
     public ResponseEntity<GroupDto> group(@PathVariable int groupNo){
