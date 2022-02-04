@@ -8,7 +8,11 @@ import java.util.List;
 @Mapper
 public interface BoardMediaDao {
 
-    public int insertFile(List<BoardMediaDto> fileList);
+    public int insertMedia(List<BoardMediaDto> fileList);
 
-    public List<BoardMediaDto> findAllFile(int boardNo);
+    public List<BoardMediaDto> findAllMedia(int postNo);
+
+    public BoardMediaDto findMedia(int mediaNo);
+
+    void deleteMedia(int mediaNo);
 }

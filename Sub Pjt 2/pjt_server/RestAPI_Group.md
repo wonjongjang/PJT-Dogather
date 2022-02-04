@@ -2,7 +2,7 @@
 
   method : post
 
-  url : http://i6e104.p.ssafy.io:8090/group/register
+  url : 	
 
   {
 

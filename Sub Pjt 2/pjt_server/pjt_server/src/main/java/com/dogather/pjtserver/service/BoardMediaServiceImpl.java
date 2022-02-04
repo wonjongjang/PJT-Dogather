@@ -11,11 +11,22 @@ import java.util.List;
 public class BoardMediaServiceImpl implements BoardMediaService{
 
     @Autowired
-    public BoardMediaDao fileDao;
+    public BoardMediaDao mediaDao;
 
     @Override
-    public List<BoardMediaDto> filndAllFile(int boardNo) {
-        List<BoardMediaDto> fileDtoList = fileDao.findAllFile(boardNo);
-        return fileDtoList;
+    public List<BoardMediaDto> findAllMedia(int postNo) {
+        List<BoardMediaDto> mediaDtoList = mediaDao.findAllMedia(postNo);
+        return mediaDtoList;
+    }
+
+    @Override
+    public BoardMediaDto findMedia(int mediaNo) {
+        BoardMediaDto mediadto = mediaDao.findMedia(mediaNo);
+        return mediadto;
+    }
+
+    @Override
+    public void deleteMedia(int mediaNo) {
+        mediaDao.deleteMedia(mediaNo);
     }
 }
