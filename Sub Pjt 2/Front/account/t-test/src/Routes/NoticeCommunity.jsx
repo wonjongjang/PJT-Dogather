@@ -1,5 +1,5 @@
 import { React, useMemo } from "react";
-import { useTable } from "react-table";
+import { useTable, useGlobalFilter, useSortBy } from "react-table";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -30,6 +30,19 @@ const StyledTable = styled.div`
   }
 `;
 
+function Search({ onSubmit }) {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    onSubmit(event.target.elements.filter.value);
+  };
+  return (
+    <form onSubmit={handleSubmit}>
+      <input name="filter" />
+      <button>Search</button>
+    </form>
+  );
+}
+
 function Table({ columns, data, communityTitle, address }) {
   const {
     getTableProps,
@@ -38,7 +51,8 @@ function Table({ columns, data, communityTitle, address }) {
     rows,
     prepareRow,
     getRowProps,
-  } = useTable({ columns, data });
+    setGlobalFilter,
+  } = useTable({ columns, data }, useGlobalFilter, useSortBy);
   return (
     <div>
       <Btn>
@@ -69,6 +83,7 @@ function Table({ columns, data, communityTitle, address }) {
           })}
         </tbody>
       </table>
+      <Search onSubmit={setGlobalFilter} />
     </div>
   );
 }
@@ -114,7 +129,7 @@ function NoticeCommunity() {
         title: "AASDASDASDASDASDASASD",
         writer: "B",
         view: 100,
-        created: "1/31",
+        created: "2/1",
       },
     ],
     []
@@ -127,9 +142,6 @@ function NoticeCommunity() {
           data={data}
           communityTitle="공지사항게시판"
           address="/noticecommunity"
-          getRowProps={(row) => ({
-            onClick: () => alert("Column!"),
-          })}
         />
       </StyledTable>
     </div>
