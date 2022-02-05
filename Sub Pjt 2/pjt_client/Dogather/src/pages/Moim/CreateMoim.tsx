@@ -179,6 +179,7 @@ const Button = styled.button`
   font-weight: bold;
   background-color: #1e272e;
   color: white;
+  cursor: pointer;
 `;
 
 export default CreateMoim;
