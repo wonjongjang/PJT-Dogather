@@ -1,8 +1,29 @@
 import DogatherLogo from "./Logo.svg";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { isLoginAtom, userIdAtom } from "../../atoms/Login";
+import { useEffect } from "react";
 
 function Header() {
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
+  // console.log(isLogin);
+  // const userId = useRecoilValue(userIdAtom);
+  // console.log(userId);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsLogin(localStorage.getItem("login_token") !== null);
+  }, [location]);
+
+  const Logout = () => {
+    localStorage.clear();
+    setIsLogin(false);
+    navigate("/");
+  };
+
   return (
     <Nav>
       <UpperNav>
@@ -10,12 +31,22 @@ function Header() {
           <UpperItems>
             <UpperItem>고객센터</UpperItem>
             <UpperItem>마이페이지</UpperItem>
-            <UpperItem>
-              <Link to="/login">로그인</Link>
-            </UpperItem>
-            <UpperItem>
-              <Link to="/signup">회원가입</Link>
-            </UpperItem>
+            {isLogin ? (
+              <>
+                <UpperItem onClick={Logout}>
+                  <LogoutDiv>로그아웃</LogoutDiv>
+                </UpperItem>
+              </>
+            ) : (
+              <>
+                <UpperItem>
+                  <Link to="/login">로그인</Link>
+                </UpperItem>
+                <UpperItem>
+                  <Link to="/signup">회원가입</Link>
+                </UpperItem>
+              </>
+            )}
           </UpperItems>
         </UpperCol>
       </UpperNav>
@@ -40,7 +71,11 @@ function Header() {
               </svg>
             </Search>
             <LowerItem>
-              <Link to="/create/moim">모임 생성</Link>
+              {isLogin ? (
+                <Link to="/create/moim">모임 생성</Link>
+              ) : (
+                <Link to="/login">모임 생성</Link>
+              )}
             </LowerItem>
             <LowerItem>커뮤니티</LowerItem>
           </LowerItems>
@@ -82,6 +117,10 @@ const UpperItem = styled.li`
   margin-right: 10px;
   font-size: 12px;
   color: #485460;
+`;
+
+const LogoutDiv = styled.div`
+  cursor: pointer;
 `;
 
 const LowerNav = styled.nav`
