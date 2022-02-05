@@ -6,11 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f21d74f0-23f7-4ef6-abee-9eb8b8119c74" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dao/GroupDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dao/GroupDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dto/GroupListDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dto/GroupListDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/GroupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/GroupService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/GroupServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/service/GroupServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/resources/mapper/group_query.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/resources/mapper/group_query.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dto/GroupReturnDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dto/GroupReturnDto.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -227,7 +223,8 @@
       <workItem from="1643868167879" duration="2383000" />
       <workItem from="1643870662908" duration="226000" />
       <workItem from="1643871714653" duration="1998000" />
-      <workItem from="1643942563970" duration="7280000" />
+      <workItem from="1643942563970" duration="7621000" />
+      <workItem from="1644066989736" duration="51000" />
     </task>
     <servers />
   </component>
