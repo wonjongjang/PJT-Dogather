@@ -209,7 +209,7 @@ function Singup() {
         />
         <ErrorMessage>{errors?.userEmail?.message}</ErrorMessage>
       </InputDiv>
-      <SignUpButton>가입하기</SignUpButton>
+      <Button>가입하기</Button>
     </SignUpForm>
   );
 }
@@ -226,6 +226,8 @@ const SignUpForm = styled.form`
   justify-content: center;
   align-items: center;
   margin-top: 68px;
+  margin: 0 auto;
+  max-width: 680px;
 `;
 
 const InputDiv = styled.div`
@@ -255,7 +257,7 @@ const ErrorMessage = styled.p`
   color: #ff3f34;
 `;
 
-const SignUpButton = styled.button`
+const Button = styled.button`
   margin-top: 35px;
   border-radius: 10px;
   border: none;
@@ -265,6 +267,7 @@ const SignUpButton = styled.button`
   font-weight: bold;
   background-color: #1e272e;
   color: white;
+  cursor: pointer;
 `;
 
 export default Singup;
