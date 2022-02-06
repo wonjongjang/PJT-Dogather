@@ -1,9 +1,6 @@
 package com.dogather.pjtserver.dao;
 
-import com.dogather.pjtserver.dto.GroupDto;
-import com.dogather.pjtserver.dto.GroupEnterDto;
-import com.dogather.pjtserver.dto.GroupInterestDto;
-import com.dogather.pjtserver.dto.GroupReturnDto;
+import com.dogather.pjtserver.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,4 +17,5 @@ public interface GroupDao {
     public int interest(GroupInterestDto dto);
     public List<GroupInterestDto> interestlist(int userNo);
     public List<GroupInterestDto> interestlistdetail(List<GroupInterestDto> dto);
+    public List<OptionDto> getOptions(int groupNo);
 }

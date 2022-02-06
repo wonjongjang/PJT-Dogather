@@ -1,10 +1,7 @@
 package com.dogather.pjtserver.service;
 
 import com.dogather.pjtserver.dao.GroupDao;
-import com.dogather.pjtserver.dto.GroupDto;
-import com.dogather.pjtserver.dto.GroupEnterDto;
-import com.dogather.pjtserver.dto.GroupInterestDto;
-import com.dogather.pjtserver.dto.GroupReturnDto;
+import com.dogather.pjtserver.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -101,5 +98,11 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupInterestDto> interestlistdetail(List<GroupInterestDto> dto) {
         List<GroupInterestDto> tmpdto = groupDao.interestlistdetail(dto);
         return tmpdto;
+    }
+
+    @Override
+    public List<OptionDto> getOptions(int groupNo) {
+        List<OptionDto> options = groupDao.getOptions(groupNo);
+        return options;
     }
 }
