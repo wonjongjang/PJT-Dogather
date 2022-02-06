@@ -6,22 +6,25 @@ import { isLoginAtom, userIdAtom } from "../../atoms/Login";
 import { useEffect } from "react";
 
 function Header() {
-  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
-  // console.log(isLogin);
-  // const userId = useRecoilValue(userIdAtom);
-  // console.log(userId);
-
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
+  // console.log(isLogin);
+  const [userId, setUserId] = useRecoilState(userIdAtom);
+  // console.log(userId);
+  // console.log(typeof userId);
+
   useEffect(() => {
     setIsLogin(localStorage.getItem("login_token") !== null);
-  }, [location]);
+  }, [location]); // url 바뀔 때 마다 로컬 스토리지에 토큰이 있는지 확인하여 로그인 여부를 변경
 
   const Logout = () => {
-    localStorage.clear();
-    setIsLogin(false);
-    navigate("/");
+    // 로그아웃 클릭 시 작동
+    localStorage.clear(); // 로컬 스토리지 비우기
+    setIsLogin(false); // 로그인 여부 초기화
+    setUserId(""); // 저장된 user pk 초기화
+    navigate("/"); // 메인 페이지로 이동
   };
 
   return (

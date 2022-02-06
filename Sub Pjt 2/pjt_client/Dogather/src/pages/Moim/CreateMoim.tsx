@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { fetchGroup } from "../../api/CreateMoim";
+import { useRecoilValue } from "recoil";
+import { userIdAtom } from "../../atoms/Login";
 
 export interface IMoimForm {
   groupNo: string;
@@ -17,6 +19,10 @@ export interface IMoimForm {
 }
 
 function CreateMoim() {
+  const userId = useRecoilValue(userIdAtom);
+  // console.log(userId);
+  // console.log(typeof userId);
+
   const {
     register,
     watch,
@@ -31,14 +37,15 @@ function CreateMoim() {
 
     const newDeadline =
       data.deadline.replace("T", " ").substring(0, 19) + ":00";
-    const NewData = {
+
+    const newData = {
       ...data,
       deadline: newDeadline,
       status: "모집중",
-      groupLeader: 1,
+      groupLeader: userId,
     };
 
-    fetchGroup(NewData);
+    fetchGroup(newData);
   };
 
   return (
