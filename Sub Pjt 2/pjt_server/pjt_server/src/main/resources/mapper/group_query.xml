@@ -5,7 +5,7 @@
     <select id="getList" resultType="com.dogather.pjtserver.dto.GroupReturnDto">
         select group_no, group_leader, deadline, max_people, g.view, g.status, product, price, c.category_no, c.category_name
         from dogather.group AS g
-                 left join category as c on g.category_no = c.category_no;
+                 left join category as c on g.category_no = c.category_no
     </select>
 
     <insert id="groupRegister" parameterType="com.dogather.pjtserver.dto.GroupDto">
