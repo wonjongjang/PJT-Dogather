@@ -13,12 +13,17 @@ import java.time.LocalDateTime;
 public class GroupDto {
     private int groupNo;
     private int groupLeader;
+    private int categoryNo;
     private LocalDateTime updated;
     private LocalDateTime created;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deadline;
     private int maxPeople;
-    private int end;
     private int view;
     private String status;
+    private String product;
+    private String detail;
+    private String link;
+    private int originPrice;
+    private int price;
 }

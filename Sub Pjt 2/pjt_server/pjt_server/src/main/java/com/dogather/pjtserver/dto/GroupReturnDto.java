@@ -16,9 +16,8 @@ public class GroupReturnDto {
     private int maxPeople;
     private int view;
     private String status;
-    private int productNo;
-    private String productName;
-    private int productPrice;
+    private String product;
+    private int price;
     private int categoryNo;
     private String categoryName;
 }
