@@ -8,8 +8,8 @@ export async function fetchGroup(data: IMoimForm) {
     },
     body: JSON.stringify(data),
   })
-    .then((res) => res.text())
-    .then((res) => fetchProduct(data, res))
+    .then((response) => response.text())
+    .then((response) => fetchProduct(data, response))
     .catch((error) => console.log(error));
 }
 
@@ -21,6 +21,7 @@ export async function fetchProduct(data: IMoimForm, groupId: string) {
     },
     body: JSON.stringify({ ...data, groupNo: groupId }),
   })
-    .then((res) => console.log(res))
+    .then((response) => response.text())
+    .then((result) => console.log(result))
     .catch((error) => console.log(error));
 }

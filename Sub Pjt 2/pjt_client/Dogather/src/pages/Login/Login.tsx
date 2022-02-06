@@ -11,6 +11,7 @@ interface ILoginForm {
 
 function Login() {
   const navigate = useNavigate();
+
   const setIsLogin = useSetRecoilState(isLoginAtom);
   const setUserId = useSetRecoilState(userIdAtom);
 
@@ -32,9 +33,10 @@ function Login() {
     })
       .then((response) => response.json())
       .then((result) => {
-        // console.log(result.userInfo.userNo);
+        // console.log(result);
         if (result.msg === "success") {
           localStorage.setItem("login_token", result.jwt);
+          // localStorage.setItem("userId", result.userInfo.userId);
           setIsLogin(true);
           setUserId(result.userInfo.userNo);
           navigate("/");
