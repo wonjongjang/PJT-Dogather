@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f21d74f0-23f7-4ef6-abee-9eb8b8119c74" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/../SQL_Files/dogather.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SQL_Files/group.sql" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dto/GroupDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dto/GroupDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dto/GroupEnterDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dto/GroupEnterDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dto/GroupReturnDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/dto/GroupReturnDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/resources/mapper/group_query.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/resources/mapper/group_query.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -225,6 +230,7 @@
       <workItem from="1643871714653" duration="1998000" />
       <workItem from="1643942563970" duration="7621000" />
       <workItem from="1644066989736" duration="640000" />
+      <workItem from="1644142951188" duration="3298000" />
     </task>
     <servers />
   </component>
