@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import Interest from "./Interest";
+
 
 interface ISignUpForm {
   userId: string;
@@ -211,6 +213,7 @@ function Singup() {
         />
         <ErrorMessage>{errors?.userEmail?.message}</ErrorMessage>
       </InputDiv>
+      <Interest/>
       <Button>가입하기</Button>
     </SignUpForm>
   );
