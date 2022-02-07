@@ -28,8 +28,10 @@ function MoimSelect() {
         <span>
           <select onChange={onColor}>
             <option value="0">옵션을 선택해주세요.</option>
-            {options.color.map((color) => (
-              <option value={color}>{color}</option>
+            {options.color.map((color, idx) => (
+              <option key={idx} value={color}>
+                {color}
+              </option>
             ))}
           </select>
         </span>
