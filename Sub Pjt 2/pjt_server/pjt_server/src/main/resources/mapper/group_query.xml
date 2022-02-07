@@ -44,18 +44,22 @@
           and product_no = #{productNo}
     </delete>
 
+    <insert id="addInterest" parameterType="com.dogather.pjtserver.dto.GroupInterestDto">
+        insert into user_interest (user_no, group_no)
+        values (#{userNo}, #{groupNo})
+    </insert>
+
     <select id="interestlist" parameterType="int" resultType="com.dogather.pjtserver.dto.GroupInterestDto">
         select user_no, group_no from dogather.user_interest where user_no = #{userNo}
-    </select>
-
-    <select id="interestlistdetail" parameterType="java.util.List" resultType="com.dogather.pjtserver.dto.GroupInterestDto">
-        select p.product_name, p.product_price, g.max_people, g.deadline
-          from p.group_no = g.group_no
-        and p.group_no = #{groupNo};
     </select>
 
     <select id="getOptions" resultType="com.dogather.pjtserver.dto.OptionDto">
         select option_name, option_price from dogather.option where group_no = #{groupNo}
     </select>
+
+    <insert id="addOption" parameterType="Map">
+        insert into dogather.option (group_no, option_name, option_price)
+        values (#{groupNo}, #{optionName}, #{optionPrice})
+    </insert>
 
 </mapper>

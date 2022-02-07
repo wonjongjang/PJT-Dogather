@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { isLoginAtom, userIdAtom } from "../../atoms/Login";
 import { useEffect } from "react";
+import { OptionsAtom } from "../../atoms/Options";
 
 function Header() {
   const navigate = useNavigate();
@@ -12,6 +13,9 @@ function Header() {
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   // console.log(isLogin);
   const [userId, setUserId] = useRecoilState(userIdAtom);
+  // const [options, setOptions] = useRecoilState(OptionsAtom);
+  // console.log(options);
+  // console.log(options)
   // console.log(userId);
   // console.log(typeof userId);
 

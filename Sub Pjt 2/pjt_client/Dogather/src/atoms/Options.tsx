@@ -1,6 +1,12 @@
 import { atom } from "recoil";
 
-export const OptionsAtom = atom({
+export interface IOption {
+  id: number;
+  optionName: string;
+  optionPrice: number;
+}
+
+export const OptionsAtom = atom<IOption[]>({
   key: "Options",
   default: [],
 });

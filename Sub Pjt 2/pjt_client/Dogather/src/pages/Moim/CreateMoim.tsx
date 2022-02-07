@@ -4,7 +4,9 @@ import { fetchGroup } from "../../api/CreateMoim";
 import { useRecoilValue } from "recoil";
 import { userIdAtom } from "../../atoms/Login";
 import { useNavigate } from "react-router-dom";
-import CreateOptions from "./CreateOptions";
+import CreateOption from "./Option/CreateOption";
+import { OptionsAtom } from "../../atoms/Options";
+import Option from "./Option/Option";
 
 export interface IMoimForm {
   groupLeader: number;
@@ -17,15 +19,13 @@ export interface IMoimForm {
   link: string;
   originPrice: number;
   price: number;
-
-  // option_name: string;
-  // option_price: string;
 }
 
 function CreateMoim() {
   const navigate = useNavigate();
 
   const userId = useRecoilValue(userIdAtom);
+  const options = useRecoilValue(OptionsAtom);
   // console.log(userId);
   // console.log(typeof userId);
 
@@ -40,19 +40,25 @@ function CreateMoim() {
 
   const onValid = (data: IMoimForm) => {
     console.log(data); // data 확인
+    console.log(options);
 
     const newDeadline =
       data.deadline.replace("T", " ").substring(0, 19) + ":00";
 
     const newData = {
-      ...data,
-      deadline: newDeadline,
-      groupLeader: userId,
-      categoryNo: 1,
-      status: "모집중",
+      group: {
+        ...data,
+        deadline: newDeadline,
+        groupLeader: userId,
+        categoryNo: 1,
+        status: "모집중",
+      },
+      options: options,
     };
 
-    // fetchGroup(newData);
+    console.log(newData);
+
+    // fetchGroup(Object(newData));
 
     fetch("http://i6e104.p.ssafy.io:8090/group/register", {
       method: "POST",
@@ -60,14 +66,14 @@ function CreateMoim() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newData),
-    })
-      .then((response) => response.json())
-      .then((result) => navigate(`/moim/${result}`));
+    }).then((response) => response.json());
+    // .then((result) => navigate(`/moim/${result}`));
+    // .then((result) => navigate(`/moim/${result}`));
   };
 
   return (
     <>
-      <MoimForm onSubmit={handleSubmit(onValid)}>
+      <MoimForm id="total" onSubmit={handleSubmit(onValid)}>
         <FormTitle>모임 생성</FormTitle>
         <InputDiv>
           <InputTitle>제목</InputTitle>
@@ -133,11 +139,12 @@ function CreateMoim() {
           />
           <ErrorMessage>{errors?.deadline?.message}</ErrorMessage>
         </InputDiv>
-
-        <CreateOptions />
-
-        <Button>생성하기</Button>
       </MoimForm>
+      <CreateOption />
+      {options?.map((option) => (
+        <Option key={option.id} {...option} />
+      ))}
+      <Button form="total">생성하기</Button>
     </>
   );
 }
