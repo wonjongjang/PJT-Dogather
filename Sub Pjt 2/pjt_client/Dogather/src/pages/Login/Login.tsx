@@ -21,7 +21,7 @@ function Login() {
     formState: { errors },
   } = useForm<ILoginForm>();
 
-  const signin = (data: ILoginForm) => {
+  const onValid = (data: ILoginForm) => {
     // console.log(data);
 
     fetch("http://i6e104.p.ssafy.io:8090/user/login", {
@@ -49,7 +49,7 @@ function Login() {
   };
 
   return (
-    <LoginForm onSubmit={handleSubmit(signin)}>
+    <LoginForm onSubmit={handleSubmit(onValid)}>
       <LoginTitle>로그인</LoginTitle>
       <InputDiv>
         <InputTitle>아이디</InputTitle>

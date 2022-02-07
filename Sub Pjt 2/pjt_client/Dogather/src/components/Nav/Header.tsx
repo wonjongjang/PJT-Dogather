@@ -75,12 +75,14 @@ function Header() {
             </Search>
             <LowerItem>
               {isLogin ? (
-                <Link to="/create/moim">모임 생성</Link>
+                <Link to="/moim/create">모임 생성</Link>
               ) : (
                 <Link to="/login">모임 생성</Link>
               )}
             </LowerItem>
-            <LowerItem>커뮤니티</LowerItem>
+            <LowerItem>
+              <Link to="community">커뮤니티</Link>
+            </LowerItem>
           </LowerItems>
         </LowerCol>
       </LowerNav>

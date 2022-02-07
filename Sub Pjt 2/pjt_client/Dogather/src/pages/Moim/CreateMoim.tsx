@@ -3,22 +3,28 @@ import { useForm } from "react-hook-form";
 import { fetchGroup } from "../../api/CreateMoim";
 import { useRecoilValue } from "recoil";
 import { userIdAtom } from "../../atoms/Login";
+import { useNavigate } from "react-router-dom";
+import CreateOptions from "./CreateOptions";
 
 export interface IMoimForm {
-  groupNo: string;
-  productName: string;
-  productOriginalPrice: number;
-  productPrice: number;
-  productDetail: string;
-  productLink: string;
-
   groupLeader: number;
-  maxPeople: number;
+  categoryNo: number;
   deadline: string; // *공구 마감 날짜
+  maxPeople: number;
   status: string; // *공구 진행 상태
+  product: string;
+  detail: string;
+  link: string;
+  originPrice: number;
+  price: number;
+
+  // option_name: string;
+  // option_price: string;
 }
 
 function CreateMoim() {
+  const navigate = useNavigate();
+
   const userId = useRecoilValue(userIdAtom);
   // console.log(userId);
   // console.log(typeof userId);
@@ -41,83 +47,98 @@ function CreateMoim() {
     const newData = {
       ...data,
       deadline: newDeadline,
-      status: "모집중",
       groupLeader: userId,
+      categoryNo: 1,
+      status: "모집중",
     };
 
-    fetchGroup(newData);
+    // fetchGroup(newData);
+
+    fetch("http://i6e104.p.ssafy.io:8090/group/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newData),
+    })
+      .then((response) => response.json())
+      .then((result) => navigate(`/moim/${result}`));
   };
 
   return (
-    <MoimForm onSubmit={handleSubmit(onValid)}>
-      <FormTitle>모임 생성</FormTitle>
-      <InputDiv>
-        <InputTitle>제목</InputTitle>
-        <Input
-          {...register("productName", {
-            required: "필수 정보입니다.",
-          })}
-        />
-        <ErrorMessage>{errors?.productName?.message}</ErrorMessage>
-      </InputDiv>
-      <InputDiv>
-        <InputTitle>출시가</InputTitle>
-        <Input
-          {...register("productOriginalPrice", {
-            required: "필수 정보입니다.",
-          })}
-        />
-        <ErrorMessage>{errors?.productOriginalPrice?.message}</ErrorMessage>
-      </InputDiv>
-      <InputDiv>
-        <InputTitle>공구가</InputTitle>
-        <Input
-          {...register("productPrice", {
-            required: "필수 정보입니다.",
-          })}
-        />
-        <ErrorMessage>{errors?.productPrice?.message}</ErrorMessage>
-      </InputDiv>
-      <InputDiv>
-        <InputTitle>내용</InputTitle>
-        <Input
-          {...register("productDetail", {
-            required: "필수 정보입니다.",
-          })}
-        />
-        <ErrorMessage>{errors?.productDetail?.message}</ErrorMessage>
-      </InputDiv>
-      <InputDiv>
-        <InputTitle>URL</InputTitle>
-        <Input
-          {...register("productLink", {
-            required: "필수 정보입니다.",
-          })}
-        />
-        <ErrorMessage>{errors?.productLink?.message}</ErrorMessage>
-      </InputDiv>
-      <InputDiv>
-        <InputTitle>인원수</InputTitle>
-        <Input
-          {...register("maxPeople", {
-            required: "필수 정보입니다.",
-          })}
-        />
-        <ErrorMessage>{errors?.maxPeople?.message}</ErrorMessage>
-      </InputDiv>
-      <InputDiv>
-        <InputTitle>공구 마감 날짜</InputTitle>
-        <Input
-          {...register("deadline", {
-            required: "필수 정보입니다.",
-          })}
-          type="datetime-local"
-        />
-        <ErrorMessage>{errors?.deadline?.message}</ErrorMessage>
-      </InputDiv>
+    <>
+      <MoimForm onSubmit={handleSubmit(onValid)}>
+        <FormTitle>모임 생성</FormTitle>
+        <InputDiv>
+          <InputTitle>제목</InputTitle>
+          <Input
+            {...register("product", {
+              required: "필수 정보입니다.",
+            })}
+          />
+          <ErrorMessage>{errors?.product?.message}</ErrorMessage>
+        </InputDiv>
+        <InputDiv>
+          <InputTitle>출시가</InputTitle>
+          <Input
+            {...register("originPrice", {
+              required: "필수 정보입니다.",
+            })}
+          />
+          <ErrorMessage>{errors?.originPrice?.message}</ErrorMessage>
+        </InputDiv>
+        <InputDiv>
+          <InputTitle>공구가</InputTitle>
+          <Input
+            {...register("price", {
+              required: "필수 정보입니다.",
+            })}
+          />
+          <ErrorMessage>{errors?.price?.message}</ErrorMessage>
+        </InputDiv>
+        <InputDiv>
+          <InputTitle>내용</InputTitle>
+          <Input
+            {...register("detail", {
+              required: "필수 정보입니다.",
+            })}
+          />
+          <ErrorMessage>{errors?.detail?.message}</ErrorMessage>
+        </InputDiv>
+        <InputDiv>
+          <InputTitle>URL</InputTitle>
+          <Input
+            {...register("link", {
+              required: "필수 정보입니다.",
+            })}
+          />
+          <ErrorMessage>{errors?.link?.message}</ErrorMessage>
+        </InputDiv>
+        <InputDiv>
+          <InputTitle>인원수</InputTitle>
+          <Input
+            {...register("maxPeople", {
+              required: "필수 정보입니다.",
+            })}
+          />
+          <ErrorMessage>{errors?.maxPeople?.message}</ErrorMessage>
+        </InputDiv>
+        <InputDiv>
+          <InputTitle>공구 마감 날짜</InputTitle>
+          <Input
+            {...register("deadline", {
+              required: "필수 정보입니다.",
+            })}
+            type="datetime-local"
+          />
+          <ErrorMessage>{errors?.deadline?.message}</ErrorMessage>
+        </InputDiv>
 
-      <Button>생성하기</Button>
-    </MoimForm>
+        <CreateOptions />
+
+        <Button>생성하기</Button>
+      </MoimForm>
+    </>
   );
 }
 
