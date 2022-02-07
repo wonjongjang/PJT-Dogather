@@ -31,7 +31,7 @@ interface IProductData {
   products: object;
 }
 
-interface IGroupData {
+export interface IGroupData {
   groupLeader: number;
   categoryNo: number;
   deadline: string;
