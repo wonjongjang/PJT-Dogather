@@ -32,13 +32,13 @@ public class GroupController {
         List<OptionDto> options = groupService.getOptions(groupNo);
         ret.setOptions(options);
         return new ResponseEntity<GroupOptionDto>(ret, HttpStatus.OK);
-
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Integer> register(@RequestBody GroupDto groupDto){
-        int created = groupService.groupRegister(groupDto);
+    public ResponseEntity<Integer> register(@RequestBody GroupRegisterDto groupRegisterDto){
+        int created = groupService.groupRegister(groupRegisterDto.getGroup());
         if(created != 0){
+            groupService.addOptions(groupRegisterDto.getGroup().getGroupNo() ,groupRegisterDto.getOptions());
             return new ResponseEntity<Integer>(created, HttpStatus.OK);
         }else{
             return new ResponseEntity<Integer>(created, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -86,24 +86,12 @@ public class GroupController {
     }
 
     @PostMapping("/interest")
-    public ResponseEntity<Integer> interest(@RequestBody GroupInterestDto dto){
-        int result = groupService.interest(dto);
+    public ResponseEntity<Integer> addInterest(@RequestBody GroupInterestDto dto){
+        int result = groupService.addInterest(dto);
         if(result == 1){
             return new ResponseEntity<Integer>(result, HttpStatus.OK);
         }else{
             return new ResponseEntity<Integer>(result, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @GetMapping("/interestlist/{userNo}")
-    public ResponseEntity<List<GroupInterestDto>> interestlist(@PathVariable int userNo){
-        List<GroupInterestDto> dto = groupService.interestlist(userNo);
-        if(dto != null){
-            dto = groupService.interestlistdetail(dto);
-            return new ResponseEntity<List<GroupInterestDto>>(dto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<List<GroupInterestDto>>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
 }

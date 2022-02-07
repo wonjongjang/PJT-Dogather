@@ -5,7 +5,9 @@ import com.dogather.pjtserver.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class GroupServiceImpl implements GroupService {
@@ -75,8 +77,8 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public int interest(GroupInterestDto dto) {
-        int result = groupDao.interest(dto);
+    public int addInterest(GroupInterestDto dto) {
+        int result = groupDao.addInterest(dto);
         if(result == 1){
             return 1;
         }else{
@@ -85,24 +87,19 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupInterestDto> interestlist(int userNo) {
-        List<GroupInterestDto> dto = groupDao.interestlist(userNo);
-        if(dto != null){
-            return dto;
-        }else{
-            return null;
-        }
-    }
-
-    @Override
-    public List<GroupInterestDto> interestlistdetail(List<GroupInterestDto> dto) {
-        List<GroupInterestDto> tmpdto = groupDao.interestlistdetail(dto);
-        return tmpdto;
-    }
-
-    @Override
     public List<OptionDto> getOptions(int groupNo) {
         List<OptionDto> options = groupDao.getOptions(groupNo);
         return options;
+    }
+
+    @Override
+    public void addOptions(int groupNo, List<OptionDto> options) {
+        for(OptionDto option : options){
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("groupNo", groupNo);
+            map.put("optionName", option.getOptionName());
+            map.put("optionPrice", option.getOptionPrice());
+            groupDao.addOption(map);
+        }
     }
 }

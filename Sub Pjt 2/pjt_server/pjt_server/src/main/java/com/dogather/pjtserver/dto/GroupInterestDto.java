@@ -14,10 +14,4 @@ import java.time.LocalDateTime;
 public class GroupInterestDto {
     private int userNo;
     private int groupNo;
-    private String productName;
-    private int maxPeople;
-    private LocalDateTime deadline;
-    private int price;
-    private LocalDate insertDate;
-    private String productSavename;
 }
