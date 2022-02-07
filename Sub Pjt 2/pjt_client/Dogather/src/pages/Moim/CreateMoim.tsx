@@ -7,15 +7,8 @@ import { useNavigate } from "react-router-dom";
 import CreateOptions from "./CreateOptions";
 
 export interface IMoimForm {
-  groupNo: string;
-  productName: string;
-  productOriginalPrice: number;
-  productPrice: number;
-  productDetail: string;
-  productLink: string;
-
-  groupLeader: string;
-  maxPeople: number;
+  groupLeader: number;
+  categoryNo: number;
   deadline: string; // *공구 마감 날짜
   maxPeople: number;
   status: string; // *공구 진행 상태

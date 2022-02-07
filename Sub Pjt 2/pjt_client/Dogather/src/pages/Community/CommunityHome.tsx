@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-function CummunityHome() {
+function CommunityHome() {
   return (
     <>
       <H1>CummunityHome</H1>
@@ -15,4 +15,4 @@ const H1 = styled.h1`
   font-weight: bold;
 `;
 
-export default CummunityHome;
+export default CommunityHome;

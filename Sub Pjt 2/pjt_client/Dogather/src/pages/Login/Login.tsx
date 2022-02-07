@@ -31,10 +31,7 @@ function Login() {
       },
       body: JSON.stringify(data),
     })
-      .then((response) => {
-        response.json();
-        console.log(response);
-      })
+      .then((response) => response.json())
       .then((result) => {
         // console.log(result);
         if (result.msg === "success") {
