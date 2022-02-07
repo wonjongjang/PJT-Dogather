@@ -1,5 +1,16 @@
 package com.dogather.pjtserver.dao;
 
-public class LikeDao {
+import com.dogather.pjtserver.dto.LikeDto;
+import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
+@Mapper
+public interface LikeDao {
+
+    public int like(LikeDto likeDto);
+
+    public int unlike(LikeDto likeDto);
+
+    public List<Integer> findLikeAtBoard(int postNo);
 }

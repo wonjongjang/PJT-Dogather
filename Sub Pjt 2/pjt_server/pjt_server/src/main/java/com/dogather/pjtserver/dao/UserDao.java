@@ -9,4 +9,6 @@ public interface UserDao {
     public UserDto userFind(String userId);
     public int userUpdate(UserDto userDto);
     public void userDelete(String userId);
+    public int userIdCheck(String userId);
+    public int userNickCheck(String userNickname);
 }

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dogather.pjtserver.dao.GroupDao">
+
+    <select id="getList" resultType="com.dogather.pjtserver.dto.GroupReturnDto">
+        select group_no, group_leader, deadline, max_people, g.view, g.status, product, price, c.category_no, c.category_name
+        from dogather.group AS g
+                 left join category as c on g.category_no = c.category_no
+    </select>
+
+    <insert id="groupRegister" parameterType="com.dogather.pjtserver.dto.GroupDto">
+        insert into dogather.group (group_leader, category_no, deadline, max_people, status, product, detail, link, origin_price, price)
+        values (#{groupLeader}, #{categoryNo}, #{deadline}, #{maxPeople}, #{status}, #{product}, #{detail}, #{link}, #{originPrice}, #{price})
+        <selectKey keyProperty="groupNo" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="groupUpdate" parameterType="com.dogather.pjtserver.dto.GroupDto">
+        update dogather.group
+        set updated = current_timestamp(), deadline = #{deadline}, max_people = #{maxPeople}, end = #{end}, status = #{status}
+        where group_no = #{groupNo}
+    </update>
+
+    <delete id="groupDelete" parameterType="int">
+        delete from dogather.group
+        where group_no = #{groupNo}
+    </delete>
+
+    <select id="group" parameterType="int" resultType="com.dogather.pjtserver.dto.GroupDto">
+        select * from dogather.group where group_no = #{groupNo}
+    </select>
+
+    <insert id="groupEnter" parameterType="com.dogather.pjtserver.dto.GroupEnterDto">
+        insert into dogather.user_group (user_no, group_no, group_leader, product_no)
+        values (#{userNo}, #{groupNo}, #{groupLeader}, #{productNo})
+    </insert>
+
+    <delete id="groupOut" parameterType="com.dogather.pjtserver.dto.GroupEnterDto">
+        delete from dogather.user_group
+        where user_no = #{userNo}
+          and group_leader = #{groupLeader}
+          and group_no = #{groupNo}
+          and product_no = #{productNo}
+    </delete>
+
+    <select id="interestlist" parameterType="int" resultType="com.dogather.pjtserver.dto.GroupInterestDto">
+        select user_no, group_no from dogather.user_interest where user_no = #{userNo}
+    </select>
+
+    <select id="interestlistdetail" parameterType="java.util.List" resultType="com.dogather.pjtserver.dto.GroupInterestDto">
+        select p.product_name, p.product_price, g.max_people, g.deadline
+          from p.group_no = g.group_no
+        and p.group_no = #{groupNo};
+    </select>
+
+    <select id="getOptions" resultType="com.dogather.pjtserver.dto.OptionDto">
+        select option_name, option_price from dogather.option where group_no = #{groupNo}
+    </select>
+
+</mapper>

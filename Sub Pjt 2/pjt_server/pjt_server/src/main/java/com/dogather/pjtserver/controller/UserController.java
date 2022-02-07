@@ -5,6 +5,7 @@ import com.dogather.pjtserver.jwt.JwtProvider;
 import com.dogather.pjtserver.jwt.JwtRet;
 import com.dogather.pjtserver.service.UserService;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class UserController {
 		System.err.println("(Post)User Controller Login Method run!");
 		JwtRet ret =  new JwtRet(); //return value for client by JSON
 
-		// 로그
+		// 로그인
 		UserDto loginResult = userService.userLogin(userDto); // userService에 로그인 요청
 		if (loginResult != null) {
 			// 있는 아이디
@@ -64,7 +65,7 @@ public class UserController {
 		}
 
 	}
-	@PutMapping("/{userId}/update")
+	@PutMapping("/{userId}")
 	public ResponseEntity<UserDto> update(@PathVariable String userId, @RequestHeader String jwt, @RequestBody UserDto userDto){
 		System.err.println("(Put)User Controller Update Method run!");
 		//JWT token check
@@ -83,8 +84,9 @@ public class UserController {
 		}
 	}
 
-	@DeleteMapping("/{userId}/delete")
+	@DeleteMapping("/{userId}")
 	public ResponseEntity<String> delete(@PathVariable String userId, @RequestHeader String jwt){
+		System.err.println("(Delete)User Controller delete Method run!");
 		String validationResult = JwtProvider.validateToken(jwt, userId);
 		if(userId.equals(validationResult)) {
 			userService.userDelete(userId);
@@ -96,6 +98,7 @@ public class UserController {
 
 	@GetMapping("/{userId}")
 	public ResponseEntity<UserDto> find(@PathVariable String userId, @RequestHeader String jwt){
+		// 현재는 userId method jwt token 있어야 확인가능 => 본인것만 확인가능
 		System.err.println("(Get)User Controller Find Method run!");
 		//JWT token check
 		String validationResult = JwtProvider.validateToken(jwt, userId);
@@ -108,6 +111,23 @@ public class UserController {
 		}
 	}
 
+	@GetMapping("/idcheck")
+	public ResponseEntity<String> idCheck(@RequestParam String id){
+		System.err.println("(Get)User Controller idCheck Method run!");
+		String result = userService.userIdCheck(id);
+		JSONObject json = new JSONObject();
+		json.put("result", result);
+		json.put("requested_id", id);
+		return ResponseEntity.status(HttpStatus.OK).body(json.toString(4));//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+	}
 
+	@GetMapping("/nickcheck")
+	public ResponseEntity<String> nickCheck(@RequestParam String nick){
+		String result = userService.userNickCheck(nick);
+		JSONObject json = new JSONObject();
+		json.put("result", result);
+		json.put("requested_id", nick);
+		return new ResponseEntity<String>(json.toString(4), HttpStatus.OK);
+	}
 
 }
