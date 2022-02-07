@@ -12,7 +12,7 @@ export interface IMoimForm {
   productDetail: string;
   productLink: string;
 
-  groupLeader: number;
+  groupLeader: string;
   maxPeople: number;
   deadline: string; // *공구 마감 날짜
   status: string; // *공구 진행 상태
@@ -45,12 +45,7 @@ function CreateMoim() {
       groupLeader: userId,
     };
 
-<<<<<<< HEAD
-    const a = fetchGroup(NewData);
-    console.log(a);
-=======
     fetchGroup(newData);
->>>>>>> 78cf27b92e4265db1973161a064032d16f830519
   };
 
   return (
