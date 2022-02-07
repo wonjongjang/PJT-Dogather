@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 interface ISignUpForm {
   userId: string;
@@ -15,6 +16,8 @@ interface ISignUpForm {
 }
 
 function Singup() {
+  const navigate = useNavigate();
+
   const {
     register,
     watch,
@@ -25,7 +28,7 @@ function Singup() {
   } = useForm<ISignUpForm>();
 
   const onValid = (formData: ISignUpForm) => {
-    console.log(formData);
+    // console.log(formData);
 
     // fetch(`http://i6e104.p.ssafy.io/user/idcheck?id=${formData.userId}`)
     //   .then((response) => {
@@ -46,16 +49,17 @@ function Singup() {
       },
       body: JSON.stringify(formData),
     })
-      .then((response) => {
-        // 성공
-        console.log(response);
-        // 로그인 페이지로 이동
-      })
-      .catch((error) => {
-        // 실패
-        console.log(error.response);
-      })
-      .finally(() => {});
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.msg === "가입완료") {
+          navigate("/login");
+        }
+      });
+    // .catch((error) => {
+    //   // 실패
+    //   console.log(error.response);
+    // })
+    // .finally(() => {});
   };
 
   return (
@@ -93,15 +97,11 @@ function Singup() {
         <Input
           {...register("userPw", {
             required: "필수 정보입니다.",
-            minLength: {
-              value: 8,
+            pattern: {
+              value:
+                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,16}$/,
               message:
-                "8~16자의 영문 대 소문자, 숫자, 특수문자만 사용 가능합니다.",
-            },
-            maxLength: {
-              value: 16,
-              message:
-                "8~16자의 영문 대 소문자, 숫자, 특수문자만 사용 가능합니다.",
+                "8~16자의 영문 대 소문자, 숫자, 특수문자 조합만 사용 가능합니다.",
             },
           })}
           placeholder="영문/숫자/특수문자 조합 8~16자"
@@ -132,7 +132,7 @@ function Singup() {
         <InputTitle>이름</InputTitle>
         <Input
           {...register("userName", { required: "필수 정보입니다." })}
-          placeholder="장원종"
+          // placeholder="장원종"
         />
         <ErrorMessage>{errors?.userName?.message}</ErrorMessage>
       </InputDiv>
@@ -177,6 +177,7 @@ function Singup() {
               message: "우편번호는 숫자만 입력 가능합니다.",
             },
           })}
+          type="number"
         />
         <ErrorMessage>{errors?.userZip?.message}</ErrorMessage>
       </InputDiv>
@@ -190,6 +191,7 @@ function Singup() {
               message: "전화번호 양식을 지켜주세요.",
             },
           })}
+          type="number"
           placeholder="숫자만 입력해주세요.   ex) 01012345678"
           maxLength={12}
         />
@@ -201,7 +203,7 @@ function Singup() {
           {...register("userEmail", {
             required: "필수 정보입니다.",
             pattern: {
-              value: /^[a-zA-Z0-9+-_.]+@[a-z]+\.[a-z]+$/,
+              value: /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
               message: "이메일 양식을 지켜주세요.",
             },
           })}
@@ -209,7 +211,7 @@ function Singup() {
         />
         <ErrorMessage>{errors?.userEmail?.message}</ErrorMessage>
       </InputDiv>
-      <SignUpButton>가입하기</SignUpButton>
+      <Button>가입하기</Button>
     </SignUpForm>
   );
 }
@@ -226,6 +228,8 @@ const SignUpForm = styled.form`
   justify-content: center;
   align-items: center;
   margin-top: 68px;
+  margin: 0 auto;
+  max-width: 680px;
 `;
 
 const InputDiv = styled.div`
@@ -247,6 +251,10 @@ const Input = styled.input`
   border-left: none;
   border-right: none;
   border-width: 1px;
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `;
 
 const ErrorMessage = styled.p`
@@ -255,7 +263,7 @@ const ErrorMessage = styled.p`
   color: #ff3f34;
 `;
 
-const SignUpButton = styled.button`
+const Button = styled.button`
   margin-top: 35px;
   border-radius: 10px;
   border: none;
@@ -265,6 +273,7 @@ const SignUpButton = styled.button`
   font-weight: bold;
   background-color: #1e272e;
   color: white;
+  cursor: pointer;
 `;
 
 export default Singup;

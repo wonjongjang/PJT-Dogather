@@ -10,15 +10,14 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 public class GroupReturnDto {
-    private int group_no;
-    private int group_leader;
+    private int groupNo;
+    private int groupLeader;
     private LocalDateTime deadline;
-    private int max_people;
+    private int maxPeople;
     private int view;
     private String status;
-    private int product_no;
-    private String product_name;
-    private int product_price;
-    private int category_no;
-    private String category_name;
+    private String product;
+    private int price;
+    private int categoryNo;
+    private String categoryName;
 }

@@ -1,8 +1,32 @@
 import DogatherLogo from "./Logo.svg";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { isLoginAtom, userIdAtom } from "../../atoms/Login";
+import { useEffect } from "react";
 
 function Header() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
+  // console.log(isLogin);
+  const [userId, setUserId] = useRecoilState(userIdAtom);
+  // console.log(userId);
+  // console.log(typeof userId);
+
+  useEffect(() => {
+    setIsLogin(localStorage.getItem("login_token") !== null);
+  }, [location]); // url 바뀔 때 마다 로컬 스토리지에 토큰이 있는지 확인하여 로그인 여부를 변경
+
+  const Logout = () => {
+    // 로그아웃 클릭 시 작동
+    localStorage.clear(); // 로컬 스토리지 비우기
+    setIsLogin(false); // 로그인 여부 초기화
+    setUserId(""); // 저장된 user pk 초기화
+    navigate("/"); // 메인 페이지로 이동
+  };
+
   return (
     <Nav>
       <UpperNav>
@@ -10,12 +34,22 @@ function Header() {
           <UpperItems>
             <UpperItem>고객센터</UpperItem>
             <UpperItem>마이페이지</UpperItem>
-            <UpperItem>
-              <Link to="/login">로그인</Link>
-            </UpperItem>
-            <UpperItem>
-              <Link to="/signup">회원가입</Link>
-            </UpperItem>
+            {isLogin ? (
+              <>
+                <UpperItem onClick={Logout}>
+                  <LogoutDiv>로그아웃</LogoutDiv>
+                </UpperItem>
+              </>
+            ) : (
+              <>
+                <UpperItem>
+                  <Link to="/login">로그인</Link>
+                </UpperItem>
+                <UpperItem>
+                  <Link to="/signup">회원가입</Link>
+                </UpperItem>
+              </>
+            )}
           </UpperItems>
         </UpperCol>
       </UpperNav>
@@ -40,7 +74,11 @@ function Header() {
               </svg>
             </Search>
             <LowerItem>
-              <Link to="/create/moim">모임 생성</Link>
+              {isLogin ? (
+                <Link to="/create/moim">모임 생성</Link>
+              ) : (
+                <Link to="/login">모임 생성</Link>
+              )}
             </LowerItem>
             <LowerItem>커뮤니티</LowerItem>
           </LowerItems>
@@ -82,6 +120,10 @@ const UpperItem = styled.li`
   margin-right: 10px;
   font-size: 12px;
   color: #485460;
+`;
+
+const LogoutDiv = styled.div`
+  cursor: pointer;
 `;
 
 const LowerNav = styled.nav`

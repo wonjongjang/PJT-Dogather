@@ -1,4 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { isLoginAtom } from "./atoms/Login";
 import Header from "./components/Nav/Header";
 // import Footer from "./components/Footer/Footer";
 import Home from "./pages/Main/Home";
@@ -12,11 +14,15 @@ import Review from "./pages/Moim/MoimDetailComponent/review";
 import Refund from "./pages/Moim/MoimDetailComponent/refund";
 
 function Router() {
+  const isLogin = useRecoilValue(isLoginAtom);
+
   return (
+    // <Navigate replace to="/" /> : url 직접 접근 방지
     <BrowserRouter>
       <Header />
       <Routes>
         <Route path="/" element={<Home />}></Route>
+<<<<<<< HEAD
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/create/moim" element={<CreateMoim />}></Route>
@@ -26,6 +32,20 @@ function Router() {
           <Route path="review" element={<Review />} />
           <Route path="refund" element={<Refund />} />
         </Route>
+=======
+        <Route
+          path="/login"
+          element={isLogin ? <Navigate replace to="/" /> : <Login />}
+        ></Route>
+        <Route
+          path="/signup"
+          element={isLogin ? <Navigate replace to="/" /> : <Signup />}
+        ></Route>
+        <Route
+          path="/create/moim"
+          element={isLogin ? <CreateMoim /> : <Navigate replace to="/" />}
+        ></Route>
+>>>>>>> 78cf27b92e4265db1973161a064032d16f830519
       </Routes>
       {/* <Footer /> */}
     </BrowserRouter>
