@@ -1,9 +1,6 @@
 package com.dogather.pjtserver.controller;
 
-import com.dogather.pjtserver.dto.GroupDto;
-import com.dogather.pjtserver.dto.GroupEnterDto;
-import com.dogather.pjtserver.dto.GroupInterestDto;
-import com.dogather.pjtserver.dto.GroupListDto;
+import com.dogather.pjtserver.dto.*;
 import com.dogather.pjtserver.service.GroupService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +25,13 @@ public class GroupController {
     }
 
     @GetMapping("/{groupNo}")
-    public ResponseEntity<GroupDto> group(@PathVariable int groupNo){
+    public ResponseEntity<GroupOptionDto> group(@PathVariable int groupNo){
         GroupDto groupDto = groupService.group(groupNo);
-        return new ResponseEntity<GroupDto>(groupDto, HttpStatus.OK);
+        GroupOptionDto ret = new GroupOptionDto();
+        ret.setGroupDto(groupDto);
+        List<OptionDto> options = groupService.getOptions(groupNo);
+        ret.setOptions(options);
+        return new ResponseEntity<GroupOptionDto>(ret, HttpStatus.OK);
 
     }
 
