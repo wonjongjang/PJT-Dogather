@@ -3,9 +3,9 @@ import styled from "styled-components";
 function CommunityHome() {
   return (
     <>
-      <H1>CummunityHome</H1>
-      <H1>CummunityHome</H1>
-      <H1>CummunityHome</H1>
+      <H1>CommunityHome</H1>
+      <H1>CommunityHome</H1>
+      <H1>CommunityHome</H1>
     </>
   );
 }
