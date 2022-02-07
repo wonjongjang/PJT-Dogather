@@ -45,7 +45,12 @@ function CreateMoim() {
       groupLeader: userId,
     };
 
+<<<<<<< HEAD
+    const a = fetchGroup(NewData);
+    console.log(a);
+=======
     fetchGroup(newData);
+>>>>>>> 78cf27b92e4265db1973161a064032d16f830519
   };
 
   return (

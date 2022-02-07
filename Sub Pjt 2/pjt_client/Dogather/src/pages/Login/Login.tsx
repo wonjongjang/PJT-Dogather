@@ -31,8 +31,21 @@ function Login() {
       },
       body: JSON.stringify(data),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        response.json();
+        console.log(response);
+      })
       .then((result) => {
+<<<<<<< HEAD
+        console.log(result);
+        // const JWT = jwt_decode(result.jwt);
+        // console.log(JWT);
+        // navigate("/");
+      })
+      .catch((error) => {
+        // 실패
+        console.log(error);
+=======
         // console.log(result);
         if (result.msg === "success") {
           localStorage.setItem("login_token", result.jwt);
@@ -45,6 +58,7 @@ function Login() {
         } else {
           alert("아이디가 잘못 입력 되었습니다.");
         }
+>>>>>>> 78cf27b92e4265db1973161a064032d16f830519
       });
   };
 
