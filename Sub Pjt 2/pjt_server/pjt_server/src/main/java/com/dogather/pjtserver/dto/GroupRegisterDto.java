@@ -12,4 +12,5 @@ import java.util.List;
 public class GroupRegisterDto {
     private GroupDto group;
     private List<OptionDto> options;
+    private List<FAQRequsetDto> requestfaq;
 }

@@ -1,14 +1,19 @@
 package com.dogather.pjtserver.service;
 
 import com.dogather.pjtserver.dto.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 import java.util.List;
 
 public interface GroupService {
     public int groupRegister(GroupDto groupDto);
-    public int groupUpdate(GroupDto groupDto);
+    public int groupRegister(GroupDto groupDto, List<MultipartFile> files) throws IOException;
+
+    public int groupUpdate(int groupNo, GroupDto updateGroupDto, List<MultipartFile> addMediaList) throws IOException;
+
     public int groupDelete(int groupNo);
     public GroupDto group(int groupNo);
     public int groupEnter(GroupEnterDto dto);
@@ -17,4 +22,6 @@ public interface GroupService {
     public int addInterest(GroupInterestDto dto);
     public List<OptionDto> getOptions(int groupNo);
     public void addOptions(int groupNo, List<OptionDto> options);
+
+    public void addFaq(int groupNo, List<FAQRequsetDto> faq);
 }

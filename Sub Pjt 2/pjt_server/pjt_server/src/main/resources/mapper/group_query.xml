@@ -18,7 +18,7 @@
 
     <update id="groupUpdate" parameterType="com.dogather.pjtserver.dto.GroupDto">
         update dogather.group
-        set updated = current_timestamp(), deadline = #{deadline}, max_people = #{maxPeople}, end = #{end}, status = #{status}
+        set product = #{product}, detail = #{detail}, link = #{link}, origin_price = #{originPrice}, price = #{price}, updated = current_timestamp(), deadline = #{deadline}, max_people = #{maxPeople}, status = #{status}
         where group_no = #{groupNo}
     </update>
 
