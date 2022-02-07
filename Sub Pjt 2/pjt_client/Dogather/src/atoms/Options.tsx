@@ -2,8 +2,8 @@ import { atom } from "recoil";
 
 export interface IOption {
   id: number;
-  option_name: string;
-  option_price: number;
+  optionName: string;
+  optionPrice: number;
 }
 
 export const OptionsAtom = atom<IOption[]>({

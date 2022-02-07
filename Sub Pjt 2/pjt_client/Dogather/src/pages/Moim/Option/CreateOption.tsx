@@ -3,8 +3,8 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { OptionsAtom } from "../../../atoms/Options";
 
 interface IOptionForm {
-  option_name: string;
-  option_price: number;
+  optionName: string;
+  optionPrice: number;
 }
 
 function CreateOption() {
@@ -12,25 +12,24 @@ function CreateOption() {
 
   const { register, handleSubmit, setValue } = useForm<IOptionForm>();
 
-  const onValid = ({ option_name, option_price }: IOptionForm) => {
-    console.log(option_name, option_price);
+  const onValid = ({ optionName, optionPrice }: IOptionForm) => {
+    // console.log(option_name, option_price);
     setOptions((prev) => [
       ...prev,
-      { id: Date.now(), option_name: option_name, option_price: option_price },
+      { id: Date.now(), optionName: optionName, optionPrice: optionPrice },
     ]);
-    setValue("option_name", "");
-    setValue("option_price", +"");
-    console.log(options);
+    setValue("optionName", "");
+    setValue("optionPrice", +"");
   };
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
       <input
-        {...register("option_name", { required: "필수 정보입니다." })}
+        {...register("optionName", { required: "필수 정보입니다." })}
         placeholder="옵션별 조합 작성   ex) 블랙 / 260 / 기타"
       />
       <input
-        {...register("option_price", { required: "필수 정보입니다." })}
+        {...register("optionPrice", { required: "필수 정보입니다." })}
         type="number"
         placeholder="해당 옵션 선택 시 추가 가격"
       />

@@ -40,28 +40,25 @@ function CreateMoim() {
 
   const onValid = (data: IMoimForm) => {
     console.log(data); // data 확인
+    console.log(options);
 
     const newDeadline =
       data.deadline.replace("T", " ").substring(0, 19) + ":00";
 
     const newData = {
-      // group: {
-      //   ...data,
-      //   deadline: newDeadline,
-      //   groupLeader: userId,
-      //   categoryNo: 1,
-      //   status: "모집중",
-      // },
-      ...data,
-      deadline: newDeadline,
-      groupLeader: userId,
-      categoryNo: 1,
-      status: "모집중",
+      group: {
+        ...data,
+        deadline: newDeadline,
+        groupLeader: userId,
+        categoryNo: 1,
+        status: "모집중",
+      },
+      options: options,
     };
 
     console.log(newData);
 
-    fetchGroup(newData);
+    // fetchGroup(Object(newData));
 
     fetch("http://i6e104.p.ssafy.io:8090/group/register", {
       method: "POST",
@@ -70,6 +67,7 @@ function CreateMoim() {
       },
       body: JSON.stringify(newData),
     }).then((response) => response.json());
+    // .then((result) => navigate(`/moim/${result}`));
     // .then((result) => navigate(`/moim/${result}`));
   };
 

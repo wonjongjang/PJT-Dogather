@@ -1,17 +1,23 @@
-import { IOption } from "../../../atoms/Options";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { IOption, OptionsAtom } from "../../../atoms/Options";
 
-function Option({ id, option_name, option_price }: IOption) {
-  const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const {
-      currentTarget: { name },
-    } = event;
-    console.log(name);
+function Option({ id, optionName, optionPrice }: IOption) {
+  const [options, setOptions] = useRecoilState(OptionsAtom);
+  // console.log(id, option_name, option_price);
+
+  const onClick = () => {
+    // console.log(options);
+    setOptions((prev) => {
+      const targetIndex = prev.findIndex((option) => option.id === id);
+      // console.log(targetIndex);
+      return [...prev.slice(0, targetIndex), ...prev.slice(targetIndex + 1)];
+    });
   };
 
   return (
     <li>
-      <span>{option_name} </span>
-      <span>{option_price} </span>
+      <span>{optionName} </span>
+      <span>{optionPrice} </span>
       <button onClick={onClick}>삭제</button>
     </li>
   );
