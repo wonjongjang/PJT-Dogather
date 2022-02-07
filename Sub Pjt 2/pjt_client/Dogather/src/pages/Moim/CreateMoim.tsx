@@ -38,7 +38,8 @@ function CreateMoim() {
       groupLeader: 1,
     };
 
-    fetchGroup(NewData);
+    const a = fetchGroup(NewData);
+    console.log(a);
   };
 
   return (

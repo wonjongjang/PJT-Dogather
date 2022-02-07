@@ -28,11 +28,14 @@ function Login() {
       },
       body: JSON.stringify(data),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        response.json();
+        console.log(response);
+      })
       .then((result) => {
-        // console.log(result.jwt);
-        const JWT = jwt_decode(result.jwt);
-        console.log(JWT);
+        console.log(result);
+        // const JWT = jwt_decode(result.jwt);
+        // console.log(JWT);
         // navigate("/");
       })
       .catch((error) => {
