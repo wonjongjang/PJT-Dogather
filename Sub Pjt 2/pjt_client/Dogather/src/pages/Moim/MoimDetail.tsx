@@ -104,13 +104,17 @@ function MoimDetail() {
       </Header>
       <>
         <Overview hidden={hidden}>
-          <OverviewItem>
+          <ImageBox>
             <Img src="http://img.danawa.com/prod_img/500000/907/780/img/6780907_1.jpg?shrink=330:330&_v=20210405094355" />
-          </OverviewItem>
+          </ImageBox>
           <OverviewItem>
-            <span>모임번호:{data?.groupNo}</span>
-            <span>{data?.product}</span>
-            <span>{data?.detail}</span>
+            <span>dyson</span>
+            <span>dyson cyclone v10 fluffy origin</span>
+            <span>다이슨 싸이클론 v10 플러피 오리진</span>
+            <span>사이즈</span>
+            {/* <span>모임번호:{data?.groupNo}</span> */}
+            {/* <span>{data?.product}</span> */}
+            {/* <span>{data?.detail}</span> */}
             <span>단돈 {data?.price}원</span>
             <span>모임 인원 : 현재신청인원 / {data?.maxPeople} (여기는%)</span>
             <span>마감 기한 : {data?.deadline}</span>
@@ -176,12 +180,25 @@ const Loader = styled.span`
   display: block;
 `;
 
+
+
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(99, 0, 0, 0.5);
   padding: 10px 20px;
   border-radius: 10px;
+  width: 1000px;
+  
+`;
+
+const ImageBox = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+span {
+  margin-bottom: 5px;
+}
 `;
 
 const OverviewItem = styled.div`
