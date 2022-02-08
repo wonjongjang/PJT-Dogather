@@ -32,12 +32,9 @@ function Interest(){
             <Box><Clabel><FontAwesomeIcon icon={faGuitar} size="lg" fixedWidth/> 악기</Clabel></Box><Checkbox value={"15"}/>
             <Box><Clabel><FontAwesomeIcon icon={faGamepad} size="lg" fixedWidth/> 게임/놀이</Clabel></Box><Checkbox value={"16"}/>      
         </Line>
-
-
-
-      
     </Container>);
 }
+
 const Box = styled.span`
     width : 7rem;
     overflow : unset;

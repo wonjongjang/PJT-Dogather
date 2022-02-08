@@ -2,6 +2,9 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Interest from "./Interest";
+import React, { useState } from 'react';
+import Modal from 'react-modal';
+import IdCheck from './IdCheck';
 
 interface ISignUpForm {
   userId: string;
@@ -17,6 +20,7 @@ interface ISignUpForm {
 }
 
 function Singup() {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -91,9 +95,39 @@ function Singup() {
           placeholder="영문/숫자 4~10자"
           maxLength={10}
         />
-        <Button2>중 복 확 인</Button2>
+        <Button2 onClick={()=> setModalIsOpen(true)}>중 복 확 인</Button2>
+        <Modal isOpen={modalIsOpen} onRequestClose={()=> setModalIsOpen(false)} 
+        style={{
+          overlay: {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(255, 255, 255, 0.75)'
+          },
+          content: {
+            position: 'absolute',
+            top: '40%',
+            left: '35%',
+            right: '35%',
+            bottom: '20%',
+            border: '1px solid #ccc',
+            background: '#fff',
+            overflow: "hidden",
+            WebkitOverflowScrolling: 'touch',
+            borderRadius: '4px',
+            outline: 'none',
+            padding: '20px'
+          }
+        }}>
+          <IdCheck></IdCheck>
+          <Button2 style={{width:'88%' }} onClick={()=> setModalIsOpen(false) }>사용하기</Button2>
+        </Modal>
+          
         <ErrorMessage>{errors?.userId?.message}</ErrorMessage>
       </InputDiv>
+
       <InputDiv>
         <InputTitle>비밀번호</InputTitle>
         <Input
