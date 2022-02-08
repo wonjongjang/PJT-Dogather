@@ -1,21 +1,34 @@
 package com.dogather.pjtserver.controller;
 
 import com.dogather.pjtserver.dto.*;
+import com.dogather.pjtserver.handler.FileHandler;
+import com.dogather.pjtserver.service.GroupMediaService;
 import com.dogather.pjtserver.service.GroupService;
-import org.json.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/group")
+@Slf4j
 public class GroupController {
 
     @Autowired
     GroupService groupService;
+
+    @Autowired
+    GroupMediaService mediaService;
+
+    @Autowired
+    FileHandler fileHandler;
 
     @GetMapping("/list")
     public ResponseEntity<GroupListDto> list(){
@@ -24,7 +37,7 @@ public class GroupController {
         return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
 
-    @GetMapping("/{groupNo}")
+    @GetMapping("/detail/{groupNo}")
     public ResponseEntity<GroupOptionDto> group(@PathVariable int groupNo){
         GroupDto groupDto = groupService.group(groupNo);
         GroupOptionDto ret = new GroupOptionDto();
@@ -35,10 +48,12 @@ public class GroupController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Integer> register(@RequestBody GroupRegisterDto groupRegisterDto){
-        int created = groupService.groupRegister(groupRegisterDto.getGroup());
+    public ResponseEntity<Integer> register(@RequestPart(value = "groupRegisterDto") GroupRegisterDto groupRegisterDto,
+                                            @RequestPart(value = "file", required = false) List<MultipartFile> files) throws Exception{
+        int created = groupService.groupRegister(groupRegisterDto.getGroup(), files);
         if(created != 0){
             groupService.addOptions(groupRegisterDto.getGroup().getGroupNo() ,groupRegisterDto.getOptions());
+            groupService.addFaq(groupRegisterDto.getGroup().getGroupNo(), groupRegisterDto.getRequestfaq());
             return new ResponseEntity<Integer>(created, HttpStatus.OK);
         }else{
             return new ResponseEntity<Integer>(created, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -46,17 +61,53 @@ public class GroupController {
     }
 
     @PutMapping("/{groupNo}")
-    public ResponseEntity<Integer> update(@RequestBody GroupDto groupDto){
-        int updated = groupService.groupUpdate(groupDto);
-        if(updated == 1){
-            return new ResponseEntity<Integer>(updated, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<Integer>(updated, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<Integer> update(@RequestPart(value="GroupDto") GroupDto updategroupDto,
+                      @RequestPart(value="file", required = false) List<MultipartFile> updateFiles) throws IOException {
+        int groupNo = updategroupDto.getGroupNo();
+        List<GroupMediaDto> dbMediaList = mediaService.fineAllMedia(groupNo);
+
+        List<MultipartFile> addMediaList = new ArrayList<>();
+
+        if (CollectionUtils.isEmpty(dbMediaList)) {
+            if (!CollectionUtils.isEmpty(updateFiles)) {
+                for (MultipartFile multipartFile : updateFiles)
+                    addMediaList.add(multipartFile);
+            }
+        } else {
+            if (CollectionUtils.isEmpty(updateFiles)) {
+                for (GroupMediaDto dbFile : dbMediaList) {
+                    fileHandler.deleteGroupMediaFile(dbFile);
+                    mediaService.deleteMedia(dbFile.getMediaNo());
+                }
+            } else {
+                for (GroupMediaDto dbFile : dbMediaList) {
+                    fileHandler.deleteGroupMediaFile(dbFile);
+                    mediaService.deleteMedia(dbFile.getMediaNo());
+                }
+            for (MultipartFile multipartFile : updateFiles) {
+                    addMediaList.add(multipartFile);
+                }
+            }
+        }
+        int updated =  groupService.groupUpdate(groupNo, updategroupDto, addMediaList);
+        if (updated != 0) {
+            return ResponseEntity.status(HttpStatus.OK).body(updated);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(updated);
         }
     }
 
+
     @DeleteMapping("/{groupNo}")
     public ResponseEntity<Integer> delete(@PathVariable int groupNo){
+
+        List<GroupMediaDto> dbMediaList = mediaService.fineAllMedia(groupNo);
+        if (CollectionUtils.isEmpty(dbMediaList) == false) {
+            for (GroupMediaDto dbFile :dbMediaList) {
+                fileHandler.deleteGroupMediaFile(dbFile);
+                mediaService.deleteMedia(dbFile.getMediaNo());
+            }
+        }
         int deleted = groupService.groupDelete(groupNo);
         if(deleted == 1){
             return new ResponseEntity<Integer>(deleted, HttpStatus.OK);
