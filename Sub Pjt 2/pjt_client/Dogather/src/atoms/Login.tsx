@@ -9,7 +9,7 @@ export const isLoginAtom = atom({
   default: false,
 });
 
-// user pk 저장
+// 로그인 시 user pk 저장
 export const userIdAtom = atom({
   key: "userId",
   default: "",

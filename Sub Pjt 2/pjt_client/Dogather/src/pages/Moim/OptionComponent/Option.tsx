@@ -1,3 +1,5 @@
+/* 옵션 리스트 렌더링 */
+
 import { useRecoilState, useRecoilValue } from "recoil";
 import { IOption, OptionsAtom } from "../../../atoms/Options";
 
