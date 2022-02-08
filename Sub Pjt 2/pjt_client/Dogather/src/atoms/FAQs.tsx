@@ -2,6 +2,7 @@ import { atom } from "recoil";
 
 export interface IFAQ {
   id: number;
+  categoryNo: number;
   faqQuestion: string;
   faqAnswer: string;
 }

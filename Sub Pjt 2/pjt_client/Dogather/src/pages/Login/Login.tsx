@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import { isLoginAtom, userIdAtom } from "../../atoms/Login";
+import { isLoginAtom, userIdAtom, userNoAtom } from "../../atoms/Login";
 
 interface ILoginForm {
   userId: string;
@@ -13,6 +13,7 @@ function Login() {
   const navigate = useNavigate();
 
   const setIsLogin = useSetRecoilState(isLoginAtom);
+  const setUserNo = useSetRecoilState(userNoAtom);
   const setUserId = useSetRecoilState(userIdAtom);
 
   const {
@@ -33,12 +34,13 @@ function Login() {
     })
       .then((response) => response.json())
       .then((result) => {
-        // console.log(result);
+        console.log(result);
         if (result.msg === "success") {
           localStorage.setItem("login_token", result.jwt);
           // localStorage.setItem("userId", result.userInfo.userId);
           setIsLogin(true);
-          setUserId(result.userInfo.userNo);
+          setUserNo(result.userInfo.userNo);
+          setUserId(result.userInfo.userId);
           navigate("/");
         } else if (result.msg === "wrongPw") {
           alert("비밀번호가 잘못 입력 되었습니다.");

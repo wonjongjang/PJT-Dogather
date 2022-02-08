@@ -16,7 +16,12 @@ function CreateFAQ() {
     // console.log(option_name, option_price);
     setFAQs((prev) => [
       ...prev,
-      { id: Date.now(), faqQuestion: faqQuestion, faqAnswer: faqAnswer },
+      {
+        id: Date.now(),
+        categoryNo: 1,
+        faqQuestion: faqQuestion,
+        faqAnswer: faqAnswer,
+      },
     ]);
     setValue("faqQuestion", "");
     setValue("faqAnswer", "");

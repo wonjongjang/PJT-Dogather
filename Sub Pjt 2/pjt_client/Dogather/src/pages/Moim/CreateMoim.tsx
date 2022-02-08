@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { fetchGroup } from "../../api/CreateMoim";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { userIdAtom } from "../../atoms/Login";
+import { userIdAtom, userNoAtom } from "../../atoms/Login";
 import { useNavigate } from "react-router-dom";
 
 import CreateOption from "./CreateMoimComponent/Option/CreateOption";
@@ -28,6 +28,7 @@ export interface IMoimForm {
 function CreateMoim() {
   const navigate = useNavigate();
 
+  const userNo = useRecoilValue(userNoAtom);
   const userId = useRecoilValue(userIdAtom);
   const [options, setOptions] = useRecoilState(OptionsAtom);
   const [FAQs, setFAQs] = useRecoilState(FAQsAtom);
@@ -44,7 +45,8 @@ function CreateMoim() {
   const onValid = (data: IMoimForm) => {
     // console.log(data); // data 확인
     // console.log(options);
-
+    const JWT = localStorage.getItem("login_token");
+    console.log(JWT);
     const newDeadline =
       data.deadline.replace("T", " ").substring(0, 19) + ":00";
 
@@ -52,30 +54,41 @@ function CreateMoim() {
       group: {
         ...data,
         deadline: newDeadline,
-        groupLeader: userId,
+        groupLeader: userNo,
         categoryNo: 1,
         status: "모집중",
       },
       options: options,
+      requestfaq: FAQs,
     };
-
     console.log(newData);
+
+    const formData = new FormData();
+
+    formData.append(
+      "groupRegisterDto",
+      new Blob([JSON.stringify(newData)], { type: "application/json" })
+    );
 
     // fetchGroup(Object(newData));
 
     fetch("http://i6e104.p.ssafy.io:8090/group/register", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
+        jwt: `${JWT}`,
+        userId: userId,
       },
-      body: JSON.stringify(newData),
+      body: formData,
     })
       .then((response) => response.json())
       .then((result) => {
         if (result) {
-          navigate(`/moim/${result}`);
-          setOptions([]);
+          // navigate(`/moim/${result}`);
+          console.log(result);
         }
+        // setOptions([]);
+        // setFAQs([]);
       });
   };
 
