@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -29,6 +30,15 @@ public class BoardServiceImpl implements BoardService {
 
     @Autowired
     public FileHandler fileHandler;
+
+    @Autowired
+    public BoardMediaService mediaService;
+
+    @Autowired
+    public CommentService commentService;
+
+    @Autowired
+    public LikeService likeService;
 
     @Override
     public int createBoard(BoardDto boardDto) {
@@ -86,4 +96,25 @@ public class BoardServiceImpl implements BoardService {
         log.info(String.valueOf(result));
         return result;
     }
+
+    @Override
+    public List<BoardResponseDto> getAllboard() {
+        List<BoardResponseDto> BoardListAll =  boardDao.getAllboard();
+        for(BoardResponseDto board :BoardListAll) {
+            List<BoardMediaDto> mediaDtoList = mediaService.findAllMedia(board.getPostNo());
+            List<Integer> mediaList = new ArrayList<Integer>();
+            for (BoardMediaDto mediaDto : mediaDtoList) {
+                mediaList.add(mediaDto.getMediaNo());
+            }
+            board.setMediaNo(mediaList);
+            board.setCommentList(commentService.findAllComment(board.getPostNo()));
+            board.setLikeUsers(likeService.findLikeAtBoard(board.getPostNo()));
+        }
+        return BoardListAll;
+    }
+
+//    @Override
+//    public List<BoardResponseDto> getAllboard() {
+//        return boardDao.getAllboard();
+//    }
 }

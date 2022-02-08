@@ -1,6 +1,8 @@
 package com.dogather.pjtserver.controller;
 
 import com.dogather.pjtserver.dto.BoardMediaDto;
+import com.dogather.pjtserver.dto.BoardResponseDto;
+import com.dogather.pjtserver.dto.ResponseDto;
 import com.dogather.pjtserver.handler.FileHandler;
 import com.dogather.pjtserver.service.BoardMediaService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +34,26 @@ public class BoardMediaController {
     public FileHandler fileHandler;
 
 
+//    @GetMapping(value = "/{mediaNo}",
+//            produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
+//    public ResponseEntity<byte[]> getMedia(@PathVariable int mediaNo) throws IOException {
+//        BoardMediaDto mediaDto = mediaService.findMedia(mediaNo);
+//
+//
+//        String DateTime = mediaDto.getInsertDate().toString().replace("-", "");
+//        String insertDateTime = DateTime.substring(2);
+//        String uploadPath = fileHandler.uploadPath + File.separator + insertDateTime;
+////        String absolutePath = Paths.get("/Users", "jamiehong", "Documents", "UPLOAD", insertDateTime).toString();
+//        InputStream imageStream = new FileInputStream(uploadPath + "/" + mediaDto.getMediaSavename());
+//        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+//        imageStream.close();
+//
+//        return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
+//    }
+
     @GetMapping(value = "/{mediaNo}",
-            produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
-    public ResponseEntity<byte[]> getMedia(@PathVariable int mediaNo) throws IOException {
+            produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ResponseDto> getMedia(@PathVariable int mediaNo) throws IOException {
         BoardMediaDto mediaDto = mediaService.findMedia(mediaNo);
 
 
@@ -45,7 +64,10 @@ public class BoardMediaController {
         InputStream imageStream = new FileInputStream(uploadPath + "/" + mediaDto.getMediaSavename());
         byte[] imageByteArray = IOUtils.toByteArray(imageStream);
         imageStream.close();
+        ResponseDto dto = new ResponseDto();
+        dto.setMediaNo(imageByteArray);
+        dto.setBoardContent("test");
 
-        return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 }

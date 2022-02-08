@@ -1,6 +1,7 @@
 package com.dogather.pjtserver.handler;
 
 import com.dogather.pjtserver.dto.BoardMediaDto;
+import com.dogather.pjtserver.dto.GroupMediaDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -36,8 +37,8 @@ public class FileHandler {
 
 
     public List<BoardMediaDto> uploadFiles(List<MultipartFile> files, int postNo) throws IOException {
-        log.info("===============경로 시작!!!!");
-    log.info(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")));
+//        log.info("===============경로 시작!!!!");
+//        log.info(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")));
         if(CollectionUtils.isEmpty(files) == true) {
             return Collections.emptyList();
         }
@@ -47,7 +48,7 @@ public class FileHandler {
         if(!dir.exists()) {
             dir.mkdirs();
         }
-        log.info("========== 경로 뜨나");
+//        log.info("========== 경로 뜨나");
 
         for(MultipartFile file : files) {
 
@@ -65,7 +66,9 @@ public class FileHandler {
                     break;
             }
             String saveName = getRandomString() + originalFileExtension;
+            // 파일 객체 생성
             File target = new File(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")), saveName);
+            // 파일 업로드
             file.transferTo(target);
 
             BoardMediaDto fileDto = new BoardMediaDto();
@@ -79,5 +82,75 @@ public class FileHandler {
 
         }
         return fileList;
+    }
+
+    public List<GroupMediaDto> uploadGroupFiles(List<MultipartFile> files, int groupNo) throws IOException {
+        if(CollectionUtils.isEmpty(files) == true) {
+            return Collections.emptyList();
+        }
+        List<GroupMediaDto> fileList = new ArrayList<>();
+
+        File dir = new File(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")));
+        if(!dir.exists()) {
+            dir.mkdirs();
+        }
+//        log.info("========== 경로 뜨나");
+
+        for(MultipartFile file : files) {
+
+            String originalFileExtension;
+            String contentType = file.getContentType();
+
+            if(ObjectUtils.isEmpty(contentType)) {
+                break;
+            } else {
+                if(contentType.contains("image/jpeg"))
+                    originalFileExtension = ".jpg";
+                else if (contentType.contains("image/png"))
+                    originalFileExtension = ".png";
+                else
+                    break;
+            }
+            String saveName = getRandomString() + originalFileExtension;
+            // 파일 객체 생성
+            File target = new File(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")), saveName);
+            // 파일 업로드
+            file.transferTo(target);
+
+            GroupMediaDto fileDto = new GroupMediaDto();
+            fileDto.setGroupNo(groupNo);
+            fileDto.setMediaTitile(file.getOriginalFilename());
+            fileDto.setMediaSavename(saveName);
+            fileDto.setMediaFilesize(String.valueOf(file.getSize()));
+            fileDto.setInsertDate(today);
+
+            fileList.add(fileDto);
+
+        }
+        return fileList;
+    }
+
+    public void deleteMediaFile(BoardMediaDto mediaDto) {
+        String DateTime = mediaDto.getInsertDate().toString().replace("-", "");
+        String insertDateTime = DateTime.substring(2);
+        String path = uploadPath + File.separator + insertDateTime;
+        File file = new File(path + File.separator + mediaDto.getMediaSavename());
+        log.info("===============파일 삭제 실제 경로");
+        log.info(path + File.separator + mediaDto.getMediaSavename());
+        if(file.exists()) {
+            file.delete();
+        }
+    }
+
+    public void deleteGroupMediaFile(GroupMediaDto mediaDto) {
+        String DateTime = mediaDto.getInsertDate().toString().replace("-", "");
+        String insertDateTime = DateTime.substring(2);
+        String path = uploadPath + File.separator + insertDateTime;
+        File file = new File(path + File.separator + mediaDto.getMediaSavename());
+        log.info("===============파일 삭제 실제 경로");
+        log.info(path + File.separator + mediaDto.getMediaSavename());
+        if(file.exists()) {
+            file.delete();
+        }
     }
 }
