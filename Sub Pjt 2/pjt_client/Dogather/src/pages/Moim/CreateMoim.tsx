@@ -4,21 +4,21 @@ import { fetchGroup } from "../../api/CreateMoim";
 import { useRecoilValue } from "recoil";
 import { userIdAtom } from "../../atoms/Login";
 import { useNavigate } from "react-router-dom";
-import CreateOption from "./Option/CreateOption";
+import CreateOption from "./OptionComponent/CreateOption";
 import { OptionsAtom } from "../../atoms/Options";
-import Option from "./Option/Option";
+import Option from "./OptionComponent/Option";
 
 export interface IMoimForm {
-  groupLeader: number;
-  categoryNo: number;
+  groupLeader: number; // 모임 대표
+  categoryNo: number; // 카테고리 pk
   deadline: string; // *공구 마감 날짜
-  maxPeople: number;
+  maxPeople: number; // 인원 수
   status: string; // *공구 진행 상태
-  product: string;
-  detail: string;
-  link: string;
-  originPrice: number;
-  price: number;
+  product: string; // 모임 제목 (상품명)
+  detail: string; // 모임 상세설명 (상품 상세설명)
+  link: string; // 제품 url
+  originPrice: number; // 출시 가격
+  price: number; // 공구 가격
 }
 
 function CreateMoim() {

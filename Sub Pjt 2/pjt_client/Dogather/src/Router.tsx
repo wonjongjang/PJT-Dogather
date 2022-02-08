@@ -24,6 +24,13 @@ function Router() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />}></Route>
+        <Route path="/moim/:groupNo/*" element={<MoimDetail />}>
+          <Route path="product" element={<Product />} />
+          <Route path="faq" element={<FAQ />} />
+          <Route path="review" element={<Review />} />
+          <Route path="refund" element={<Refund />} />
+        </Route>
+
         <Route path="/community" element={<CommunityHome />}></Route>
 
         {/* 로그인 하지 않았을 때 url 직접 접근 가능 */}
@@ -35,17 +42,12 @@ function Router() {
           path="/signup"
           element={isLogin ? <Navigate replace to="/" /> : <Signup />}
         ></Route>
+
         {/* 로그인 했을 때 url 직접 접근 가능 */}
         <Route
           path="/moim/create"
           element={isLogin ? <CreateMoim /> : <Navigate replace to="/" />}
         ></Route>
-        <Route path="/moim/:groupNo" element={<MoimDetail />}>
-          <Route path="product" element={<Product />} />
-          <Route path="faq" element={<FAQ />} />
-          <Route path="review" element={<Review />} />
-          <Route path="refund" element={<Refund />} />
-        </Route>
       </Routes>
       {/* <Footer /> */}
     </BrowserRouter>
