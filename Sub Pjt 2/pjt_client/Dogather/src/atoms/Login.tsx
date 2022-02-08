@@ -10,6 +10,12 @@ export const isLoginAtom = atom({
 });
 
 // 로그인 시 user pk 저장
+export const userNoAtom = atom({
+  key: "userNo",
+  default: "",
+  effects_UNSTABLE: [persistAtom],
+});
+
 export const userIdAtom = atom({
   key: "userId",
   default: "",

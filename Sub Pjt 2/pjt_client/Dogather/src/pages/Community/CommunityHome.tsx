@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { userIdAtom } from "../../atoms/Login";
 
 interface IForm {
   boardTitle: string;
@@ -8,6 +10,7 @@ interface IForm {
 }
 
 function CommunityHome() {
+  const userId = useRecoilValue(userIdAtom);
   const [fileList, setFileList] = useState<FileList | undefined>();
   console.log(fileList);
   const [fileName, setFileName] =
@@ -37,6 +40,7 @@ function CommunityHome() {
 
   const onVaild = (data: IForm) => {
     console.log(data);
+    const JWT = localStorage.getItem("login_token");
 
     const newData = {
       ...data,
@@ -57,9 +61,10 @@ function CommunityHome() {
 
     fetch("http://i6e104.p.ssafy.io:8090/board", {
       method: "POST",
-      // headers: {
-      //   "Content-Type": "multipart/form-data",
-      // },
+      headers: {
+        jwt: `${JWT}`,
+        userId: userId,
+      },
       body: formData,
     })
       // .then((response) => response.json())

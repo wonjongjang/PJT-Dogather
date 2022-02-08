@@ -2,22 +2,17 @@ import DogatherLogo from "./Logo.svg";
 import styled from "styled-components";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { isLoginAtom, userIdAtom } from "../../atoms/Login";
+import { isLoginAtom, userIdAtom, userNoAtom } from "../../atoms/Login";
 import { useEffect } from "react";
-import { OptionsAtom } from "../../atoms/Options";
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
-  // console.log(isLogin);
+  const [userNo, setUserNo] = useRecoilState(userNoAtom);
   const [userId, setUserId] = useRecoilState(userIdAtom);
-  // const [options, setOptions] = useRecoilState(OptionsAtom);
-  // console.log(options);
-  // console.log(options)
-  // console.log(userId);
-  // console.log(typeof userId);
+  // console.log("sex", userId);
 
   useEffect(() => {
     setIsLogin(localStorage.getItem("login_token") !== null);
@@ -27,7 +22,8 @@ function Header() {
     // 로그아웃 클릭 시 작동
     localStorage.clear(); // 로컬 스토리지 비우기
     setIsLogin(false); // 로그인 여부 초기화
-    setUserId(""); // 저장된 user pk 초기화
+    setUserNo(""); // 저장된 user pk 초기화
+    setUserId(""); // 저장된 user id 초기화
     navigate("/"); // 메인 페이지로 이동
   };
 
@@ -37,14 +33,13 @@ function Header() {
         <UpperCol>
           <UpperItems>
             <UpperItem>고객센터</UpperItem>
-
             {isLogin ? (
               <>
-                <UpperItem>
-                  <Link to="/mypage">마이페이지</Link>
-                </UpperItem>
                 <UpperItem onClick={Logout}>
                   <LogoutDiv>로그아웃</LogoutDiv>
+                </UpperItem>
+                <UpperItem>
+                  <Link to="/mypage">마이페이지</Link>
                 </UpperItem>
               </>
             ) : (
