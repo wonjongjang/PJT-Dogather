@@ -1,12 +1,11 @@
-package com.dogather.pjtserver.dao;
+package com.dogather.pjtserver.service;
 
 import com.dogather.pjtserver.dto.FollowDto;
-import org.apache.ibatis.annotations.Mapper;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-@Mapper
-public interface FollowDao {
+public interface FollowService{
     public int follow(FollowDto dto);
     public int unfollow(FollowDto dto);
     public List<FollowDto> followList(int userNo);

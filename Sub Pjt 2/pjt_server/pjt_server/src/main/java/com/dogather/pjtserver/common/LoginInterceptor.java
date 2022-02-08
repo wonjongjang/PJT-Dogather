@@ -24,7 +24,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }else{
 
-            if( "GET".equals(request.getMethod()) && (request.getRequestURI().contains("board") || request.getRequestURI().contains("group")) ){
+            if( "GET".equals(request.getMethod()) && (request.getRequestURI().contains("board") || request.getRequestURI().contains("group")) ) {
                 return true;
             }
 

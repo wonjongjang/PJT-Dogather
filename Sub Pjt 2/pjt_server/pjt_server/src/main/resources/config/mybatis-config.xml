@@ -17,6 +17,7 @@
          <mapper resource="mapper/group_media_query.xml" />
          <mapper resource="mapper/comment_query.xml" />
          <mapper resource="mapper/like_query.xml" />
+         <mapper resource="mapper/follow_query.xml" />
 
     </mappers>
 </configuration>
