@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
@@ -8,6 +8,12 @@ interface IForm {
 }
 
 function CommunityHome() {
+  const [fileList, setFileList] = useState<FileList | undefined>();
+  console.log(fileList);
+  const [fileName, setFileName] =
+    useState<string>("이미지 파일을 업로드 해주세요");
+  console.log(fileName);
+
   const {
     register,
     handleSubmit,
@@ -18,10 +24,14 @@ function CommunityHome() {
     const {
       target: { files },
     } = event;
-    console.log(event);
-    console.log(files);
+    // console.log(event);
+    // console.log(files);
+    // Array.from(files).forEach(file => console.log(file))
     if (files != null) {
-      console.log(files[0].name);
+      // console.log(files[0].name);
+
+      setFileList(files);
+      setFileName(files[0].name);
     }
   };
 
@@ -29,25 +39,32 @@ function CommunityHome() {
     console.log(data);
 
     const newData = {
-      BoardDto: {
-        ...data,
-        writerNo: 1,
-      },
-      // files: {},
+      ...data,
+      writerNo: 1,
     };
 
-    console.log(newData);
+    const formData = new FormData();
+    console.log(fileList);
 
-    fetch("http://i6e104.p.ssafy.io:8080/board", {
+    formData.append(
+      "BoardDto",
+      new Blob([JSON.stringify(newData)], { type: "application/json" })
+    );
+
+    if (fileList != null) {
+      Array.from(fileList).forEach((file) => formData.append("file", file));
+    }
+
+    fetch("http://i6e104.p.ssafy.io:8090/board", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newData),
+      // headers: {
+      //   "Content-Type": "multipart/form-data",
+      // },
+      body: formData,
     })
       // .then((response) => response.json())
-      .then((response) => console.log(response));
-    // .then((result) => console.log(result));
+      .then((response) => response.json())
+      .then((result) => console.log(result));
   };
 
   return (
@@ -56,9 +73,10 @@ function CommunityHome() {
       <H1>CommunityHome</H1>
       <H1>CommunityHome</H1>
       <form onSubmit={handleSubmit(onVaild)}>
+        <label htmlFor="image">{fileName}</label>
         <input {...register("boardTitle")} />
         <input {...register("boardContent")} />
-        <input type="file" multiple onChange={onChange} />
+        <input id="image" type="file" multiple onChange={onChange} />
         <button>작성</button>
       </form>
     </>
