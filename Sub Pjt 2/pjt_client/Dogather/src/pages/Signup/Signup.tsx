@@ -68,7 +68,7 @@ function Singup() {
       <FormTitle>회원가입</FormTitle>
       <InputDiv>
         <InputTitle>아이디</InputTitle>
-        <Input
+        <Input2
           {...register("userId", {
             required: "필수 정보입니다.",
             minLength: {
@@ -91,6 +91,7 @@ function Singup() {
           placeholder="영문/숫자 4~10자"
           maxLength={10}
         />
+        <Button2>중 복 확 인</Button2>
         <ErrorMessage>{errors?.userId?.message}</ErrorMessage>
       </InputDiv>
       <InputDiv>
@@ -139,7 +140,7 @@ function Singup() {
       </InputDiv>
       <InputDiv>
         <InputTitle>닉네임</InputTitle>
-        <Input
+        <Input2
           {...register("userNickname", {
             required: "필수 정보입니다.",
             minLength: {
@@ -153,7 +154,7 @@ function Singup() {
           })}
           placeholder="한글/영문/숫자 2~10자"
           maxLength={10}
-        />
+        /><Button2>중 복 확 인</Button2>
         <ErrorMessage>{errors?.userNickname?.message}</ErrorMessage>
       </InputDiv>
       <InputDiv>
@@ -238,6 +239,7 @@ const InputDiv = styled.div`
   margin-bottom: 20px;
 `;
 
+
 const InputTitle = styled.div`
   text-align: left;
   font-size: 14px;
@@ -248,6 +250,21 @@ const Input = styled.input`
   margin-top: 5px;
   margin-bottom: 1px;
   width: 400px;
+  height: 45px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-width: 1px;
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+`;
+
+const Input2 = styled.input`
+  margin-top: 5px;
+  margin-bottom: 1px;
+  width: 250px;
   height: 45px;
   border-top: none;
   border-left: none;
@@ -275,6 +292,22 @@ const Button = styled.button`
   font-weight: bold;
   background-color: #1e272e;
   color: white;
+  cursor: pointer;
+`;
+
+const Button2 = styled.button.attrs({
+  type: "button",
+})`
+  vertical-align: center;
+  border-radius: 10px;
+  margin-left: 25px;
+  margin-right: 25px;
+  border: 1px #1e272e solid;
+  width: 100px;
+  height: 50px;
+  font-size: 13px;
+  background-color: white;
+  color: #1e272e;
   cursor: pointer;
 `;
 
