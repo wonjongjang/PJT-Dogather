@@ -1,10 +1,17 @@
 package com.dogather.pjtserver.service;
 
+import com.dogather.pjtserver.dao.BoardMediaDao;
+import com.dogather.pjtserver.dao.FAQDao;
 import com.dogather.pjtserver.dao.GroupDao;
+import com.dogather.pjtserver.dao.GroupMediaDao;
 import com.dogather.pjtserver.dto.*;
+import com.dogather.pjtserver.handler.FileHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,24 +22,49 @@ public class GroupServiceImpl implements GroupService {
     @Autowired
     GroupDao groupDao;
 
+    @Autowired
+    FAQDao faqDao;
+
+    @Autowired
+    FileHandler fileHandler;
+
+    @Autowired
+    GroupMediaDao mediaDao;
+
     @Override
     public int groupRegister(GroupDto groupDto) {
-        int created = groupDao.groupRegister(groupDto);
-        if(created == 1){
-            return groupDto.getGroupNo();
-        }else{
-            return 0;
-        }
+        return groupDao.groupRegister(groupDto);
     }
 
     @Override
-    public int groupUpdate(GroupDto groupDto) {
-        int updated = groupDao.groupUpdate(groupDto);
-        if(updated == 1){
-            return 1;
-        }else{
+    public int groupRegister(GroupDto groupDto, List<MultipartFile> files) throws IOException {
+        int queryResult = 1;
+
+        if (groupRegister(groupDto) == 0)
             return 0;
+        List<GroupMediaDto> mediaList = fileHandler.uploadGroupFiles(files, groupDto.getGroupNo());
+        if(CollectionUtils.isEmpty(mediaList) == false) {
+            queryResult = mediaDao.insertMedia(mediaList);
+            if (queryResult < 1) {
+                queryResult = 0;
+            }
         }
+        return queryResult;
+    }
+
+
+    @Override
+    public int groupUpdate(int groupNo, GroupDto updategroupDto, List<MultipartFile> addMediaList) throws IOException {
+        int queryResult = 1;
+        groupDao.groupUpdate(updategroupDto);
+        List<GroupMediaDto> mediaList = fileHandler.uploadGroupFiles(addMediaList, groupNo);
+        if(CollectionUtils.isEmpty(mediaList) == false) {
+            queryResult = mediaDao.insertMedia(mediaList);
+            if(queryResult < 1) {
+                queryResult = 0;
+            }
+        }
+        return queryResult;
     }
 
     @Override
@@ -100,6 +132,18 @@ public class GroupServiceImpl implements GroupService {
             map.put("optionName", option.getOptionName());
             map.put("optionPrice", option.getOptionPrice());
             groupDao.addOption(map);
+        }
+    }
+
+    @Override
+    public void addFaq(int groupNo, List<FAQRequsetDto> requestFaq) {
+        for (FAQRequsetDto Faq : requestFaq) {
+            FAQDto dbFaq = new FAQDto();
+            dbFaq.setGroupNo(groupNo);
+            dbFaq.setCategoryNo(Faq.getCategoryNo());
+            dbFaq.setFaqAnswer(Faq.getFaqAnswer());
+            dbFaq.setFaqQuestion(Faq.getFaqQuestion());
+            faqDao.createFaq(dbFaq);
         }
     }
 }

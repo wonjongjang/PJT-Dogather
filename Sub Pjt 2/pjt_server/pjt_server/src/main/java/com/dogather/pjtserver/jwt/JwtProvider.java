@@ -37,7 +37,7 @@ public class JwtProvider {
 	}
 
 	public static String validateToken(String token, String userId) {
-		String ret = "InvalidToken";
+		String ret = "잘못된 토큰";
 		try {
 			Claims claims = Jwts.parserBuilder()
 					.setSigningKey(key)
@@ -45,13 +45,21 @@ public class JwtProvider {
 					.build()
 					.parseClaimsJws(token)
 					.getBody();
-			ret = (String) claims.get("payload");
+
+			String tmp = (String) claims.get("payload"); // userId
+			if(tmp.equals(userId)){
+				ret = tmp;
+				return ret;
+			}else{
+				ret = "유효한 토큰";
+				return ret;
+			}
 		} catch( ExpiredJwtException e) {
 			System.err.println("기간이 만료된 토큰입니다.");
-			ret = "다시로그인하세요!";
+			ret = "잘못된 토큰";
+
 		} catch (Exception e) {
 			System.err.println("잘못된 토큰입니다.");
-
 		}
 
 		return ret;

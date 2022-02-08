@@ -4,7 +4,7 @@
 
 
     <update id="updateLike" parameterType="com.dogather.pjtserver.dto.LikeDto">
-        update likes
+        update board_like
         set <include refid="cal"></include>, board_title = #{boardTitle}
         where user_no = #{userNo} and post_no = #{postNo}
 
@@ -20,20 +20,20 @@
     </sql>
 
     <insert id="like" parameterType="com.dogather.pjtserver.dto.LikeDto">
-        insert into likes
+        insert into board_like
         (post_no, user_no)
         values
         (#{postNo}, #{userNo})
     </insert>
 
     <delete id="unlike" parameterType="com.dogather.pjtserver.dto.LikeDto">
-        delete from likes
+        delete from board_like
         where post_no = #{postNo} and user_no = #{userNo}
     </delete>
 
     <select id="findLikeAtBoard" parameterType="int" resultType="int">
         select user_no
-        from likes
+        from board_like
         where post_no = #{postNo}
     </select>
 

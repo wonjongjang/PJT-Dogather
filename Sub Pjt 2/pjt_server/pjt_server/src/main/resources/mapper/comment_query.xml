@@ -3,14 +3,14 @@
 <mapper namespace="com.dogather.pjtserver.dao.CommentDao">
 
     <insert id="createComment" useGeneratedKeys="true" keyProperty="commentNo">
-        insert into comment
+        insert into board_comment
         (post_no, writer_no, comment_content, created)
         values
         (#{postNo}, #{writerNo}, #{commentContent}, #{created})
     </insert>
 
     <update id="updateComment" parameterType="com.dogather.pjtserver.dto.CommentDto">
-        update comment
+        update board_comment
         set
         comment_content = #{commentContent}
         where
@@ -18,15 +18,15 @@
     </update>
 
     <select id="findComment"  parameterType="int" resultType="com.dogather.pjtserver.dto.CommentDto">
-        select * from comment where comment_no = #{commentNo}
+        select * from board_comment where comment_no = #{commentNo}
     </select>
 
     <delete id="deleteComment" parameterType="int">
-        delete from comment where comment_no = #{commentNo}
+        delete from board_comment where comment_no = #{commentNo}
     </delete>
 
     <select id="findAllComment"  parameterType="int" resultType="com.dogather.pjtserver.dto.CommentDto">
-        select * from comment where post_no = #{postNo}
+        select * from board_comment where post_no = #{postNo}
     </select>
 
 
