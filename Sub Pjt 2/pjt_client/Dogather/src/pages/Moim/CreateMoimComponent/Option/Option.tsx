@@ -1,7 +1,7 @@
 /* 옵션 리스트 렌더링 */
 
 import { useRecoilState, useRecoilValue } from "recoil";
-import { IOption, OptionsAtom } from "../../../atoms/Options";
+import { IOption, OptionsAtom } from "../../../../atoms/Options";
 
 function Option({ id, optionName, optionPrice }: IOption) {
   const [options, setOptions] = useRecoilState(OptionsAtom);

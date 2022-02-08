@@ -37,9 +37,12 @@ function Header() {
         <UpperCol>
           <UpperItems>
             <UpperItem>고객센터</UpperItem>
-            <UpperItem>마이페이지</UpperItem>
+
             {isLogin ? (
               <>
+                <UpperItem>
+                  <Link to="/mypage">마이페이지</Link>
+                </UpperItem>
                 <UpperItem onClick={Logout}>
                   <LogoutDiv>로그아웃</LogoutDiv>
                 </UpperItem>
