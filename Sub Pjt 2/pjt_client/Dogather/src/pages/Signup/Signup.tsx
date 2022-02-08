@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Interest from "./Interest";
 
-
 interface ISignUpForm {
   userId: string;
   userPw: string;
@@ -27,9 +26,9 @@ function Singup() {
     formState: { errors },
     setError,
     getValues,
-  } = useForm<ISignUpForm>();
+  } = useForm<ISignUpForm>({ mode: "onChange" });
 
-  const onValid = (formData: ISignUpForm) => {
+  const onValid = (data: ISignUpForm) => {
     // console.log(formData);
 
     // fetch(`http://i6e104.p.ssafy.io/user/idcheck?id=${formData.userId}`)
@@ -49,7 +48,7 @@ function Singup() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(data),
     })
       .then((response) => response.json())
       .then((result) => {
@@ -193,7 +192,7 @@ function Singup() {
               message: "전화번호 양식을 지켜주세요.",
             },
           })}
-          type="number"
+          // type="number"
           placeholder="숫자만 입력해주세요.   ex) 01012345678"
           maxLength={12}
         />
@@ -213,7 +212,7 @@ function Singup() {
         />
         <ErrorMessage>{errors?.userEmail?.message}</ErrorMessage>
       </InputDiv>
-      <Interest/>
+      <Interest />
       <Button>가입하기</Button>
     </SignUpForm>
   );
