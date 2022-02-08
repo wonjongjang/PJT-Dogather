@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { fetchGroup } from "../../api/CreateMoim";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { userIdAtom } from "../../atoms/Login";
 import { useNavigate } from "react-router-dom";
 import CreateOption from "./OptionComponent/CreateOption";
@@ -25,7 +25,7 @@ function CreateMoim() {
   const navigate = useNavigate();
 
   const userId = useRecoilValue(userIdAtom);
-  const options = useRecoilValue(OptionsAtom);
+  const [options, setOptions] = useRecoilState(OptionsAtom);
   // console.log(userId);
   // console.log(typeof userId);
 
@@ -39,8 +39,8 @@ function CreateMoim() {
   } = useForm<IMoimForm>();
 
   const onValid = (data: IMoimForm) => {
-    console.log(data); // data 확인
-    console.log(options);
+    // console.log(data); // data 확인
+    // console.log(options);
 
     const newDeadline =
       data.deadline.replace("T", " ").substring(0, 19) + ":00";
@@ -66,9 +66,14 @@ function CreateMoim() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newData),
-    }).then((response) => response.json());
-    // .then((result) => navigate(`/moim/${result}`));
-    // .then((result) => navigate(`/moim/${result}`));
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result) {
+          navigate(`/moim/${result}`);
+          setOptions([]);
+        }
+      });
   };
 
   return (
