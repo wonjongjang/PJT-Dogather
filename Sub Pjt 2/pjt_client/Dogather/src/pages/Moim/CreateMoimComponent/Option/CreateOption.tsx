@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { OptionsAtom } from "../../../atoms/Options";
+import { OptionsAtom } from "../../../../atoms/Options";
 
 interface IOptionForm {
   optionName: string;

@@ -4,9 +4,13 @@ import { fetchGroup } from "../../api/CreateMoim";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userIdAtom } from "../../atoms/Login";
 import { useNavigate } from "react-router-dom";
-import CreateOption from "./OptionComponent/CreateOption";
+
+import CreateOption from "./CreateMoimComponent/Option/CreateOption";
 import { OptionsAtom } from "../../atoms/Options";
-import Option from "./OptionComponent/Option";
+import Option from "./CreateMoimComponent/Option/Option";
+import CreateFAQ from "./CreateMoimComponent/FAQ/CreateFAQ";
+import { FAQsAtom } from "../../atoms/FAQs";
+import FAQ from "./CreateMoimComponent/FAQ/FAQ";
 
 export interface IMoimForm {
   groupLeader: number; // 모임 대표
@@ -26,8 +30,7 @@ function CreateMoim() {
 
   const userId = useRecoilValue(userIdAtom);
   const [options, setOptions] = useRecoilState(OptionsAtom);
-  // console.log(userId);
-  // console.log(typeof userId);
+  const [FAQs, setFAQs] = useRecoilState(FAQsAtom);
 
   const {
     register,
@@ -148,6 +151,10 @@ function CreateMoim() {
       <CreateOption />
       {options?.map((option) => (
         <Option key={option.id} {...option} />
+      ))}
+      <CreateFAQ />
+      {FAQs?.map((faq) => (
+        <FAQ key={faq.id} {...faq} />
       ))}
       <Button form="total">생성하기</Button>
     </>

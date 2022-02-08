@@ -14,6 +14,7 @@ import FAQ from "./pages/Moim/MoimDetailComponent/faq";
 import Review from "./pages/Moim/MoimDetailComponent/review";
 import Refund from "./pages/Moim/MoimDetailComponent/refund";
 import CommunityHome from "./pages/Community/CommunityHome";
+import MyPage from "./pages/MyPage/MyPage";
 
 function Router() {
   const isLogin = useRecoilValue(isLoginAtom);
@@ -23,7 +24,7 @@ function Router() {
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/" element={<Home />}></Route>
+        <Route path="/" element={<Home />} />
         <Route path="/moim/:groupNo/*" element={<MoimDetail />}>
           <Route path="product" element={<Product />} />
           <Route path="faq" element={<FAQ />} />
@@ -37,17 +38,21 @@ function Router() {
         <Route
           path="/login"
           element={isLogin ? <Navigate replace to="/" /> : <Login />}
-        ></Route>
+        />
         <Route
           path="/signup"
           element={isLogin ? <Navigate replace to="/" /> : <Signup />}
-        ></Route>
+        />
 
         {/* 로그인 했을 때 url 직접 접근 가능 */}
         <Route
+          path="/mypage"
+          element={isLogin ? <MyPage /> : <Navigate replace to="/" />}
+        />
+        <Route
           path="/moim/create"
           element={isLogin ? <CreateMoim /> : <Navigate replace to="/" />}
-        ></Route>
+        />
       </Routes>
       {/* <Footer /> */}
     </BrowserRouter>
