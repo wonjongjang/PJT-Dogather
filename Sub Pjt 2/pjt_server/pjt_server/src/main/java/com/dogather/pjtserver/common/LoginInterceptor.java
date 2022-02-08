@@ -2,6 +2,7 @@ package com.dogather.pjtserver.common;
 
 import com.dogather.pjtserver.jwt.JwtProvider;
 import org.json.JSONObject;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -14,7 +15,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
+        if (HttpMethod.OPTIONS.matches(request.getMethod())){
+            return true;
+        }
         String jwt = request.getHeader("jwt");
         String validationResult = JwtProvider.validateToken(jwt,request.getHeader("userId"));
         if(!validationResult.equals("잘못된 토큰")){

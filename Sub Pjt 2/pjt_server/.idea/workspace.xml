@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f21d74f0-23f7-4ef6-abee-9eb8b8119c74" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/jwt/JwtProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/jwt/JwtProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/common/LoginInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/pjt_server/src/main/java/com/dogather/pjtserver/common/LoginInterceptor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -229,6 +229,7 @@
       <workItem from="1644156113789" duration="2731000" />
       <workItem from="1644197931033" duration="7953000" />
       <workItem from="1644284400325" duration="1451000" />
+      <workItem from="1644333971908" duration="1104000" />
     </task>
     <servers />
   </component>
