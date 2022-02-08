@@ -15,10 +15,10 @@ import BounceLoader from "react-spinners/BounceLoader";
 import { Audio, Hearts } from "react-loader-spinner";
 import MoimSelect from "./MoimDetailSelect";
 import { Link } from "react-router-dom";
-import Product from "./MoimDetailComponent/product";
-import FAQ from "./MoimDetailComponent/faq";
-import Review from "./MoimDetailComponent/review";
-import Refund from "./MoimDetailComponent/refund";
+import Product from "./MoimDetailComponent/MoimProduct";
+import FAQ from "./MoimDetailComponent/MoimFAQ";
+import Review from "./MoimDetailComponent/MoimReview";
+import Refund from "./MoimDetailComponent/MoimRefund";
 
 interface RouteState {
   state: {

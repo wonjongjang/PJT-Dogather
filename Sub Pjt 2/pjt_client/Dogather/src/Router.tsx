@@ -9,10 +9,10 @@ import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import CreateMoim from "./pages/Moim/CreateMoim";
 import MoimDetail from "./pages/Moim/MoimDetail";
-import Product from "./pages/Moim/MoimDetailComponent/product";
-import FAQ from "./pages/Moim/MoimDetailComponent/faq";
-import Review from "./pages/Moim/MoimDetailComponent/review";
-import Refund from "./pages/Moim/MoimDetailComponent/refund";
+import Product from "./pages/Moim/MoimDetailComponent/MoimProduct";
+import FAQ from "./pages/Moim/MoimDetailComponent/MoimFAQ";
+import Review from "./pages/Moim/MoimDetailComponent/MoimReview";
+import Refund from "./pages/Moim/MoimDetailComponent/MoimRefund";
 import CommunityHome from "./pages/Community/CommunityHome";
 import MyPage from "./pages/MyPage/MyPage";
 
