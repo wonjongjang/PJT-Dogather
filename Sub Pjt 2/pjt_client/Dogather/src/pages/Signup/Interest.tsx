@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-import {faCar, faDumbbell, faPaw, faTshirt, faTv} from '@fortawesome/free-solid-svg-icons'
+import {faAirFreshener, faBabyCarriage, faBaseballBall, faBook, faCar, faCarSide, faCouch, faDumbbell, faFemale, faGamepad, faGuitar, faMale, faPaw, faPills, faPizzaSlice, faPrescriptionBottle, faTabletAlt, faTshirt, faTv, faUtensils} from '@fortawesome/free-solid-svg-icons'
 
 
 
@@ -9,11 +9,28 @@ function Interest(){
 
     return (<Container>
         <Line>
-            <span><Clabel><FontAwesomeIcon icon={faTshirt}/></Clabel><Checkbox value={"1"} /></span>
-            <span><Clabel><FontAwesomeIcon icon={faTv}/></Clabel><Checkbox/></span>
-            <span><Clabel><FontAwesomeIcon icon={faCar}/></Clabel><Checkbox/></span>
-            <span><Clabel><FontAwesomeIcon icon={faDumbbell}/></Clabel><Checkbox/></span>
-            <span><Clabel><FontAwesomeIcon icon={faPaw}/></Clabel><Checkbox/></span>       
+            <Box><Clabel><FontAwesomeIcon icon={faTshirt} size="lg" fixedWidth/> 남성 패션</Clabel></Box><Checkbox value={"1"}/>
+            <Box><Clabel><FontAwesomeIcon icon={faTshirt} size="lg" fixedWidth/> 여성 패션</Clabel></Box><Checkbox value={"1"}/>
+            <Box><Clabel><FontAwesomeIcon icon={faAirFreshener} size="lg" fixedWidth/> 뷰티/미용</Clabel></Box><Checkbox value={"1"}/>
+            <Box><Clabel><FontAwesomeIcon icon={faPizzaSlice} size="lg" fixedWidth/> 식품</Clabel></Box><Checkbox value={"1"}/>
+        </Line>
+        <Line>
+            <Box><Clabel><FontAwesomeIcon icon={faPills} size="lg" fixedWidth/> 건강/약품</Clabel></Box><Checkbox value={"1"} />
+            <Box><Clabel><FontAwesomeIcon icon={faTv} size="lg" fixedWidth/> 생활가전</Clabel></Box><Checkbox value={"1"}/>
+            <Box><Clabel><FontAwesomeIcon icon={faTabletAlt} size="lg" fixedWidth/> 디지털기기</Clabel></Box><Checkbox value={"1"}/>
+            <Box><Clabel><FontAwesomeIcon icon={faCouch} size="lg" fixedWidth/> 가구/인테리어</Clabel></Box><Checkbox value={"1"}/>
+        </Line>
+        <Line>
+            <Box><Clabel><FontAwesomeIcon icon={faUtensils} size="lg" fixedWidth/> 생활용품</Clabel></Box><Checkbox value={"1"}/>
+            <Box><Clabel><FontAwesomeIcon icon={faBook} size="lg" fixedWidth/> 도서/티켓</Clabel></Box><Checkbox value={"1"}/>
+            <Box><Clabel><FontAwesomeIcon icon={faBabyCarriage} size="lg" fixedWidth/> 출산/유아동</Clabel></Box><Checkbox value={"1"}/>
+            <Box><Clabel><FontAwesomeIcon icon={faPaw} size="lg" fixedWidth/> 펫용품</Clabel></Box><Checkbox value={"1"}/>
+        </Line>
+        <Line>
+            <Box><Clabel><FontAwesomeIcon icon={faBaseballBall} size="lg" fixedWidth/> 스포츠/레저</Clabel></Box><Checkbox value={"1"} />
+            <Box><Clabel><FontAwesomeIcon icon={faCarSide} size="lg" fixedWidth/> 자동차/공구</Clabel></Box><Checkbox value={"1"}/>
+            <Box><Clabel><FontAwesomeIcon icon={faGuitar} size="lg" fixedWidth/> 악기</Clabel></Box><Checkbox value={"1"}/>
+            <Box><Clabel><FontAwesomeIcon icon={faGamepad} size="lg" fixedWidth/> 게임/놀이</Clabel></Box><Checkbox value={"1"}/>      
         </Line>
 
 
@@ -21,11 +38,16 @@ function Interest(){
       
     </Container>);
 }
+const Box = styled.span`
+    width : 7rem;
+    overflow : unset;
+`;
+
 const Line = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: space-around;
+    justify-content: center;
     align-items:center;
     margin-top: 1rem;
 `;
@@ -34,19 +56,20 @@ const Line = styled.div`
 const Checkbox = styled.input.attrs({
     type: 'checkbox',
 })`
-    height: 0.8rem;
-    width: 0.8rem;
+    text-align:start;
+    margin-left: 0px;
+    height: 1rem;
+    width: 2rem;
 `;
 
 const Clabel = styled.span`
-    font-size : 1rem;
+    font-size : 0.8rem;
 `;
 const Container = styled.div`
-    border : black dashed 1px;
     height : 10rem;
-    width : 70%;
-    margin-left : 15%;
-    margin-right : 15%;
+    width : 50rem;
+    margin-left : 1rem;
+    margin-right : 1rem;
     
 `;
 export default Interest;

@@ -51,7 +51,6 @@ public class JwtProvider {
 			ret = "다시로그인하세요!";
 		} catch (Exception e) {
 			System.err.println("잘못된 토큰입니다.");
-
 		}
 
 		return ret;
