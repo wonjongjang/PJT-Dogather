@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @RestController
-@RequestMapping("group/image")
+@RequestMapping("/group/image")
 @Slf4j
 public class GroupMediaController {
 

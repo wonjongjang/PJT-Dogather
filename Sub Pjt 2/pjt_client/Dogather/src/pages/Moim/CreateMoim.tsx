@@ -73,7 +73,7 @@ function CreateMoim() {
       .then((response) => response.json())
       .then((result) => {
         if (result) {
-          navigate(`/moim/${result}`);
+          // navigate(`/moim/${result}`);
           setOptions([]);
         }
       });
