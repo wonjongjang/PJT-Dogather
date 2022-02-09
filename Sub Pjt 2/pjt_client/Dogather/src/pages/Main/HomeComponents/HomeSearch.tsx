@@ -15,7 +15,7 @@ function HomeSearch() {
 }
 
 const Search = styled.h1`
-  width: 55%;
+  width: 50%;
   display: block;
   justify-content: center;
   padding-top: 0px;
