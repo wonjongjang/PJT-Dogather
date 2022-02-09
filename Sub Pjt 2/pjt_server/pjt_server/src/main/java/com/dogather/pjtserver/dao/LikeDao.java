@@ -13,4 +13,6 @@ public interface LikeDao {
     public int unlike(LikeDto likeDto);
 
     public List<Integer> findLikeAtBoard(int postNo);
+
+    public List<Integer> findLikeBoardByUser(int userNo);
 }

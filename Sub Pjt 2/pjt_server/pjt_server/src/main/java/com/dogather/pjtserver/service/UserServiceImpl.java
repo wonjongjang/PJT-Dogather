@@ -1,9 +1,12 @@
 package com.dogather.pjtserver.service;
 
 import com.dogather.pjtserver.dao.UserDao;
+import com.dogather.pjtserver.dto.BoardDto;
 import com.dogather.pjtserver.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -74,4 +77,5 @@ public class UserServiceImpl implements UserService{
 		}
 		return result;
 	}
+
 }

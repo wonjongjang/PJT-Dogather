@@ -13,4 +13,6 @@ public interface GroupMediaDao {
     public List<GroupMediaDto> findAllMedia(int groupNo);
 
     public void deleteMedia(int mediaNo);
+
+    public GroupMediaDto findMedia(int mediaNo);
 }

@@ -27,4 +27,10 @@ public class LikeServiceImpl implements LikeService{
     public List<Integer> findLikeAtBoard(int postNo) {
         return likeDao.findLikeAtBoard(postNo);
     }
+
+    @Override
+    public List<Integer> findLikeBoardByUser(int userNo) {
+        List<Integer> likeBoardNoList = likeDao.findLikeBoardByUser(userNo);
+        return likeBoardNoList;
+    }
 }

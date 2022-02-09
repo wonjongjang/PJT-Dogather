@@ -1,22 +1,32 @@
 package com.dogather.pjtserver.controller;
 
+import com.dogather.pjtserver.dto.BoardDto;
 import com.dogather.pjtserver.dto.UserDto;
+import com.dogather.pjtserver.dto.UserResponseDto;
 import com.dogather.pjtserver.jwt.JwtProvider;
 import com.dogather.pjtserver.jwt.JwtRet;
+import com.dogather.pjtserver.service.BoardService;
 import com.dogather.pjtserver.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
 
 	@Autowired
 	UserService userService;
+
+	@Autowired
+	BoardService boardService;
 
 	//회원가입
 	@PostMapping("/register")
@@ -97,15 +107,20 @@ public class UserController {
 	}
 
 	@GetMapping("/{userId}")
-	public ResponseEntity<UserDto> find(@PathVariable String userId, @RequestHeader String jwt){
+	public ResponseEntity<UserResponseDto> find(@PathVariable String userId, @RequestHeader String jwt){
 		// 현재는 userId method jwt token 있어야 확인가능 => 본인것만 확인가능
 		System.err.println("(Get)User Controller Find Method run!");
 		//JWT token check
 		String validationResult = JwtProvider.validateToken(jwt, userId);
 		if(userId.equals(validationResult)) {
+			UserResponseDto userResponseDto = new UserResponseDto();
 			UserDto userInfo = userService.userFind(userId);
 			userInfo.setUserPw(null);
-			return ResponseEntity.status(HttpStatus.OK).body(userInfo);//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+			List<BoardDto> likeBoards = boardService.findUserLikeBoard(userInfo.getUserNo());
+			log.info(likeBoards.toString());
+			userResponseDto.setUserInfo(userInfo);
+			userResponseDto.setLikeBoards(likeBoards);
+			return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 		}else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 		}

@@ -24,5 +24,11 @@ public class GroupMediaServiceImpl implements GroupMediaService{
         mediaDao.deleteMedia(mediaNo);
     }
 
+    @Override
+    public GroupMediaDto findGroupMedia(int mediaNo) {
+        GroupMediaDto mediaDto = mediaDao.findMedia(mediaNo);
+        return mediaDto;
+    }
+
 
 }

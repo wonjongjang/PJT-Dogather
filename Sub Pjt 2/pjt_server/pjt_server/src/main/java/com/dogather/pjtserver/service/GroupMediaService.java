@@ -10,5 +10,5 @@ public interface GroupMediaService {
     public void deleteMedia(int mediaNo);
 
 
-
+    public GroupMediaDto findGroupMedia(int mediaNo);
 }
