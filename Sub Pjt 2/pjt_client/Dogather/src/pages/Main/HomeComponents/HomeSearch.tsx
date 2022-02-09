@@ -15,10 +15,10 @@ function HomeSearch() {
 }
 
 const Search = styled.h1`
-  width: 40%;
-  display: flex;
+  width: 55%;
+  display: block;
   justify-content: center;
-  padding-top: 50px;
+  padding-top: 0px;
 `;
 
 export default HomeSearch;

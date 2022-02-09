@@ -1,4 +1,4 @@
-import { Card, CardMedia, Grid } from "@mui/material";
+import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
 import styled from "styled-components";
 import { fetchHomeMoimCard } from "../../../api/MoimDetail";
 import { useState } from "react";
@@ -40,28 +40,29 @@ function HomeMoim() {
         >
           {data?.list.slice(0, 4).map((d, idx) => (
             // <li key={idx}>{d.groupNo}</li>
-            <Link to={`/moim/${d.groupNo}`}>
+            <Link key={idx} to={`/moim/${d.groupNo}`}>
               <Grid item sx={{ marginRight: 3 }}>
-                <Card
-                  key={idx}
-                  sx={{
-                    minWidth: 200,
-                    minHeight: 200,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "whitesmoke",
-                    marginBottom: 1,
-                  }}
-                >
-                  <CardMedia
-                    component="img"
-                    height="100px"
-                    width="100px"
-                    image="img/CHANEL.png"
-                    alt="Product Image"
-                  />
-                </Card>
+                <CardActionArea>
+                  <Card
+                    sx={{
+                      minWidth: 200,
+                      minHeight: 200,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "whitesmoke",
+                      transition: "all .25s linear",
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      height="100px"
+                      width="100px"
+                      image="img/CHANEL.png"
+                      alt="Product Image"
+                    />
+                  </Card>
+                </CardActionArea>
                 <CardDetail>
                   <CategoryName>{d.categoryName}</CategoryName>
                   <ProductName>{d.product}</ProductName>
@@ -104,11 +105,12 @@ const CategoryName = styled.p`
 
 const CardDetail = styled.h1`
   justify-content: left;
+  margin-top: 5px;
 `;
 
 const Container = styled.div`
   display: flex;
-  height: 100vh;
+  /* height: 100vh; */
   width: 100%;
   justify-content: center;
   align-items: center;

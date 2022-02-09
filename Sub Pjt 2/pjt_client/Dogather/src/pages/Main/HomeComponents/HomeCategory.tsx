@@ -13,7 +13,7 @@ function HomeCategory() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              backgroundColor: "whitesmoke",
+              backgroundColor: "white",
               marginBottom: 1,
             }}
           >
@@ -38,10 +38,17 @@ const Container = styled.div`
   display: flex;
 `;
 
-const CategoryList = styled.div``;
+const CategoryList = styled.div`
+  display: block;
+  justify-content: center;
+`;
 
-const First = styled.div``;
+const First = styled.div`
+  display: flex;
+`;
 
-const Second = styled.div``;
+const Second = styled.div`
+  display: flex;
+`;
 
 export default HomeCategory;
