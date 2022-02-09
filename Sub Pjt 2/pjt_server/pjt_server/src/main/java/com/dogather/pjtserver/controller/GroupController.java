@@ -6,6 +6,7 @@ import com.dogather.pjtserver.service.FAQService;
 import com.dogather.pjtserver.service.GroupMediaService;
 import com.dogather.pjtserver.service.GroupService;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -167,11 +170,19 @@ public class GroupController {
         return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
 
-//    @GetMapping("/wsearch/{word}")
-//    public ResponseEntity<GroupListDto> wordSearch(@PathVariable int word){
-//        GroupListDto list = new GroupListDto();
-//        list.setList(groupService.categoryList(categoryNo));
-//        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
-//    }
+    @PostMapping("/wsearch")
+    public ResponseEntity<GroupListDto> wordSearch(@RequestBody HashMap map){
+        String word = map.get("word").toString();
+        String[] tmp = word.split(" ");
+        List<String> wordList = Arrays.asList(tmp);
+
+        System.out.println(wordList.toString());
+
+
+
+        GroupListDto list = new GroupListDto();
+        list.setList(groupService.wordSearch(wordList));
+        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+    }
 
 }

@@ -150,4 +150,9 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupReturnDto> categoryList(int categoryNo) {
         return groupDao.categoryList(categoryNo);
     }
+
+    @Override
+    public List<GroupReturnDto> wordSearch(List<String> wordList) {
+        return groupDao.wordSearch(wordList);
+    }
 }
