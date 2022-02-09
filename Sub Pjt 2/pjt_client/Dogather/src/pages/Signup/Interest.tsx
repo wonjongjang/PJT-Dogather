@@ -1,11 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import {faAirFreshener, faBabyCarriage, faBaseballBall, faBook, faCar, faCarSide, faCouch, faDumbbell, faFemale, faGamepad, faGuitar, faMale, faPaw, faPills, faPizzaSlice, faPrescriptionBottle, faTabletAlt, faTshirt, faTv, faUtensils} from '@fortawesome/free-solid-svg-icons'
-
+import Category from "../../Category";
 
 
 function Interest(){
-
 
     return (<Container>
         <Line>
