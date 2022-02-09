@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 import { isLoginAtom } from "./atoms/Login";
 
 import Header from "./components/Nav/Header";
-// import Footer from "./components/Footer/Footer";
+import Footer from "./components/Footer/Footer";
 import Home from "./pages/Main/Home";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
@@ -54,7 +54,7 @@ function Router() {
           element={isLogin ? <CreateMoim /> : <Navigate replace to="/" />}
         />
       </Routes>
-      {/* <Footer /> */}
+      <Footer/>
     </BrowserRouter>
   );
 }

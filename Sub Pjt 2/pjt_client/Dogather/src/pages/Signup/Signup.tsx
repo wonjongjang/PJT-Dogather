@@ -5,6 +5,7 @@ import Interest from "./Interest";
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import IdCheck from './IdCheck';
+import Footer from "../../components/Footer/Footer";
 
 interface ISignUpForm {
   userId: string;
