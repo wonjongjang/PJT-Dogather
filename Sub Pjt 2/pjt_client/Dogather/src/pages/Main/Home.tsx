@@ -6,7 +6,9 @@ import HomeSearch from "./HomeComponents/HomeSearch";
 function Home() {
   return (
     <Container>
-      <HomeSearch />
+      <SearchBar>
+        <HomeSearch />
+      </SearchBar>
       <HomeCategory />
       <HomeMoim />
     </Container>
@@ -23,8 +25,9 @@ const Container = styled.div`
 `;
 
 const SearchBar = styled.div`
-  display: fe;
+  display: flex;
   width: 100%;
+  justify-content: center;
 `;
 
 export default Home;
