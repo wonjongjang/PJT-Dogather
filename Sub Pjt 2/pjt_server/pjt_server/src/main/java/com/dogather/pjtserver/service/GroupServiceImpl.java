@@ -6,6 +6,7 @@ import com.dogather.pjtserver.dao.GroupDao;
 import com.dogather.pjtserver.dao.GroupMediaDao;
 import com.dogather.pjtserver.dto.*;
 import com.dogather.pjtserver.handler.FileHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class GroupServiceImpl implements GroupService {
 
     @Autowired
@@ -38,17 +40,14 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public int groupRegister(GroupDto groupDto, List<MultipartFile> files) throws IOException {
-        int queryResult = 1;
-
+        int queryResult;
         if (groupRegister(groupDto) == 0)
             return 0;
         List<GroupMediaDto> mediaList = fileHandler.uploadGroupFiles(files, groupDto.getGroupNo());
         if(CollectionUtils.isEmpty(mediaList) == false) {
-            queryResult = mediaDao.insertMedia(mediaList);
-            if (queryResult < 1) {
-                queryResult = 0;
-            }
+            mediaDao.insertMedia(mediaList);
         }
+        queryResult = groupDto.getGroupNo();
         return queryResult;
     }
 
