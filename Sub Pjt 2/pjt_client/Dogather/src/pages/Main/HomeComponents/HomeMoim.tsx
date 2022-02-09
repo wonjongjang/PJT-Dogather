@@ -1,8 +1,6 @@
 import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
 import styled from "styled-components";
 import { FetchHomeMoimCard } from "../../../api/MoimDetail";
-import { useState } from "react";
-import TextField from "@mui/material/TextField";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 
