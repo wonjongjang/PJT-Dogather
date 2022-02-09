@@ -38,12 +38,9 @@ function CreateMoim() {
 
   const {
     register,
-    watch,
     handleSubmit,
     formState: { errors },
-    setError,
-    getValues,
-  } = useForm<IMoimForm>();
+  } = useForm<IMoimForm>({ mode: "onChange" });
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -72,7 +69,7 @@ function CreateMoim() {
       options: options,
       requestfaq: FAQs,
     };
-
+    console.log(newData);
     const formData = new FormData();
 
     formData.append(
@@ -95,150 +92,304 @@ function CreateMoim() {
       .then((response) => response.json())
       .then((result) => {
         if (result) {
-          navigate(`/moim/${result}`);
+          // navigate(`/moim/${String(result)}`);
           console.log(result);
         }
-        setOptions([]);
-        setFAQs([]);
+        // setOptions([]);
+        // setFAQs([]);
       });
   };
 
   return (
-    <>
-      <MoimForm id="total" onSubmit={handleSubmit(onValid)}>
-        <FormTitle>모임 생성</FormTitle>
-        <InputDiv>
-          <InputTitle>제목</InputTitle>
-          <Input
-            {...register("product", {
-              required: "필수 정보입니다.",
-            })}
-          />
-          <ErrorMessage>{errors?.product?.message}</ErrorMessage>
-        </InputDiv>
-        <InputDiv>
-          <InputTitle>출시가</InputTitle>
-          <Input
-            {...register("originPrice", {
-              required: "필수 정보입니다.",
-            })}
-          />
-          <ErrorMessage>{errors?.originPrice?.message}</ErrorMessage>
-        </InputDiv>
-        <InputDiv>
-          <InputTitle>공구가</InputTitle>
-          <Input
-            {...register("price", {
-              required: "필수 정보입니다.",
-            })}
-          />
-          <ErrorMessage>{errors?.price?.message}</ErrorMessage>
-        </InputDiv>
-        <InputDiv>
-          <InputTitle>내용</InputTitle>
-          <Input
-            {...register("detail", {
-              required: "필수 정보입니다.",
-            })}
-          />
-          <ErrorMessage>{errors?.detail?.message}</ErrorMessage>
-        </InputDiv>
-        <InputDiv>
-          <InputTitle>URL</InputTitle>
-          <Input
-            {...register("link", {
-              required: "필수 정보입니다.",
-            })}
-          />
-          <ErrorMessage>{errors?.link?.message}</ErrorMessage>
-        </InputDiv>
-        <InputDiv>
-          <InputTitle>인원수</InputTitle>
-          <Input
-            {...register("maxPeople", {
-              required: "필수 정보입니다.",
-            })}
-          />
-          <ErrorMessage>{errors?.maxPeople?.message}</ErrorMessage>
-        </InputDiv>
-        <InputDiv>
-          <InputTitle>공구 마감 날짜</InputTitle>
-          <Input
-            {...register("deadline", {
-              required: "필수 정보입니다.",
-            })}
-            type="datetime-local"
-          />
-          <ErrorMessage>{errors?.deadline?.message}</ErrorMessage>
-        </InputDiv>
-      </MoimForm>
-      <input type="file" multiple onChange={onChange} />
-      <CreateOption />
-      {options?.map((option) => (
-        <Option key={option.id} {...option} />
-      ))}
-      <CreateFAQ />
-      {FAQs?.map((faq) => (
-        <FAQ key={faq.id} {...faq} />
-      ))}
-      <Button form="total">생성하기</Button>
-    </>
+    <Container>
+      <FormContainer>
+        <Block>
+          <FormTitle>
+            <span>모임 생성</span>
+          </FormTitle>
+        </Block>
+        <form id="total" onSubmit={handleSubmit(onValid)}>
+          <Block>
+            <InputTitle>
+              <span>카테고리</span>
+              <Required>*</Required>
+            </InputTitle>
+            <InputDiv>
+              <span>드롭박스 나중에 달기</span>
+            </InputDiv>
+          </Block>
+          <Block>
+            <InputTitle>
+              <span>제목 (상품명)</span>
+              <Required>*</Required>
+            </InputTitle>
+            <InputDiv>
+              <Input
+                {...register("product", {
+                  required: "필수 정보입니다.",
+                })}
+                autoFocus // 모임 생성 페이지 들어오면 입력할 수 있도록 설정
+                placeholder="최대 50자 입력"
+                maxLength={50}
+              />
+              <ErrorMessage>{errors?.product?.message}</ErrorMessage>
+            </InputDiv>
+            <ExpDiv>
+              <Exp>설명</Exp>
+            </ExpDiv>
+          </Block>
+          <Block>
+            <InputTitle>
+              <span>가격</span>
+              <Required>*</Required>
+            </InputTitle>
+            <InputDiv>
+              <SubInputTopDiv>
+                <SubTitle>
+                  <span>출시 가격</span>
+                  <Required>*</Required>
+                </SubTitle>
+                <div>
+                  <MiniInput
+                    {...register("originPrice", {
+                      required: "필수 정보입니다.",
+                    })}
+                    type="number"
+                    placeholder="숫자만 입력"
+                  />
+                  <ErrorMessage>{errors?.originPrice?.message}</ErrorMessage>
+                </div>
+              </SubInputTopDiv>
+              <SubInputBottomDiv>
+                <SubTitle>
+                  <span>공구 가격</span>
+                  <Required>*</Required>
+                </SubTitle>
+                <div>
+                  <MiniInput
+                    {...register("price", {
+                      required: "필수 정보입니다.",
+                    })}
+                    type="number"
+                    placeholder="숫자만 입력"
+                  />
+                  <ErrorMessage>{errors?.price?.message}</ErrorMessage>
+                </div>
+              </SubInputBottomDiv>
+            </InputDiv>
+            <ExpDiv>
+              <Exp>설명</Exp>
+            </ExpDiv>
+          </Block>
+          <Block>
+            <InputTitle>
+              <span>모임 인원수</span>
+              <Required>*</Required>
+            </InputTitle>
+            <InputDiv>
+              <MiniInput
+                {...register("maxPeople", {
+                  required: "필수 정보입니다.",
+                })}
+                type="number"
+                placeholder="숫자만 입력"
+              />
+              <ErrorMessage>{errors?.maxPeople?.message}</ErrorMessage>
+            </InputDiv>
+            <ExpDiv>
+              <Exp>설명</Exp>
+            </ExpDiv>
+          </Block>
+          <Block>
+            <InputTitle>
+              <span>상품이미지</span>
+              <Required>*</Required>
+            </InputTitle>
+            <InputDiv>
+              <File type="file" multiple onChange={onChange} />
+            </InputDiv>
+          </Block>
+          <Block>
+            <InputTitle>
+              <span>상세설명</span>
+              <Required>*</Required>
+            </InputTitle>
+            <InputDiv>
+              <TextArea
+                {...register("detail", {
+                  required: "필수 정보입니다.",
+                })}
+              />
+              <ErrorMessage>{errors?.detail?.message}</ErrorMessage>
+            </InputDiv>
+            <ExpDiv>
+              <Exp>설명</Exp>
+            </ExpDiv>
+          </Block>
+          <Block>
+            <InputTitle>
+              <span>URL</span>
+              <Required>*</Required>
+            </InputTitle>
+            <InputDiv>
+              <Input
+                {...register("link", {
+                  required: "필수 정보입니다.",
+                })}
+              />
+              <ErrorMessage>{errors?.link?.message}</ErrorMessage>
+            </InputDiv>
+            <ExpDiv>
+              <Exp>설명</Exp>
+            </ExpDiv>
+          </Block>
+          <Block>
+            <InputTitle>
+              <span>공구 마감 날짜</span>
+              <Required>*</Required>
+            </InputTitle>
+            <InputDiv>
+              <Input
+                {...register("deadline", {
+                  required: "필수 정보입니다.",
+                })}
+                type="datetime-local"
+              />
+              <ErrorMessage>{errors?.deadline?.message}</ErrorMessage>
+            </InputDiv>
+            <ExpDiv>
+              <Exp>설명</Exp>
+            </ExpDiv>
+          </Block>
+        </form>
+        <Block>
+          <InputDiv>
+            <CreateOption />
+            {options?.map((option) => (
+              <Option key={option.id} {...option} />
+            ))}
+          </InputDiv>
+        </Block>
+        <Block>
+          <InputDiv>
+            <CreateFAQ />
+            {FAQs?.map((faq) => (
+              <FAQ key={faq.id} {...faq} />
+            ))}
+          </InputDiv>
+        </Block>
+        <Button form="total">생성하기</Button>
+      </FormContainer>
+    </Container>
   );
 }
 
-const MoimForm = styled.form`
+const Container = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  background-color: whitesmoke;
+`;
+
+const FormContainer = styled.div`
+  width: 1280px;
   margin-top: 68px;
-  margin: 0 auto;
-  max-width: 680px;
 `;
 
-const FormTitle = styled.h2`
+const Block = styled.div`
+  background-color: white;
+  min-height: 50px;
+  margin: 1rem;
+`;
+
+const FormTitle = styled.div`
+  font-size: 20px;
   font-weight: bold;
-  font-size: 32px;
-  margin: 55px;
-`;
-
-const InputDiv = styled.div`
-  margin-bottom: 20px;
+  padding: 1rem;
 `;
 
 const InputTitle = styled.div`
-  text-align: left;
+  font-size: 16px;
+  padding: 1rem;
+  border-bottom: 1px solid whitesmoke;
+`;
+
+const Required = styled.span`
+  font-size: 16px;
+  color: #ff5e57;
+  margin-left: 5px;
+`;
+
+const InputDiv = styled.div`
+  padding: 1rem;
+`;
+
+const SubInputTopDiv = styled.div`
+  display: flex;
+  padding: 0 0 1rem 0;
+  border-bottom: 1px solid whitesmoke;
+`;
+
+const SubInputMiddleDiv = styled.div`
+  display: flex;
+  padding: 1rem 0;
+  border-bottom: 1px solid whitesmoke;
+`;
+
+const SubInputBottomDiv = styled.div`
+  display: flex;
+  padding: 1rem 0;
+`;
+
+const SubTitle = styled.div`
+  display: flex;
+  align-items: center;
+  width: 200px;
   font-size: 14px;
-  font-weight: bold;
+`;
+
+const ExpDiv = styled.div`
+  padding: 0 1rem 1rem 1rem;
 `;
 
 const Input = styled.input`
-  margin-top: 5px;
-  margin-bottom: 1px;
-  width: 400px;
-  height: 45px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-width: 1px;
+  width: 100%;
+  height: 30px;
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `;
 
-const Calendar = styled.input`
-  display: row;
-  margin-top: 5px;
-  margin-bottom: 1px;
-  width: 200px;
-  height: 45px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-width: 1px;
+const MiniInput = styled.input`
+  margin-right: 3px;
+  width: 250px;
+  height: 30px;
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `;
 
-const ErrorMessage = styled.p`
-  text-align: left;
+const TextArea = styled.textarea`
+  resize: none; // 크기 고정
+  margin-bottom: 2px;
+  width: 100%;
+  height: 200px;
+`;
+
+const File = styled.input`
+  background-color: black;
+`;
+
+const ErrorMessage = styled.span`
+  margin-top: 3px;
   font-size: 11px;
-  color: #ff3f34;
+  color: #ff5e57;
+`;
+
+const Exp = styled.span`
+  font-size: 11px;
+  color: #485460;
 `;
 
 const Button = styled.button`
