@@ -1,6 +1,7 @@
 package com.dogather.pjtserver.dao;
 
 import com.dogather.pjtserver.dto.BoardMediaDto;
+import com.dogather.pjtserver.dto.GroupMediaDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface BoardMediaDao {
     public BoardMediaDto findMedia(int mediaNo);
 
     void deleteMedia(int mediaNo);
+
+    public GroupMediaDto findGroupMedia(int mediaNo);
 }

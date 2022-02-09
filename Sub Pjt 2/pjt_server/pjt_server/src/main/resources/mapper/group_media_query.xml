@@ -31,4 +31,8 @@
         where media_no = #{mediaNo}
     </delete>
 
+    <select id="findMedia" parameterType="int" resultType="com.dogather.pjtserver.dto.GroupMediaDto">
+        select * from group_media where media_no = #{mediaNo}
+    </select>
+
 </mapper>

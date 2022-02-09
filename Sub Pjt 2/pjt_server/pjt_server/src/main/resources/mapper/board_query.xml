@@ -13,6 +13,10 @@
         select * from board where post_no = #{postNo}
     </select>
 
+    <select id="findUserLikeBoard" parameterType="int" resultType="com.dogather.pjtserver.dto.BoardDto">
+        select * from board where post_no = #{postNo}
+    </select>
+
     <update id="updateBoard" parameterType="com.dogather.pjtserver.dto.BoardResponseDto">
         update board
         set board_title = #{boardTitle}, board_content = #{boardContent}, updated = #{updated}

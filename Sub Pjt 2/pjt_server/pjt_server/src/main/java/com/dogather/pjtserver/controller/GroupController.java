@@ -2,6 +2,7 @@ package com.dogather.pjtserver.controller;
 
 import com.dogather.pjtserver.dto.*;
 import com.dogather.pjtserver.handler.FileHandler;
+import com.dogather.pjtserver.service.FAQService;
 import com.dogather.pjtserver.service.GroupMediaService;
 import com.dogather.pjtserver.service.GroupService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,9 @@ public class GroupController {
     @Autowired
     FileHandler fileHandler;
 
+    @Autowired
+    FAQService faqService;
+
     @GetMapping("/list")
     public ResponseEntity<GroupListDto> list(){
         GroupListDto list = new GroupListDto();
@@ -39,11 +43,21 @@ public class GroupController {
 
     @GetMapping("/detail/{groupNo}")
     public ResponseEntity<GroupOptionDto> group(@PathVariable int groupNo){
+        List<GroupMediaDto> mediaDtoList = mediaService.fineAllMedia(groupNo);
         GroupDto groupDto = groupService.group(groupNo);
+        List<FAQDto> faqDtoList = faqService.readFaqAll(groupNo);
+
+        List<Integer> mediaList = new ArrayList<>();
+        for (GroupMediaDto mediaDto : mediaDtoList ) {
+            mediaList.add(mediaDto.getMediaNo());
+        }
+
         GroupOptionDto ret = new GroupOptionDto();
         ret.setGroupDto(groupDto);
         List<OptionDto> options = groupService.getOptions(groupNo);
         ret.setOptions(options);
+        ret.setMediaList(mediaList);
+        ret.setFaqList(faqDtoList);
         return new ResponseEntity<GroupOptionDto>(ret, HttpStatus.OK);
     }
 

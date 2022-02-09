@@ -20,4 +20,5 @@ public interface BoardDao {
 
     public List<BoardResponseDto> getAllboard();
 
+    public BoardDto findUserLikeBoard(int postNo);
 }

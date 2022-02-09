@@ -37,4 +37,10 @@
         where post_no = #{postNo}
     </select>
 
+
+    <select id="findLikeBoardByUser" parameterType="int" resultType="int">
+        select post_no
+        from board_like
+        where user_no = #{userNo}
+    </select>
 </mapper>

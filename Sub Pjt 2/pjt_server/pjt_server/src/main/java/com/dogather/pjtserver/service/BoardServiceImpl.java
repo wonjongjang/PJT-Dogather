@@ -2,6 +2,7 @@ package com.dogather.pjtserver.service;
 
 import com.dogather.pjtserver.dao.BoardDao;
 import com.dogather.pjtserver.dao.BoardMediaDao;
+import com.dogather.pjtserver.dao.LikeDao;
 import com.dogather.pjtserver.dto.BoardDto;
 import com.dogather.pjtserver.dto.BoardMediaDto;
 import com.dogather.pjtserver.dto.BoardResponseDto;
@@ -39,6 +40,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Autowired
     public LikeService likeService;
+
 
     @Override
     public int createBoard(BoardDto boardDto) {
@@ -111,6 +113,18 @@ public class BoardServiceImpl implements BoardService {
             board.setLikeUsers(likeService.findLikeAtBoard(board.getPostNo()));
         }
         return BoardListAll;
+    }
+
+    @Override
+    public List<BoardDto> findUserLikeBoard(int userNo) {
+        log.info("====작동");
+        List<Integer> likeBoardNoList = likeService.findLikeBoardByUser(userNo);
+        log.info(likeBoardNoList.toString());
+        List<BoardDto> likeBoards = new ArrayList<>();
+        for (int likeBoardNo : likeBoardNoList ) {
+            likeBoards.add(boardDao.findUserLikeBoard(likeBoardNo));
+        }
+        return likeBoards;
     }
 
 //    @Override
