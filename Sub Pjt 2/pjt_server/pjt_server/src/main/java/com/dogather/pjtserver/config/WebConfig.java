@@ -28,7 +28,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "/user/login",
                         "/user/idcheck",
                         "/user/nickcheck",
-                        "/err/msg"
+                        "/err/msg",
+                        "/group/wsearch"
                 );
     }
 

@@ -21,4 +21,5 @@ public interface GroupDao {
     public void addOption(Map<String, Object> param);
 
     public List<GroupReturnDto> categoryList(int categoryNo);
+    public List<GroupReturnDto> wordSearch(List<String> wordList);
 }

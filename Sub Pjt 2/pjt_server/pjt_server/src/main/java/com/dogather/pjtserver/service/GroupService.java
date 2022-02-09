@@ -26,4 +26,6 @@ public interface GroupService {
     public void addFaq(int groupNo, List<FAQRequsetDto> faq);
 
     public List<GroupReturnDto> categoryList(int categoryNo);
+
+    public List<GroupReturnDto> wordSearch(List<String> wordList);
 }
