@@ -18,6 +18,7 @@
          <mapper resource="mapper/comment_query.xml" />
          <mapper resource="mapper/like_query.xml" />
          <mapper resource="mapper/follow_query.xml" />
+         <mapper resource="mapper/shipping_addr_query.xml" />
 
     </mappers>
 </configuration>
