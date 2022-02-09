@@ -1,13 +1,7 @@
 import styled from "styled-components";
 
 function MyPage() {
-  return (
-    <Wrap>
-
-
-    </Wrap>
-
-  );
+  return <Wrap></Wrap>;
 }
 
 const Title = styled.h1`
@@ -16,6 +10,5 @@ const Title = styled.h1`
 `;
 const Wrap = styled.div`
   background-color: #1e272e;
-
 `;
 export default MyPage;
