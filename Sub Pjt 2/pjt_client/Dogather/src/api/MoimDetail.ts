@@ -1,9 +1,21 @@
-const BASE_URL = `http://i6e104.p.ssafy.io:8090`
+import { userIdAtom } from './../atoms/Login';
+import { useRecoilValue } from 'recoil';
 
-export function fetchMoimGroupAPI(groupNo:string) {
-  return fetch(`${BASE_URL}/group/${groupNo}`).then((res) => res.json())
+const BASE_URL = `http://i6e104.p.ssafy.io:8090/group`
+
+
+
+export function FetchMoimGroupAPI(groupNo: string, userId:string, JWT:string) {
+// const JWT = localStorage.getItem("login_token");
+  return fetch(`${BASE_URL}/detail/${groupNo}`, {
+    method: "GET",
+    headers: {
+      jwt: `${JWT}`,
+      userId:userId,
+    }
+  }).then((res) => res.json())
 }
 
-export function fetchHomeMoimCard() {
-  return fetch(`${BASE_URL}/group/list`).then((res) => res.json())
+export function FetchHomeMoimCard() {
+  return fetch(`${BASE_URL}/list`).then((res) => res.json())
 }

@@ -8,7 +8,7 @@ import {
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
-import { fetchMoimGroupAPI } from "../../api/MoimDetail";
+import { FetchMoimGroupAPI } from "../../api/MoimDetail";
 // import { fetchMoimGroupAPI, fetchMoimProductAPI } from "../../api/MoimDetail";
 import { IMoimForm } from "./CreateMoim";
 import BounceLoader from "react-spinners/BounceLoader";
@@ -19,6 +19,8 @@ import Product from "./MoimDetailComponent/MoimProduct";
 import FAQ from "./MoimDetailComponent/MoimFAQ";
 import Review from "./MoimDetailComponent/MoimReview";
 import Refund from "./MoimDetailComponent/MoimRefund";
+import { useRecoilValue } from "recoil";
+import { userIdAtom } from "../../atoms/Login";
 
 interface RouteState {
   state: {
@@ -72,8 +74,11 @@ function MoimDetail() {
   const reviewMatch = useMatch("/:coinId/chart");
   const refundMatch = useMatch("/:coinId/chart");
 
-  const { isLoading, data } = useQuery<IGroupData>(["group", groupNo], () =>
-    fetchMoimGroupAPI(groupNo!)
+  const userId = useRecoilValue(userIdAtom);
+  const JWT = localStorage.getItem("login_token");
+  const { isLoading, data } = useQuery<IGroupData>(
+    ["group", groupNo, userId, JWT],
+    () => FetchMoimGroupAPI(groupNo!, userId!, JWT!)
   );
 
   console.log(isLoading);

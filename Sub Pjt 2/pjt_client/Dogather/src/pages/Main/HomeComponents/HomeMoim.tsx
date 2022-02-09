@@ -1,6 +1,6 @@
 import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
 import styled from "styled-components";
-import { fetchHomeMoimCard } from "../../../api/MoimDetail";
+import { FetchHomeMoimCard } from "../../../api/MoimDetail";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { useQuery } from "react-query";
@@ -24,7 +24,7 @@ interface iHomeCard {
 }
 
 function HomeMoim() {
-  const { data } = useQuery<iHomeCard>("Home", () => fetchHomeMoimCard());
+  const { data } = useQuery<iHomeCard>("Home", () => FetchHomeMoimCard());
   const makeComma = (price: number) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
