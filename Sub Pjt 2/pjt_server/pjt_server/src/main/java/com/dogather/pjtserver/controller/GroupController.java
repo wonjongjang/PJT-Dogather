@@ -151,12 +151,27 @@ public class GroupController {
     }
 
     @PostMapping("/interest")
-    public ResponseEntity<Integer> addInterest(@RequestBody GroupInterestDto dto){
+    public ResponseEntity<Integer> addInterest(@RequestBody GroupInterestDto dto) {
         int result = groupService.addInterest(dto);
-        if(result == 1){
+        if (result == 1) {
             return new ResponseEntity<Integer>(result, HttpStatus.OK);
-        }else{
+        } else {
             return new ResponseEntity<Integer>(result, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/csearch/{categoryNo}")
+    public ResponseEntity<GroupListDto> categorySearch(@PathVariable int categoryNo){
+        GroupListDto list = new GroupListDto();
+        list.setList(groupService.categoryList(categoryNo));
+        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+    }
+
+//    @GetMapping("/wsearch/{word}")
+//    public ResponseEntity<GroupListDto> wordSearch(@PathVariable int word){
+//        GroupListDto list = new GroupListDto();
+//        list.setList(groupService.categoryList(categoryNo));
+//        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+//    }
+
 }

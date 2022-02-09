@@ -24,4 +24,6 @@ public interface GroupService {
     public void addOptions(int groupNo, List<OptionDto> options);
 
     public void addFaq(int groupNo, List<FAQRequsetDto> faq);
+
+    public List<GroupReturnDto> categoryList(int categoryNo);
 }

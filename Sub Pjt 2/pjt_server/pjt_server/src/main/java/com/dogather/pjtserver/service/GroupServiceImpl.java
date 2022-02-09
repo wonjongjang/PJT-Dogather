@@ -145,4 +145,9 @@ public class GroupServiceImpl implements GroupService {
             faqDao.createFaq(dbFaq);
         }
     }
+
+    @Override
+    public List<GroupReturnDto> categoryList(int categoryNo) {
+        return groupDao.categoryList(categoryNo);
+    }
 }
