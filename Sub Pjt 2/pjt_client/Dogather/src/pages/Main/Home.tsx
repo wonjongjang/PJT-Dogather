@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import HomeCarousel from "./HomeComponents/HomeCarousel";
 import HomeCategory from "./HomeComponents/HomeCategory";
 import HomeMoim from "./HomeComponents/HomeMoim";
 import HomeSearch from "./HomeComponents/HomeSearch";
@@ -9,6 +10,10 @@ function Home() {
       <SearchBar>
         <HomeSearch />
       </SearchBar>
+      <SearchBar>
+        <HomeCarousel />
+      </SearchBar>
+
       <HomeCategory />
       <HomeMoim />
     </Container>
