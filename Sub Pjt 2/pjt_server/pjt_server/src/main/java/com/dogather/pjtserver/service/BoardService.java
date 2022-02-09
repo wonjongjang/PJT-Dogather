@@ -20,4 +20,6 @@ public interface BoardService {
     public int upView(int postNo);
 
     public List<BoardResponseDto> getAllboard();
+
+    public List<BoardDto> findUserLikeBoard(int userNo);
 }

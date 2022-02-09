@@ -29,6 +29,8 @@ public class GroupOptionDto {
     private int originPrice;
     private int price;
     private List<OptionDto> options;
+    private List<Integer> mediaList;
+    private List<FAQDto> FaqList;
 
     public void setGroupDto(GroupDto groupDto){
         this.groupNo = groupDto.getGroupNo();

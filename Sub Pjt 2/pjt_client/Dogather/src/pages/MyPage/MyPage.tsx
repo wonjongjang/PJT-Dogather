@@ -2,12 +2,11 @@ import styled from "styled-components";
 
 function MyPage() {
   return (
-    <div>
-      <h1>MyPage</h1>
-      <h2>MyPage</h2>
-      <h3>MyPage</h3>
-      <h4>MyPage</h4>
-    </div>
+    <Wrap>
+
+
+    </Wrap>
+
   );
 }
 
@@ -15,5 +14,8 @@ const Title = styled.h1`
   color: blue
   font-size: 15px;
 `;
+const Wrap = styled.div`
+  background-color: #1e272e;
 
+`;
 export default MyPage;

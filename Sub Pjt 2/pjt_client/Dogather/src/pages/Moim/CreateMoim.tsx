@@ -11,6 +11,7 @@ import Option from "./CreateMoimComponent/Option/Option";
 import CreateFAQ from "./CreateMoimComponent/FAQ/CreateFAQ";
 import { FAQsAtom } from "../../atoms/FAQs";
 import FAQ from "./CreateMoimComponent/FAQ/FAQ";
+import { useState } from "react";
 
 export interface IMoimForm {
   groupLeader: number; // 모임 대표
@@ -33,6 +34,8 @@ function CreateMoim() {
   const [options, setOptions] = useRecoilState(OptionsAtom);
   const [FAQs, setFAQs] = useRecoilState(FAQsAtom);
 
+  const [fileList, setFileList] = useState<FileList | undefined>();
+
   const {
     register,
     watch,
@@ -42,11 +45,19 @@ function CreateMoim() {
     getValues,
   } = useForm<IMoimForm>();
 
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { files },
+    } = event;
+
+    if (files != null) {
+      setFileList(files);
+    }
+  };
+
   const onValid = (data: IMoimForm) => {
-    // console.log(data); // data 확인
-    // console.log(options);
     const JWT = localStorage.getItem("login_token");
-    console.log(JWT);
+
     const newDeadline =
       data.deadline.replace("T", " ").substring(0, 19) + ":00";
 
@@ -61,7 +72,6 @@ function CreateMoim() {
       options: options,
       requestfaq: FAQs,
     };
-    console.log(newData);
 
     const formData = new FormData();
 
@@ -70,12 +80,13 @@ function CreateMoim() {
       new Blob([JSON.stringify(newData)], { type: "application/json" })
     );
 
-    // fetchGroup(Object(newData));
+    if (fileList != null) {
+      Array.from(fileList).forEach((file) => formData.append("file", file));
+    }
 
     fetch("http://i6e104.p.ssafy.io:8090/group/register", {
       method: "POST",
       headers: {
-        // "Content-Type": "application/json",
         jwt: `${JWT}`,
         userId: userId,
       },
@@ -84,11 +95,11 @@ function CreateMoim() {
       .then((response) => response.json())
       .then((result) => {
         if (result) {
-          // navigate(`/moim/${result}`);
+          navigate(`/moim/${result}`);
           console.log(result);
         }
-        // setOptions([]);
-        // setFAQs([]);
+        setOptions([]);
+        setFAQs([]);
       });
   };
 
@@ -161,6 +172,7 @@ function CreateMoim() {
           <ErrorMessage>{errors?.deadline?.message}</ErrorMessage>
         </InputDiv>
       </MoimForm>
+      <input type="file" multiple onChange={onChange} />
       <CreateOption />
       {options?.map((option) => (
         <Option key={option.id} {...option} />

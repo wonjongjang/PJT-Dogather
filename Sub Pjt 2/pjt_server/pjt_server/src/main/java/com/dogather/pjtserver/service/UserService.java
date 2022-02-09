@@ -1,6 +1,9 @@
 package com.dogather.pjtserver.service;
 
+import com.dogather.pjtserver.dto.BoardDto;
 import com.dogather.pjtserver.dto.UserDto;
+
+import java.util.List;
 
 public interface UserService {
     public int userRegister(UserDto userDto);

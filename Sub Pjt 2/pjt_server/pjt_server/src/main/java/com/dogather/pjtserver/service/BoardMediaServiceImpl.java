@@ -2,6 +2,7 @@ package com.dogather.pjtserver.service;
 
 import com.dogather.pjtserver.dao.BoardMediaDao;
 import com.dogather.pjtserver.dto.BoardMediaDto;
+import com.dogather.pjtserver.dto.GroupMediaDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,4 +30,5 @@ public class BoardMediaServiceImpl implements BoardMediaService{
     public void deleteMedia(int mediaNo) {
         mediaDao.deleteMedia(mediaNo);
     }
+
 }
