@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { fetchGroup } from "../../api/CreateMoim";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userIdAtom, userNoAtom } from "../../atoms/Login";
 import { useNavigate } from "react-router-dom";
@@ -115,8 +114,14 @@ function CreateMoim() {
               <Required>*</Required>
             </InputTitle>
             <InputDiv>
-              <span>드롭박스 나중에 달기</span>
+              <select></select>
             </InputDiv>
+            <ExpDiv>
+              <Exp>
+                상품과 맞지 않는 카테고리를 등록할 경우 강제 이동되거나 중지 및
+                금지 될 수 있습니다.
+              </Exp>
+            </ExpDiv>
           </Block>
           <Block>
             <InputTitle>
@@ -135,7 +140,15 @@ function CreateMoim() {
               <ErrorMessage>{errors?.product?.message}</ErrorMessage>
             </InputDiv>
             <ExpDiv>
-              <Exp>설명</Exp>
+              <Exp>
+                판매 상품과 직접 관련이 없는 다른 상품명, 스팸성 키워드 입력 시
+                관리자에 의해 판매 금지될 수 있습니다.
+                <br />
+                유명 상품 유사문구를 무단으로 도용하여 ~스타일, ~st 등과 같이
+                기재하는 경우 별도 고지 없이 제재될 수 있습니다.
+                <br />
+                상품명을 잘 맞게 입력하면 검색 노출에 도움이 될 수 있습니다.
+              </Exp>
             </ExpDiv>
           </Block>
           <Block>
@@ -178,7 +191,11 @@ function CreateMoim() {
               </SubInputBottomDiv>
             </InputDiv>
             <ExpDiv>
-              <Exp>설명</Exp>
+              <Exp>
+                출시 가격 : 해당 상품의 정가
+                <br />
+                공구 가격 : 공동 구매 시 구매 또는 판매할 수 있는 가격
+              </Exp>
             </ExpDiv>
           </Block>
           <Block>
@@ -197,55 +214,16 @@ function CreateMoim() {
               <ErrorMessage>{errors?.maxPeople?.message}</ErrorMessage>
             </InputDiv>
             <ExpDiv>
-              <Exp>설명</Exp>
+              <Exp>
+                공동구매를 함께 진행할 최대 인원수를 입력합니다.
+                <br />
+                인원이 모두 확보되면 공동구매 과정이 진행됩니다.
+              </Exp>
             </ExpDiv>
           </Block>
           <Block>
             <InputTitle>
-              <span>상품이미지</span>
-              <Required>*</Required>
-            </InputTitle>
-            <InputDiv>
-              <File type="file" multiple onChange={onChange} />
-            </InputDiv>
-          </Block>
-          <Block>
-            <InputTitle>
-              <span>상세설명</span>
-              <Required>*</Required>
-            </InputTitle>
-            <InputDiv>
-              <TextArea
-                {...register("detail", {
-                  required: "필수 정보입니다.",
-                })}
-              />
-              <ErrorMessage>{errors?.detail?.message}</ErrorMessage>
-            </InputDiv>
-            <ExpDiv>
-              <Exp>설명</Exp>
-            </ExpDiv>
-          </Block>
-          <Block>
-            <InputTitle>
-              <span>URL</span>
-              <Required>*</Required>
-            </InputTitle>
-            <InputDiv>
-              <Input
-                {...register("link", {
-                  required: "필수 정보입니다.",
-                })}
-              />
-              <ErrorMessage>{errors?.link?.message}</ErrorMessage>
-            </InputDiv>
-            <ExpDiv>
-              <Exp>설명</Exp>
-            </ExpDiv>
-          </Block>
-          <Block>
-            <InputTitle>
-              <span>공구 마감 날짜</span>
+              <span>모임 마감 날짜</span>
               <Required>*</Required>
             </InputTitle>
             <InputDiv>
@@ -258,11 +236,83 @@ function CreateMoim() {
               <ErrorMessage>{errors?.deadline?.message}</ErrorMessage>
             </InputDiv>
             <ExpDiv>
-              <Exp>설명</Exp>
+              <Exp>
+                공동구매 인원 모집의 마감 날짜를 입력해 주시기 바랍니다.
+                <br />
+                시작 날짜는 모임 생성 시간으로 자동 적용됩니다.
+              </Exp>
+            </ExpDiv>
+          </Block>
+          <Block>
+            <InputTitle>
+              <span>상품 상세 이미지 ({fileList ? fileList.length : 0})</span>
+              <Required>*</Required>
+            </InputTitle>
+            <InputDiv>
+              <ImgBox htmlFor="files">
+                <ImgBoxInside>+</ImgBoxInside>
+              </ImgBox>
+              <Files type="file" id="files" multiple onChange={onChange} />
+            </InputDiv>
+            <ExpDiv>
+              <Exp>
+                상품 상세 내용을 보여줄 다수의 사진을 첨부해 주시기 바랍니다.
+              </Exp>
+            </ExpDiv>
+          </Block>
+          <Block>
+            <InputTitle>
+              <span>상세 설명</span>
+              <Required>*</Required>
+            </InputTitle>
+            <InputDiv>
+              <TextArea
+                {...register("detail", {
+                  required: "필수 정보입니다.",
+                })}
+              />
+              <ErrorMessage>{errors?.detail?.message}</ErrorMessage>
+            </InputDiv>
+            <ExpDiv>
+              <Exp>
+                외부링크를 통한 개인정보(휴대폰 번호, 이메일 주소) 수집은
+                금지되므로 등록시 노출이 제재될 수 있습니다.
+                <br />
+                상품명과 직접적 관련 없는 상세설명, 외부 링크 입력 시 관리자에
+                의해 판매 금지 될 수 있습니다.
+              </Exp>
+            </ExpDiv>
+          </Block>
+          <Block>
+            <InputTitle>
+              <span>링크</span>
+              <Required>*</Required>
+            </InputTitle>
+            <InputDiv>
+              <Input
+                {...register("link", {
+                  required: "필수 정보입니다.",
+                })}
+                placeholder="1개의 URL 입력"
+                maxLength={4000}
+              />
+              <ErrorMessage>{errors?.link?.message}</ErrorMessage>
+            </InputDiv>
+            <ExpDiv>
+              <Exp>
+                해당 상품이나 업체의 정보를 확인할 수 있는 URL을 입력해주시기
+                바랍니다.
+                <br />
+                최대 1개의 URL을 입력할 수 있으니 신중히 선택하시기 바랍니다.
+                (추후 수정 가능)
+              </Exp>
             </ExpDiv>
           </Block>
         </form>
         <Block>
+          <InputTitle>
+            <span>옵션</span>
+          </InputTitle>
           <InputDiv>
             <CreateOption />
             {options?.map((option) => (
@@ -271,6 +321,9 @@ function CreateMoim() {
           </InputDiv>
         </Block>
         <Block>
+          <InputTitle>
+            <span>FAQ</span>
+          </InputTitle>
           <InputDiv>
             <CreateFAQ />
             {FAQs?.map((faq) => (
@@ -284,12 +337,14 @@ function CreateMoim() {
   );
 }
 
+// 페이지 전체
 const Container = styled.div`
   display: flex;
   justify-content: center;
   background-color: whitesmoke;
 `;
 
+// useForm + 다른 form 모두 포함
 const FormContainer = styled.div`
   width: 1280px;
   margin-top: 68px;
@@ -309,6 +364,7 @@ const FormTitle = styled.div`
 
 const InputTitle = styled.div`
   font-size: 16px;
+  font-weight: bold;
   padding: 1rem;
   border-bottom: 1px solid whitesmoke;
 `;
@@ -323,32 +379,26 @@ const InputDiv = styled.div`
   padding: 1rem;
 `;
 
-const SubInputTopDiv = styled.div`
+// 항목의 하위 항목
+export const SubInputTopDiv = styled.div`
   display: flex;
   padding: 0 0 1rem 0;
   border-bottom: 1px solid whitesmoke;
 `;
-
 const SubInputMiddleDiv = styled.div`
   display: flex;
   padding: 1rem 0;
   border-bottom: 1px solid whitesmoke;
 `;
-
-const SubInputBottomDiv = styled.div`
+export const SubInputBottomDiv = styled.div`
   display: flex;
-  padding: 1rem 0;
+  padding: 1rem 0 0 0;
 `;
-
-const SubTitle = styled.div`
+export const SubTitle = styled.div`
   display: flex;
   align-items: center;
   width: 200px;
   font-size: 14px;
-`;
-
-const ExpDiv = styled.div`
-  padding: 0 1rem 1rem 1rem;
 `;
 
 const Input = styled.input`
@@ -360,7 +410,7 @@ const Input = styled.input`
   }
 `;
 
-const MiniInput = styled.input`
+export const MiniInput = styled.input`
   margin-right: 3px;
   width: 250px;
   height: 30px;
@@ -370,6 +420,7 @@ const MiniInput = styled.input`
   }
 `;
 
+// 상세설명
 const TextArea = styled.textarea`
   resize: none; // 크기 고정
   margin-bottom: 2px;
@@ -377,26 +428,45 @@ const TextArea = styled.textarea`
   height: 200px;
 `;
 
-const File = styled.input`
-  background-color: black;
-`;
-
-const ErrorMessage = styled.span`
+// 에러 메시지
+export const ErrorMessage = styled.span`
   margin-top: 3px;
   font-size: 11px;
   color: #ff5e57;
 `;
 
-const Exp = styled.span`
+// 참고
+export const ExpDiv = styled.div`
+  padding: 0 1rem 1rem 1rem; // 상우하좌
+`;
+export const Exp = styled.span`
   font-size: 11px;
-  color: #485460;
+  color: #808e9b;
+`;
+
+// 상품 상세 이미지
+const Files = styled.input`
+  display: none;
+`;
+const ImgBox = styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 150px;
+  border: 2px dotted #808e9b;
+  cursor: pointer;
+`;
+const ImgBoxInside = styled.div`
+  color: #808e9b;
+  font-size: 70px;
 `;
 
 const Button = styled.button`
   margin-top: 35px;
   border-radius: 10px;
   border: none;
-  width: 400px;
+  width: 100%;
   height: 55px;
   font-size: 18px;
   font-weight: bold;
