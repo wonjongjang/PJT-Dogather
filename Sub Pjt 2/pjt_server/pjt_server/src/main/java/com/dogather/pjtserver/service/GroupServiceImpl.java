@@ -39,11 +39,18 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public int groupRegister(GroupDto groupDto, List<MultipartFile> files) throws IOException {
+    public int groupRegister(GroupDto groupDto, List<MultipartFile> files, MultipartFile mainImage) throws IOException {
         int queryResult;
         if (groupRegister(groupDto) == 0)
             return 0;
+
+
         List<GroupMediaDto> mediaList = fileHandler.uploadGroupFiles(files, groupDto.getGroupNo());
+        if (mainImage != null) {
+            GroupMediaDto mainImageDto = fileHandler.uploadMainImage(mainImage, groupDto.getGroupNo());
+            mediaList.add(mainImageDto);
+        }
+        log.info(String.valueOf(mediaList.size()));
         if(CollectionUtils.isEmpty(mediaList) == false) {
             mediaDao.insertMedia(mediaList);
         }
@@ -104,7 +111,14 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupReturnDto> getList() {
-        return groupDao.getList();
+        List<GroupReturnDto> groupList =  groupDao.getList();
+        for (GroupReturnDto group:groupList) {
+            if (groupDao.getMainImage(group.getGroupNo()) != null)
+                group.setMainImage(groupDao.getMainImage(group.getGroupNo()));
+            else
+                group.setMainImage(0);
+        }
+        return groupList;
     }
 
     @Override

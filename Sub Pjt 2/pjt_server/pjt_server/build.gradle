@@ -51,6 +51,9 @@ dependencies {
 	// apache commons IO
 	implementation 'commons-io:commons-io:2.6'
 
+	// image scalr
+	implementation 'org.imgscalr:imgscalr-lib:4.2'
+
 }
 
 ext {

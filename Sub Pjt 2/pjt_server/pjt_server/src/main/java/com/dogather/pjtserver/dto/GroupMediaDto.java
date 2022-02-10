@@ -19,4 +19,6 @@ public class GroupMediaDto {
 
     private String mediaFilesize;
 
+    private String mainImageYn;
+
 }

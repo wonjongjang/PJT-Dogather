@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface GroupService {
     public int groupRegister(GroupDto groupDto);
-    public int groupRegister(GroupDto groupDto, List<MultipartFile> files) throws IOException;
+    public int groupRegister(GroupDto groupDto, List<MultipartFile> files, MultipartFile mainImage) throws IOException;
 
     public int groupUpdate(int groupNo, GroupDto updateGroupDto, List<MultipartFile> addMediaList) throws IOException;
 

@@ -4,7 +4,7 @@
 
     <insert id="insertMedia" parameterType="list">
         insert into group_media
-        (media_no, group_no, media_title, media_savename, media_filesize, insert_date)
+        (media_no, group_no, media_title, media_savename, media_filesize, insert_date, mainImageYn)
         values
         <foreach collection="list" item="item" separator=",">
             (
@@ -13,7 +13,8 @@
             #{item.mediaTitile},
             #{item.mediaSavename},
             #{item.mediaFilesize},
-            #{item.insertDate}
+            #{item.insertDate},
+            #{item.mainImageYn}
             )
         </foreach>
     </insert>
