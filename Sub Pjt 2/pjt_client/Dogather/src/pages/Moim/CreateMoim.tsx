@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userIdAtom, userNoAtom } from "../../atoms/Login";
 import { useNavigate } from "react-router-dom";
+import { DragDropContext } from "react-beautiful-dnd";
 
 import CreateOption from "./CreateMoimComponent/Option/CreateOption";
 import { OptionsAtom } from "../../atoms/Options";
@@ -98,6 +99,8 @@ function CreateMoim() {
         // setFAQs([]);
       });
   };
+
+  const onDragEnd = () => {}; // 드래그 끝냈을 때 불려지는 함수
 
   return (
     <Container>
@@ -227,7 +230,7 @@ function CreateMoim() {
               <Required>*</Required>
             </InputTitle>
             <InputDiv>
-              <Input
+              <MiniInput
                 {...register("deadline", {
                   required: "필수 정보입니다.",
                 })}
@@ -237,26 +240,10 @@ function CreateMoim() {
             </InputDiv>
             <ExpDiv>
               <Exp>
-                공동구매 인원 모집의 마감 날짜를 입력해 주시기 바랍니다.
+                공동구매 인원 모집의 마감 날짜를 입력해 주시기 바랍니다. (달력
+                아이콘으로 쉽고 빠르게 입력 가능합니다.)
                 <br />
                 시작 날짜는 모임 생성 시간으로 자동 적용됩니다.
-              </Exp>
-            </ExpDiv>
-          </Block>
-          <Block>
-            <InputTitle>
-              <span>상품 상세 이미지 ({fileList ? fileList.length : 0})</span>
-              <Required>*</Required>
-            </InputTitle>
-            <InputDiv>
-              <ImgBox htmlFor="files">
-                <ImgBoxInside>+</ImgBoxInside>
-              </ImgBox>
-              <Files type="file" id="files" multiple onChange={onChange} />
-            </InputDiv>
-            <ExpDiv>
-              <Exp>
-                상품 상세 내용을 보여줄 다수의 사진을 첨부해 주시기 바랍니다.
               </Exp>
             </ExpDiv>
           </Block>
@@ -311,14 +298,59 @@ function CreateMoim() {
         </form>
         <Block>
           <InputTitle>
+            <span>대표 이미지</span>
+          </InputTitle>
+          <InputDiv>
+            <ImgBox htmlFor="file">
+              <ImgBoxInside>+</ImgBoxInside>
+            </ImgBox>
+            <Files type="file" id="file" />
+          </InputDiv>
+          <ExpDiv>
+            <Exp>모임 리스트에서 보일 대표 이미지를 설정해 주세요.</Exp>
+          </ExpDiv>
+        </Block>
+        <Block>
+          <InputTitle>
+            <span>상품 상세 이미지 ({fileList ? fileList.length : 0})</span>
+          </InputTitle>
+          <InputDiv>
+            <ImgBox htmlFor="files">
+              <ImgBoxInside>+</ImgBoxInside>
+            </ImgBox>
+            <Files type="file" id="files" multiple onChange={onChange} />
+          </InputDiv>
+          <ExpDiv>
+            <Exp>상품 상세 내용을 보여줄 다수의 사진을 첨부해 주세요.</Exp>
+          </ExpDiv>
+        </Block>
+        <Block>
+          <InputTitle>
             <span>옵션</span>
           </InputTitle>
           <InputDiv>
             <CreateOption />
-            {options?.map((option) => (
-              <Option key={option.id} {...option} />
-            ))}
+            <Table>
+              <TableTitleDiv>
+                <TableTitle>옵션 조합</TableTitle>
+                <TableTitle>추가 가격</TableTitle>
+                <TableTitle></TableTitle>
+              </TableTitleDiv>
+              <DragDropContext onDragEnd={onDragEnd}>
+                {options?.map((option) => (
+                  <Option key={option.id} {...option} />
+                ))}
+              </DragDropContext>
+            </Table>
           </InputDiv>
+          <ExpDiv>
+            <Exp>
+              옵션 조합 : 각 옵션의 조합을 하나씩 입력해 주시기 바랍니다.
+              <br />
+              추가 가격 : 해당 옵션을 선택했을 때 추가 되는 가격을 숫자로만
+              입력해 주시기 바랍니다.
+            </Exp>
+          </ExpDiv>
         </Block>
         <Block>
           <InputTitle>
@@ -326,10 +358,20 @@ function CreateMoim() {
           </InputTitle>
           <InputDiv>
             <CreateFAQ />
-            {FAQs?.map((faq) => (
-              <FAQ key={faq.id} {...faq} />
-            ))}
+            <Table>
+              <TableTitleDiv>
+                <TableTitle>질문</TableTitle>
+                <TableTitle>답변</TableTitle>
+                <TableTitle></TableTitle>
+              </TableTitleDiv>
+              {FAQs?.map((faq) => (
+                <FAQ key={faq.id} {...faq} />
+              ))}
+            </Table>
           </InputDiv>
+          <ExpDiv>
+            <Exp>자주하는 질문을 미리 등록하여 빠르게 응답할 수 있습니다.</Exp>
+          </ExpDiv>
         </Block>
         <Button form="total">생성하기</Button>
       </FormContainer>
@@ -350,12 +392,14 @@ const FormContainer = styled.div`
   margin-top: 68px;
 `;
 
+// form 항목
 const Block = styled.div`
   background-color: white;
   min-height: 50px;
   margin: 1rem;
 `;
 
+// form 제목
 const FormTitle = styled.div`
   font-size: 20px;
   font-weight: bold;
@@ -369,6 +413,7 @@ const InputTitle = styled.div`
   border-bottom: 1px solid whitesmoke;
 `;
 
+// 필수 항목 (*)
 const Required = styled.span`
   font-size: 16px;
   color: #ff5e57;
@@ -385,7 +430,7 @@ export const SubInputTopDiv = styled.div`
   padding: 0 0 1rem 0;
   border-bottom: 1px solid whitesmoke;
 `;
-const SubInputMiddleDiv = styled.div`
+export const SubInputMiddleDiv = styled.div`
   display: flex;
   padding: 1rem 0;
   border-bottom: 1px solid whitesmoke;
@@ -397,7 +442,8 @@ export const SubInputBottomDiv = styled.div`
 export const SubTitle = styled.div`
   display: flex;
   align-items: center;
-  width: 200px;
+  max-width: 200px;
+  width: 100%;
   font-size: 14px;
 `;
 
@@ -411,7 +457,6 @@ const Input = styled.input`
 `;
 
 export const MiniInput = styled.input`
-  margin-right: 3px;
   width: 250px;
   height: 30px;
   ::-webkit-inner-spin-button {
@@ -429,7 +474,7 @@ const TextArea = styled.textarea`
 `;
 
 // 에러 메시지
-export const ErrorMessage = styled.span`
+export const ErrorMessage = styled.p`
   margin-top: 3px;
   font-size: 11px;
   color: #ff5e57;
@@ -462,8 +507,29 @@ const ImgBoxInside = styled.div`
   font-size: 70px;
 `;
 
+// 테이블
+const Table = styled.div`
+  min-height: 60px;
+  /* max-width: 1212px; */
+  width: 100%;
+  border: 1px solid #d2dae2;
+`;
+const TableTitleDiv = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: whitesmoke;
+  height: 30px;
+`;
+const TableTitle = styled.div`
+  width: 100%;
+  font-size: 14px;
+  text-align: center;
+`;
+
+// 최종 제출 버튼
 const Button = styled.button`
   margin-top: 35px;
+  margin-bottom: 150px;
   border-radius: 10px;
   border: none;
   width: 100%;
