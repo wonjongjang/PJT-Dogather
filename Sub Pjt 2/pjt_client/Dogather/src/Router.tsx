@@ -35,17 +35,13 @@ function Router() {
           <Route path="refund" element={<Refund />} />
         </Route>
 
-        <Route path="/community" element={<CommunityHome />}>
-          <Route
-            path="/community/announcement/"
-            element={<AnnouncementCommunity />}
-          />
-          <Route
-            path="/community/infoshare/"
-            element={<InfoShareCommunity />}
-          />
-          <Route path="/community/free/" element={<FreeCommunity />} />
-        </Route>
+        <Route path="/community" element={<CommunityHome />} />
+        <Route
+          path="/community/announcement/"
+          element={<AnnouncementCommunity />}
+        />
+        <Route path="/community/infoshare/" element={<InfoShareCommunity />} />
+        <Route path="/community/free/" element={<FreeCommunity />} />
 
         {/* 로그인 하지 않았을 때 url 직접 접근 가능 */}
         <Route
