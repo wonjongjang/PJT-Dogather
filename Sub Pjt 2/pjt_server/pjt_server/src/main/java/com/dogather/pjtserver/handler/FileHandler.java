@@ -29,8 +29,9 @@ import java.util.UUID;
 public class FileHandler {
 
     private final LocalDate today = LocalDate.now();
+//    private final String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
 
-    public final String uploadPath = Paths.get("/doimage", today.format(DateTimeFormatter.ofPattern("yyMMdd"))).toString();
+    public final String uploadPath = Paths.get("/doimage").toString();
 //    public String uploadPath = new File("").getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "upload" + File.separator;
 
 
@@ -46,7 +47,7 @@ public class FileHandler {
         }
         List<BoardMediaDto> fileList = new ArrayList<>();
 
-        File dir = new File(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")));
+        File dir = new File(uploadPath + "/" + today.format(DateTimeFormatter.ofPattern("yyMMdd")));
         if(!dir.exists()) {
             dir.mkdirs();
         }
@@ -68,7 +69,7 @@ public class FileHandler {
             }
             String saveName = getRandomString() + originalFileExtension;
             // 파일 객체 생성
-            File target = new File(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")), saveName);
+            File target = new File(uploadPath + "/" +today.format(DateTimeFormatter.ofPattern("yyMMdd")), saveName);
             // 파일 업로드
             file.transferTo(target);
 
@@ -88,7 +89,7 @@ public class FileHandler {
     public GroupMediaDto uploadMainImage(MultipartFile mainImage, int groupNo) throws IOException {
         log.info("==========메인 이미지 생성!");
 
-        File dir = new File(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")));
+        File dir = new File(uploadPath + "/" +today.format(DateTimeFormatter.ofPattern("yyMMdd")));
         if(!dir.exists()) {
             dir.mkdirs();
         }
@@ -103,12 +104,12 @@ public class FileHandler {
 
         String saveName = getRandomString() + "." + originalFileExtension;
 
-        File target = new File(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")), saveName);
+        File target = new File(uploadPath + "/" +today.format(DateTimeFormatter.ofPattern("yyMMdd")), saveName);
         // 파일 업로드
 
         mainImage.transferTo(target);
 
-        File mainImageFile = new File(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")), "s_"+saveName);
+        File mainImageFile = new File(uploadPath + "/" +today.format(DateTimeFormatter.ofPattern("yyMMdd")), "s_"+saveName);
         BufferedImage bufferOriginalImage = ImageIO.read(target);
 
         int dw = 250;
@@ -153,7 +154,7 @@ public class FileHandler {
         }
         List<GroupMediaDto> fileList = new ArrayList<>();
 
-        File dir = new File(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")));
+        File dir = new File(uploadPath + "/" +today.format(DateTimeFormatter.ofPattern("yyMMdd")));
         if(!dir.exists()) {
             dir.mkdirs();
         }
@@ -175,7 +176,7 @@ public class FileHandler {
             }
             String saveName = getRandomString() + originalFileExtension;
             // 파일 객체 생성
-            File target = new File(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")), saveName);
+            File target = new File(uploadPath + "/" +today.format(DateTimeFormatter.ofPattern("yyMMdd")), saveName);
             // 파일 업로드
             file.transferTo(target);
 

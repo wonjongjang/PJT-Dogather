@@ -1,6 +1,6 @@
 FROM openjdk:11
 
-VOLUME /tmp
+VOLUME ["/doimage", "/doimage"]
 
 ARG JAR_FILE=build/libs/pjt_server-1.0.0-RELEASE.jar
 
