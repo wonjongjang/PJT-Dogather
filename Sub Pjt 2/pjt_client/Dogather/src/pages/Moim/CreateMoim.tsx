@@ -80,7 +80,7 @@ function CreateMoim() {
       Array.from(fileList).forEach((file) => formData.append("file", file));
     }
 
-    fetch("http://i6e104.p.ssafy.io:8090/group/register", {
+    fetch("http://i6e104.p.ssafy.io:8090/api/group/register", {
       method: "POST",
       headers: {
         jwt: `${JWT}`,
