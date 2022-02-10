@@ -20,10 +20,7 @@ public interface GroupDao {
     public List<OptionDto> getOptions(int groupNo);
     public void addOption(Map<String, Object> param);
 
-<<<<<<< HEAD
     public List<GroupReturnDto> categoryList(int categoryNo);
     public List<GroupReturnDto> wordSearch(List<String> wordList);
-=======
     public Integer getMainImage(int groupNo);
->>>>>>> e6ae1d081ffb3d83c41f97279b4909a6cb1e532b
 }
