@@ -3,13 +3,17 @@ package com.dogather.pjtserver.handler;
 import com.dogather.pjtserver.dto.BoardMediaDto;
 import com.dogather.pjtserver.dto.GroupMediaDto;
 import lombok.extern.slf4j.Slf4j;
+import org.imgscalr.Scalr;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -26,8 +30,8 @@ public class FileHandler {
 
     private final LocalDate today = LocalDate.now();
 
-//    private final String uploadPath = Paths.get("/Users", "jamiehong", "Documents", "UPLOAD", today.format(DateTimeFormatter.ofPattern("yyMMdd"))).toString();
-    public String uploadPath = new File("").getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "upload" + File.separator;
+    public final String uploadPath = Paths.get("/doimage", today.format(DateTimeFormatter.ofPattern("yyMMdd"))).toString();
+//    public String uploadPath = new File("").getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "upload" + File.separator;
 
 
 
@@ -37,8 +41,6 @@ public class FileHandler {
 
 
     public List<BoardMediaDto> uploadFiles(List<MultipartFile> files, int postNo) throws IOException {
-//        log.info("===============경로 시작!!!!");
-//        log.info(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")));
         if(CollectionUtils.isEmpty(files) == true) {
             return Collections.emptyList();
         }
@@ -48,7 +50,6 @@ public class FileHandler {
         if(!dir.exists()) {
             dir.mkdirs();
         }
-//        log.info("========== 경로 뜨나");
 
         for(MultipartFile file : files) {
 
@@ -84,6 +85,68 @@ public class FileHandler {
         return fileList;
     }
 
+    public GroupMediaDto uploadMainImage(MultipartFile mainImage, int groupNo) throws IOException {
+        log.info("==========메인 이미지 생성!");
+
+        File dir = new File(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")));
+        if(!dir.exists()) {
+            dir.mkdirs();
+        }
+        String originalFileExtension = null;
+        String contentType = mainImage.getContentType();
+
+
+        if(contentType.contains("image/jpeg"))
+            originalFileExtension = "jpg";
+        else if (contentType.contains("image/png"))
+            originalFileExtension = "png";
+
+        String saveName = getRandomString() + "." + originalFileExtension;
+
+        File target = new File(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")), saveName);
+        // 파일 업로드
+
+        mainImage.transferTo(target);
+
+        File mainImageFile = new File(uploadPath + today.format(DateTimeFormatter.ofPattern("yyMMdd")), "s_"+saveName);
+        BufferedImage bufferOriginalImage = ImageIO.read(target);
+
+        int dw = 250;
+        int dh = 150; // 추후 썸네일 이미지 사이즈에 맞춰서 변경
+
+        int ow = bufferOriginalImage.getWidth();
+        int oh = bufferOriginalImage.getHeight();
+
+        int nw = ow;
+        int nh = (ow * dh) / dw;
+
+        if(nh > oh) {
+            nw = (oh * dw) / dh;
+            nh = oh;
+        }
+
+        BufferedImage bufferTransformImage = Scalr.crop(bufferOriginalImage, (ow - nw)/2, (oh - nh)/2, nw, nh);
+//        double ratio = 3;
+//        int width = (int) (bufferOriginalImage.getWidth() / ratio);
+//        int height = (int) (bufferOriginalImage.getHeight() / ratio);
+//        BufferedImage bufferTransformImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+//        Graphics2D graphic = bufferTransformImage.createGraphics();
+//        graphic.drawImage(bufferOriginalImage, 0, 0,width,height, null);
+        ImageIO.write(bufferTransformImage, originalFileExtension, mainImageFile);
+
+
+
+        GroupMediaDto mainImageDto = new GroupMediaDto();
+        mainImageDto.setGroupNo(groupNo);
+        mainImageDto.setMediaTitile(mainImage.getOriginalFilename());
+        mainImageDto.setMediaSavename(saveName);
+        mainImageDto.setMediaFilesize(String.valueOf(mainImage.getSize()));
+        mainImageDto.setInsertDate(today);
+        mainImageDto.setMainImageYn("Y");
+        log.info(mainImageDto.toString());
+        return mainImageDto;
+    }
+
     public List<GroupMediaDto> uploadGroupFiles(List<MultipartFile> files, int groupNo) throws IOException {
         if(CollectionUtils.isEmpty(files) == true) {
             return Collections.emptyList();
@@ -94,7 +157,6 @@ public class FileHandler {
         if(!dir.exists()) {
             dir.mkdirs();
         }
-//        log.info("========== 경로 뜨나");
 
         for(MultipartFile file : files) {
 
@@ -123,6 +185,7 @@ public class FileHandler {
             fileDto.setMediaSavename(saveName);
             fileDto.setMediaFilesize(String.valueOf(file.getSize()));
             fileDto.setInsertDate(today);
+            fileDto.setMainImageYn("N");
 
             fileList.add(fileDto);
 

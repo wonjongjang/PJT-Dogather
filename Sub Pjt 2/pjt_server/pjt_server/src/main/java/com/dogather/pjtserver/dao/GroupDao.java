@@ -19,4 +19,6 @@ public interface GroupDao {
     public List<GroupInterestDto> interestlist(int userNo);
     public List<OptionDto> getOptions(int groupNo);
     public void addOption(Map<String, Object> param);
+
+    public Integer getMainImage(int groupNo);
 }

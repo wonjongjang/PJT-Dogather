@@ -63,8 +63,9 @@ public class GroupController {
 
     @PostMapping("/register")
     public ResponseEntity<Integer> register(@RequestPart(value = "groupRegisterDto") GroupRegisterDto groupRegisterDto,
-                                            @RequestPart(value = "file", required = false) List<MultipartFile> files) throws Exception{
-        int created = groupService.groupRegister(groupRegisterDto.getGroup(), files);
+                                            @RequestPart(value = "file", required = false) List<MultipartFile> files,
+                                            @RequestPart(value = "mainImage", required = false) MultipartFile mainImage) throws Exception{
+        int created = groupService.groupRegister(groupRegisterDto.getGroup(), files, mainImage);
         if(created != 0){
             groupService.addOptions(groupRegisterDto.getGroup().getGroupNo() ,groupRegisterDto.getOptions());
             groupService.addFaq(groupRegisterDto.getGroup().getGroupNo(), groupRegisterDto.getRequestfaq());
