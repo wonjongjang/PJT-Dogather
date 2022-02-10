@@ -1,7 +1,5 @@
-import { Table } from "@mui/material";
 import styled from "styled-components";
 import AnnounceTable from "./AnnounceTable";
-
 function AnnouncementCommunity() {
   return (
     <Container>
@@ -10,9 +8,6 @@ function AnnouncementCommunity() {
   );
 }
 
-const Container = styled.div`
-  display: flex;
-  /* justify-content: center; */
-`;
+const Container = styled.div``;
 
 export default AnnouncementCommunity;
