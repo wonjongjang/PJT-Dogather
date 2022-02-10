@@ -15,6 +15,9 @@ import Review from "./pages/Moim/MoimDetailComponent/MoimReview";
 import Refund from "./pages/Moim/MoimDetailComponent/MoimRefund";
 import CommunityHome from "./pages/Community/CommunityHome";
 import MyPage from "./pages/MyPage/MyPage";
+import AnnouncementCommunity from "./pages/Community/AnnouncementCommunity/AnnouncementCommunity";
+import InfoShareCommunity from "./pages/Community/InfoShareCommunity/InfoShareCommunity";
+import FreeCommunity from "./pages/Community/FreeCommunity/FreeCommunity";
 
 function Router() {
   const isLogin = useRecoilValue(isLoginAtom);
@@ -32,7 +35,17 @@ function Router() {
           <Route path="refund" element={<Refund />} />
         </Route>
 
-        <Route path="/community" element={<CommunityHome />}></Route>
+        <Route path="/community" element={<CommunityHome />}>
+          <Route
+            path="/community/announcement/"
+            element={<AnnouncementCommunity />}
+          />
+          <Route
+            path="/community/infoshare/"
+            element={<InfoShareCommunity />}
+          />
+          <Route path="/community/free/" element={<FreeCommunity />} />
+        </Route>
 
         {/* 로그인 하지 않았을 때 url 직접 접근 가능 */}
         <Route
@@ -54,7 +67,7 @@ function Router() {
           element={isLogin ? <CreateMoim /> : <Navigate replace to="/" />}
         />
       </Routes>
-      <Footer/>
+      <Footer />
     </BrowserRouter>
   );
 }

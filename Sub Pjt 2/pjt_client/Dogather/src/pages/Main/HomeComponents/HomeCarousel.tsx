@@ -15,7 +15,7 @@ function HomeCarousel() {
   ];
   return (
     <div>
-      {/* <Carousel autoplay>
+      {/* <Carousel>
         <div>
           <h3>1</h3>
         </div>
@@ -28,8 +28,8 @@ function HomeCarousel() {
         <div>
           <h3>4</h3>
         </div>
-      </Carousel>
-      <Progress percent={30} strokeWidth={5} /> */}
+      </Carousel> */}
+      <Progress percent={30} strokeWidth={5} />
     </div>
   );
 }
