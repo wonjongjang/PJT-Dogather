@@ -5,6 +5,19 @@ import HomeCategory from "./HomeComponents/HomeCategory";
 import HomeMoim from "./HomeComponents/HomeMoim";
 import HomeSearch from "./HomeComponents/HomeSearch";
 
+// const today = new Date();
+
+// const year = today.getFullYear();
+// const month = today.getMonth() + 1;
+// const date = today.getDate();
+// const hour = today.getHours();
+// const minute = today.getMinutes();
+// const second = today.getSeconds();
+
+// console.log(today);
+// console.log(year + "-" + month + "-" + date);
+// console.log(hour + ":" + minute + ":" + second);
+
 function Home() {
   return (
     <Container>
@@ -31,7 +44,7 @@ const SearchBar = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 40px;
 `;
 
 export default Home;

@@ -30,7 +30,7 @@ function HomeCarousel() {
           navButtonsAlwaysVisible={true}
         >
           {slides.map((slide, idx) => (
-            <Link to={"/moim/2"}>
+            <Link key={idx} to={"/moim/2"}>
               <img style={{ overflow: "hidden" }} src={slide} alt="끼잉낑" />
             </Link>
           ))}
@@ -40,7 +40,9 @@ function HomeCarousel() {
   );
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin-bottom: 10px;
+`;
 
 const Slider = styled(Carousel)`
   display: flex;

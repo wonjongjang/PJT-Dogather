@@ -11,8 +11,13 @@ export function FetchMoimGroupAPI(groupNo: string, userId:string, JWT:string) {
       userId:userId,
     }
   }).then((res) => res.json())
+  // .then((res) => console.log(res))
 }
 
 export function FetchHomeMoimCard() {
   return fetch(`${BASE_URL}/list`).then((res) => res.json())
+}
+
+export function FetchMoimMediaAPI(mediaNo:number) {
+  return fetch(`${BASE_URL}/image/${mediaNo}`).then((res) => res.json())
 }
