@@ -122,9 +122,24 @@ function AnnounceTable() {
                     <TableCell component="th" scope="row">
                       {row.postno}
                     </TableCell>
-                    <TableCell align="left">{row.title}</TableCell>
+                    <TableCell align="left">
+                      {row.title}
+                      <Imo>
+                        <img src={require("./like.png")} />
+                      </Imo>
+                      <H3>23</H3>
+                      <Imo>
+                        <img src={require("./comment.png")} />
+                      </Imo>
+                      <H3>31</H3>
+                    </TableCell>
                     <TableCell align="right">{row.writer}</TableCell>
-                    <TableCell align="right">{row.view}</TableCell>
+                    <TableCell align="right">
+                      <Imo>
+                        <img src={require("./view.png")} />
+                      </Imo>
+                      {row.view}
+                    </TableCell>
                     <TableCell align="right">{row.created}</TableCell>
                   </TableRow>
                 ))}
@@ -217,5 +232,15 @@ const CustomPage = styled.div`
 const Bottom = styled.div`
   margin-top: 2.5vw;
   margin-bottom: 2.5vw;
+`;
+
+const H3 = styled.h3`
+  display: inline;
+  font-size: 15px;
+`;
+
+const Imo = styled.span`
+  margin-left: 4px;
+  margin-right: 4px;
 `;
 export default AnnounceTable;
