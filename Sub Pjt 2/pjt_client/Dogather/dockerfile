@@ -1,5 +1,7 @@
 FROM node:16.13.2
 
+VOLUME ["/doimage", "/doimage"]
+
 WORKDIR /app
  
 COPY package*.json /app/
