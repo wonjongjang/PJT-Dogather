@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import HomeCarousel from "./HomeComponents/HomeCarousel";
 import HomeCategory from "./HomeComponents/HomeCategory";
@@ -30,6 +31,7 @@ const SearchBar = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
+  margin-top: 50px;
 `;
 
 export default Home;
