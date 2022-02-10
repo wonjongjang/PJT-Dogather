@@ -1,7 +1,4 @@
-import { userIdAtom } from './../atoms/Login';
-import { useRecoilValue } from 'recoil';
-
-const BASE_URL = `http://i6e104.p.ssafy.io:8090/group`
+const BASE_URL = `http://i6e104.p.ssafy.io/api/group`
 
 
 
