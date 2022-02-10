@@ -52,7 +52,7 @@ function Singup() {
     //   })
     //   .finally(() => {});
 
-    fetch("http://i6e104.p.ssafy.io:8090/user/register", {
+    fetch("http://i6e104.p.ssafy.io:8090/api/user/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

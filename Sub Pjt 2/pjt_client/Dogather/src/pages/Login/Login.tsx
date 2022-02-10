@@ -25,7 +25,7 @@ function Login() {
   const onValid = (data: ILoginForm) => {
     // console.log(data);
 
-    fetch("http://i6e104.p.ssafy.io:8090/user/login", {
+    fetch("http://i6e104.p.ssafy.io:8090/api/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
