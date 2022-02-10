@@ -1,5 +1,5 @@
 import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { FetchHomeMoimCard } from "../../../api/MoimDetail";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
@@ -23,24 +23,30 @@ interface iHomeCard {
 
 function HomeMoim() {
   const { data } = useQuery<iHomeCard>("Home", () => FetchHomeMoimCard());
+  console.log(data);
+
   const makeComma = (price: number) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   return (
     <Container>
+      <Title>
+        <CardDetail>
+          <TextENG>Recommended</TextENG>
+          <TextKOR>추천 모임</TextKOR>
+        </CardDetail>
+      </Title>
+
       <ProductList>
-        <Grid
-          container
-          spacing={2}
-          margin={0}
-          display={"flex"}
-          justifyContent={"center"}
-        >
+        <Grid container margin={0} display={"flex"} justifyContent={"center"}>
           {data?.list.slice(0, 4).map((d, idx) => (
             // <li key={idx}>{d.groupNo}</li>
-            <Link key={idx} to={`/moim/${d.groupNo}`}>
-              <Grid item sx={{ marginRight: 3 }}>
-                <CardActionArea>
+            <Grid item key={idx} sx={{ marginLeft: 2, marginRight: 2 }}>
+              <Alarm>
+                <Box>마감임박</Box>
+              </Alarm>
+              <CardActionArea>
+                <Link to={`/moim/${d.groupNo}`}>
                   <Card
                     sx={{
                       minWidth: 200,
@@ -60,21 +66,104 @@ function HomeMoim() {
                       alt="Product Image"
                     />
                   </Card>
-                </CardActionArea>
-                <CardDetail>
-                  <CategoryName>{d.categoryName}</CategoryName>
-                  <ProductName>{d.product}</ProductName>
-                  <Price>{makeComma(d.price)}원</Price>
-                  <PriceDetail>공동구매가</PriceDetail>
-                </CardDetail>
-              </Grid>
-            </Link>
+                </Link>
+              </CardActionArea>
+              <CardDetail>
+                <CategoryName>{d.categoryName}</CategoryName>
+                <ProductName>{d.product}</ProductName>
+                <Price>{makeComma(d.price)}원</Price>
+                <PriceDetail>공동구매가</PriceDetail>
+                {/* <MaxPeople>80/{d.maxPeople}명</MaxPeople>
+                <DeadLine>마감 {d.deadline}일 전</DeadLine> */}
+              </CardDetail>
+            </Grid>
           ))}
         </Grid>
       </ProductList>
     </Container>
   );
 }
+
+const animation = keyframes`
+0% {
+  opacity: 1;
+}
+10% {
+  opacity: 0.9;
+}
+20% {
+  opacity: 0.8;
+}
+30% {
+  opacity: 0.7;
+}
+40% {
+  opacity: 0.6;
+}
+50% {
+  opacity: 0.5;
+}
+60% {
+  opacity: 0.4;
+}
+70% {
+  opacity: 0.3;
+}
+80% {
+  opacity: 0.2;
+}
+90% {
+  opacity: 0.1;
+}
+100% {
+  opacity: 0;
+}
+`;
+
+const Box = styled.div`
+  height: 20px;
+  width: 50px;
+  background-color: tomato;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  animation: ${animation} 2s infinite;
+  margin-bottom: 5px;
+`;
+
+const Alarm = styled.span`
+  display: flex;
+  justify-content: left;
+  font-size: 10px;
+  font-weight: bold;
+  color: white;
+`;
+
+const TextKOR = styled.h1`
+  font-size: 16px;
+  font-weight: bold;
+  color: grey;
+  text-align: center;
+  margin-top: 3px;
+`;
+
+const TextENG = styled.h1`
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+`;
+
+const Title = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 60%;
+  margin-top: 20px;
+`;
+
+const MaxPeople = styled.p``;
+
+const DeadLine = styled.p``;
 
 const PriceDetail = styled.p`
   font-size: 8px;
@@ -101,7 +190,7 @@ const CategoryName = styled.p`
   padding-bottom: 5px;
 `;
 
-const CardDetail = styled.h1`
+const CardDetail = styled.div`
   justify-content: left;
   margin-top: 5px;
 `;
@@ -115,6 +204,7 @@ const Container = styled.div`
   flex-direction: column;
   flex-flow: wrap;
   row-gap: 20px;
+  margin-bottom: 50px;
 `;
 
 const ProductList = styled.div`
@@ -122,7 +212,5 @@ const ProductList = styled.div`
   width: 100%;
   justify-content: space-between;
 `;
-
-const MoimList = styled.ul``;
 
 export default HomeMoim;

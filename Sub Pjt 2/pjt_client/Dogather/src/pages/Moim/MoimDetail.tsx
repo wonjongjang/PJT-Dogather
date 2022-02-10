@@ -8,12 +8,9 @@ import {
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
-import { FetchMoimGroupAPI } from "../../api/MoimDetail";
-// import { fetchMoimGroupAPI, fetchMoimProductAPI } from "../../api/MoimDetail";
-import { IMoimForm } from "./CreateMoim";
-import BounceLoader from "react-spinners/BounceLoader";
+import { FetchMoimGroupAPI, FetchMoimMediaAPI } from "../../api/MoimDetail";
 import { Audio, Hearts } from "react-loader-spinner";
-import MoimSelect from "./MoimDetailSelect";
+import MoimSelect from "./MoimDetailComponent/MoimDetailSelect";
 import { Link } from "react-router-dom";
 import Product from "./MoimDetailComponent/MoimProduct";
 import FAQ from "./MoimDetailComponent/MoimFAQ";
@@ -34,17 +31,22 @@ interface IProductData {
 }
 
 export interface IGroupData {
+  groupNo: number;
   groupLeader: number;
   categoryNo: number;
   deadline: string;
+  created: string;
   maxPeople: number;
+  view: number;
   status: string;
-  product: string;
-  detail: string;
-  link: string;
-  originPrice: number;
-  price: number;
-  groupNo: number;
+  product: string; // 상품이름
+  detail: string; // 상품상세정보
+  link: string; // 상품링크
+  originPrice: number; // 출시가
+  price: number; // 공구가
+  options: Array<object>;
+  mediaList: Array<number>;
+  faqList: Array<object>;
 }
 
 function MoimDetail() {
@@ -76,13 +78,15 @@ function MoimDetail() {
 
   const userId = useRecoilValue(userIdAtom);
   const JWT = localStorage.getItem("login_token");
-  const { isLoading, data } = useQuery<IGroupData>(
+
+  const { isLoading: groupLoading, data: groupData } = useQuery<IGroupData>(
     ["group", groupNo, userId, JWT],
     () => FetchMoimGroupAPI(groupNo!, userId!, JWT!)
   );
 
-  console.log(isLoading);
-  console.log(data);
+  console.log(groupLoading);
+  console.log(groupData);
+  console.log(groupData?.mediaList[0]);
 
   // const loading = productLoading || isLoading;
 
@@ -110,15 +114,20 @@ function MoimDetail() {
       <>
         <Overview hidden={hidden}>
           <OverviewItem>
-            <Img src="http://img.danawa.com/prod_img/500000/907/780/img/6780907_1.jpg?shrink=330:330&_v=20210405094355" />
+            <Img
+              src="https://img1.daumcdn.net/thumb/C176x176/?fname=https://k.kakaocdn.net/dn/MKrb9/btq5OScyIsX/zKnfpnRMl3bbnKwGh4DzKk/img.png"
+              alt="메인 이미지"
+            />
           </OverviewItem>
           <OverviewItem>
-            <span>모임번호:{data?.groupNo}</span>
-            <span>{data?.product}</span>
-            <span>{data?.detail}</span>
-            <span>단돈 {data?.price}원</span>
-            <span>모임 인원 : 현재신청인원 / {data?.maxPeople} (여기는%)</span>
-            <span>마감 기한 : {data?.deadline}</span>
+            <span>모임번호:{groupData?.groupNo}</span>
+            <span>{groupData?.product}</span>
+            <span>{groupData?.detail}</span>
+            <span>단돈 {groupData?.price}원</span>
+            <span>
+              모임 인원 : 현재신청인원 / {groupData?.maxPeople} (여기는%)
+            </span>
+            <span>마감 기한 : {groupData?.deadline}</span>
             <MoimSelect />
           </OverviewItem>
         </Overview>
@@ -139,7 +148,7 @@ function MoimDetail() {
         <Routes>
           <Route
             path="product"
-            element={<Product detail={data?.detail} img={Img} />}
+            element={<Product detail={groupData?.detail} img={Img} />}
           />
           <Route path="faq" element={<FAQ />} />
           <Route path="review" element={<Review />} />
@@ -149,8 +158,6 @@ function MoimDetail() {
     </Container>
   );
 }
-
-export default MoimDetail;
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -184,7 +191,7 @@ const Loader = styled.span`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: whitesmoke;
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -226,3 +233,5 @@ const Tab = styled.span<{ isActive: boolean }>`
     display: block;
   }
 `;
+
+export default MoimDetail;
