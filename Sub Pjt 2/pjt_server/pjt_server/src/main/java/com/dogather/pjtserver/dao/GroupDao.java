@@ -25,4 +25,8 @@ public interface GroupDao {
     public Integer getMainImage(int groupNo);
 
     public List<GroupReturnDto> personSearch(String person);
+
+    public int review(ReviewDto dto);
+
+    public double reviewAvg(int userNo);
 }

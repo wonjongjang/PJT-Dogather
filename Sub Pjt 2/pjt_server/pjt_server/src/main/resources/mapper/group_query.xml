@@ -90,11 +90,16 @@
         select group_no, group_leader, deadline, max_people, g.view, g.status, product, price, c.category_no, c.category_name
         from dogather.group AS g
         left join category as c on g.category_no = c.category_no
-        where
-        <foreach collection="wordList" item="word" separator="or">
-            g.product Like Concat('%',#{word},'%') or g.detail Like Concat('%',#{word},'%')
-        </foreach>
+        where group_leader = (select user_no from dogather.user where user_nickname = #{person})
     </select>
 
+    <insert id="review" parameterType="com.dogather.pjtserver.dto.ReviewDto">
+        insert into dogather.review (user_from, user_to, star, content)
+        values (#{userFrom}, #{userTo}, #{star}, #{content})
+    </insert>
+
+    <select id="reviewAvg" parameterType="int" resultType="double">
+        select ifnull(avg(star), -1) from dogather.review where user_to = #{userNo}
+    </select>
 
 </mapper>
