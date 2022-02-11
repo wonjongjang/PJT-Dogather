@@ -102,8 +102,9 @@ function MoimDetail() {
     }, 100);
   }, []);
 
-  // const imgAddress = "/doimage/" + groupData?.mediaList[0];
-  // console.log(imgAddress);
+  const imgAddress = "/doimage/" + groupData?.mediaList[0];
+  console.log(imgAddress);
+  console.log(process.env.PUBLIC_URL);
 
   return (
     <Container>
@@ -111,15 +112,15 @@ function MoimDetail() {
         {loading ? null : (
           <>
             <Overview>
-              <Img
+              {/* <Img
                 src={process.env.PUBLIC_URL + "/img/Hoodie.png"}
                 alt={"메인 이미지"}
-              />
-              {/* <Img
-                src={process.env.PUBLIC_URL + { imgAddress }}
-                alt={process.env.PUBLIC_URL + imgAddress}
               /> */}
-              <MoimDetailImg />
+              <Img
+                src={process.env.PUBLIC_URL + imgAddress}
+                alt={process.env.PUBLIC_URL + imgAddress}
+              />
+              {/* <MoimDetailImg /> */}
               <OverviewItem>
                 <span>
                   <p>모임번호:{groupData?.groupNo}</p>
