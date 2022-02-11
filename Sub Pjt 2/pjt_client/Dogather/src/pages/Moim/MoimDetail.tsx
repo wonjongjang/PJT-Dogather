@@ -103,9 +103,10 @@ function MoimDetail() {
     }, 100);
   }, []);
 
-  const imgAddress = "/doimage/" + groupData?.mainImage;
-  console.log(imgAddress);
-  console.log(process.env.PUBLIC_URL);
+  const mainImgAddress = "/doimage/" + groupData?.mainImage;
+  console.log(groupData?.mainImage);
+  const detailImgAddress = "/doimage/" + groupData?.mediaList[0];
+  console.log(mainImgAddress, detailImgAddress);
 
   return (
     <Container>
@@ -118,8 +119,12 @@ function MoimDetail() {
                 alt={"메인 이미지"}
               /> */}
               <Img
-                src={process.env.PUBLIC_URL + imgAddress}
-                alt={process.env.PUBLIC_URL + imgAddress}
+                src={process.env.PUBLIC_URL + mainImgAddress}
+                alt={process.env.PUBLIC_URL + mainImgAddress}
+              />
+              <Img
+                src={process.env.PUBLIC_URL + detailImgAddress}
+                alt={process.env.PUBLIC_URL + detailImgAddress}
               />
               {/* <MoimDetailImg /> */}
               <OverviewItem>
