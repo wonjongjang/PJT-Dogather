@@ -1,12 +1,14 @@
 import styled from "styled-components";
+import FreeTable from "./FreeTable";
 
 function FreeCommunity() {
-  return <Container></Container>;
+  return (
+    <Container>
+      <FreeTable />
+    </Container>
+  );
 }
 
-const Container = styled.div`
-  display: flex;
-  /* justify-content: center; */
-`;
+const Container = styled.div``;
 
 export default FreeCommunity;

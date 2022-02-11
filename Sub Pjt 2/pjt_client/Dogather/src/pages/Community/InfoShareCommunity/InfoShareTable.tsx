@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -65,11 +64,11 @@ declare module "@mui/material/Button" {
 }
 // neutral 색깔
 
-function AnnounceTable() {
+function InfoShareTable() {
   return (
     <Container>
       <Top>
-        <H1>공지사항게시판</H1>
+        <H1>정보공유게시판</H1>
         <CustomTabs>
           <Tabs>
             <Tab label="최신글" />
@@ -84,13 +83,13 @@ function AnnounceTable() {
         <CustomStack>
           <Stack spacing={5} direction="column">
             <ThemeProvider theme={theme}>
-              <Button variant="contained" color="neutral">
+              <Button variant="outlined" color="neutral">
                 공지사항게시판
               </Button>
               <Button variant="outlined" color="neutral">
                 중고판매게시판
               </Button>
-              <Button variant="outlined" color="neutral">
+              <Button variant="contained" color="neutral">
                 정보공유게시판
               </Button>
               <Button variant="outlined" color="neutral">
@@ -257,4 +256,4 @@ const Btn = styled.button`
   cursor: pointer;
 `;
 
-export default AnnounceTable;
+export default InfoShareTable;
