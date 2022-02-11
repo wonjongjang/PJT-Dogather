@@ -16,6 +16,7 @@ export const userNoAtom = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
+// 로그인 시 user 아이디 저장 (Interceptor 정보)
 export const userIdAtom = atom({
   key: "userId",
   default: "",

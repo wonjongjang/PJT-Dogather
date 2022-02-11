@@ -1,3 +1,5 @@
+// 옵션 리스트
+
 import { atom } from "recoil";
 
 export interface IOption {

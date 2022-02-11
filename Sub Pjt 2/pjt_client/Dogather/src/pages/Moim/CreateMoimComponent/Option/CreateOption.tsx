@@ -4,11 +4,11 @@ import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { OptionsAtom } from "../../../../atoms/Options";
-import { ErrorMessage, MiniInput, SubTitle } from "../../CreateMoim";
+import { ErrorMessage, SubTitle } from "../../CreateMoim";
 
 interface IOptionForm {
   optionName: string;
-  optionPrice: number;
+  optionPrice: string; // 입력 받을 때는 string으로 받음 (setValue 깔끔하게 하기 위함)
 }
 
 function CreateOption() {
@@ -22,13 +22,16 @@ function CreateOption() {
   } = useForm<IOptionForm>();
 
   const onValid = ({ optionName, optionPrice }: IOptionForm) => {
-    // console.log(option_name, option_price);
     setOptions((prev) => [
       ...prev,
-      { id: Date.now(), optionName: optionName, optionPrice: optionPrice },
+      {
+        id: Date.now(),
+        optionName: optionName,
+        optionPrice: Number(optionPrice), // Atom에 추가할 때 number로 변경
+      },
     ]);
     setValue("optionName", "");
-    setValue("optionPrice", +"");
+    setValue("optionPrice", "");
   };
 
   return (
