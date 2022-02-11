@@ -102,8 +102,8 @@ function MoimDetail() {
     }, 100);
   }, []);
 
-  const imgAddress = "/doimage/" + groupData?.mediaList[0];
-  console.log(typeof imgAddress);
+  // const imgAddress = "/doimage/" + groupData?.mediaList[0];
+  // console.log(imgAddress);
 
   return (
     <Container>
@@ -111,14 +111,14 @@ function MoimDetail() {
         {loading ? null : (
           <>
             <Overview>
+              <Img
+                src={process.env.PUBLIC_URL + "/img/Hoodie.png"}
+                alt={"메인 이미지"}
+              />
               {/* <Img
-                // src={require("img/스웻후드.png").default}
-
-                alt="메인 이미지"
+                src={process.env.PUBLIC_URL + { imgAddress }}
+                alt={process.env.PUBLIC_URL + imgAddress}
               /> */}
-              {/* <CardMedia component="img" image="img/스웻후드.png" /> */}
-              <Img src={process.env.PUBLIC_URL + imgAddress} alt={imgAddress} />
-              {/* <Img src="img/Hoodie.png" /> */}
               <MoimDetailImg />
               <OverviewItem>
                 <span>
