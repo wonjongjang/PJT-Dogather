@@ -48,7 +48,7 @@ export interface IGroupData {
   originPrice: number; // 출시가
   price: number; // 공구가
   options: Array<object>;
-  mediaList: Array<number>;
+  mediaList: Array<string>;
   faqList: Array<object>;
 }
 
@@ -93,15 +93,17 @@ function MoimDetail() {
 
   // const loading = productLoading || isLoading;
 
-  const [loading, setLoading] = useState(false);
-  const [hidden, setHidden] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [hidden, setHidden] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+      setHidden(false);
+    }, 100);
+  }, []);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //     setHidden(false);
-  //   }, 100);
-  // }, []);
+  const imgAddress = "/doimage/" + groupData?.mediaList[0];
+  console.log(typeof imgAddress);
 
   return (
     <Container>
@@ -115,7 +117,8 @@ function MoimDetail() {
                 alt="메인 이미지"
               /> */}
               {/* <CardMedia component="img" image="img/스웻후드.png" /> */}
-              <Img src={process.env.PUBLIC_URL + "/img/Hoodie.png"} />
+              <Img src={process.env.PUBLIC_URL + imgAddress} alt={imgAddress} />
+              {/* <Img src="img/Hoodie.png" /> */}
               <MoimDetailImg />
               <OverviewItem>
                 <span>

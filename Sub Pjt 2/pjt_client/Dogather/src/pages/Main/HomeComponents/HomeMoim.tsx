@@ -64,7 +64,7 @@ function HomeMoim() {
                       component="img"
                       height="auto"
                       width="100px"
-                      image="img/스웻후드.png"
+                      image="img/Hoodie.png"
                       alt="Product Image"
                     />
                   </Card>
