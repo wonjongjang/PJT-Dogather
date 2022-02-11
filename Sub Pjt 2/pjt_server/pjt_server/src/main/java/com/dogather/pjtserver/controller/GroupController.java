@@ -65,7 +65,7 @@ public class GroupController {
         ret.setOptions(options);
         ret.setMediaList(mediaList);
         ret.setFaqList(faqDtoList);
-        ret.setMediaImage(mainImageName);
+        ret.setMainImage(mainImageName);
         return new ResponseEntity<GroupOptionDto>(ret, HttpStatus.OK);
     }
 

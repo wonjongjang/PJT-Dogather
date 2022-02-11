@@ -16,6 +16,16 @@ function MyPage() {
             </Profiledetailbuttonbox>
           </Profileitem>
         </Profile>
+
+        <Event>
+          <Eventbox>
+            <Eventboximage>
+              
+            </Eventboximage>
+
+          </Eventbox>
+        </Event>
+
         <Purchase>
           <Purchasetitle>
             <p>구매 내역</p>
@@ -99,53 +109,176 @@ function MyPage() {
 
           </Purchasecontent>
         </Purchase>
-{/* 
-        <Sale>
-          <Saletitle>
-            판매내역
-          </Saletitle>
 
-          <Salecontent>
-            <Salecard>
-            </Salecard>
+        <Purchase>
+          <Purchasetitle>
+            <p>판매 내역</p>
+            <Purchaseword>더보기 `{'>'}` </Purchaseword>
+          </Purchasetitle>
+          <Purchasecontent>
 
-            <Salecard>
-            </Salecard>
+            <Purchasedetail>
+              <Purchasedetailimagebox>
+                <Purchasedetailimage>
+                </Purchasedetailimage>
+              </Purchasedetailimagebox>
 
-            <Salecard>
-            </Salecard>
+              <Purchasedetailcontent>
+                <Purchasedetailcontenttitle>
+                  Jordan 1 Low Golf Wolf Grey
+                </Purchasedetailcontenttitle>
+                
+                <Purchasedetailcontenttext>
+                  -
+                </Purchasedetailcontenttext>
+              </Purchasedetailcontent>
 
-            <Salecard>
-            </Salecard>
+              <Purchasedetailstatus>
+                <Purchasedetailstatustext>
+                  배송중
+                </Purchasedetailstatustext>
+              </Purchasedetailstatus>     
 
-            <Salecard>
-            </Salecard>
-          </Salecontent>
-        </Sale>
+            </Purchasedetail>
 
-        <Interest>
-          <Interesttitle>
-            관심상품
-          </Interesttitle>
+            <Purchasedetail>
+              <Purchasedetailimagebox>
 
-          <Interestcontent>
-            <Interestcard>
-            </Interestcard>
+                
+              </Purchasedetailimagebox>
 
-            <Interestcard>
-            </Interestcard>
+              <Purchasedetailcontent>
+                <Purchasedetailcontenttitle>
+                  Jordan 1 Low Golf Wolf Grey
+                </Purchasedetailcontenttitle>
+                
+                <Purchasedetailcontenttext>
+                  -
+                </Purchasedetailcontenttext>
+              </Purchasedetailcontent>
 
-            <Interestcard>
-            </Interestcard>
+              <Purchasedetailstatus>
+                <Purchasedetailstatustext>
+                  배송중
+                </Purchasedetailstatustext>
+              </Purchasedetailstatus>     
 
-            <Interestcard>
-            </Interestcard>
+            </Purchasedetail>
 
-            <Interestcard>
-            </Interestcard>
+                        <Purchasedetail>
+              <Purchasedetailimagebox>
 
-          </Interestcontent>
-        </Interest> */}
+                
+              </Purchasedetailimagebox>
+
+              <Purchasedetailcontent>
+                <Purchasedetailcontenttitle>
+                  Jordan 1 Low Golf Wolf Grey
+                </Purchasedetailcontenttitle>
+                
+                <Purchasedetailcontenttext>
+                  -
+                </Purchasedetailcontenttext>
+              </Purchasedetailcontent>
+
+              <Purchasedetailstatus>
+                <Purchasedetailstatustext>
+                  배송중
+                </Purchasedetailstatustext>
+              </Purchasedetailstatus>     
+
+            </Purchasedetail>  
+
+
+
+          </Purchasecontent>
+        </Purchase>
+
+        <Purchase>
+          <Purchasetitle>
+            <p>관심 상풍</p>
+            <Purchaseword>더보기 `{'>'}` </Purchaseword>
+          </Purchasetitle>
+          <Purchasecontent>
+
+            <Purchasedetail>
+              <Purchasedetailimagebox>
+                <Purchasedetailimage>
+                </Purchasedetailimage>
+              </Purchasedetailimagebox>
+
+              <Purchasedetailcontent>
+                <Purchasedetailcontenttitle>
+                  Jordan 1 Low Golf Wolf Grey
+                </Purchasedetailcontenttitle>
+                
+                <Purchasedetailcontenttext>
+                  -
+                </Purchasedetailcontenttext>
+              </Purchasedetailcontent>
+
+              <Purchasedetailstatus>
+                <Purchasedetailstatustext>
+                  배송중
+                </Purchasedetailstatustext>
+              </Purchasedetailstatus>     
+
+            </Purchasedetail>
+
+            <Purchasedetail>
+              <Purchasedetailimagebox>
+
+                
+              </Purchasedetailimagebox>
+
+              <Purchasedetailcontent>
+                <Purchasedetailcontenttitle>
+                  Jordan 1 Low Golf Wolf Grey
+                </Purchasedetailcontenttitle>
+                
+                <Purchasedetailcontenttext>
+                  -
+                </Purchasedetailcontenttext>
+              </Purchasedetailcontent>
+
+              <Purchasedetailstatus>
+                <Purchasedetailstatustext>
+                  배송중
+                </Purchasedetailstatustext>
+              </Purchasedetailstatus>     
+
+            </Purchasedetail>
+
+                        <Purchasedetail>
+              <Purchasedetailimagebox>
+
+                
+              </Purchasedetailimagebox>
+
+              <Purchasedetailcontent>
+                <Purchasedetailcontenttitle>
+                  Jordan 1 Low Golf Wolf Grey
+                </Purchasedetailcontenttitle>
+                
+                <Purchasedetailcontenttext>
+                  -
+                </Purchasedetailcontenttext>
+              </Purchasedetailcontent>
+
+              <Purchasedetailstatus>
+                <Purchasedetailstatustext>
+                  배송중
+                </Purchasedetailstatustext>
+              </Purchasedetailstatus>     
+
+            </Purchasedetail>  
+
+
+
+          </Purchasecontent>
+        </Purchase>
+
+
 
       </Wrap>
     </>
@@ -190,7 +323,7 @@ const Profile = styled.div`
   display: flex;
   padding: 21px 30px;
   height: 130px;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
 `;
 
 const Profileimage = styled.div`
@@ -222,11 +355,36 @@ const Profiledetailbutton = styled.button`
   flex-direction: row;
 `;
 
+const Event = styled.div`
+  background-color: #d71a6c;
+  display: flex;
+  padding: 10px 30px;
+  height: 70px;
+  margin-bottom: 10px;
+`;
+
+const Eventbox = styled.div`
+  background-color: #1b8c8a;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: space-between;
+  margin-left: 30px;
+  margin-bottom: 5px;
+`;
+
+const Eventboximage = styled.div`
+  background-color: #c8e389;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+`;
+
 const Purchase = styled.div`
   background-color: #15d732;
   display: flex;
   flex-direction: column;
-  padding: 21px 30px;
+  padding: 11px 30px;
   height: auto;
   margin-bottom: 10px;
 `;
