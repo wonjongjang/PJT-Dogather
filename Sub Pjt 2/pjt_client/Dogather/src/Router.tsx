@@ -29,7 +29,7 @@ function Router() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/moim/:groupNo/*" element={<MoimDetail />}>
-          <Route path="product" element={<Product />} />
+          <Route path="" element={<Product />} />
           <Route path="faq" element={<FAQ />} />
           <Route path="review" element={<Review />} />
           <Route path="refund" element={<Refund />} />
