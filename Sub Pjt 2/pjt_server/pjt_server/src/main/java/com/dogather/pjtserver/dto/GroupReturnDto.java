@@ -20,5 +20,5 @@ public class GroupReturnDto {
     private int price;
     private int categoryNo;
     private String categoryName;
-    private int mainImage;
+    private String mainImage;
 }

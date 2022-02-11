@@ -49,10 +49,14 @@ public class GroupController {
         List<GroupMediaDto> mediaDtoList = mediaService.fineAllMedia(groupNo);
         GroupDto groupDto = groupService.group(groupNo);
         List<FAQDto> faqDtoList = faqService.readFaqAll(groupNo);
-
+        String mainImageName = null;
         List<String> mediaList = new ArrayList<>();
         for (GroupMediaDto mediaDto : mediaDtoList ) {
-            mediaList.add(mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + mediaDto.getMediaSavename());
+            if(mediaDto.getMainImageYn().equals("N")){
+                mediaList.add(mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + mediaDto.getMediaSavename());
+            } else {
+                mainImageName = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/s_" + mediaDto.getMediaSavename();
+            }
         }
 
         GroupOptionDto ret = new GroupOptionDto();
@@ -61,6 +65,7 @@ public class GroupController {
         ret.setOptions(options);
         ret.setMediaList(mediaList);
         ret.setFaqList(faqDtoList);
+        ret.setMediaImage(mainImageName);
         return new ResponseEntity<GroupOptionDto>(ret, HttpStatus.OK);
     }
 
