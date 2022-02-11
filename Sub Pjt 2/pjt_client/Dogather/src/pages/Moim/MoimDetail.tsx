@@ -194,7 +194,8 @@ const Title = styled.h1`
 const Img = styled.img`
   height: 500px;
   width: 500px;
-  object-fit: contain;
+  object-fit: cover;
+  overflow: hidden;
   margin-right: 40px;
 `;
 
