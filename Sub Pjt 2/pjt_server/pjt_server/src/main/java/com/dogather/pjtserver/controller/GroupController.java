@@ -6,7 +6,6 @@ import com.dogather.pjtserver.service.FAQService;
 import com.dogather.pjtserver.service.GroupMediaService;
 import com.dogather.pjtserver.service.GroupService;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -198,4 +197,13 @@ public class GroupController {
         return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
 
+    @PostMapping("/review")
+    public int review(@RequestBody ReviewDto dto){
+        return groupService.review(dto);
+    }
+
+    @GetMapping("/review/{userNo}")
+    public double reviewAvg(@PathVariable int userNo){
+        return groupService.reviewAvg(userNo);
+    }
 }
