@@ -8,8 +8,9 @@ import {
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
+import { CardMedia } from "@mui/material";
 import { FetchMoimGroupAPI, FetchMoimMediaAPI } from "../../api/MoimDetail";
-import { Audio, Hearts } from "react-loader-spinner";
+// import { Audio, Hearts } from "react-loader-spinner";
 import MoimSelect from "./MoimDetailComponent/MoimDetailSelect";
 import { Link } from "react-router-dom";
 import Product from "./MoimDetailComponent/MoimProduct";
@@ -18,6 +19,8 @@ import Review from "./MoimDetailComponent/MoimReview";
 import Refund from "./MoimDetailComponent/MoimRefund";
 import { useRecoilValue } from "recoil";
 import { userIdAtom } from "../../atoms/Login";
+import Hoodie from "../../img/Hoodie.png";
+import MoimDetailImg from "./MoimDetailComponent/MoimDetailImg";
 
 interface RouteState {
   state: {
@@ -45,7 +48,7 @@ export interface IGroupData {
   originPrice: number; // 출시가
   price: number; // 공구가
   options: Array<object>;
-  mediaList: Array<number>;
+  mediaList: Array<string>;
   faqList: Array<object>;
 }
 
@@ -71,10 +74,10 @@ function MoimDetail() {
   console.log(groupNo);
 
   const { state } = useLocation() as RouteState;
-  const productMatch = useMatch("/:coinId/price");
-  const faqMatch = useMatch("/:coinId/chart");
-  const reviewMatch = useMatch("/:coinId/chart");
-  const refundMatch = useMatch("/:coinId/chart");
+  const productMatch = useMatch("/moim/:groupNo");
+  const faqMatch = useMatch("/moim/:groupNo/faq");
+  const reviewMatch = useMatch("/moim/:groupNo/review");
+  const refundMatch = useMatch("/moim/:groupNo/refund");
 
   const userId = useRecoilValue(userIdAtom);
   const JWT = localStorage.getItem("login_token");
@@ -92,85 +95,88 @@ function MoimDetail() {
 
   const [loading, setLoading] = useState(true);
   const [hidden, setHidden] = useState(true);
-
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
       setHidden(false);
-    }, 2000);
+    }, 100);
   }, []);
+
+  const imgAddress = "/doimage/" + groupData?.mediaList[0];
+  console.log(typeof imgAddress);
 
   return (
     <Container>
-      <Header>
-        <Title>
-          {loading ? (
-            <Hearts height="500" width="500" color="tomato">
-              {"상품정보를 가져오는 중입니다.😊"}
-            </Hearts>
-          ) : null}
-        </Title>
-      </Header>
-      <>
-        <Overview hidden={hidden}>
-          <OverviewItem>
-            <Img
-              src="https://img1.daumcdn.net/thumb/C176x176/?fname=https://k.kakaocdn.net/dn/MKrb9/btq5OScyIsX/zKnfpnRMl3bbnKwGh4DzKk/img.png"
-              alt="메인 이미지"
-            />
-          </OverviewItem>
-          <OverviewItem>
-            <span>모임번호:{groupData?.groupNo}</span>
-            <span>{groupData?.product}</span>
-            <span>{groupData?.detail}</span>
-            <span>단돈 {groupData?.price}원</span>
-            <span>
-              모임 인원 : 현재신청인원 / {groupData?.maxPeople} (여기는%)
-            </span>
-            <span>마감 기한 : {groupData?.deadline}</span>
-            <MoimSelect />
-          </OverviewItem>
-        </Overview>
-        <Tabs hidden={hidden}>
-          <Tab isActive={productMatch !== null}>
-            <Link to={`/moim/${groupNo}/product`}>상품상세</Link>
-          </Tab>
-          <Tab isActive={faqMatch !== null}>
-            <Link to={`/moim/${groupNo}/faq`}>FAQ</Link>
-          </Tab>
-          <Tab isActive={reviewMatch !== null}>
-            <Link to={`/moim/${groupNo}/review`}>모임평</Link>
-          </Tab>
-          <Tab isActive={refundMatch !== null}>
-            <Link to={`/moim/${groupNo}/refund`}>교환/환불</Link>
-          </Tab>
-        </Tabs>
-        <Routes>
-          <Route
-            path="product"
-            element={<Product detail={groupData?.detail} img={Img} />}
-          />
-          <Route path="faq" element={<FAQ />} />
-          <Route path="review" element={<Review />} />
-          <Route path="refund" element={<Refund />} />
-        </Routes>
-      </>
+      <MoimWrapper>
+        {loading ? null : (
+          <>
+            <Overview>
+              {/* <Img
+                // src={require("img/스웻후드.png").default}
+
+                alt="메인 이미지"
+              /> */}
+              {/* <CardMedia component="img" image="img/스웻후드.png" /> */}
+              <Img src={process.env.PUBLIC_URL + imgAddress} alt={imgAddress} />
+              {/* <Img src="img/Hoodie.png" /> */}
+              <MoimDetailImg />
+              <OverviewItem>
+                <span>
+                  <p>모임번호:{groupData?.groupNo}</p>
+                  <p>{"모임리더이름"}</p>
+                </span>
+                <span>{groupData?.product}</span>
+                <span>{groupData?.detail}</span>
+                <span>단돈 {groupData?.price}원</span>
+                <span>
+                  모임 인원 : 현재신청인원 / {groupData?.maxPeople} (여기는%)
+                </span>
+                <span>마감 기한 : {groupData?.deadline}</span>
+                <MoimSelect />
+              </OverviewItem>
+            </Overview>
+            <Tabs hidden={hidden}>
+              <Tab isActive={productMatch !== null}>
+                <Link to={`/moim/${groupNo}`}>상품상세</Link>
+              </Tab>
+              <Tab isActive={faqMatch !== null}>
+                <Link to={`/moim/${groupNo}/faq`}>FAQ</Link>
+              </Tab>
+              <Tab isActive={reviewMatch !== null}>
+                <Link to={`/moim/${groupNo}/review`}>모임평</Link>
+              </Tab>
+              <Tab isActive={refundMatch !== null}>
+                <Link to={`/moim/${groupNo}/refund`}>교환/환불</Link>
+              </Tab>
+            </Tabs>
+            <Routes>
+              <Route
+                path=""
+                element={<Product detail={groupData?.detail} img={Img} />}
+              />
+              <Route path="faq" element={<FAQ />} />
+              <Route path="review" element={<Review />} />
+              <Route path="refund" element={<Refund />} />
+            </Routes>
+          </>
+        )}
+      </MoimWrapper>
     </Container>
   );
 }
 
+const ProductTitle = styled.h1``;
+const ProductDetail = styled.h1``;
+const ProductPrice = styled.h1``;
 const Container = styled.div`
-  padding: 0px 20px;
-  max-width: 960px;
-  margin: 0 auto;
-  padding-bottom: 100px;
-`;
-
-const Header = styled.header`
-  height: 10vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  background-color: whitesmoke;
+`;
+
+const MoimWrapper = styled.div`
+  width: 70%;
+  margin-top: 65px;
 `;
 
 const Title = styled.h1`
@@ -179,8 +185,10 @@ const Title = styled.h1`
 `;
 
 const Img = styled.img`
-  height: 300px;
-  width: 300px;
+  height: 500px;
+  width: 500px;
+  object-fit: contain;
+  margin-right: 40px;
 `;
 
 const Loader = styled.span`
@@ -191,42 +199,40 @@ const Loader = styled.span`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: whitesmoke;
+  background-color: white;
   padding: 10px 20px;
-  border-radius: 10px;
 `;
 
 const OverviewItem = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
+  align-items: left;
   span {
     font-size: 20px;
     font-weight: 400;
     text-transform: uppercase;
     margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
   }
-`;
-
-const Description = styled.p`
-  margin: 20px 0px;
 `;
 
 const Tabs = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   margin: 25px 0px;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
   text-align: center;
   text-transform: uppercase;
-  font-size: 16px;
-  font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 20px;
+  font-weight: bold;
+  background-color: white;
   padding: 7px 0px;
-  border-radius: 10px;
+  border-radius: 20px;
   color: ${(props) =>
     props.isActive ? props.theme.accentColor : props.theme.textColor};
   a {
