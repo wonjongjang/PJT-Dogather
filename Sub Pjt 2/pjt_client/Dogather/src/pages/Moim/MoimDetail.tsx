@@ -47,6 +47,7 @@ export interface IGroupData {
   link: string; // 상품링크
   originPrice: number; // 출시가
   price: number; // 공구가
+  mainImage: string;
   options: Array<object>;
   mediaList: Array<string>;
   faqList: Array<object>;
@@ -102,7 +103,7 @@ function MoimDetail() {
     }, 100);
   }, []);
 
-  const imgAddress = "/doimage/" + groupData?.mediaList[0];
+  const imgAddress = "/doimage/" + groupData?.mainImage;
   console.log(imgAddress);
   console.log(process.env.PUBLIC_URL);
 
