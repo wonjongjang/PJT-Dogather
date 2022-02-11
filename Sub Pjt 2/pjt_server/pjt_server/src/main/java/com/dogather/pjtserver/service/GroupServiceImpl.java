@@ -13,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,11 +42,12 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public int groupRegister(GroupDto groupDto, List<MultipartFile> files, MultipartFile mainImage) throws IOException {
         int queryResult;
+        List<GroupMediaDto> mediaList = new ArrayList<>();
         if (groupRegister(groupDto) == 0)
             return 0;
-
-
-        List<GroupMediaDto> mediaList = fileHandler.uploadGroupFiles(files, groupDto.getGroupNo());
+        if(files != null) {
+            mediaList = fileHandler.uploadGroupFiles(files, groupDto.getGroupNo());
+        }
         if (mainImage != null) {
             GroupMediaDto mainImageDto = fileHandler.uploadMainImage(mainImage, groupDto.getGroupNo());
             mediaList.add(mainImageDto);

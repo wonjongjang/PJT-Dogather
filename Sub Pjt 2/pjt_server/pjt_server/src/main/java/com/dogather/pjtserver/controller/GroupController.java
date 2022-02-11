@@ -50,9 +50,9 @@ public class GroupController {
         GroupDto groupDto = groupService.group(groupNo);
         List<FAQDto> faqDtoList = faqService.readFaqAll(groupNo);
 
-        List<Integer> mediaList = new ArrayList<>();
+        List<String> mediaList = new ArrayList<>();
         for (GroupMediaDto mediaDto : mediaDtoList ) {
-            mediaList.add(mediaDto.getMediaNo());
+            mediaList.add(mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + mediaDto.getMediaSavename());
         }
 
         GroupOptionDto ret = new GroupOptionDto();
