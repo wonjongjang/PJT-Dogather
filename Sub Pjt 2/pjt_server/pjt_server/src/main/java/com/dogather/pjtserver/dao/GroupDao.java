@@ -23,4 +23,6 @@ public interface GroupDao {
     public List<GroupReturnDto> categoryList(int categoryNo);
     public List<GroupReturnDto> wordSearch(List<String> wordList);
     public Integer getMainImage(int groupNo);
+
+    public List<GroupReturnDto> personSearch(String person);
 }

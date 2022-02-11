@@ -171,4 +171,7 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupReturnDto> wordSearch(List<String> wordList) {
         return groupDao.wordSearch(wordList);
     }
+
+    @Override
+    public List<GroupReturnDto> personSearch(String person) { return groupDao.personSearch(person); }
 }

@@ -179,10 +179,17 @@ public class GroupController {
 
         System.out.println(wordList.toString());
 
-
-
         GroupListDto list = new GroupListDto();
         list.setList(groupService.wordSearch(wordList));
+        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+    }
+
+    @PostMapping("/psearch")
+    public ResponseEntity<GroupListDto> personSearch(@RequestBody HashMap map){
+        String person = map.get("person").toString();
+
+        GroupListDto list = new GroupListDto();
+        list.setList(groupService.personSearch(person));
         return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
 
