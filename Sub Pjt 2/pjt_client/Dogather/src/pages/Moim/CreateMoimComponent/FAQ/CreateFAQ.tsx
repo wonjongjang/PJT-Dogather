@@ -43,7 +43,6 @@ function CreateFAQ() {
         <SubInputDiv>
           <FaqInput
             {...register("faqQuestion", { required: "필수 정보입니다." })}
-            placeholder="질문"
             maxLength={1000}
           />
           <ErrorMessage>{errors?.faqQuestion?.message}</ErrorMessage>
@@ -56,7 +55,6 @@ function CreateFAQ() {
         <SubInputDiv>
           <FaqInput
             {...register("faqAnswer", { required: "필수 정보입니다." })}
-            placeholder="답변"
           />
           <ErrorMessage>{errors?.faqAnswer?.message}</ErrorMessage>
         </SubInputDiv>

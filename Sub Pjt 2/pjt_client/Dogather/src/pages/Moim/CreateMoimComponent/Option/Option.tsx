@@ -1,10 +1,19 @@
 /* 옵션 리스트 */
 
+import React from "react";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
-import { IOption, OptionsAtom } from "../../../../atoms/Options";
+import { OptionsAtom } from "../../../../atoms/Options";
+import { Draggable } from "react-beautiful-dnd";
 
-function Option({ id, optionName, optionPrice }: IOption) {
+interface IOptionProps {
+  index: number;
+  id: number;
+  optionName: string;
+  optionPrice: number;
+}
+
+function Option({ index, id, optionName, optionPrice }: IOptionProps) {
   const [options, setOptions] = useRecoilState(OptionsAtom);
   // console.log(id, option_name, option_price);
 
@@ -18,21 +27,34 @@ function Option({ id, optionName, optionPrice }: IOption) {
   };
 
   return (
-    <List>
-      <Element>{optionName} </Element>
-      <Element>{optionPrice} </Element>
-      <Element>
-        <Button onClick={onClick}>삭제</Button>
-      </Element>
-    </List>
+    <Draggable key={id} draggableId={id + ""} index={index}>
+      {(magic, snapshot) => (
+        <List
+          isDragging={snapshot.isDragging}
+          ref={magic.innerRef}
+          {...magic.dragHandleProps}
+          {...magic.draggableProps}
+        >
+          <Element>{optionName} </Element>
+          <Element>{optionPrice} </Element>
+          <Element>
+            <Button onClick={onClick}>삭제</Button>
+          </Element>
+        </List>
+      )}
+    </Draggable>
   );
 }
 
-const List = styled.div`
+const List = styled.div<{ isDragging: boolean }>`
   display: flex;
   align-items: center;
   min-height: 30px;
   border: 1px solid whitesmoke;
+  background-color: ${(props) => (props.isDragging ? "#1e272e" : "white")};
+  color: ${(props) => (props.isDragging ? "white" : "#1e272e")};
+  box-shadow: ${(props) =>
+    props.isDragging ? "0px 2px 5px rgba(0, 0, 0, 0.05)" : "none"};
 `;
 
 const Element = styled.div`
@@ -51,4 +73,4 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-export default Option;
+export default React.memo(Option);
