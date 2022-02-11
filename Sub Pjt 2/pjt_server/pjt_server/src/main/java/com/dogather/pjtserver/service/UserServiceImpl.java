@@ -59,21 +59,21 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public String userIdCheck(String id){
-		String result = "사용가능";
+	public boolean userIdCheck(String id){
+		boolean result = true;
 		int count= userDao.userIdCheck(id);
 		if(count > 0){
-			result = "이미 있는 아이디 입니다.";
+			result = false;
 		}
 		return result;
 	}
 
 	@Override
-	public String userNickCheck(String nick) {
-		String result = "사용가능";
+	public boolean userNickCheck(String nick) {
+		boolean result = true;
 		int count= userDao.userNickCheck(nick);
-		if(count > 0){
-			result = "이미 있는 닉네임 입니다.";
+		if(count > 0) {
+			result = false;
 		}
 		return result;
 	}

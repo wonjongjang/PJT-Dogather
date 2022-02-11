@@ -11,7 +11,7 @@ public interface UserService {
     public UserDto userFind(String userId);
     public int userUpdate(UserDto userDto);
     public void userDelete(String userId);
-    public String userIdCheck(String id);
-    public String userNickCheck(String nick);
+    public boolean userIdCheck(String id);
+    public boolean userNickCheck(String nick);
 
 }
