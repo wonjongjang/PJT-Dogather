@@ -83,7 +83,7 @@ function Header() {
               )}
             </LowerItem>
             <LowerItem>
-              <Link to="community">커뮤니티</Link>
+              <Link to="community/announcement">커뮤니티</Link>
             </LowerItem>
           </LowerItems>
         </LowerCol>
