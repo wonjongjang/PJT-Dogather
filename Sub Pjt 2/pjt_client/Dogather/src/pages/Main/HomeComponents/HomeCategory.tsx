@@ -37,10 +37,9 @@ function HomeCategory() {
           marginLeft={"0px"}
         >
           {categoryImg.slice(0, 8).map((cat, idx) => (
-            <Link to={"/moim/1"}>
+            <Link key={idx} to={"/moim/1"}>
               <Grid item>
                 <Card
-                  key={idx}
                   elevation={0}
                   sx={{
                     width: "60px",
@@ -81,10 +80,9 @@ function HomeCategory() {
           marginLeft={"0px"}
         >
           {categoryImg.slice(8, 17).map((cat, idx) => (
-            <Link to={"/moim/1"}>
+            <Link key={idx} to={"/moim/1"}>
               <Grid item>
                 <Card
-                  key={idx}
                   elevation={0}
                   sx={{
                     width: "60px",

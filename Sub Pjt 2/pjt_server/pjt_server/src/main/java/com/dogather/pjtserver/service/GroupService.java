@@ -28,4 +28,10 @@ public interface GroupService {
     public List<GroupReturnDto> categoryList(int categoryNo);
 
     public List<GroupReturnDto> wordSearch(List<String> wordList);
+
+    public List<GroupReturnDto> personSearch(String person);
+
+    public int review(ReviewDto dto);
+
+    public double reviewAvg(int userNo);
 }

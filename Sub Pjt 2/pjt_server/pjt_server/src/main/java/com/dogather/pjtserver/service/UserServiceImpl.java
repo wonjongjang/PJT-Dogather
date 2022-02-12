@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserDto userLogin(UserDto userDto) { // 로그인
-		UserDto user = userDao.userFind(userDto.getUserId()); // 유저의 아이디를 통해 정보 얻어옴
+		UserDto user = userDao.userFindById(userDto.getUserId()); // 유저의 아이디를 통해 정보 얻어옴
 		if(user != null){// 있는 아이디
 			//PW check
 			if(user.getUserPw().equals(userDto.getUserPw())) {
@@ -44,10 +44,15 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserDto userFind(String userId) {
-		return userDao.userFind(userId); // 유저의 아이디를 통해 유저정보 얻어옴
+		return userDao.userFindById(userId); // 유저의 아이디를 통해 유저정보 얻어옴
 	}
 
-	@Override
+    @Override
+    public UserDto userFind(int userNo) {
+		return userDao.userFindByNo(userNo);
+    }
+
+    @Override
 	public int userUpdate(UserDto userDto){
 		int created = userDao.userUpdate(userDto);
 		return created;

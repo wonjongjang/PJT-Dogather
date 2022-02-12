@@ -204,4 +204,15 @@ public class GroupServiceImpl implements GroupService {
         }
         return wordSearchList;
     }
+
+    @Override
+    public List<GroupReturnDto> personSearch(String person) { return groupDao.personSearch(person); }
+
+    @Override
+    public int review(ReviewDto dto) { return groupDao.review(dto); }
+
+    @Override
+    public double reviewAvg(int userNo) {
+        return groupDao.reviewAvg(userNo);
+    }
 }

@@ -1,16 +1,14 @@
+/* 옵션 Form */
+
 import { useForm } from "react-hook-form";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
+import styled from "styled-components";
 import { OptionsAtom } from "../../../../atoms/Options";
-import {
-  ErrorMessage,
-  MiniInput,
-  SubInputTopDiv,
-  SubTitle,
-} from "../../CreateMoim";
+import { ErrorMessage, SubTitle } from "../../CreateMoim";
 
 interface IOptionForm {
   optionName: string;
-  optionPrice: number;
+  optionPrice: string; // 입력 받을 때는 string으로 받음 (setValue 깔끔하게 하기 위함)
 }
 
 function CreateOption() {
@@ -24,37 +22,81 @@ function CreateOption() {
   } = useForm<IOptionForm>();
 
   const onValid = ({ optionName, optionPrice }: IOptionForm) => {
-    // console.log(option_name, option_price);
     setOptions((prev) => [
       ...prev,
-      { id: Date.now(), optionName: optionName, optionPrice: optionPrice },
+      {
+        id: Date.now(),
+        optionName: optionName,
+        optionPrice: Number(optionPrice), // Atom에 추가할 때 number로 변경
+      },
     ]);
     setValue("optionName", "");
-    setValue("optionPrice", +"");
+    setValue("optionPrice", "");
   };
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <SubInputTopDiv>
+      <SubDiv>
         <SubTitle>
           <span>옵션 조합</span>
         </SubTitle>
-        <div>
-          <MiniInput
+        <SubInputDiv>
+          <FaqInput
             {...register("optionName", { required: "필수 정보입니다." })}
             placeholder="ex) 블랙 / 260 / 기타"
           />
           <ErrorMessage>{errors?.optionName?.message}</ErrorMessage>
-        </div>
-      </SubInputTopDiv>
-      <MiniInput
-        {...register("optionPrice", { required: "필수 정보입니다." })}
-        type="number"
-        placeholder="해당 옵션 선택 시 추가 가격"
-      />
-      <button>옵션 추가</button>
+        </SubInputDiv>
+      </SubDiv>
+      <SubDiv>
+        <SubTitle>
+          <span>추가 가격</span>
+        </SubTitle>
+        <SubInputDiv>
+          <FaqInput
+            {...register("optionPrice", { required: "필수 정보입니다." })}
+            type="number"
+            placeholder="ex) 1000"
+          />
+          <ErrorMessage>{errors?.optionPrice?.message}</ErrorMessage>
+        </SubInputDiv>
+      </SubDiv>
+      <SubDiv>
+        <SubTitle></SubTitle>
+        <Button>옵션 추가</Button>
+      </SubDiv>
     </form>
   );
 }
+
+const SubDiv = styled.div`
+  display: flex;
+  padding: 0 0 1rem 0;
+`;
+
+const SubInputDiv = styled.div`
+  width: 100%;
+`;
+
+const FaqInput = styled.input`
+  width: 100%;
+  height: 30px;
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+`;
+
+const Button = styled.button`
+  max-width: 400px;
+  width: 100%;
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  background-color: #1e272e;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+`;
 
 export default CreateOption;

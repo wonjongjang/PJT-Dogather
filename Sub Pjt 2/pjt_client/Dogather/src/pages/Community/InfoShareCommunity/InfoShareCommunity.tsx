@@ -1,12 +1,14 @@
 import styled from "styled-components";
+import InfoShareTable from "./InfoShareTable";
 
 function InfoShareCommunity() {
-  return <Container></Container>;
+  return (
+    <Container>
+      <InfoShareTable />
+    </Container>
+  );
 }
 
-const Container = styled.div`
-  display: flex;
-  /* justify-content: center; */
-`;
+const Container = styled.div``;
 
 export default InfoShareCommunity;

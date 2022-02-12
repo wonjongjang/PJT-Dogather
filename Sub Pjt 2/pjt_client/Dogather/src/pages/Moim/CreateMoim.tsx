@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userIdAtom, userNoAtom } from "../../atoms/Login";
 import { useNavigate } from "react-router-dom";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 
 import CreateOption from "./CreateMoimComponent/Option/CreateOption";
 import { OptionsAtom } from "../../atoms/Options";
@@ -11,6 +12,7 @@ import CreateFAQ from "./CreateMoimComponent/FAQ/CreateFAQ";
 import { FAQsAtom } from "../../atoms/FAQs";
 import FAQ from "./CreateMoimComponent/FAQ/FAQ";
 import { useState } from "react";
+import { ProductCategories } from "../../atoms/ProductCategories";
 
 export interface IMoimForm {
   groupLeader: number; // 모임 대표
@@ -25,6 +27,11 @@ export interface IMoimForm {
   price: number; // 공구 가격
 }
 
+interface IAreaProps {
+  isDraggingOver: boolean; // 드래그 해서 들어오고 있음
+  isDraggingFromThis: boolean;
+}
+
 function CreateMoim() {
   const navigate = useNavigate();
 
@@ -33,15 +40,29 @@ function CreateMoim() {
   const [options, setOptions] = useRecoilState(OptionsAtom);
   const [FAQs, setFAQs] = useRecoilState(FAQsAtom);
 
-  const [fileList, setFileList] = useState<FileList | undefined>();
-
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IMoimForm>({ mode: "onChange" });
+    setError,
+    watch,
+  } = useForm<IMoimForm>({ mode: "onBlur" });
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // 대표 이미지
+  const [file, setFile] = useState<FileList | undefined>();
+  const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { files },
+    } = event;
+
+    if (files != null) {
+      setFile(files);
+    }
+  };
+
+  // 상세 이미지
+  const [fileList, setFileList] = useState<FileList | undefined>();
+  const onChangeFiles = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { files },
     } = event;
@@ -52,23 +73,22 @@ function CreateMoim() {
   };
 
   const onValid = (data: IMoimForm) => {
-    const JWT = localStorage.getItem("login_token");
+    const JWT = localStorage.getItem("login_token"); // 토큰 가져오기 (Interceptor 정보)
 
     const newDeadline =
-      data.deadline.replace("T", " ").substring(0, 19) + ":00";
+      data.deadline.replace("T", " ").substring(0, 19) + ":00"; // 마감 날짜 시간 형식 변환
 
     const newData = {
       group: {
         ...data,
         deadline: newDeadline,
         groupLeader: userNo,
-        categoryNo: 1,
         status: "모집중",
       },
       options: options,
       requestfaq: FAQs,
     };
-    console.log(newData);
+
     const formData = new FormData();
 
     formData.append(
@@ -77,7 +97,11 @@ function CreateMoim() {
     );
 
     if (fileList != null) {
-      Array.from(fileList).forEach((file) => formData.append("file", file));
+      Array.from(fileList).forEach((f) => formData.append("file", f));
+    }
+
+    if (file != null) {
+      formData.append("mainImage", file[0]);
     }
 
     fetch("http://i6e104.p.ssafy.io:8090/api/group/register", {
@@ -91,12 +115,42 @@ function CreateMoim() {
       .then((response) => response.json())
       .then((result) => {
         if (result) {
-          // navigate(`/moim/${String(result)}`);
-          console.log(result);
+          navigate(`/moim/${String(result)}`);
+          // console.log(result);
         }
-        // setOptions([]);
-        // setFAQs([]);
+        setOptions([]);
+        setFAQs([]);
       });
+  };
+
+  // 옵션 drop 했을 때 불려지는 함수
+  const onDragEndOption = (info: DropResult) => {
+    const { destination, draggableId, source } = info;
+
+    if (!destination) return;
+
+    setOptions((options) => {
+      const optionsCopy = [...options];
+      const optionToMove = optionsCopy[source.index];
+      optionsCopy.splice(source.index, 1);
+      optionsCopy.splice(destination?.index, 0, optionToMove);
+      return optionsCopy;
+    });
+  };
+
+  // FAQ drop 했을 때 불려지는 함수
+  const onDragEndFAQ = (info: DropResult) => {
+    const { destination, draggableId, source } = info;
+
+    if (!destination) return;
+
+    setFAQs((faqs) => {
+      const faqsCopy = [...faqs];
+      const faqToMove = faqsCopy[source.index];
+      faqsCopy.splice(source.index, 1);
+      faqsCopy.splice(destination?.index, 0, faqToMove);
+      return faqsCopy;
+    });
   };
 
   return (
@@ -114,7 +168,48 @@ function CreateMoim() {
               <Required>*</Required>
             </InputTitle>
             <InputDiv>
-              <select></select>
+              <Select
+                {...register("categoryNo", {
+                  required: "필수 정보입니다.",
+                })}
+              >
+                <option value="">카테고리 선택</option>
+                <option value={ProductCategories.남성패션}>남성패션</option>
+                <option value={ProductCategories.여성패션}>여성패션</option>
+                <option value={ProductCategories["뷰티/미용"]}>
+                  뷰티/미용
+                </option>
+                <option value={ProductCategories.식품}>식품</option>
+                <option value={ProductCategories["건강/의료용품"]}>
+                  건강/의료용품
+                </option>
+                <option value={ProductCategories.생활가전}>생활가전</option>
+                <option value={ProductCategories.디지털기기}>디지털기기</option>
+                <option value={ProductCategories["가구/인테리어"]}>
+                  가구/인테리어
+                </option>
+                <option value={ProductCategories.생활용품}>생활용품</option>
+                <option value={ProductCategories["도서/티켓/E쿠폰"]}>
+                  도서/티켓/E쿠폰
+                </option>
+                <option value={ProductCategories["출산/유아동"]}>
+                  출산/유아동
+                </option>
+                <option value={ProductCategories.반려동물용품}>
+                  반려동물용품
+                </option>
+                <option value={ProductCategories["스포츠/레저"]}>
+                  스포츠/레저
+                </option>
+                <option value={ProductCategories["자동차/공구"]}>
+                  자동차 공구
+                </option>
+                <option value={ProductCategories.악기}>악기</option>
+                <option value={ProductCategories["게임/놀이"]}>
+                  게임/놀이
+                </option>
+              </Select>
+              <ErrorMessage>{errors?.categoryNo?.message}</ErrorMessage>
             </InputDiv>
             <ExpDiv>
               <Exp>
@@ -133,7 +228,6 @@ function CreateMoim() {
                 {...register("product", {
                   required: "필수 정보입니다.",
                 })}
-                autoFocus // 모임 생성 페이지 들어오면 입력할 수 있도록 설정
                 placeholder="최대 50자 입력"
                 maxLength={50}
               />
@@ -223,11 +317,11 @@ function CreateMoim() {
           </Block>
           <Block>
             <InputTitle>
-              <span>모임 마감 날짜</span>
+              <span>모임 마감 일시</span>
               <Required>*</Required>
             </InputTitle>
             <InputDiv>
-              <Input
+              <MiniInput
                 {...register("deadline", {
                   required: "필수 정보입니다.",
                 })}
@@ -237,26 +331,10 @@ function CreateMoim() {
             </InputDiv>
             <ExpDiv>
               <Exp>
-                공동구매 인원 모집의 마감 날짜를 입력해 주시기 바랍니다.
+                공동구매 인원 모집의 마감 날짜를 입력해 주시기 바랍니다. (달력
+                아이콘으로 쉽고 빠르게 입력 가능합니다.)
                 <br />
                 시작 날짜는 모임 생성 시간으로 자동 적용됩니다.
-              </Exp>
-            </ExpDiv>
-          </Block>
-          <Block>
-            <InputTitle>
-              <span>상품 상세 이미지 ({fileList ? fileList.length : 0})</span>
-              <Required>*</Required>
-            </InputTitle>
-            <InputDiv>
-              <ImgBox htmlFor="files">
-                <ImgBoxInside>+</ImgBoxInside>
-              </ImgBox>
-              <Files type="file" id="files" multiple onChange={onChange} />
-            </InputDiv>
-            <ExpDiv>
-              <Exp>
-                상품 상세 내용을 보여줄 다수의 사진을 첨부해 주시기 바랍니다.
               </Exp>
             </ExpDiv>
           </Block>
@@ -311,14 +389,81 @@ function CreateMoim() {
         </form>
         <Block>
           <InputTitle>
+            <span>대표 이미지 ({file ? "upload" : "not"})</span>
+          </InputTitle>
+          <InputDiv>
+            <ImgBox htmlFor="file">
+              <ImgBoxInside>+</ImgBoxInside>
+            </ImgBox>
+            <Files type="file" id="file" onChange={onChangeFile} />
+          </InputDiv>
+          <ExpDiv>
+            <Exp>모임 리스트에서 보일 대표 이미지를 설정해 주세요.</Exp>
+          </ExpDiv>
+        </Block>
+        <Block>
+          <InputTitle>
+            <span>상품 상세 이미지 ({fileList ? fileList.length : 0})</span>
+          </InputTitle>
+          <InputDiv>
+            <ImgBox htmlFor="files">
+              <ImgBoxInside>+</ImgBoxInside>
+            </ImgBox>
+            <Files type="file" id="files" multiple onChange={onChangeFiles} />
+          </InputDiv>
+          <ExpDiv>
+            <Exp>상품 상세 내용을 보여줄 다수의 사진을 첨부해 주세요.</Exp>
+          </ExpDiv>
+        </Block>
+        <Block>
+          <InputTitle>
             <span>옵션</span>
           </InputTitle>
           <InputDiv>
             <CreateOption />
-            {options?.map((option) => (
-              <Option key={option.id} {...option} />
-            ))}
+            <Table>
+              <TableTitleDiv>
+                <TableTitle>옵션 조합</TableTitle>
+                <TableTitle>추가 가격</TableTitle>
+                <TableTitle></TableTitle>
+              </TableTitleDiv>
+              <DragDropContext onDragEnd={onDragEndOption}>
+                <Droppable droppableId="option">
+                  {(magic, snapshot) => (
+                    <Area
+                      isDraggingOver={snapshot.isDraggingOver}
+                      isDraggingFromThis={Boolean(
+                        snapshot.draggingFromThisWith
+                      )}
+                      ref={magic.innerRef}
+                      {...magic.droppableProps}
+                    >
+                      {options?.map((option, index) => (
+                        <Option
+                          key={option.id}
+                          index={index}
+                          id={option.id}
+                          optionName={option.optionName}
+                          optionPrice={option.optionPrice}
+                        />
+                      ))}
+                      {magic.placeholder}
+                    </Area>
+                  )}
+                </Droppable>
+              </DragDropContext>
+            </Table>
           </InputDiv>
+          <ExpDiv>
+            <Exp>
+              ※ 드래그 앤 드롭으로 옵션 순서를 변경할 수 있습니다.
+              <br />
+              옵션 조합 : 각 옵션의 조합을 하나씩 입력해 주시기 바랍니다.
+              <br />
+              추가 가격 : 해당 옵션을 선택했을 때 추가 되는 가격을 숫자로만
+              입력해 주시기 바랍니다.
+            </Exp>
+          </ExpDiv>
         </Block>
         <Block>
           <InputTitle>
@@ -326,10 +471,46 @@ function CreateMoim() {
           </InputTitle>
           <InputDiv>
             <CreateFAQ />
-            {FAQs?.map((faq) => (
-              <FAQ key={faq.id} {...faq} />
-            ))}
+            <Table>
+              <TableTitleDiv>
+                <TableTitle>질문</TableTitle>
+                <TableTitle>답변</TableTitle>
+                <TableTitle></TableTitle>
+              </TableTitleDiv>
+              <DragDropContext onDragEnd={onDragEndFAQ}>
+                <Droppable droppableId="faq">
+                  {(magic, snapshot) => (
+                    <Area
+                      isDraggingOver={snapshot.isDraggingOver}
+                      isDraggingFromThis={Boolean(
+                        snapshot.draggingFromThisWith
+                      )}
+                      ref={magic.innerRef}
+                      {...magic.droppableProps}
+                    >
+                      {FAQs?.map((faq, index) => (
+                        <FAQ
+                          key={faq.id}
+                          index={index}
+                          id={faq.id}
+                          faqQuestion={faq.faqQuestion}
+                          faqAnswer={faq.faqAnswer}
+                        />
+                      ))}
+                      {magic.placeholder}
+                    </Area>
+                  )}
+                </Droppable>
+              </DragDropContext>
+            </Table>
           </InputDiv>
+          <ExpDiv>
+            <Exp>
+              ※ 드래그 앤 드롭으로 FAQ 순서를 변경할 수 있습니다.
+              <br />
+              자주하는 질문을 미리 등록하여 빠르게 응답할 수 있습니다.
+            </Exp>
+          </ExpDiv>
         </Block>
         <Button form="total">생성하기</Button>
       </FormContainer>
@@ -350,12 +531,14 @@ const FormContainer = styled.div`
   margin-top: 68px;
 `;
 
+// form 항목
 const Block = styled.div`
   background-color: white;
   min-height: 50px;
   margin: 1rem;
 `;
 
+// form 제목
 const FormTitle = styled.div`
   font-size: 20px;
   font-weight: bold;
@@ -369,6 +552,7 @@ const InputTitle = styled.div`
   border-bottom: 1px solid whitesmoke;
 `;
 
+// 필수 항목 (*)
 const Required = styled.span`
   font-size: 16px;
   color: #ff5e57;
@@ -385,7 +569,7 @@ export const SubInputTopDiv = styled.div`
   padding: 0 0 1rem 0;
   border-bottom: 1px solid whitesmoke;
 `;
-const SubInputMiddleDiv = styled.div`
+export const SubInputMiddleDiv = styled.div`
   display: flex;
   padding: 1rem 0;
   border-bottom: 1px solid whitesmoke;
@@ -397,7 +581,8 @@ export const SubInputBottomDiv = styled.div`
 export const SubTitle = styled.div`
   display: flex;
   align-items: center;
-  width: 200px;
+  max-width: 200px;
+  width: 100%;
   font-size: 14px;
 `;
 
@@ -410,8 +595,12 @@ const Input = styled.input`
   }
 `;
 
+const Select = styled.select`
+  width: 250px;
+  height: 30px;
+`;
+
 export const MiniInput = styled.input`
-  margin-right: 3px;
   width: 250px;
   height: 30px;
   ::-webkit-inner-spin-button {
@@ -429,7 +618,7 @@ const TextArea = styled.textarea`
 `;
 
 // 에러 메시지
-export const ErrorMessage = styled.span`
+export const ErrorMessage = styled.p`
   margin-top: 3px;
   font-size: 11px;
   color: #ff5e57;
@@ -462,8 +651,29 @@ const ImgBoxInside = styled.div`
   font-size: 70px;
 `;
 
+// 테이블
+const Table = styled.div`
+  min-height: 60px;
+  /* max-width: 1212px; */
+  width: 100%;
+  border: 1px solid #d2dae2;
+`;
+const TableTitleDiv = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: whitesmoke;
+  height: 30px;
+`;
+const TableTitle = styled.div`
+  width: 100%;
+  font-size: 14px;
+  text-align: center;
+`;
+
+// 최종 제출 버튼
 const Button = styled.button`
   margin-top: 35px;
+  margin-bottom: 150px;
   border-radius: 10px;
   border: none;
   width: 100%;
@@ -473,6 +683,17 @@ const Button = styled.button`
   background-color: #1e272e;
   color: white;
   cursor: pointer;
+`;
+
+// Drag and Drop 가능한 범위
+const Area = styled.div<IAreaProps>`
+  background-color: ${(props) =>
+    props.isDraggingOver
+      ? "#dfe6e9"
+      : props.isDraggingFromThis
+      ? "b2bec3"
+      : "tranparent"};
+  transition: background-color 0.3s ease-in-out;
 `;
 
 export default CreateMoim;

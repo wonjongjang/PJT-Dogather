@@ -5,8 +5,8 @@ import com.dogather.pjtserver.handler.FileHandler;
 import com.dogather.pjtserver.service.FAQService;
 import com.dogather.pjtserver.service.GroupMediaService;
 import com.dogather.pjtserver.service.GroupService;
+import com.dogather.pjtserver.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +36,9 @@ public class GroupController {
 
     @Autowired
     FAQService faqService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping("/list")
     public ResponseEntity<GroupListDto> list(){
@@ -184,11 +187,27 @@ public class GroupController {
 
         System.out.println(wordList.toString());
 
-
-
         GroupListDto list = new GroupListDto();
         list.setList(groupService.wordSearch(wordList));
         return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
 
+    @PostMapping("/psearch")
+    public ResponseEntity<GroupListDto> personSearch(@RequestBody HashMap map){
+        String person = map.get("person").toString();
+
+        GroupListDto list = new GroupListDto();
+        list.setList(groupService.personSearch(person));
+        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+    }
+
+    @PostMapping("/review")
+    public int review(@RequestBody ReviewDto dto){
+        return groupService.review(dto);
+    }
+
+    @GetMapping("/review/{userNo}")
+    public double reviewAvg(@PathVariable int userNo){
+        return groupService.reviewAvg(userNo);
+    }
 }
