@@ -2,6 +2,7 @@ package com.dogather.pjtserver.controller;
 
 import com.dogather.pjtserver.dto.BoardDto;
 import com.dogather.pjtserver.dto.UserDto;
+import com.dogather.pjtserver.dto.UserRegisterDto;
 import com.dogather.pjtserver.dto.UserResponseDto;
 import com.dogather.pjtserver.jwt.JwtProvider;
 import com.dogather.pjtserver.jwt.JwtRet;
@@ -30,16 +31,22 @@ public class UserController {
 
 	//회원가입
 	@PostMapping("/register")
-	public ResponseEntity<UserDto> register(@RequestBody UserDto userDto){
+	public ResponseEntity<UserRegisterDto> register(@RequestBody UserRegisterDto dto){
 		System.err.println("(Post)User Controller Register Method run!");
 
-		int created = userService.userRegister(userDto);
+		int created = userService.userRegister(dto);
 
-		if (created == 1){
-			userDto.setMsg("가입완료");
-			return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+		List<Integer> list = dto.getUserCategory();
+		if( list != null && created > 0) {
+			for (int i : list) {
+				userService.addCategory(dto.getUserNo(), i);
+			}
+		}
+		if (created > 0){
+			dto.setMsg("가입완료");
+			return new ResponseEntity<UserRegisterDto>(dto, HttpStatus.OK);
 		}else{
-			return new ResponseEntity<UserDto>(userDto, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<UserRegisterDto>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
