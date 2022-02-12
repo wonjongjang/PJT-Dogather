@@ -31,6 +31,7 @@ public class GroupOptionDto {
     private List<OptionDto> options;
     private List<String> mediaList;
     private List<FAQDto> FaqList;
+    private String mainImage;
 
     public void setGroupDto(GroupDto groupDto){
         this.groupNo = groupDto.getGroupNo();

@@ -9,10 +9,14 @@
     </select>
 
 
-    <select id="getMainImage" parameterType="int" resultType="int">
+    <select id="getMainImage" parameterType="int" resultType="Integer">
+<!--        select ifnull (max(media_savename), 'no')-->
+<!--        from dogather.group_media as g-->
+<!--        where g.group_no = #{groupNo} and g.mainImageYn='Y'-->
+
         select media_no
-        from dogather.group_media
-        where group_no = #{groupNo} and mainImageYn='Y'
+        from dogather.group_media as g
+        where g.group_no = #{groupNo} and g.mainImageYn='Y'
     </select>
 
     <insert id="groupRegister" parameterType="com.dogather.pjtserver.dto.GroupDto">
@@ -84,6 +88,22 @@
         <foreach collection="wordList" item="word" separator="or">
             g.product Like Concat('%',#{word},'%') or g.detail Like Concat('%',#{word},'%')
         </foreach>
+    </select>
+
+    <select id="personSearch" parameterType="String" resultType="com.dogather.pjtserver.dto.GroupReturnDto">
+        select group_no, group_leader, deadline, max_people, g.view, g.status, product, price, c.category_no, c.category_name
+        from dogather.group AS g
+        left join category as c on g.category_no = c.category_no
+        where group_leader = (select user_no from dogather.user where user_nickname = #{person})
+    </select>
+
+    <insert id="review" parameterType="com.dogather.pjtserver.dto.ReviewDto">
+        insert into dogather.review (user_from, user_to, star, content)
+        values (#{userFrom}, #{userTo}, #{star}, #{content})
+    </insert>
+
+    <select id="reviewAvg" parameterType="int" resultType="double">
+        select ifnull(avg(star), -1) from dogather.review where user_to = #{userNo}
     </select>
 
 </mapper>

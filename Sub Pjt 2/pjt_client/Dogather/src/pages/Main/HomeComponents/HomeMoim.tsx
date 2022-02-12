@@ -51,6 +51,8 @@ function HomeMoim() {
                     sx={{
                       minWidth: 200,
                       minHeight: 200,
+                      maxWidth: 200,
+                      maxHeight: 200,
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
@@ -60,9 +62,9 @@ function HomeMoim() {
                   >
                     <CardMedia
                       component="img"
-                      height="100px"
+                      height="auto"
                       width="100px"
-                      image="img/CHANEL.png"
+                      image="img/Hoodie.png"
                       alt="Product Image"
                     />
                   </Card>
@@ -83,6 +85,8 @@ function HomeMoim() {
     </Container>
   );
 }
+
+const CardImg = styled(CardMedia)``;
 
 const animation = keyframes`
 0% {

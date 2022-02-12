@@ -6,7 +6,6 @@ import com.dogather.pjtserver.service.FAQService;
 import com.dogather.pjtserver.service.GroupMediaService;
 import com.dogather.pjtserver.service.GroupService;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,10 +48,14 @@ public class GroupController {
         List<GroupMediaDto> mediaDtoList = mediaService.fineAllMedia(groupNo);
         GroupDto groupDto = groupService.group(groupNo);
         List<FAQDto> faqDtoList = faqService.readFaqAll(groupNo);
-
+        String mainImageName = null;
         List<String> mediaList = new ArrayList<>();
         for (GroupMediaDto mediaDto : mediaDtoList ) {
-            mediaList.add(mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + mediaDto.getMediaSavename());
+            if(mediaDto.getMainImageYn().equals("N")){
+                mediaList.add(mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + mediaDto.getMediaSavename());
+            } else {
+                mainImageName = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/s_" + mediaDto.getMediaSavename();
+            }
         }
 
         GroupOptionDto ret = new GroupOptionDto();
@@ -61,6 +64,7 @@ public class GroupController {
         ret.setOptions(options);
         ret.setMediaList(mediaList);
         ret.setFaqList(faqDtoList);
+        ret.setMainImage(mainImageName);
         return new ResponseEntity<GroupOptionDto>(ret, HttpStatus.OK);
     }
 
@@ -179,11 +183,27 @@ public class GroupController {
 
         System.out.println(wordList.toString());
 
-
-
         GroupListDto list = new GroupListDto();
         list.setList(groupService.wordSearch(wordList));
         return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
 
+    @PostMapping("/psearch")
+    public ResponseEntity<GroupListDto> personSearch(@RequestBody HashMap map){
+        String person = map.get("person").toString();
+
+        GroupListDto list = new GroupListDto();
+        list.setList(groupService.personSearch(person));
+        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+    }
+
+    @PostMapping("/review")
+    public int review(@RequestBody ReviewDto dto){
+        return groupService.review(dto);
+    }
+
+    @GetMapping("/review/{userNo}")
+    public double reviewAvg(@PathVariable int userNo){
+        return groupService.reviewAvg(userNo);
+    }
 }
