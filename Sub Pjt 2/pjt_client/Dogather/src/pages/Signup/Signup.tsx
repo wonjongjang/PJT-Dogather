@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 import Category from "./Category";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { CategoriesAtom } from "../../atoms/ProductCategories";
 
 interface ISignUpForm {
   userId: string;
@@ -20,6 +22,8 @@ interface ISignUpForm {
 
 function Singup() {
   const navigate = useNavigate();
+
+  const [categories, setCategories] = useRecoilState(CategoriesAtom);
 
   const {
     register,
@@ -55,12 +59,19 @@ function Singup() {
   };
 
   const onValid = (data: ISignUpForm) => {
+    const newData = {
+      ...data,
+      userCategory: categories,
+    };
+
+    console.log(newData);
+
     fetch("http://i6e104.p.ssafy.io:8090/api/user/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(newData),
     })
       .then((response) => response.json())
       .then((result) => {
@@ -153,6 +164,7 @@ function Singup() {
                   message: "한글만 사용 가능합니다.",
                 },
               })}
+              placeholder="한글만 입력"
             />
             <ErrorMessage>{errors?.userName?.message}</ErrorMessage>
           </InputDiv>
@@ -248,13 +260,10 @@ function Singup() {
             />
             <ErrorMessage>{errors?.userEmail?.message}</ErrorMessage>
           </InputDiv>
-          {/* <select multiple>
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="opel">Opel</option>
-            <option value="audi">Audi</option>
-          </select> */}
-          <Category />
+          <CategoryDiv>
+            <InputTitle>관심 카테고리</InputTitle>
+            <Category />
+          </CategoryDiv>
           <Button>가입하기</Button>
         </SignUpForm>
       </SubContainer>
@@ -292,6 +301,12 @@ const InputDiv = styled.div`
   padding: 0 0 20px 0;
 `;
 
+const CategoryDiv = styled.div`
+  width: 100%;
+  border-top: 1px solid #d2dae2;
+  padding: 20px 0;
+`;
+
 const InputWithButtonDiv = styled.div`
   display: flex;
 `;
@@ -300,6 +315,7 @@ const SmallInput = styled.input`
   width: 230px;
   height: 45px;
   border: 1px solid #d2dae2;
+  background: white;
   ::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
@@ -308,7 +324,7 @@ const SmallInput = styled.input`
 
 const SmallButton = styled.button`
   width: 230px;
-  background-color: #1e272e;
+  background-color: ${(props) => props.theme.buttonColor};
   color: white;
   border: none;
   border-radius: 5px;
@@ -328,6 +344,7 @@ const Input = styled.input`
   width: 100%;
   height: 45px;
   border: 1px solid #d2dae2;
+  background: white;
   ::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
@@ -347,7 +364,6 @@ const ErrorMessage = styled.p`
 `;
 
 const Button = styled.button`
-  margin-top: 35px;
   margin-bottom: 150px;
   border-radius: 10px;
   border: none;
@@ -355,7 +371,7 @@ const Button = styled.button`
   height: 55px;
   font-size: 18px;
   font-weight: bold;
-  background-color: #1e272e;
+  background-color: ${(props) => props.theme.buttonColor};
   color: white;
   cursor: pointer;
 `;

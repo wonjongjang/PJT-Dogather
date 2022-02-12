@@ -91,7 +91,7 @@ const Button = styled.button`
   height: 30px;
   border-radius: 5px;
   border: none;
-  background-color: #1e272e;
+  background-color: ${(props) => props.theme.buttonColor};
   color: white;
   font-weight: bold;
   cursor: pointer;

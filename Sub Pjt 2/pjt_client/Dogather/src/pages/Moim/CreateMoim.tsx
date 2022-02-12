@@ -654,7 +654,6 @@ const ImgBoxInside = styled.div`
 // 테이블
 const Table = styled.div`
   min-height: 60px;
-  /* max-width: 1212px; */
   width: 100%;
   border: 1px solid #d2dae2;
 `;
@@ -680,7 +679,7 @@ const Button = styled.button`
   height: 55px;
   font-size: 18px;
   font-weight: bold;
-  background-color: #1e272e;
+  background-color: ${(props) => props.theme.buttonColor};
   color: white;
   cursor: pointer;
 `;

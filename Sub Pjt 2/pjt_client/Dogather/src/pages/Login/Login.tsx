@@ -83,7 +83,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   background-color: whitesmoke;
-  height: 100vh;
+  height: 68vh;
 `;
 
 const SubContainer = styled.div`
@@ -137,7 +137,7 @@ const LoginButton = styled.button`
   height: 55px;
   font-size: 18px;
   font-weight: bold;
-  background-color: #1e272e;
+  background-color: ${(props) => props.theme.buttonColor};
   color: white;
   cursor: pointer;
 `;
