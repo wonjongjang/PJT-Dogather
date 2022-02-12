@@ -1,175 +1,259 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAirFreshener,
   faBabyCarriage,
   faBaseballBall,
   faBook,
-  faCar,
   faCarSide,
   faCouch,
-  faDumbbell,
-  faFemale,
   faGamepad,
   faGuitar,
-  faMale,
   faPaw,
   faPills,
   faPizzaSlice,
-  faPrescriptionBottle,
   faTabletAlt,
   faTshirt,
   faTv,
   faUtensils,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  CategoriesAtom,
+  ProductCategories,
+} from "../../atoms/ProductCategories";
+import { useRecoilState } from "recoil";
 
 function Category() {
+  const [categories, setCategories] = useRecoilState(CategoriesAtom);
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { checked, value },
+    } = event;
+
+    if (checked) {
+      setCategories([...categories, Number(value)]);
+    } else {
+      setCategories(categories.filter((el: number) => el !== Number(value)));
+    }
+    console.log(checked, value);
+  };
+
+  console.log(categories);
   return (
-    <Container>
-      <Line>
-        <Box>
-          <Clabel>
-            <FontAwesomeIcon icon={faTshirt} size="lg" fixedWidth /> 남성 패션
-          </Clabel>
-        </Box>
-        <Checkbox value={"1"} />
-        <Box>
-          <Clabel>
-            <FontAwesomeIcon icon={faTshirt} size="lg" fixedWidth /> 여성 패션
-          </Clabel>
-        </Box>
-        <Checkbox value={"2"} />
-        <Box>
-          <Clabel>
+    <>
+      <Row>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories.남성패션}
+            onChange={onChange}
+          />
+          <Text>
+            <FontAwesomeIcon icon={faTshirt} size="lg" fixedWidth />
+            <span> 남성패션</span>
+          </Text>
+        </Element>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories.여성패션}
+            onChange={onChange}
+          />
+          <Text>
+            <FontAwesomeIcon icon={faTshirt} size="lg" fixedWidth />
+            <span> 여성패션</span>
+          </Text>
+        </Element>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories["뷰티/미용"]}
+            onChange={onChange}
+          />
+          <Text>
             <FontAwesomeIcon icon={faAirFreshener} size="lg" fixedWidth />
-            뷰티/미용
-          </Clabel>
-        </Box>
-        <Checkbox value={"3"} />
-        <Box>
-          <Clabel>
-            <FontAwesomeIcon icon={faPizzaSlice} size="lg" fixedWidth /> 식품
-          </Clabel>
-        </Box>
-        <Checkbox value={"4"} />
-      </Line>
-      <Line>
-        <Box>
-          <Clabel>
-            <FontAwesomeIcon icon={faPills} size="lg" fixedWidth /> 건강/약품
-          </Clabel>
-        </Box>
-        <Checkbox value={"5"} />
-        <Box>
-          <Clabel>
-            <FontAwesomeIcon icon={faTv} size="lg" fixedWidth /> 생활가전
-          </Clabel>
-        </Box>
-        <Checkbox value={"6"} />
-        <Box>
-          <Clabel>
+            <span> 뷰티/미용</span>
+          </Text>
+        </Element>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories.식품}
+            onChange={onChange}
+          />
+          <Text>
+            <FontAwesomeIcon icon={faPizzaSlice} size="lg" fixedWidth />
+            <span> 식품</span>
+          </Text>
+        </Element>
+      </Row>
+      <Row>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories["건강/의료용품"]}
+            onChange={onChange}
+          />
+          <Text>
+            <FontAwesomeIcon icon={faPills} size="lg" fixedWidth />
+            <span> 건강/의료</span>
+          </Text>
+        </Element>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories.생활가전}
+            onChange={onChange}
+          />
+          <Text>
+            <FontAwesomeIcon icon={faTv} size="lg" fixedWidth />
+            <span> 생활가전</span>
+          </Text>
+        </Element>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories.디지털기기}
+            onChange={onChange}
+          />
+          <Text>
             <FontAwesomeIcon icon={faTabletAlt} size="lg" fixedWidth />
-            디지털기기
-          </Clabel>
-        </Box>
-        <Checkbox value={"7"} />
-        <Box>
-          <Clabel>
+            <span> 디지털 기기</span>
+          </Text>
+        </Element>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories["가구/인테리어"]}
+            onChange={onChange}
+          />
+          <Text>
             <FontAwesomeIcon icon={faCouch} size="lg" fixedWidth />
-            가구/인테리어
-          </Clabel>
-        </Box>
-        <Checkbox value={"8"} />
-      </Line>
-      <Line>
-        <Box>
-          <Clabel>
-            <FontAwesomeIcon icon={faUtensils} size="lg" fixedWidth /> 생활용품
-          </Clabel>
-        </Box>
-        <Checkbox value={"9"} />
-        <Box>
-          <Clabel>
-            <FontAwesomeIcon icon={faBook} size="lg" fixedWidth /> 도서/티켓
-          </Clabel>
-        </Box>
-        <Checkbox value={"10"} />
-        <Box>
-          <Clabel>
+            <span> 가구/인테리어</span>
+          </Text>
+        </Element>
+      </Row>
+      <Row>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories.생활용품}
+            onChange={onChange}
+          />
+          <Text>
+            <FontAwesomeIcon icon={faUtensils} size="lg" fixedWidth />
+            <span> 생활용품</span>
+          </Text>
+        </Element>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories["도서/티켓/E쿠폰"]}
+            onChange={onChange}
+          />
+          <Text>
+            <FontAwesomeIcon icon={faBook} size="lg" fixedWidth />
+            <span> 도서/티켓</span>
+          </Text>
+        </Element>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories["출산/유아동"]}
+            onChange={onChange}
+          />
+          <Text>
             <FontAwesomeIcon icon={faBabyCarriage} size="lg" fixedWidth />
-            출산/유아동
-          </Clabel>
-        </Box>
-        <Checkbox value={"11"} />
-        <Box>
-          <Clabel>
-            <FontAwesomeIcon icon={faPaw} size="lg" fixedWidth /> 펫용품
-          </Clabel>
-        </Box>
-        <Checkbox value={"12"} />
-      </Line>
-      <Line>
-        <Box>
-          <Clabel>
+            <span> 출산/유아동</span>
+          </Text>
+        </Element>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories.반려동물용품}
+            onChange={onChange}
+          />
+          <Text>
+            <FontAwesomeIcon icon={faPaw} size="lg" fixedWidth />
+            <span> 반려동물용품</span>
+          </Text>
+        </Element>
+      </Row>
+      <Row>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories["스포츠/레저"]}
+            onChange={onChange}
+          />
+          <Text>
             <FontAwesomeIcon icon={faBaseballBall} size="lg" fixedWidth />
-            스포츠/레저
-          </Clabel>
-        </Box>
-        <Checkbox value={"13"} />
-        <Box>
-          <Clabel>
+            <span> 스포츠/레저</span>
+          </Text>
+        </Element>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories["자동차/공구"]}
+            onChange={onChange}
+          />
+          <Text>
             <FontAwesomeIcon icon={faCarSide} size="lg" fixedWidth />
-            자동차/공구
-          </Clabel>
-        </Box>
-        <Checkbox value={"14"} />
-        <Box>
-          <Clabel>
-            <FontAwesomeIcon icon={faGuitar} size="lg" fixedWidth /> 악기
-          </Clabel>
-        </Box>
-        <Checkbox value={"15"} />
-        <Box>
-          <Clabel>
-            <FontAwesomeIcon icon={faGamepad} size="lg" fixedWidth /> 게임/놀이
-          </Clabel>
-        </Box>
-        <Checkbox value={"16"} />
-      </Line>
-    </Container>
+            <span> 자동차/공구</span>
+          </Text>
+        </Element>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories.악기}
+            onChange={onChange}
+          />
+          <Text>
+            <FontAwesomeIcon icon={faGuitar} size="lg" fixedWidth />
+            <span> 악기</span>
+          </Text>
+        </Element>
+        <Element>
+          <CheckBox
+            type="checkbox"
+            value={ProductCategories["게임/놀이"]}
+            onChange={onChange}
+          />
+          <Text>
+            <FontAwesomeIcon icon={faGamepad} size="lg" fixedWidth />
+            <span> 게임/놀이</span>
+          </Text>
+        </Element>
+      </Row>
+    </>
   );
 }
 
-const Container = styled.div`
-  min-height: 10rem;
+const Row = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+const Element = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
 `;
 
-const Box = styled.span`
-  width: 7rem;
-  overflow: unset;
-`;
-
-const Line = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1rem;
-`;
-
-const Checkbox = styled.input.attrs({
-  type: "checkbox",
-})`
-  text-align: start;
-  margin-left: 0px;
+const CheckBox = styled.input`
+  margin: 0;
   height: 1rem;
   width: 2rem;
 `;
 
-const Clabel = styled.span`
-  font-size: 0.8rem;
+const Text = styled.div`
+  font-size: 10.6px;
+  height: 100%;
+  width: 100%;
 `;
 
 export default Category;

@@ -111,7 +111,7 @@ const UpperCol = styled.div`
   justify-content: flex-end;
   width: 100%;
   align-items: center;
-  padding-right: 50px;
+  padding-right: 61px;
 `;
 
 const UpperItems = styled.ul`
@@ -170,6 +170,8 @@ const Search = styled.span`
 `;
 
 const LowerItem = styled.li`
+  font-size: 15px;
+  font-weight: bold;
   margin: 0 20px;
 `;
 

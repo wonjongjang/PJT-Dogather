@@ -1,7 +1,9 @@
 // 상품 카테고리
 
+import { atom } from "recoil";
+
 export enum ProductCategories {
-  "-",
+  "-", // 0
   "남성패션",
   "여성패션",
   "뷰티/미용",
@@ -19,3 +21,8 @@ export enum ProductCategories {
   "악기",
   "게임/놀이",
 }
+
+export const CategoriesAtom = atom<any>({
+  key: "category",
+  default: [],
+});
