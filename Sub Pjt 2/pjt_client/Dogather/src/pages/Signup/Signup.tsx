@@ -76,6 +76,7 @@ function Singup() {
       .then((response) => response.json())
       .then((result) => {
         if (result.msg === "가입완료") {
+          setCategories([]);
           alert(`${data.userName}님, 회원가입을 축하합니다.`);
           navigate("/login");
         }
