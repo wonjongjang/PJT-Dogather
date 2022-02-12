@@ -12,7 +12,6 @@ function Header() {
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const [userNo, setUserNo] = useRecoilState(userNoAtom);
   const [userId, setUserId] = useRecoilState(userIdAtom);
-  // console.log("sex", userId);
 
   useEffect(() => {
     setIsLogin(localStorage.getItem("login_token") !== null);
@@ -62,6 +61,7 @@ function Header() {
           </Link>
 
           <LowerItems>
+            {/* 검색 아이콘 (svg로 가져오면 CSS로 자유롭게 변경 가능 */}
             <Search>
               <svg
                 fill="currentColor"
@@ -160,6 +160,7 @@ const LowerItems = styled.ul`
   align-items: center;
 `;
 
+// 검색 아이콘
 const Search = styled.span`
   margin: 0 20px;
   color: black;

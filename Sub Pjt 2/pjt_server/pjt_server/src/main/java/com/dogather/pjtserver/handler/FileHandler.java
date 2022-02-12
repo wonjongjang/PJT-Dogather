@@ -112,8 +112,8 @@ public class FileHandler {
         File mainImageFile = new File(uploadPath + "/" +today.format(DateTimeFormatter.ofPattern("yyMMdd")), "s_"+saveName);
         BufferedImage bufferOriginalImage = ImageIO.read(target);
 
-        int dw = 250;
-        int dh = 150; // 추후 썸네일 이미지 사이즈에 맞춰서 변경
+        int dw = 500;
+        int dh = 500; // 추후 썸네일 이미지 사이즈에 맞춰서 변경
 
         int ow = bufferOriginalImage.getWidth();
         int oh = bufferOriginalImage.getHeight();
