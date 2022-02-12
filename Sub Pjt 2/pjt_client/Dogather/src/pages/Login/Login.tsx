@@ -23,8 +23,6 @@ function Login() {
   } = useForm<ILoginForm>();
 
   const onValid = (data: ILoginForm) => {
-    // console.log(data);
-
     fetch("http://i6e104.p.ssafy.io:8090/api/user/login", {
       method: "POST",
       headers: {
@@ -34,10 +32,9 @@ function Login() {
     })
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
         if (result.msg === "success") {
+          // 로그인 성공 시
           localStorage.setItem("login_token", result.jwt);
-          // localStorage.setItem("userId", result.userInfo.userId);
           setIsLogin(true);
           setUserNo(result.userInfo.userNo);
           setUserId(result.userInfo.userId);
@@ -51,81 +48,92 @@ function Login() {
   };
 
   return (
-    <LoginForm onSubmit={handleSubmit(onValid)}>
-      <LoginTitle>로그인</LoginTitle>
-      <InputDiv>
-        <InputTitle>아이디</InputTitle>
-        <Input
-          {...register("userId", {
-            required: "아이디를 입력해 주세요.",
-          })}
-        />
-        <ErrorMessage>{errors?.userId?.message}</ErrorMessage>
-      </InputDiv>
-      <InputDiv>
-        <InputTitle>비밀번호</InputTitle>
-        <Input
-          {...register("userPw", {
-            required: "비밀번호를 입력해 주세요.",
-          })}
-          type="password"
-        />
-        <ErrorMessage>{errors?.userPw?.message}</ErrorMessage>
-      </InputDiv>
-      <LoginButton>로그인</LoginButton>
-      <KakaoLoginButton src="https://user-images.githubusercontent.com/70811550/126318637-aaa3db8c-bc8d-4b5d-b378-663d5f3cb51a.png" />
-    </LoginForm>
+    <Container>
+      <SubContainer>
+        <Title>로그인</Title>
+        <LoginForm onSubmit={handleSubmit(onValid)}>
+          <InputDiv>
+            <InputTitle>아이디</InputTitle>
+            <Input
+              {...register("userId", {
+                required: "아이디를 입력해 주세요.",
+              })}
+            />
+            <ErrorMessage>{errors?.userId?.message}</ErrorMessage>
+          </InputDiv>
+          <InputDiv>
+            <InputTitle>비밀번호</InputTitle>
+            <Input
+              {...register("userPw", {
+                required: "비밀번호를 입력해 주세요.",
+              })}
+              type="password"
+            />
+            <ErrorMessage>{errors?.userPw?.message}</ErrorMessage>
+          </InputDiv>
+          <LoginButton>로그인</LoginButton>
+          <KakaoLoginButton src="https://user-images.githubusercontent.com/70811550/126318637-aaa3db8c-bc8d-4b5d-b378-663d5f3cb51a.png" />
+        </LoginForm>
+      </SubContainer>
+    </Container>
   );
 }
 
-const LoginTitle = styled.h2`
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  background-color: whitesmoke;
+  height: 100vh;
+`;
+
+const SubContainer = styled.div`
+  width: 460px;
+  margin-top: 100px;
+`;
+
+const Title = styled.div`
+  text-align: center;
   font-weight: bold;
   font-size: 32px;
-  margin: 55px;
+  margin-bottom: 50px;
 `;
 
 const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  margin-top: 68px;
-  margin: 0 auto;
-  max-width: 680px;
+  width: 100%;
 `;
 
 const InputDiv = styled.div`
-  margin-bottom: 20px;
+  width: 100%;
+  padding: 0 0 20px 0;
 `;
 
 const InputTitle = styled.div`
   text-align: left;
   font-size: 14px;
   font-weight: bold;
+  margin-bottom: 1rem;
 `;
 
 const Input = styled.input`
-  margin-top: 5px;
-  margin-bottom: 1px;
-  width: 400px;
+  width: 100%;
   height: 45px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-width: 1px;
+  border: 1px solid #d2dae2;
 `;
 
 const ErrorMessage = styled.p`
-  text-align: left;
-  font-size: 11px;
-  color: #ff3f34;
+  margin-top: 3px;
+  font-size: 12px;
+  color: #ff5e57;
 `;
 
 const LoginButton = styled.button`
   margin-top: 35px;
   border-radius: 10px;
   border: none;
-  width: 400px;
+  width: 100%;
   height: 55px;
   font-size: 18px;
   font-weight: bold;
@@ -135,10 +143,10 @@ const LoginButton = styled.button`
 `;
 
 const KakaoLoginButton = styled.img`
-  margin-top: 2px;
+  margin-top: 5px;
   border-radius: 10px;
   border: none;
-  width: 400px;
+  width: 100%;
   height: 55px;
   cursor: pointer;
 `;

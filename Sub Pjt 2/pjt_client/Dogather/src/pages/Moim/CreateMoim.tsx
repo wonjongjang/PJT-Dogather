@@ -46,7 +46,7 @@ function CreateMoim() {
     formState: { errors },
     setError,
     watch,
-  } = useForm<IMoimForm>({ mode: "onChange" });
+  } = useForm<IMoimForm>({ mode: "onBlur" });
 
   // 대표 이미지
   const [file, setFile] = useState<FileList | undefined>();

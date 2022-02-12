@@ -59,7 +59,7 @@ const FooterP2 = styled.p`
 
 const FooterBody = styled.div`
   text-align: center;
-  height: 180px;
+  height: 200px;
   width: 100%;
   position: absolute;
   bottom: 0;
