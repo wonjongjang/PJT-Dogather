@@ -15,6 +15,7 @@ import java.util.List;
 public class GroupOptionDto {
     private int groupNo;
     private int groupLeader;
+    private String LeaderName;
     private int categoryNo;
     private LocalDateTime updated;
     private LocalDateTime created;
