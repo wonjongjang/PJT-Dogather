@@ -19,6 +19,11 @@ public interface GroupService {
     public int groupEnter(GroupEnterDto dto);
     public int groupOut(GroupEnterDto dto);
     public List<GroupReturnDto> getList();
+    public List<GroupReturnDto> getHotList();
+    public List<GroupReturnDto> getNewList();
+
+
+
     public int addInterest(GroupInterestDto dto);
     public List<OptionDto> getOptions(int groupNo);
     public void addOptions(int groupNo, List<OptionDto> options);

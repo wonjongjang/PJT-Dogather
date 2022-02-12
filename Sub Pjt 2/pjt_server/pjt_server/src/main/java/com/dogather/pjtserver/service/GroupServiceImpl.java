@@ -134,6 +134,42 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public List<GroupReturnDto> getHotList() {
+        List<GroupReturnDto> groupList =  groupDao.getHotList();
+        for (GroupReturnDto group:groupList) {
+//            if (!groupDao.getMainImage(group.getGroupNo()).toString().equals("no")){
+            Integer mainImage  = groupDao.getMainImage(group.getGroupNo());
+            if(mainImage != null) {
+                GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
+                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" +"s_"+ mediaDto.getMediaSavename();
+                group.setMainImage(uploadPath);
+            }
+
+            else
+                group.setMainImage("");
+        }
+        return groupList;
+    }
+
+    @Override
+    public List<GroupReturnDto> getNewList() {
+        List<GroupReturnDto> groupList =  groupDao.getNewList();
+        for (GroupReturnDto group:groupList) {
+//            if (!groupDao.getMainImage(group.getGroupNo()).toString().equals("no")){
+            Integer mainImage  = groupDao.getMainImage(group.getGroupNo());
+            if(mainImage != null) {
+                GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
+                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" +"s_"+ mediaDto.getMediaSavename();
+                group.setMainImage(uploadPath);
+            }
+
+            else
+                group.setMainImage("");
+        }
+        return groupList;
+    }
+
+    @Override
     public int addInterest(GroupInterestDto dto) {
         int result = groupDao.addInterest(dto);
         if(result == 1){
