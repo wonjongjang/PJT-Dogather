@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import {
   Route,
@@ -8,15 +8,14 @@ import {
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
-import { CardMedia } from "@mui/material";
+import { CardMedia, Stack } from "@mui/material";
 import { FetchMoimGroupAPI, FetchMoimMediaAPI } from "../../api/MoimDetail";
 // import { Audio, Hearts } from "react-loader-spinner";
-import MoimSelect from "./MoimDetailComponent/MoimDetailSelect";
 import { Link } from "react-router-dom";
-import Product from "./MoimDetailComponent/MoimProduct";
-import FAQ from "./MoimDetailComponent/MoimFAQ";
-import Review from "./MoimDetailComponent/MoimReview";
-import Refund from "./MoimDetailComponent/MoimRefund";
+import Product from "./MoimDetailComponent/MoimTabs/MoimProduct";
+import FAQ from "./MoimDetailComponent/MoimTabs/MoimFAQ";
+import Review from "./MoimDetailComponent/MoimTabs/MoimReview";
+import Refund from "./MoimDetailComponent/MoimTabs/MoimRefund";
 import { useRecoilValue } from "recoil";
 import { userIdAtom } from "../../atoms/Login";
 import Hoodie from "../../img/Hoodie.png";
@@ -31,6 +30,11 @@ interface RouteState {
 interface IProductData {
   group: number;
   products: object;
+}
+
+export interface IOptionsData {
+  optionName: string;
+  optionPrice: number;
 }
 
 export interface IGroupData {
@@ -48,7 +52,7 @@ export interface IGroupData {
   originPrice: number; // 출시가
   price: number; // 공구가
   mainImage: string;
-  options: Array<object>;
+  options: Array<IOptionsData>;
   mediaList: Array<string>;
   faqList: Array<object>;
 }
@@ -88,6 +92,7 @@ function MoimDetail() {
     () => FetchMoimGroupAPI(groupNo!, userId!, JWT!)
   );
 
+  console.log(groupData?.options);
   console.log(groupLoading);
   console.log(groupData);
   console.log(groupData?.mediaList[0]);
@@ -96,6 +101,7 @@ function MoimDetail() {
 
   const [loading, setLoading] = useState(true);
   const [hidden, setHidden] = useState(true);
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -103,10 +109,27 @@ function MoimDetail() {
     }, 100);
   }, []);
 
+  const [optionValue, setOptionValue] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [isHidden, setIsHidden] = useState(true);
+  // console.log(options);
+  // console.log(options[0].optionName);
+  const onSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(event.target.value);
+    setIsHidden(false);
+    setOptionValue(event.target.value);
+  };
+  const onQuantity = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuantity(event.target.value);
+  };
+
   const mainImgAddress = "/doimage/" + groupData?.mainImage;
   console.log(groupData?.mainImage);
   const detailImgAddress = "/doimage/" + groupData?.mediaList[0];
   console.log(mainImgAddress, detailImgAddress);
+
+  const time = Date.now();
+  console.log(time);
 
   return (
     <Container>
@@ -114,32 +137,105 @@ function MoimDetail() {
         {loading ? null : (
           <>
             <Overview>
-              {/* <Img
-                src={process.env.PUBLIC_URL + "/img/Hoodie.png"}
-                alt={"메인 이미지"}
-              /> */}
-              <Img
+              <ImgWrapper>
+                <Img
+                  src={process.env.PUBLIC_URL + "/img/Hoodie.png"}
+                  alt={"메인 이미지"}
+                />
+                {/* <Img
                 src={process.env.PUBLIC_URL + mainImgAddress}
                 alt={process.env.PUBLIC_URL + mainImgAddress}
               />
               <Img
                 src={process.env.PUBLIC_URL + detailImgAddress}
                 alt={process.env.PUBLIC_URL + detailImgAddress}
-              />
-              {/* <MoimDetailImg /> */}
+              /> */}
+                {/* <MoimDetailImg /> */}
+              </ImgWrapper>
               <OverviewItem>
-                <span>
-                  <p>모임번호:{groupData?.groupNo}</p>
-                  <p>{"모임리더이름"}</p>
-                </span>
-                <span>{groupData?.product}</span>
-                <span>{groupData?.detail}</span>
-                <span>단돈 {groupData?.price}원</span>
+                <Link to={"여기 주소는 카테고리 검색으로"}>
+                  <img
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      width: "120px",
+                      height: "20px",
+                      marginBottom: "3px",
+                    }}
+                    src={process.env.PUBLIC_URL + "/img/베스트라벨.png"}
+                    alt=""
+                  />
+                  <CategoryName>{"남성패션"}</CategoryName>
+                </Link>
+                <Link to={groupData?.link!}>
+                  <LeaderName>{"Dogather(모임리더)"}</LeaderName>
+                </Link>
+                <ProductTitle>{groupData?.product}</ProductTitle>
+                <ProductDetail>{groupData?.detail}</ProductDetail>
+                <Option>{"옵션선택"}</Option>
+                {/* {groupData?.options.map((option, idx) => (
+                  <MoimSelect
+                    optionName={option.optionName}
+                    optionPrice={option.optionPrice}
+                  />
+                ))} */}
+                <SelectContainer>
+                  <SelectWrapper>
+                    <SelectContent>
+                      <SelectSelect
+                        onChange={onSelect}
+                        placeholder="옵션을 선택해주세요."
+                      >
+                        <SelectOption value="0">
+                          옵션을 선택해주세요.
+                        </SelectOption>
+                        {groupData?.options.map((option, idx) => (
+                          <SelectOption
+                            key={idx}
+                            value={
+                              option.optionName +
+                              " (" +
+                              "+" +
+                              option.optionPrice +
+                              ")"
+                            }
+                          >
+                            {option.optionName}
+                          </SelectOption>
+                        ))}
+                      </SelectSelect>
+                    </SelectContent>
+                    <OptionWrapper hidden={isHidden}>
+                      <SelectContent>
+                        <SelectInput
+                          value={quantity}
+                          onChange={onQuantity}
+                          type="number"
+                          min="0"
+                          placeholder="수량을 입력해주세요."
+                        />
+                      </SelectContent>
+                      <SelectContent>
+                        <span>옵션명 : {optionValue}</span>
+                        <br />
+                        <span>수량 : {quantity}</span>
+                        <br />
+                      </SelectContent>
+                      <SelectContent>
+                        <Stack direction="row" spacing={2}>
+                          <Button>장바구니</Button>
+                          <Button>바로구매</Button>
+                        </Stack>
+                      </SelectContent>
+                    </OptionWrapper>
+                  </SelectWrapper>
+                </SelectContainer>
+
+                {/* <span>단돈 {groupData?.price}원</span>
                 <span>
                   모임 인원 : 현재신청인원 / {groupData?.maxPeople} (여기는%)
                 </span>
-                <span>마감 기한 : {groupData?.deadline}</span>
-                <MoimSelect />
+                <span>마감 기한 : {groupData?.deadline}</span> */}
               </OverviewItem>
             </Overview>
             <Tabs hidden={hidden}>
@@ -171,10 +267,36 @@ function MoimDetail() {
     </Container>
   );
 }
+const LeaderName = styled.p`
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 20px;
+`;
+const CategoryName = styled.p`
+  display: flex;
+  align-items: center;
+  color: grey;
+  font-size: 14px;
+  margin-bottom: 5px;
+`;
+const ProductTitle = styled.p`
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+const ProductDetail = styled.p`
+  margin-bottom: 20px;
+`;
 
-const ProductTitle = styled.h1``;
-const ProductDetail = styled.h1``;
-const ProductPrice = styled.h1``;
+const Option = styled.p`
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+
+const ProductPrice = styled.p``;
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -186,9 +308,14 @@ const MoimWrapper = styled.div`
   margin-top: 65px;
 `;
 
-const Title = styled.h1`
+const Title = styled.p`
   font-size: 48px;
   padding-top: 500px;
+`;
+
+const ImgWrapper = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const Img = styled.img`
@@ -196,7 +323,6 @@ const Img = styled.img`
   width: 500px;
   object-fit: cover;
   overflow: hidden;
-  margin-right: 40px;
 `;
 
 const Loader = styled.span`
@@ -206,9 +332,10 @@ const Loader = styled.span`
 
 const Overview = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   background-color: white;
   padding: 10px 20px;
+  /* box-shadow: 3px 3px 10px 3px lightgrey; */
 `;
 
 const OverviewItem = styled.div`
@@ -216,6 +343,8 @@ const OverviewItem = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: left;
+  width: 600px;
+  height: 500px;
   span {
     font-size: 20px;
     font-weight: 400;
@@ -247,5 +376,64 @@ const Tab = styled.span<{ isActive: boolean }>`
     display: block;
   }
 `;
+
+const SelectContainer = styled.div`
+  display: block;
+`;
+
+const OptionWrapper = styled.div``;
+
+const SelectContent = styled.div`
+  display: flex;
+  justify-content: right;
+  font-size: 20px;
+`;
+
+const SelectCart = styled.button`
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+`;
+
+const SelectWrapper = styled.div``;
+
+const SelectInput = styled.input`
+  font-size: 14px;
+  width: 100%;
+  height: 30px;
+  margin-bottom: 10px;
+  color: grey;
+  :hover {
+    outline: auto;
+  }
+  ::-webkit-outer-spin-button {
+    width: 50px;
+    height: 20px;
+    -webkit-appearance: "Always Show Up/Down Arrows";
+  }
+  ::-webkit-inner-spin-button {
+    width: 50px;
+    height: 20px;
+    -webkit-appearance: "Always Show Up/Down Arrows";
+  }
+`;
+
+const SelectSelect = styled.select`
+  width: 100%;
+  height: 30px;
+  font-size: 14px;
+  color: grey;
+  margin-bottom: 3px;
+  :hover {
+    /* background-color: #e2e0ff; */
+    outline: auto;
+  }
+`;
+
+const SelectOption = styled.option`
+  font-size: 14px;
+`;
+
+const Button = styled.button``;
 
 export default MoimDetail;
