@@ -251,4 +251,15 @@ public class GroupServiceImpl implements GroupService {
     public double reviewAvg(int userNo) {
         return groupDao.reviewAvg(userNo);
     }
+
+    @Override
+    public List<GroupReturnDto> findUserLikeGroup(int userNo) {
+        List<Integer> likeGroupNoList = groupDao.findLikeGroupByUser(userNo);
+        List<GroupReturnDto> groupListDto = new ArrayList<>();
+        for (int likeGroupNo : likeGroupNoList) {
+            groupListDto.add(groupDao.group(likeGroupNo));
+        }
+        return groupListDto;
+    }
+
 }
