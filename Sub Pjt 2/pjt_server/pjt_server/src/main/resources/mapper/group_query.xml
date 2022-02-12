@@ -114,7 +114,7 @@
 
     <insert id="groupRegister" parameterType="com.dogather.pjtserver.dto.GroupDto">
         insert into dogather.group (group_leader, category_no, deadline, max_people, status, product, detail, link, origin_price, price)
-        values (#{groupLeader}, #{categoryNo}, #{deadline}, #{maxPeople}, #{status}, #{product}, #{detail}, #{link}, #{originPrice}, #{price})
+        values (#{groupLeader}, #{categoryNo}, date_format(#{deadline}, "%Y-%m-%d %H:%i:%s") , #{maxPeople}, #{status}, #{product}, #{detail}, #{link}, #{originPrice}, #{price})
         <selectKey keyProperty="groupNo" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -263,6 +263,12 @@
 
     <select id="reviewAvg" parameterType="int" resultType="double">
         select ifnull(avg(star), -1) from dogather.review where user_to = #{userNo}
+    </select>
+
+    <select id="findLikeGroupByUser" parameterType="int" resultType="int">
+        select group_no
+        from user_group_interest
+        where user_no = #{userNo}
     </select>
 
 

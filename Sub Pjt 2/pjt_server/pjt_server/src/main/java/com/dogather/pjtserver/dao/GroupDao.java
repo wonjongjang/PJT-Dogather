@@ -33,4 +33,6 @@ public interface GroupDao {
     public int review(ReviewDto dto);
 
     public double reviewAvg(int userNo);
+
+    public List<Integer> findLikeGroupByUser(int userNo);
 }

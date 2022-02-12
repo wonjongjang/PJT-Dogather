@@ -4,9 +4,11 @@ import com.dogather.pjtserver.dto.BoardDto;
 import com.dogather.pjtserver.dto.UserDto;
 import com.dogather.pjtserver.dto.UserRegisterDto;
 import com.dogather.pjtserver.dto.UserResponseDto;
+import com.dogather.pjtserver.dto.*;
 import com.dogather.pjtserver.jwt.JwtProvider;
 import com.dogather.pjtserver.jwt.JwtRet;
 import com.dogather.pjtserver.service.BoardService;
+import com.dogather.pjtserver.service.GroupService;
 import com.dogather.pjtserver.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,10 @@ public class UserController {
 
 	@Autowired
 	BoardService boardService;
+
+	@Autowired
+	GroupService groupService;
+
 
 	//회원가입
 	@PostMapping("/register")
@@ -106,9 +112,12 @@ public class UserController {
 		UserDto userInfo = userService.userFind(userId);
 		userInfo.setUserPw(null);
 		List<BoardDto> likeBoards = boardService.findUserLikeBoard(userInfo.getUserNo());
+		List<GroupReturnDto> likeGroups = groupService.findUserLikeGroup(userInfo.getUserNo());
 		log.info(likeBoards.toString());
+		userResponseDto.setUserId(userId);
 		userResponseDto.setUserInfo(userInfo);
 		userResponseDto.setLikeBoards(likeBoards);
+		userResponseDto.setLikeGroups(likeGroups);
 		return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 	}
 
