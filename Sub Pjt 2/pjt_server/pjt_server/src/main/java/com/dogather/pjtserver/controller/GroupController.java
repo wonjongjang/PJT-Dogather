@@ -47,6 +47,20 @@ public class GroupController {
         return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
 
+    @GetMapping("/hot")
+    public ResponseEntity<GroupListDto> hotList(){
+        GroupListDto list = new GroupListDto();
+        list.setList(groupService.getHotList());
+        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+    }
+
+    @GetMapping("/new")
+    public ResponseEntity<GroupListDto> newList(){
+        GroupListDto list = new GroupListDto();
+        list.setList(groupService.getNewList());
+        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+    }
+
     @GetMapping("/detail/{groupNo}")
     public ResponseEntity<GroupOptionDto> group(@PathVariable int groupNo){
         List<GroupMediaDto> mediaDtoList = mediaService.fineAllMedia(groupNo);

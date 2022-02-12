@@ -15,6 +15,10 @@ public interface GroupDao {
     public int groupEnter(GroupEnterDto dto);
     public int groupOut(GroupEnterDto dto);
     public List<GroupReturnDto> getList();
+    public List<GroupReturnDto> getHotList();
+    public List<GroupReturnDto> getNewList();
+
+
     public int addInterest(GroupInterestDto dto);
     public List<GroupInterestDto> interestlist(int userNo);
     public List<OptionDto> getOptions(int groupNo);
