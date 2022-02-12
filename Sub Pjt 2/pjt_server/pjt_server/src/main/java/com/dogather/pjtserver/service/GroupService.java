@@ -15,7 +15,7 @@ public interface GroupService {
     public int groupUpdate(int groupNo, GroupDto updateGroupDto, List<MultipartFile> addMediaList) throws IOException;
 
     public int groupDelete(int groupNo);
-    public GroupDto group(int groupNo);
+    public GroupReturnDto group(int groupNo);
     public int groupEnter(GroupEnterDto dto);
     public int groupOut(GroupEnterDto dto);
     public List<GroupReturnDto> getList();
