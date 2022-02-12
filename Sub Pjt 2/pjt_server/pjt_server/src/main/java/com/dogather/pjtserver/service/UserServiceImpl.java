@@ -3,10 +3,13 @@ package com.dogather.pjtserver.service;
 import com.dogather.pjtserver.dao.UserDao;
 import com.dogather.pjtserver.dto.BoardDto;
 import com.dogather.pjtserver.dto.UserDto;
+import com.dogather.pjtserver.dto.UserRegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -15,13 +18,9 @@ public class UserServiceImpl implements UserService{
 	UserDao userDao;
 
 	@Override
-	public int userRegister(UserDto userDto) {
+	public int userRegister(UserRegisterDto userDto) {
 		int created = userDao.userRegister(userDto);
-		if( created == 1){
-			return 1;
-		}else{
-			return 0;
-		}
+			return created;
 	}
 
 	@Override
@@ -61,6 +60,14 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void userDelete(String userId){
 		userDao.userDelete(userId);
+	}
+
+	@Override
+	public void addCategory(int userNo, int categoryNo) {
+		Map map = new HashMap();
+		map.put("userNo", userNo);
+		map.put("categoryNo", categoryNo);
+		userDao.addCategory(map);
 	}
 
 	@Override
