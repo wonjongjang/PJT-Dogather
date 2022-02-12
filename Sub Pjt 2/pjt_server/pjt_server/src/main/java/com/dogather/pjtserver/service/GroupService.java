@@ -15,10 +15,15 @@ public interface GroupService {
     public int groupUpdate(int groupNo, GroupDto updateGroupDto, List<MultipartFile> addMediaList) throws IOException;
 
     public int groupDelete(int groupNo);
-    public GroupDto group(int groupNo);
+    public GroupReturnDto group(int groupNo);
     public int groupEnter(GroupEnterDto dto);
     public int groupOut(GroupEnterDto dto);
     public List<GroupReturnDto> getList();
+    public List<GroupReturnDto> getHotList();
+    public List<GroupReturnDto> getNewList();
+
+
+
     public int addInterest(GroupInterestDto dto);
     public List<OptionDto> getOptions(int groupNo);
     public void addOptions(int groupNo, List<OptionDto> options);
@@ -34,4 +39,6 @@ public interface GroupService {
     public int review(ReviewDto dto);
 
     public double reviewAvg(int userNo);
+
+    public List<GroupReturnDto> findUserLikeGroup(int userNo);
 }

@@ -15,7 +15,9 @@ import java.util.List;
 public class GroupOptionDto {
     private int groupNo;
     private int groupLeader;
+    private String leaderName;
     private int categoryNo;
+    private String categoryName;
     private LocalDateTime updated;
     private LocalDateTime created;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -33,21 +35,23 @@ public class GroupOptionDto {
     private List<FAQDto> FaqList;
     private String mainImage;
 
-    public void setGroupDto(GroupDto groupDto){
-        this.groupNo = groupDto.getGroupNo();
-        this.groupLeader = groupDto.getGroupLeader();
-        this.categoryNo = groupDto.getCategoryNo();
-        this.updated = groupDto.getUpdated();
-        this.created = groupDto.getCreated();
-        this.deadline = groupDto.getDeadline();
-        this.maxPeople = groupDto.getMaxPeople();
-        this.view = groupDto.getView();
-        this.status = groupDto.getStatus();
-        this.product = groupDto.getProduct();
-        this.detail = groupDto.getDetail();
-        this.link = groupDto.getLink();
-        this.originPrice = groupDto.getOriginPrice();
-        this.price = groupDto.getPrice();
+    public void setGroupDto(GroupReturnDto groupReturnDto){
+        this.groupNo = groupReturnDto.getGroupNo();
+        this.groupLeader = groupReturnDto.getGroupLeader();
+        this.leaderName = groupReturnDto.getLeaderName();
+        this.categoryNo = groupReturnDto.getCategoryNo();
+        this.categoryName = groupReturnDto.getCategoryName();
+        this.updated = groupReturnDto.getUpdated();
+        this.created = groupReturnDto.getCreated();
+        this.deadline = groupReturnDto.getDeadline();
+        this.maxPeople = groupReturnDto.getMaxPeople();
+        this.view = groupReturnDto.getView();
+        this.status = groupReturnDto.getStatus();
+        this.product = groupReturnDto.getProduct();
+        this.detail = groupReturnDto.getDetail();
+        this.link = groupReturnDto.getLink();
+        this.originPrice = groupReturnDto.getOriginPrice();
+        this.price = groupReturnDto.getPrice();
 
     }
 

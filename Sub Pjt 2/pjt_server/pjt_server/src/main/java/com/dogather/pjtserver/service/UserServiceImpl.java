@@ -3,10 +3,13 @@ package com.dogather.pjtserver.service;
 import com.dogather.pjtserver.dao.UserDao;
 import com.dogather.pjtserver.dto.BoardDto;
 import com.dogather.pjtserver.dto.UserDto;
+import com.dogather.pjtserver.dto.UserRegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -15,18 +18,14 @@ public class UserServiceImpl implements UserService{
 	UserDao userDao;
 
 	@Override
-	public int userRegister(UserDto userDto) {
+	public int userRegister(UserRegisterDto userDto) {
 		int created = userDao.userRegister(userDto);
-		if( created == 1){
-			return 1;
-		}else{
-			return 0;
-		}
+			return created;
 	}
 
 	@Override
 	public UserDto userLogin(UserDto userDto) { // 로그인
-		UserDto user = userDao.userFind(userDto.getUserId()); // 유저의 아이디를 통해 정보 얻어옴
+		UserDto user = userDao.userFindById(userDto.getUserId()); // 유저의 아이디를 통해 정보 얻어옴
 		if(user != null){// 있는 아이디
 			//PW check
 			if(user.getUserPw().equals(userDto.getUserPw())) {
@@ -44,10 +43,15 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserDto userFind(String userId) {
-		return userDao.userFind(userId); // 유저의 아이디를 통해 유저정보 얻어옴
+		return userDao.userFindById(userId); // 유저의 아이디를 통해 유저정보 얻어옴
 	}
 
-	@Override
+    @Override
+    public UserDto userFind(int userNo) {
+		return userDao.userFindByNo(userNo);
+    }
+
+    @Override
 	public int userUpdate(UserDto userDto){
 		int created = userDao.userUpdate(userDto);
 		return created;
@@ -56,6 +60,14 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void userDelete(String userId){
 		userDao.userDelete(userId);
+	}
+
+	@Override
+	public void addCategory(int userNo, int categoryNo) {
+		Map map = new HashMap();
+		map.put("userNo", userNo);
+		map.put("categoryNo", categoryNo);
+		userDao.addCategory(map);
 	}
 
 	@Override
