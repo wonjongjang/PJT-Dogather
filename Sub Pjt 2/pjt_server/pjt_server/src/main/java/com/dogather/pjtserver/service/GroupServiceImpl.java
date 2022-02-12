@@ -87,9 +87,12 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDto group(int groupNo) {
-        GroupDto groupDto = groupDao.group(groupNo);
-        return groupDto;
+    public GroupReturnDto group(int groupNo) {
+        log.info("'======그룹 시작;");
+        log.info(String.valueOf(groupNo));
+        GroupReturnDto groupReturnDto = groupDao.group(groupNo);
+        log.info(groupReturnDto.toString());
+        return groupReturnDto;
     }
 
     @Override

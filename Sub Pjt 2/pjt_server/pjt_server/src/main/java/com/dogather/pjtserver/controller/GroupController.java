@@ -47,7 +47,7 @@ public class GroupController {
     @GetMapping("/detail/{groupNo}")
     public ResponseEntity<GroupOptionDto> group(@PathVariable int groupNo){
         List<GroupMediaDto> mediaDtoList = mediaService.fineAllMedia(groupNo);
-        GroupDto groupDto = groupService.group(groupNo);
+        GroupReturnDto groupReturnDto = groupService.group(groupNo);
         List<FAQDto> faqDtoList = faqService.readFaqAll(groupNo);
         String mainImageName = null;
         List<String> mediaList = new ArrayList<>();
@@ -60,7 +60,7 @@ public class GroupController {
         }
 
         GroupOptionDto ret = new GroupOptionDto();
-        ret.setGroupDto(groupDto);
+        ret.setGroupDto(groupReturnDto);
         List<OptionDto> options = groupService.getOptions(groupNo);
         ret.setOptions(options);
         ret.setMediaList(mediaList);
