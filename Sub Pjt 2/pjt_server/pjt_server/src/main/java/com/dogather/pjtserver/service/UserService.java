@@ -9,6 +9,7 @@ public interface UserService {
     public int userRegister(UserDto userDto);
     public UserDto userLogin(UserDto userDto);
     public UserDto userFind(String userId);
+    public UserDto userFind(int userNo);
     public int userUpdate(UserDto userDto);
     public void userDelete(String userId);
     public boolean userIdCheck(String id);

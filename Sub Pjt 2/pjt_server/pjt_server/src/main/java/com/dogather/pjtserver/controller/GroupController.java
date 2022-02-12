@@ -5,6 +5,7 @@ import com.dogather.pjtserver.handler.FileHandler;
 import com.dogather.pjtserver.service.FAQService;
 import com.dogather.pjtserver.service.GroupMediaService;
 import com.dogather.pjtserver.service.GroupService;
+import com.dogather.pjtserver.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,9 @@ public class GroupController {
     @Autowired
     FAQService faqService;
 
+    @Autowired
+    UserService userService;
+
     @GetMapping("/list")
     public ResponseEntity<GroupListDto> list(){
         GroupListDto list = new GroupListDto();
@@ -47,6 +51,7 @@ public class GroupController {
     public ResponseEntity<GroupOptionDto> group(@PathVariable int groupNo){
         List<GroupMediaDto> mediaDtoList = mediaService.fineAllMedia(groupNo);
         GroupDto groupDto = groupService.group(groupNo);
+        String leaderName = userService.userFind(groupDto.getGroupLeader()).getUserNickname();
         List<FAQDto> faqDtoList = faqService.readFaqAll(groupNo);
         String mainImageName = null;
         List<String> mediaList = new ArrayList<>();
@@ -59,6 +64,7 @@ public class GroupController {
         }
 
         GroupOptionDto ret = new GroupOptionDto();
+        ret.setLeaderName(leaderName);
         ret.setGroupDto(groupDto);
         List<OptionDto> options = groupService.getOptions(groupNo);
         ret.setOptions(options);
