@@ -1,9 +1,12 @@
 import DogatherLogo from "./Logo.svg";
 import styled from "styled-components";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { isLoginAtom, userIdAtom, userNoAtom } from "../../atoms/Login";
+import { useRecoilState } from "recoil";
 import { useEffect } from "react";
+import { isLoginAtom, userIdAtom, userNoAtom } from "../../atoms/Login";
+import { CategoriesAtom } from "../../atoms/ProductCategories";
+import { OptionsAtom } from "../../atoms/Options";
+import { FAQsAtom } from "../../atoms/FAQs";
 
 function Header() {
   const navigate = useNavigate();
@@ -12,9 +15,15 @@ function Header() {
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const [userNo, setUserNo] = useRecoilState(userNoAtom);
   const [userId, setUserId] = useRecoilState(userIdAtom);
+  const [options, setOptions] = useRecoilState(OptionsAtom);
+  const [FAQS, setFAQs] = useRecoilState(FAQsAtom);
+  const [categories, setCategories] = useRecoilState(CategoriesAtom);
 
   useEffect(() => {
     setIsLogin(localStorage.getItem("login_token") !== null);
+    setOptions([]);
+    setFAQs([]);
+    setCategories([]);
   }, [location]); // url 바뀔 때 마다 로컬 스토리지에 토큰이 있는지 확인하여 로그인 여부를 변경
 
   const Logout = () => {

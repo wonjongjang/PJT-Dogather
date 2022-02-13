@@ -118,8 +118,6 @@ function CreateMoim() {
           navigate(`/moim/${String(result)}`);
           // console.log(result);
         }
-        setOptions([]);
-        setFAQs([]);
       });
   };
 

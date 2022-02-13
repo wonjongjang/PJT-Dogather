@@ -22,7 +22,7 @@ export enum ProductCategories {
   "게임/놀이",
 }
 
-export const CategoriesAtom = atom<any>({
+export const CategoriesAtom = atom<Array<number>>({
   key: "category",
   default: [],
 });
