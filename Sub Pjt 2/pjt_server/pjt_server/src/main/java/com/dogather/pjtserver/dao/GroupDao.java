@@ -17,6 +17,7 @@ public interface GroupDao {
     public List<GroupReturnDto> getList();
     public List<GroupReturnDto> getHotList();
     public List<GroupReturnDto> getNewList();
+    public List<GroupReturnDto> getEndSoonList();
 
 
     public int addInterest(GroupInterestDto dto);
