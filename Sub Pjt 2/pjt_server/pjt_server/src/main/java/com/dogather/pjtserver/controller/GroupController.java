@@ -61,6 +61,13 @@ public class GroupController {
         return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
 
+    @GetMapping("/end")
+    public ResponseEntity<GroupListDto> endSoonList(){
+        GroupListDto list = new GroupListDto();
+        list.setList(groupService.getEndSoonList());
+        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+    }
+
     @GetMapping("/detail/{groupNo}")
     public ResponseEntity<GroupOptionDto> group(@PathVariable int groupNo){
         List<GroupMediaDto> mediaDtoList = mediaService.fineAllMedia(groupNo);

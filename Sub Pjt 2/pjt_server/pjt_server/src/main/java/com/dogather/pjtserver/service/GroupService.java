@@ -21,6 +21,7 @@ public interface GroupService {
     public List<GroupReturnDto> getList();
     public List<GroupReturnDto> getHotList();
     public List<GroupReturnDto> getNewList();
+    public List<GroupReturnDto> getEndSoonList();
 
 
 
