@@ -64,8 +64,6 @@ function Singup() {
       userCategory: categories,
     };
 
-    console.log(newData);
-
     fetch("http://i6e104.p.ssafy.io:8090/api/user/register", {
       method: "POST",
       headers: {
@@ -76,7 +74,6 @@ function Singup() {
       .then((response) => response.json())
       .then((result) => {
         if (result.msg === "가입완료") {
-          setCategories([]);
           alert(`${data.userName}님, 회원가입을 축하합니다.`);
           navigate("/login");
         }

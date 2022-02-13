@@ -36,10 +36,9 @@ function Category() {
     } else {
       setCategories(categories.filter((el: number) => el !== Number(value)));
     }
-    console.log(checked, value);
   };
+  // console.log(categories);
 
-  console.log(categories);
   return (
     <>
       <Row>
