@@ -76,7 +76,7 @@ function MoimDetail() {
 
   // groupNo에 따라 페이지가 변경되므로 그룹No가 넘어갈 수 있도록 해야함.
   const { groupNo } = useParams();
-  console.log(groupNo);
+  console.log(typeof groupNo);
 
   const { state } = useLocation() as RouteState;
   const productMatch = useMatch("/moim/:groupNo");
@@ -323,7 +323,10 @@ function MoimDetail() {
                       <Button style={{ backgroundColor: "tomato" }}>
                         관심등록
                       </Button>
-                      <KakaoPay />
+                      <KakaoPay
+                        groupNo={groupData?.groupNo!}
+                        price={groupData?.price!}
+                      />
                     </SelectContent>
                   </SelectWrapper>
                 </SelectContainer>
