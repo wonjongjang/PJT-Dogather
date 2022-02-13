@@ -9,10 +9,10 @@ import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import CreateMoim from "./pages/Moim/CreateMoim";
 import MoimDetail from "./pages/Moim/MoimDetail";
-import Product from "./pages/Moim/MoimDetailComponent/MoimProduct";
-import FAQ from "./pages/Moim/MoimDetailComponent/MoimFAQ";
-import Review from "./pages/Moim/MoimDetailComponent/MoimReview";
-import Refund from "./pages/Moim/MoimDetailComponent/MoimRefund";
+import MoimProduct from "./pages/Moim/MoimDetailComponent/MoimTabs/MoimProduct";
+import MoimFAQ from "./pages/Moim/MoimDetailComponent/MoimTabs/MoimFAQ";
+import MoimRefund from "./pages/Moim/MoimDetailComponent/MoimTabs/MoimRefund";
+import MoimReview from "./pages/Moim/MoimDetailComponent/MoimTabs/MoimReview";
 import CommunityHome from "./pages/Community/CommunityHome";
 import MyPage from "./pages/MyPage/MyPage";
 import AnnouncementCommunity from "./pages/Community/AnnouncementCommunity/AnnouncementCommunity";
@@ -29,10 +29,10 @@ function Router() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/moim/:groupNo/*" element={<MoimDetail />}>
-          <Route path="" element={<Product />} />
-          <Route path="faq" element={<FAQ />} />
-          <Route path="review" element={<Review />} />
-          <Route path="refund" element={<Refund />} />
+          <Route path="" element={<MoimProduct />} />
+          <Route path="faq" element={<MoimFAQ />} />
+          <Route path="review" element={<MoimReview />} />
+          <Route path="refund" element={<MoimRefund />} />
         </Route>
 
         <Route path="/community" element={<CommunityHome />} />
