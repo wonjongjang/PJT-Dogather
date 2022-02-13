@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+        "types": [
+      "iamport-typings"
+    ],
     "target": "es5",
     "lib": [
       "dom",
