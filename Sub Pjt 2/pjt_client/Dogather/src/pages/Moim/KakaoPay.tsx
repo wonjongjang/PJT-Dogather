@@ -1,3 +1,8 @@
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { userIdAtom, userNoAtom } from "../../atoms/Login";
+import { IGroupData } from "./MoimDetail";
+
 export type RequestPayResponseCallback = (response: RequestPayResponse) => void;
 
 export interface Iamport {
@@ -38,10 +43,6 @@ export interface RequestPayParams extends RequestPayAdditionalParams {
   currency?: string;
   language?: string;
   buyer_name?: string;
-  buyer_tel: string;
-  buyer_email?: string;
-  buyer_addr?: string;
-  buyer_postcode?: string;
   notice_url?: string | string[];
   display?: Display;
 }
@@ -75,8 +76,14 @@ export interface RequestPayResponse extends RequestPayAdditionalResponse {
   paid_at?: number;
   receipt_url?: string;
 }
-
-function KakaoPay() {
+{
+  /* price prop해주는 부분에서 가격 계산 제대로 된걸로 넣기 */
+}
+function KakaoPay({ groupNo, price }: any) {
+  const userNo = useRecoilValue(userNoAtom);
+  const userId = useRecoilValue(userIdAtom);
+  const [time, setTime] = useState(0);
+  setTimeout(() => setTime(1), 500);
   const handlePayment = () => {
     const { IMP } = window;
     IMP?.init("imp60712675");
@@ -88,26 +95,46 @@ function KakaoPay() {
     //   alert('결제 금액을 확인해주세요')
     //   return
     // }
+
     const data: RequestPayParams = {
       pg: "html5_inicis",
       pay_method: "card",
-      merchant_uid: `mid_${new Date().getTime()}`,
+      merchant_uid: `${userNo}_${groupNo}`,
       name: "노르웨이 회전 의자",
-      amount: 64900,
-      buyer_email: "gildong@gmail.com",
-      buyer_name: "홍길동",
-      buyer_tel: "010-4242-4242",
-      buyer_addr: "서울특별시 강남구 신사동",
-      buyer_postcode: "01181",
+      // amount부분은 수정 필요
+      amount: Number(`${price}`),
+      buyer_name: `${userId}`,
     };
+    console.log(price);
+
+    const paymentData = {
+      userNo: userNo,
+      groupNo: groupNo,
+      optionNo: 1,
+      amount: 1,
+      price: price,
+    };
+
+    const JWT = localStorage.getItem("login_token");
 
     const callback = (response: RequestPayResponse) => {
       const { success, merchant_uid, error_msg, imp_uid, error_code } =
         response;
       if (success) {
+        fetch("http://i6e104.p.ssafy.io:8090/api/payment", {
+          method: "POST",
+          headers: {
+            jwt: `${JWT}`,
+            userId: userId,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(paymentData),
+        });
+        alert("결제 성공했습니다잉");
         console.log(response);
       } else {
         console.log(error_msg);
+        alert("결제 실패했습니다잉");
       }
     };
 

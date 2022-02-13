@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import HomeCarousel from "./HomeComponents/HomeCarousel";
 import HomeCategory from "./HomeComponents/HomeCategory";
-import HomeMoim from "./HomeComponents/HomeMoim";
-import HomeSearch from "./HomeComponents/HomeSearch";
+import HomeRecommendedMoim from "./HomeComponents/HomeMoim/HomeRecommendedMoim";
+import HomeHotMoim from "./HomeComponents/HomeMoim/HomeHotMoim";
+import HomeNewMoim from "./HomeComponents/HomeMoim/HomeNewMoim";
 
 // const today = new Date();
 
@@ -17,16 +18,31 @@ import HomeSearch from "./HomeComponents/HomeSearch";
 // console.log(today);
 // console.log(year + "-" + month + "-" + date);
 // console.log(hour + ":" + minute + ":" + second);
+interface Ilist {
+  categoryName: string;
+  categoryNo: number;
+  deadline: string;
+  groupLeader: number;
+  groupNo: number;
+  maxPeople: number;
+  price: number;
+  product: string;
+  status: string;
+  view: number;
+}
+
+export interface iHomeCard {
+  list: Array<Ilist>;
+}
 
 function Home() {
   return (
     <Container>
-      <SearchBar>
-        <HomeSearch />
-      </SearchBar>
       <HomeCarousel />
       <HomeCategory />
-      <HomeMoim />
+      <HomeRecommendedMoim />
+      <HomeHotMoim />
+      <HomeNewMoim />
     </Container>
   );
 }

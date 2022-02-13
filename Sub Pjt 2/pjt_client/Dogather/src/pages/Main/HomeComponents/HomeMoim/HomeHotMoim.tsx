@@ -1,29 +1,18 @@
 import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
 import styled, { keyframes } from "styled-components";
-import { FetchHomeMoimCard } from "../../../api/MoimDetail";
+import {
+  FetchHomeHotMoimCard,
+  FetchHomeNewMoimCard,
+} from "../../../../api/MoimDetail";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
+import { iHomeCard } from "../../Home";
 
-interface Ilist {
-  categoryName: string;
-  categoryNo: number;
-  deadline: string;
-  groupLeader: number;
-  groupNo: number;
-  maxPeople: number;
-  price: number;
-  product: string;
-  status: string;
-  view: number;
-}
-
-interface iHomeCard {
-  list: Array<Ilist>;
-}
-
-function HomeMoim() {
-  const { data } = useQuery<iHomeCard>("Home", () => FetchHomeMoimCard());
-  console.log(data);
+function HomeHotMoim() {
+  const { data: hotData } = useQuery<iHomeCard>("hot", () =>
+    FetchHomeHotMoimCard()
+  );
+  console.log(hotData);
 
   const makeComma = (price: number) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -32,14 +21,14 @@ function HomeMoim() {
     <Container>
       <Title>
         <CardDetail>
-          <TextENG>Recommended</TextENG>
-          <TextKOR>추천 모임</TextKOR>
+          <TextENG>Hot Moim</TextENG>
+          <TextKOR>인기 모임</TextKOR>
         </CardDetail>
       </Title>
 
       <ProductList>
         <Grid container margin={0} display={"flex"} justifyContent={"center"}>
-          {data?.list.slice(0, 4).map((d, idx) => (
+          {hotData?.list.slice(0, 4).map((d, idx) => (
             // <li key={idx}>{d.groupNo}</li>
             <Grid item key={idx} sx={{ marginLeft: 2, marginRight: 2 }}>
               <Alarm>
@@ -217,4 +206,4 @@ const ProductList = styled.div`
   justify-content: space-between;
 `;
 
-export default HomeMoim;
+export default HomeHotMoim;
