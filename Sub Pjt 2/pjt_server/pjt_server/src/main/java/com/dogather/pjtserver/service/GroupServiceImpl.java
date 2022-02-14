@@ -46,7 +46,7 @@ public class GroupServiceImpl implements GroupService {
         List<GroupMediaDto> mediaList = new ArrayList<>();
         if (groupRegister(groupDto) == 0)
             return 0;
-        if(files != null) {
+        if (files != null) {
             mediaList = fileHandler.uploadGroupFiles(files, groupDto.getGroupNo());
         }
         if (mainImage != null) {
@@ -54,7 +54,7 @@ public class GroupServiceImpl implements GroupService {
             mediaList.add(mainImageDto);
         }
         log.info(String.valueOf(mediaList.size()));
-        if(CollectionUtils.isEmpty(mediaList) == false) {
+        if (CollectionUtils.isEmpty(mediaList) == false) {
             mediaDao.insertMedia(mediaList);
         }
         queryResult = groupDto.getGroupNo();
@@ -67,9 +67,9 @@ public class GroupServiceImpl implements GroupService {
         int queryResult = 1;
         groupDao.groupUpdate(updategroupDto);
         List<GroupMediaDto> mediaList = fileHandler.uploadGroupFiles(addMediaList, groupNo);
-        if(CollectionUtils.isEmpty(mediaList) == false) {
+        if (CollectionUtils.isEmpty(mediaList) == false) {
             queryResult = mediaDao.insertMedia(mediaList);
-            if(queryResult < 1) {
+            if (queryResult < 1) {
                 queryResult = 0;
             }
         }
@@ -79,9 +79,9 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public int groupDelete(int groupNo) {
         int deleted = groupDao.groupDelete(groupNo);
-        if(deleted == 1){
+        if (deleted == 1) {
             return 1;
-        }else{
+        } else {
             return 0;
         }
     }
@@ -98,9 +98,9 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public int groupEnter(GroupEnterDto dto) {
         int entered = groupDao.groupEnter(dto);
-        if(entered == 1){
+        if (entered == 1) {
             return 1;
-        }else{
+        } else {
             return 0;
         }
     }
@@ -108,26 +108,24 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public int groupOut(GroupEnterDto dto) {
         int out = groupDao.groupOut(dto);
-        if(out == 1){
+        if (out == 1) {
             return 1;
-        }else{
+        } else {
             return 0;
         }
     }
 
     @Override
     public List<GroupReturnDto> getList() {
-        List<GroupReturnDto> groupList =  groupDao.getList();
-        for (GroupReturnDto group:groupList) {
+        List<GroupReturnDto> groupList = groupDao.getList();
+        for (GroupReturnDto group : groupList) {
 //            if (!groupDao.getMainImage(group.getGroupNo()).toString().equals("no")){
-            Integer mainImage  = groupDao.getMainImage(group.getGroupNo());
-            if(mainImage != null) {
+            Integer mainImage = groupDao.getMainImage(group.getGroupNo());
+            if (mainImage != null) {
                 GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
-                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" +"s_"+ mediaDto.getMediaSavename();
+                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + "s_" + mediaDto.getMediaSavename();
                 group.setMainImage(uploadPath);
-            }
-
-            else
+            } else
                 group.setMainImage("");
         }
         return groupList;
@@ -135,17 +133,15 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupReturnDto> getHotList() {
-        List<GroupReturnDto> groupList =  groupDao.getHotList();
-        for (GroupReturnDto group:groupList) {
+        List<GroupReturnDto> groupList = groupDao.getHotList();
+        for (GroupReturnDto group : groupList) {
 //            if (!groupDao.getMainImage(group.getGroupNo()).toString().equals("no")){
-            Integer mainImage  = groupDao.getMainImage(group.getGroupNo());
-            if(mainImage != null) {
+            Integer mainImage = groupDao.getMainImage(group.getGroupNo());
+            if (mainImage != null) {
                 GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
-                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" +"s_"+ mediaDto.getMediaSavename();
+                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + "s_" + mediaDto.getMediaSavename();
                 group.setMainImage(uploadPath);
-            }
-
-            else
+            } else
                 group.setMainImage("");
         }
         return groupList;
@@ -153,17 +149,15 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupReturnDto> getNewList() {
-        List<GroupReturnDto> groupList =  groupDao.getNewList();
-        for (GroupReturnDto group:groupList) {
+        List<GroupReturnDto> groupList = groupDao.getNewList();
+        for (GroupReturnDto group : groupList) {
 //            if (!groupDao.getMainImage(group.getGroupNo()).toString().equals("no")){
-            Integer mainImage  = groupDao.getMainImage(group.getGroupNo());
-            if(mainImage != null) {
+            Integer mainImage = groupDao.getMainImage(group.getGroupNo());
+            if (mainImage != null) {
                 GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
-                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" +"s_"+ mediaDto.getMediaSavename();
+                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + "s_" + mediaDto.getMediaSavename();
                 group.setMainImage(uploadPath);
-            }
-
-            else
+            } else
                 group.setMainImage("");
         }
         return groupList;
@@ -171,17 +165,15 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupReturnDto> getEndSoonList() {
-        List<GroupReturnDto> groupList =  groupDao.getEndSoonList();
-        for (GroupReturnDto group:groupList) {
+        List<GroupReturnDto> groupList = groupDao.getEndSoonList();
+        for (GroupReturnDto group : groupList) {
 //            if (!groupDao.getMainImage(group.getGroupNo()).toString().equals("no")){
-            Integer mainImage  = groupDao.getMainImage(group.getGroupNo());
-            if(mainImage != null) {
+            Integer mainImage = groupDao.getMainImage(group.getGroupNo());
+            if (mainImage != null) {
                 GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
-                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" +"s_"+ mediaDto.getMediaSavename();
+                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + "s_" + mediaDto.getMediaSavename();
                 group.setMainImage(uploadPath);
-            }
-
-            else
+            } else
                 group.setMainImage("");
         }
         return groupList;
@@ -190,9 +182,9 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public int addInterest(GroupInterestDto dto) {
         int result = groupDao.addInterest(dto);
-        if(result == 1){
+        if (result == 1) {
             return 1;
-        }else{
+        } else {
             return 0;
         }
     }
@@ -205,7 +197,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void addOptions(int groupNo, List<OptionDto> options) {
-        for(OptionDto option : options){
+        for (OptionDto option : options) {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("groupNo", groupNo);
             map.put("optionName", option.getOptionName());
@@ -228,12 +220,12 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupReturnDto> categoryList(int categoryNo) {
-        List<GroupReturnDto> categoryList =  groupDao.categoryList(categoryNo);
-        for (GroupReturnDto categoryGroupDto: categoryList) {
+        List<GroupReturnDto> categoryList = groupDao.categoryList(categoryNo);
+        for (GroupReturnDto categoryGroupDto : categoryList) {
             Integer mainImage = groupDao.getMainImage(categoryGroupDto.getGroupNo());
-            if(mainImage != null) {
+            if (mainImage != null) {
                 GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
-                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" +"s_"+ mediaDto.getMediaSavename();
+                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + "s_" + mediaDto.getMediaSavename();
                 categoryGroupDto.setMainImage(uploadPath);
             } else {
                 categoryGroupDto.setMainImage("");
@@ -246,11 +238,11 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<GroupReturnDto> wordSearch(List<String> wordList) {
         List<GroupReturnDto> wordSearchList = groupDao.wordSearch(wordList);
-        for (GroupReturnDto wordSearchDto: wordSearchList) {
+        for (GroupReturnDto wordSearchDto : wordSearchList) {
             Integer mainImage = groupDao.getMainImage(wordSearchDto.getGroupNo());
-            if(mainImage != null) {
+            if (mainImage != null) {
                 GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
-                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" +"s_"+ mediaDto.getMediaSavename();
+                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + "s_" + mediaDto.getMediaSavename();
                 wordSearchDto.setMainImage(uploadPath);
             } else {
                 wordSearchDto.setMainImage("");
@@ -260,10 +252,14 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupReturnDto> personSearch(String person) { return groupDao.personSearch(person); }
+    public List<GroupReturnDto> personSearch(String person) {
+        return groupDao.personSearch(person);
+    }
 
     @Override
-    public int review(ReviewDto dto) { return groupDao.review(dto); }
+    public int review(ReviewDto dto) {
+        return groupDao.review(dto);
+    }
 
     @Override
     public double reviewAvg(int userNo) {
@@ -274,22 +270,49 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupReturnDto> findUserLikeGroup(int userNo) {
         List<Integer> likeGroupNoList = groupDao.findLikeGroupByUser(userNo);
         List<GroupReturnDto> groupListDto = new ArrayList<>();
+
         for (int likeGroupNo : likeGroupNoList) {
-            groupListDto.add(groupDao.group(likeGroupNo));
+            GroupReturnDto groupReturnDto = groupDao.group(likeGroupNo);
+            Integer mainImage = groupDao.getMainImage(likeGroupNo);
+            if (mainImage != null) {
+                GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
+                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + "s_" + mediaDto.getMediaSavename();
+                groupReturnDto.setMainImage(uploadPath);
+            }
+            groupListDto.add(groupReturnDto);
         }
         return groupListDto;
     }
 
     @Override
-    public List<GroupReturnDto> findPaymentGroup(int userNo) {
-        List<GroupReturnDto> paymentGroupList = groupDao.findPaymentGroup(userNo);
+    public List<GroupSummaryDto> findPaymentGroup(int userNo) {
+        List<GroupSummaryDto> paymentGroupList = groupDao.findPaymentGroup(userNo);
+        for (GroupSummaryDto paymentGroupDto : paymentGroupList) {
+            Integer mainImage = groupDao.getMainImage(paymentGroupDto.getGroupNo());
+            if (mainImage != null) {
+                GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
+                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + "s_" + mediaDto.getMediaSavename();
+                paymentGroupDto.setMainImage(uploadPath);
+            } else {
+                paymentGroupDto.setMainImage("");
+            }
+        }
         return paymentGroupList;
     }
 
     @Override
     public List<GroupReturnDto> findSaleGroup(int userNo) {
         List<GroupReturnDto> saleGroupList = groupDao.findSaleGroup(userNo);
+        for (GroupReturnDto saleGroupDto : saleGroupList) {
+            Integer mainImage = groupDao.getMainImage(saleGroupDto.getGroupNo());
+            if (mainImage != null) {
+                GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
+                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + "s_" + mediaDto.getMediaSavename();
+                saleGroupDto.setMainImage(uploadPath);
+            } else {
+                saleGroupDto.setMainImage("");
+            }
+        }
         return saleGroupList;
     }
-
 }

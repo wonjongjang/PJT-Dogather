@@ -35,10 +35,8 @@ function HomeRecommendedMoim() {
                 <Link to={`/moim/${d.groupNo}`}>
                   <Card
                     sx={{
-                      minWidth: 200,
-                      minHeight: 200,
-                      maxWidth: 200,
-                      maxHeight: 200,
+                      width: 200,
+                      height: 200,
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
@@ -75,6 +73,7 @@ function HomeRecommendedMoim() {
 const CardImg = styled(CardMedia)``;
 
 const animation = keyframes`
+
 0% {
   opacity: 1;
 }

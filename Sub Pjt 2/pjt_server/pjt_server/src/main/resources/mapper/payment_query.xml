@@ -4,7 +4,7 @@
 
     <insert id="payment" parameterType="com.dogather.pjtserver.dto.PaymentDto">
         insert into dogather.payment
-        (user_no, group_no, option_no, amount, price)
+        (user_no, group_no, option_no, amount, amount_of_price)
         values
         (#{userNo}, #{groupNo}, #{optionNo}, #{amount}, #{price})
     </insert>
