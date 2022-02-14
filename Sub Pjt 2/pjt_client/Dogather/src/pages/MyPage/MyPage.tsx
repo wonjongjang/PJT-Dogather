@@ -4,6 +4,7 @@ import { useRecoilState } from "recoil";
 import { fetchMyPage } from "../../api/MyPage";
 import { userIdAtom } from "../../atoms/Login";
 import LikeGroup from "./MyPageComponents/LikeGroup";
+import PaymentGroup from "./MyPageComponents/PaymentGroup";
 
 // interface IBoard {
 //   boardContent: string;
@@ -15,6 +16,12 @@ import LikeGroup from "./MyPageComponents/LikeGroup";
 //   updated: string;
 //   writerNo: number;
 // }
+
+export interface IPay {
+  amount: number;
+  amountOfPrice: number;
+  optionName: string;
+}
 
 export interface IGroup {
   groupNo: number; // 그룹 pk
@@ -35,6 +42,7 @@ export interface IGroup {
   deadline: string; // 마감 일시
   created: string;
   updated: string;
+  resultPaymentDtos: IPay[];
 }
 
 interface IUserInfo {
@@ -123,7 +131,11 @@ function MyPage() {
             <ListTitle>내가 참여하는 모임</ListTitle>
             <SeeMore>더보기 〉</SeeMore>
           </ListTitleDiv>
-          <div></div>
+          <div>
+            {data?.paymentGroup?.slice(0, 3).map((group) => (
+              <PaymentGroup key={group.groupNo} {...group} />
+            ))}
+          </div>
           <ListTitleDiv>
             <ListTitle>내가 관리하는 모임</ListTitle>
             <SeeMore>더보기 〉</SeeMore>
