@@ -18,6 +18,9 @@ import MyPage from "./pages/MyPage/MyPage";
 import AnnouncementCommunity from "./pages/Community/AnnouncementCommunity/AnnouncementCommunity";
 import InfoShareCommunity from "./pages/Community/InfoShareCommunity/InfoShareCommunity";
 import FreeCommunity from "./pages/Community/FreeCommunity/FreeCommunity";
+import Error404 from "./pages/Error/Error404";
+
+
 
 function Router() {
   const isLogin = useRecoilValue(isLoginAtom);
@@ -36,6 +39,11 @@ function Router() {
         </Route>
 
         <Route path="/community" element={<CommunityHome />} />
+        {/* error */}
+        <Route path="/error404" element={<Error404 />} />
+
+
+
         <Route
           path="/community/announcement/"
           element={<AnnouncementCommunity />}
