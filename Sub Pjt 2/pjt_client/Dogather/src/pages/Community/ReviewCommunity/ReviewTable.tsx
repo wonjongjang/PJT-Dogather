@@ -14,6 +14,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
+import ReviewCard from "./ReviewCard";
 
 function createData(
   postno: number,
@@ -66,29 +67,15 @@ declare module "@mui/material/Button" {
 }
 
 //메인
-function AnnounceTable() {
-  //정렬
-  const [postList, setPostList] = useState(rows);
-  const sortDate = () => {
-    postList.sort((a, b) => a.postno - b.postno);
-    const _postList = [...postList];
-    setPostList(_postList);
-    console.log(postList);
-  };
-  const sortView = () => {
-    postList.sort((a, b) => b.view - a.view);
-    const _postList = [...postList];
-    setPostList(_postList);
-    console.log(postList);
-  };
+function ReviewTable() {
   return (
     <Container>
       <Top>
-        <H1>공지사항게시판</H1>
+        <H1>후기게시판</H1>
         <CustomTabs>
           <Tabs>
-            <Tab label="최신글" onClick={sortDate} />
-            <Tab label="조회수" onClick={sortView} />
+            <Tab label="최신글" />
+            <Tab label="조회수" />
             <Tab label="랭킹순" />
           </Tabs>
         </CustomTabs>
@@ -99,7 +86,7 @@ function AnnounceTable() {
         <CustomStack>
           <Stack spacing={5} direction="column">
             <ThemeProvider theme={theme}>
-              <Button variant="contained" color="neutral">
+              <Button variant="outlined" color="neutral">
                 <Link to={"/community/announcement"}>공지사항게시판</Link>
               </Button>
               <Button variant="outlined" color="neutral">
@@ -111,60 +98,27 @@ function AnnounceTable() {
               <Button variant="outlined" color="neutral">
                 <Link to={"/community/free"}>자유게시판</Link>
               </Button>
-              <Button variant="outlined" color="neutral">
+              <Button variant="contained" color="neutral">
                 <Link to={"/community/review"}>후기게시판</Link>
               </Button>
             </ThemeProvider>
           </Stack>
         </CustomStack>
-        <CustomTable>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>#</TableCell>
-                  <TableCell align="left">제목</TableCell>
-                  <TableCell align="right">작성자</TableCell>
-                  <TableCell align="right">조회수</TableCell>
-                  <TableCell align="right">생성시간</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {postList.map((row) => (
-                  <TableRow
-                    key={row.postno}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {row.postno}
-                    </TableCell>
-                    <TableCell align="left">
-                      {row.title}
-                      <Imo>
-                        <img src={process.env.PUBLIC_URL + "/img/like.png"} />
-                      </Imo>
-                      <H3>3</H3>
-                      <Imo>
-                        <img
-                          src={process.env.PUBLIC_URL + "/img/comment.png"}
-                        />
-                      </Imo>
-                      <H3>1</H3>
-                    </TableCell>
-                    <TableCell align="right">{row.writer}</TableCell>
-                    <TableCell align="right">
-                      <Imo>
-                        <img src={process.env.PUBLIC_URL + "/img/view.png"} />
-                      </Imo>
-                      {row.view}
-                    </TableCell>
-                    <TableCell align="right">{row.created}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </CustomTable>
+        <div>
+          <CustomCard>
+            <ReviewCard />
+            <ReviewCard />
+            <ReviewCard />
+            <ReviewCard />
+          </CustomCard>
+          <div></div>
+          <CustomCard>
+            <ReviewCard />
+            <ReviewCard />
+            <ReviewCard />
+            <ReviewCard />
+          </CustomCard>
+        </div>
       </Mid>
       <Bottom>
         <Input type="text" />
@@ -186,8 +140,6 @@ function AnnounceTable() {
   );
 }
 
-const Container = styled.div``;
-
 const Btn2 = styled.button`
   width: 8vw;
   color: white;
@@ -195,8 +147,15 @@ const Btn2 = styled.button`
   border: 0;
 `;
 
+const Container = styled.div``;
+
 const Mid = styled.span`
   display: flex;
+`;
+
+const Mid2 = styled.span`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const H1 = styled.h1`
@@ -279,4 +238,8 @@ const Btn = styled.button`
   cursor: pointer;
 `;
 
-export default AnnounceTable;
+const CustomCard = styled.div`
+  display: flex;
+`;
+
+export default ReviewTable;

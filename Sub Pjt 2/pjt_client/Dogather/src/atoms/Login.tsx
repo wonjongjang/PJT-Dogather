@@ -7,6 +7,7 @@ const { persistAtom } = recoilPersist(); // 로컬 스토리지에 저장 (새�
 export const isLoginAtom = atom({
   key: "isLogin",
   default: false,
+  effects_UNSTABLE: [persistAtom],
 });
 
 // 로그인 시 user pk 저장

@@ -3,41 +3,45 @@ import { useQuery } from "react-query";
 import { useRecoilState } from "recoil";
 import { fetchMyPage } from "../../api/MyPage";
 import { userIdAtom } from "../../atoms/Login";
+import LikeGroup from "./MyPageComponents/LikeGroup";
 
-interface IBoards {
-  boardContent: string;
-  boardTitle: string;
-  boardType: string; // 나중에 변경
-  boardView: number;
-  created: string;
-  postNo: number;
-  updated: string;
-  writerNo: number;
-}
+// interface IBoard {
+//   boardContent: string;
+//   boardTitle: string;
+//   boardType: string; // 나중에 변경
+//   boardView: number;
+//   created: string;
+//   postNo: number;
+//   updated: string;
+//   writerNo: number;
+// }
 
-interface IGroups {
-  categoryName: string;
-  categoryNo: number;
-  created: string;
-  deadline: string;
-  detail: string;
-  groupLeader: number;
-  groupNo: number;
-  leaderName: string;
+export interface IGroup {
+  groupNo: number; // 그룹 pk
+  groupLeader: number; // 그룹 대표
+  leaderName: string; // 그룹 대표 닉네임
+  product: string; // 제목
+  detail: string; // 상세 설명
+  categoryNo: number; // 카테고리 pk
+  categoryName: string; // 카테고리 이름
   link: string;
-  mainImage: string; // string 맞나?
+  mainImage: string;
   maxPeople: number;
   originPrice: number;
   price: number;
-  product: string;
   status: string;
-  updated: string;
   view: number;
+  amount: number; // 구매 수량
+  deadline: string; // 마감 일시
+  created: string;
+  updated: string;
 }
 
 interface IUserInfo {
-  likeBoards: IBoards[];
-  likeGroups: IGroups[];
+  // likeBoards: IBoard[]; // 마이페이지에서 사용 안함
+  likeGroups: IGroup[];
+  paymentGroup: IGroup[];
+  saleGroup: IGroup[];
   userAddr: string;
   userAddrDetail: string;
   userEmail: string;
@@ -57,7 +61,7 @@ function MyPage() {
     fetchMyPage(JWT!, userId!)
   );
 
-  console.log(data?.likeGroups[0].deadline);
+  console.log(data);
 
   return (
     <Container>
@@ -69,8 +73,8 @@ function MyPage() {
           <div>
             <SubTitle>모임 정보</SubTitle>
             <ul>
-              <List>구매 내역</List>
-              <List>판매 내역</List>
+              <List>내가 참여하는 모임</List>
+              <List>내가 관리하는 모임</List>
               <List>관심 모임</List>
             </ul>
           </div>
@@ -99,20 +103,45 @@ function MyPage() {
               <ProfileInfo>
                 <div>
                   <Nickname>{data?.userNickname}</Nickname>
-                  <ProfileButton>프로필 수정</ProfileButton>
+                  <ProfileButton>회원정보 수정</ProfileButton>
                   <ProfileButton>내 프로필</ProfileButton>
                 </div>
               </ProfileInfo>
-              <div></div>
             </Profile>
-            <div>등급, 포인트</div>
+            <LevelDiv>
+              <LevelSubDiv>
+                <Level>일반 회원</Level>
+                <LevelTitle>회원 등급</LevelTitle>
+              </LevelSubDiv>
+              <LevelSubDiv>
+                <Point>0P</Point>
+                <PointTitle>포인트</PointTitle>
+              </LevelSubDiv>
+            </LevelDiv>
           </Membership>
-          <div>구매 내역</div>
-          <div>구매 내역 리스트</div>
-          <div>판매 내역</div>
-          <div>판매 내역 리스트</div>
-          <div>관심 모임</div>
-          <div>관심 모임 리스트</div>
+          <ListTitleDiv>
+            <ListTitle>내가 참여하는 모임</ListTitle>
+            <SeeMore>더보기 〉</SeeMore>
+          </ListTitleDiv>
+          <div></div>
+          <ListTitleDiv>
+            <ListTitle>내가 관리하는 모임</ListTitle>
+            <SeeMore>더보기 〉</SeeMore>
+          </ListTitleDiv>
+          <div>
+            {data?.saleGroup?.slice(0, 3).map((group) => (
+              <LikeGroup key={group.groupNo} {...group} />
+            ))}
+          </div>
+          <ListTitleDiv>
+            <ListTitle>관심 모임</ListTitle>
+            <SeeMore>더보기 〉</SeeMore>
+          </ListTitleDiv>
+          <div>
+            {data?.likeGroups?.slice(0, 3).map((group) => (
+              <LikeGroup key={group.groupNo} {...group} />
+            ))}
+          </div>
         </div>
       </RightSide>
     </Container>
@@ -154,6 +183,7 @@ const List = styled.div`
   margin-top: 12px;
   line-height: 18px;
   letter-spacing: -0.15px;
+  cursor: pointer;
 `;
 
 const BottomListArea = styled.div`
@@ -216,6 +246,74 @@ const ProfileButton = styled.button`
   cursor: pointer;
   margin-right: 7px;
   line-height: 32px;
+`;
+
+const LevelDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin-left: 0; */
+  width: 100%;
+  height: 77px;
+  border-top: 1px solid #f4f4f4;
+`;
+
+const LevelSubDiv = styled.div`
+  width: 50%;
+  text-align: center;
+`;
+
+const Level = styled.div`
+  line-height: 19px;
+  font-size: 16px;
+  letter-spacing: -0.16px;
+  font-weight: 700;
+  border-right: 1px solid #ebebeb;
+`;
+
+const LevelTitle = styled.div`
+  line-height: 19px;
+  font-size: 13px;
+  letter-spacing: -0.07px;
+  color: rgba(34, 34, 34, 0.5);
+  border-right: 1px solid #ebebeb;
+`;
+
+const Point = styled.div`
+  line-height: 19px;
+  font-size: 16px;
+  letter-spacing: -0.16px;
+  font-weight: 700;
+`;
+
+const PointTitle = styled.div`
+  line-height: 19px;
+  font-size: 13px;
+  letter-spacing: -0.07px;
+  color: rgba(34, 34, 34, 0.5);
+`;
+
+const ListTitleDiv = styled.div`
+  margin-top: 42px;
+  padding-bottom: 16px;
+  display: flex;
+  max-width: 100%;
+`;
+
+const ListTitle = styled.p`
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: -0.27px;
+`;
+
+const SeeMore = styled.p`
+  margin-top: 3px;
+  margin-left: auto;
+  padding-top: 3px;
+  padding-left: 5px;
+  font-size: 13px;
+  letter-spacing: -0.07px;
+  color: rgba(34, 34, 34, 0.5);
 `;
 
 export default MyPage;

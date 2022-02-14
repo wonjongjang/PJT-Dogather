@@ -38,7 +38,7 @@ public interface GroupDao {
 
     public List<Integer> findLikeGroupByUser(int userNo);
 
-    public List<GroupReturnDto> findPaymentGroup(int userNo);
+    public List<GroupSummaryDto> findPaymentGroup(int userNo);
 
     public List<GroupReturnDto> findSaleGroup(int userNo);
 
