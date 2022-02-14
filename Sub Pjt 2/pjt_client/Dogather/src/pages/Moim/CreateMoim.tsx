@@ -115,8 +115,9 @@ function CreateMoim() {
       .then((response) => response.json())
       .then((result) => {
         if (result) {
-          navigate(`/moim/${String(result)}`);
-          // console.log(result);
+          // console.log(typeof JSON.stringify(result));
+          const ObjectToString = JSON.stringify(result); // 반환값이 object
+          navigate(`/moim/${ObjectToString}`);
         }
       });
   };

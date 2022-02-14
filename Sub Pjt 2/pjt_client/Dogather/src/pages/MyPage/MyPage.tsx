@@ -3,42 +3,45 @@ import { useQuery } from "react-query";
 import { useRecoilState } from "recoil";
 import { fetchMyPage } from "../../api/MyPage";
 import { userIdAtom } from "../../atoms/Login";
-import LikeGroups from "./MyPageComponents/LikeGroups";
+import LikeGroup from "./MyPageComponents/LikeGroup";
 
-interface IBoard {
-  boardContent: string;
-  boardTitle: string;
-  boardType: string; // 나중에 변경
-  boardView: number;
-  created: string;
-  postNo: number;
-  updated: string;
-  writerNo: number;
-}
+// interface IBoard {
+//   boardContent: string;
+//   boardTitle: string;
+//   boardType: string; // 나중에 변경
+//   boardView: number;
+//   created: string;
+//   postNo: number;
+//   updated: string;
+//   writerNo: number;
+// }
 
 export interface IGroup {
-  categoryName: string;
-  categoryNo: number;
-  created: string;
-  deadline: string;
-  detail: string;
-  groupLeader: number;
-  groupNo: number;
-  leaderName: string;
+  groupNo: number; // 그룹 pk
+  groupLeader: number; // 그룹 대표
+  leaderName: string; // 그룹 대표 닉네임
+  product: string; // 제목
+  detail: string; // 상세 설명
+  categoryNo: number; // 카테고리 pk
+  categoryName: string; // 카테고리 이름
   link: string;
   mainImage: string;
   maxPeople: number;
   originPrice: number;
   price: number;
-  product: string;
   status: string;
-  updated: string;
   view: number;
+  amount: number; // 구매 수량
+  deadline: string; // 마감 일시
+  created: string;
+  updated: string;
 }
 
 interface IUserInfo {
-  likeBoards: IBoard[];
+  // likeBoards: IBoard[]; // 마이페이지에서 사용 안함
   likeGroups: IGroup[];
+  paymentGroup: IGroup[];
+  saleGroup: IGroup[];
   userAddr: string;
   userAddrDetail: string;
   userEmail: string;
@@ -58,6 +61,8 @@ function MyPage() {
     fetchMyPage(JWT!, userId!)
   );
 
+  console.log(data);
+
   return (
     <Container>
       <LeftSide>
@@ -68,8 +73,8 @@ function MyPage() {
           <div>
             <SubTitle>모임 정보</SubTitle>
             <ul>
-              <List>구매 내역</List>
-              <List>판매 내역</List>
+              <List>내가 참여하는 모임</List>
+              <List>내가 관리하는 모임</List>
               <List>관심 모임</List>
             </ul>
           </div>
@@ -98,7 +103,7 @@ function MyPage() {
               <ProfileInfo>
                 <div>
                   <Nickname>{data?.userNickname}</Nickname>
-                  <ProfileButton>프로필 수정</ProfileButton>
+                  <ProfileButton>회원정보 수정</ProfileButton>
                   <ProfileButton>내 프로필</ProfileButton>
                 </div>
               </ProfileInfo>
@@ -115,22 +120,26 @@ function MyPage() {
             </LevelDiv>
           </Membership>
           <ListTitleDiv>
-            <ListTitle>구매 내역</ListTitle>
+            <ListTitle>내가 참여하는 모임</ListTitle>
             <SeeMore>더보기 〉</SeeMore>
           </ListTitleDiv>
           <div></div>
           <ListTitleDiv>
-            <ListTitle>판매 내역</ListTitle>
+            <ListTitle>내가 관리하는 모임</ListTitle>
             <SeeMore>더보기 〉</SeeMore>
           </ListTitleDiv>
-          <div></div>
+          <div>
+            {data?.saleGroup?.slice(0, 3).map((group) => (
+              <LikeGroup key={group.groupNo} {...group} />
+            ))}
+          </div>
           <ListTitleDiv>
             <ListTitle>관심 모임</ListTitle>
             <SeeMore>더보기 〉</SeeMore>
           </ListTitleDiv>
           <div>
-            {data?.likeGroups?.map((likeGroup) => (
-              <LikeGroups key={likeGroup.groupNo} {...likeGroup} />
+            {data?.likeGroups?.slice(0, 3).map((group) => (
+              <LikeGroup key={group.groupNo} {...group} />
             ))}
           </div>
         </div>
@@ -174,6 +183,7 @@ const List = styled.div`
   margin-top: 12px;
   line-height: 18px;
   letter-spacing: -0.15px;
+  cursor: pointer;
 `;
 
 const BottomListArea = styled.div`

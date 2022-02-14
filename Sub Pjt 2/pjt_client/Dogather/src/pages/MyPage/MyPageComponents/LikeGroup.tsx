@@ -1,26 +1,27 @@
 import styled from "styled-components";
 import { IGroup } from "../MyPage";
 
-function LikeGroups(likeGroup: IGroup) {
+function LikeGroup(group: IGroup) {
   return (
     <Container>
       <LeftSide>
         <ImgDiv>
           <ImgRadius>
-            <Img src="https://www.bigjungbo.com/files/attach/images/163/017/178/010/f1f78c3b5eaeb68788a9c98dc796b4c7.jpeg" />
+            <Img src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/e125b578-4173-401a-ab13-f066979c8848/air-force-1-older-shoes-11jxCZ.png" />
           </ImgRadius>
         </ImgDiv>
-        <ProductInfo>
-          <ProductTitle>{likeGroup.product}</ProductTitle>
-          <ProductDeadline>{likeGroup.deadline}</ProductDeadline>
-        </ProductInfo>
+        <ProductDiv>
+          <ProductTitle>{group.product}</ProductTitle>
+          <ProductInfo>/ {group.maxPeople}</ProductInfo>
+          <ProductInfo>{group.deadline}</ProductInfo>
+        </ProductDiv>
       </LeftSide>
       <RightSide>
         <StatusDiv>
-          {likeGroup.status === "마감" ? (
-            <StatusOff>{likeGroup.status}</StatusOff>
+          {group.status === "마감" ? (
+            <StatusOff>{group.status}</StatusOff>
           ) : (
-            <StatusOn>{likeGroup.status}</StatusOn>
+            <StatusOn>{group.status}</StatusOn>
           )}
         </StatusDiv>
       </RightSide>
@@ -40,9 +41,9 @@ const LeftSide = styled.div`
 `;
 
 const ImgDiv = styled.div`
-  /* position: relative; */
+  position: relative;
   /* -webkit-box-flex: 0; */
-  /* flex: none; */
+  flex: none;
   width: 80px;
   height: 80px;
 `;
@@ -50,16 +51,21 @@ const ImgDiv = styled.div`
 const ImgRadius = styled.div`
   background-color: rgb(242, 242, 242);
   border-radius: 12px;
-  /* overflow: hidden; */
-  /* position: relative; */
-  /* padding-top: 100%; */
+  overflow: hidden;
+  position: relative;
+  padding-top: 100%;
 `;
 
 const Img = styled.img`
   width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: auto;
+  transform: translate(-50%, -50%);
 `;
 
-const ProductInfo = styled.div`
+const ProductDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-self: center;
@@ -71,7 +77,7 @@ const ProductTitle = styled.p`
   line-height: 17px;
 `;
 
-const ProductDeadline = styled.p`
+const ProductInfo = styled.p`
   color: rgba(34, 34, 34, 0.5);
   font-size: 14px;
   font-weight: 700;
@@ -104,4 +110,4 @@ const StatusOff = styled.div`
   letter-spacing: -0.21px;
 `;
 
-export default LikeGroups;
+export default LikeGroup;
