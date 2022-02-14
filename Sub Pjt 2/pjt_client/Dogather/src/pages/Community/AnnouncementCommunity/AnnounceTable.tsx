@@ -69,8 +69,14 @@ declare module "@mui/material/Button" {
 function AnnounceTable() {
   //정렬
   const [postList, setPostList] = useState(rows);
+  const sortDate = () => {
+    postList.sort((a, b) => a.postno - b.postno);
+    const _postList = [...postList];
+    setPostList(_postList);
+    console.log(postList);
+  };
   const sortView = () => {
-    postList.sort((a, b) => a.view - b.view);
+    postList.sort((a, b) => b.view - a.view);
     const _postList = [...postList];
     setPostList(_postList);
     console.log(postList);
@@ -81,7 +87,7 @@ function AnnounceTable() {
         <H1>공지사항게시판</H1>
         <CustomTabs>
           <Tabs>
-            <Tab label="최신글" />
+            <Tab label="최신글" onClick={sortDate} />
             <Tab label="조회수" onClick={sortView} />
             <Tab label="랭킹순" />
           </Tabs>
@@ -93,28 +99,21 @@ function AnnounceTable() {
         <CustomStack>
           <Stack spacing={5} direction="column">
             <ThemeProvider theme={theme}>
-              <Link to={"/community/announcement"}>
-                <Button variant="contained" color="neutral">
-                  공지사항게시판
-                </Button>
-              </Link>
-              <Link to={"/community/usedsale"}>
-                <Button variant="outlined" color="neutral">
-                  중고판매게시판
-                </Button>
-              </Link>
-              <Link to={"/community/infoshare"}>
-                <Button variant="outlined" color="neutral">
-                  정보공유게시판
-                </Button>
-              </Link>
-              <Button variant="outlined" color="neutral">
-                <a href="/free">자유게시판</a>
+              <Button variant="contained" color="neutral">
+                <Link to={"/community/announcement"}>공지사항게시판</Link>
               </Button>
               <Button variant="outlined" color="neutral">
-                <a href="/review">후기게시판</a>
+                <Link to={"/community/usedsale"}>중고판매게시판</Link>
               </Button>
-              <Btn2>사이즈 조정용</Btn2>
+              <Button variant="outlined" color="neutral">
+                <Link to={"/community/infoshare"}>정보공유게시판</Link>
+              </Button>
+              <Button variant="outlined" color="neutral">
+                <Link to={"/community/free"}>자유게시판</Link>
+              </Button>
+              <Button variant="outlined" color="neutral">
+                <Link to={"/community/review"}>후기게시판</Link>
+              </Button>
             </ThemeProvider>
           </Stack>
         </CustomStack>
