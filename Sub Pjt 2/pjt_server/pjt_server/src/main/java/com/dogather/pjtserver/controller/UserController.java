@@ -113,11 +113,14 @@ public class UserController {
 		userInfo.setUserPw(null);
 		List<BoardDto> likeBoards = boardService.findUserLikeBoard(userInfo.getUserNo());
 		List<GroupReturnDto> likeGroups = groupService.findUserLikeGroup(userInfo.getUserNo());
-		log.info(likeBoards.toString());
+		List<GroupReturnDto> paymentGroup = groupService.findPaymentGroup(userInfo.getUserNo());
+		List<GroupReturnDto> saleGroup = groupService.findSaleGroup(userInfo.getUserNo());
 		userResponseDto.setUserId(userId);
 		userResponseDto.setUserInfo(userInfo);
 		userResponseDto.setLikeBoards(likeBoards);
 		userResponseDto.setLikeGroups(likeGroups);
+		userResponseDto.setPaymentGroup(paymentGroup);
+		userResponseDto.setSaleGroup(saleGroup);
 		return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 	}
 

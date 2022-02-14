@@ -20,6 +20,9 @@ import InfoShareCommunity from "./pages/Community/InfoShareCommunity/InfoShareCo
 import FreeCommunity from "./pages/Community/FreeCommunity/FreeCommunity";
 import UsedSaleCommunity from "./pages/Community/UsedSaleCommunity/UsedSaleCommunity";
 import ReviewCommunity from "./pages/Community/ReviewCommunity/ReviewCommunity";
+import Error404 from "./pages/Error/Error404";
+
+import MoimChatbot from "./components/Chat/MoimChatbot";
 
 function Router() {
   const isLogin = useRecoilValue(isLoginAtom);
@@ -38,6 +41,9 @@ function Router() {
         </Route>
 
         <Route path="/community" element={<CommunityHome />} />
+        {/* error */}
+        <Route path="/error404" element={<Error404 />} />
+
         <Route
           path="/community/announcement/"
           element={<AnnouncementCommunity />}
@@ -66,6 +72,8 @@ function Router() {
           path="/moim/create"
           element={isLogin ? <CreateMoim /> : <Navigate replace to="/" />}
         />
+
+        <Route path="/chat" element={<MoimChatbot />} />
       </Routes>
       <Footer />
     </BrowserRouter>
