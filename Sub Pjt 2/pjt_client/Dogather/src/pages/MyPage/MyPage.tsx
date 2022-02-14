@@ -3,8 +3,9 @@ import { useQuery } from "react-query";
 import { useRecoilState } from "recoil";
 import { fetchMyPage } from "../../api/MyPage";
 import { userIdAtom } from "../../atoms/Login";
+import LikeGroups from "./MyPageComponents/LikeGroups";
 
-interface IBoards {
+interface IBoard {
   boardContent: string;
   boardTitle: string;
   boardType: string; // 나중에 변경
@@ -15,7 +16,7 @@ interface IBoards {
   writerNo: number;
 }
 
-interface IGroups {
+export interface IGroup {
   categoryName: string;
   categoryNo: number;
   created: string;
@@ -25,7 +26,7 @@ interface IGroups {
   groupNo: number;
   leaderName: string;
   link: string;
-  mainImage: string; // string 맞나?
+  mainImage: string;
   maxPeople: number;
   originPrice: number;
   price: number;
@@ -36,8 +37,8 @@ interface IGroups {
 }
 
 interface IUserInfo {
-  likeBoards: IBoards[];
-  likeGroups: IGroups[];
+  likeBoards: IBoard[];
+  likeGroups: IGroup[];
   userAddr: string;
   userAddrDetail: string;
   userEmail: string;
@@ -56,8 +57,6 @@ function MyPage() {
   const { isLoading, data } = useQuery<IUserInfo>([JWT, userId], () =>
     fetchMyPage(JWT!, userId!)
   );
-
-  console.log(data?.likeGroups[0].deadline);
 
   return (
     <Container>
@@ -103,16 +102,37 @@ function MyPage() {
                   <ProfileButton>내 프로필</ProfileButton>
                 </div>
               </ProfileInfo>
-              <div></div>
             </Profile>
-            <div>등급, 포인트</div>
+            <LevelDiv>
+              <LevelSubDiv>
+                <Level>일반 회원</Level>
+                <LevelTitle>회원 등급</LevelTitle>
+              </LevelSubDiv>
+              <LevelSubDiv>
+                <Point>0P</Point>
+                <PointTitle>포인트</PointTitle>
+              </LevelSubDiv>
+            </LevelDiv>
           </Membership>
-          <div>구매 내역</div>
-          <div>구매 내역 리스트</div>
-          <div>판매 내역</div>
-          <div>판매 내역 리스트</div>
-          <div>관심 모임</div>
-          <div>관심 모임 리스트</div>
+          <ListTitleDiv>
+            <ListTitle>구매 내역</ListTitle>
+            <SeeMore>더보기 〉</SeeMore>
+          </ListTitleDiv>
+          <div></div>
+          <ListTitleDiv>
+            <ListTitle>판매 내역</ListTitle>
+            <SeeMore>더보기 〉</SeeMore>
+          </ListTitleDiv>
+          <div></div>
+          <ListTitleDiv>
+            <ListTitle>관심 모임</ListTitle>
+            <SeeMore>더보기 〉</SeeMore>
+          </ListTitleDiv>
+          <div>
+            {data?.likeGroups?.map((likeGroup) => (
+              <LikeGroups key={likeGroup.groupNo} {...likeGroup} />
+            ))}
+          </div>
         </div>
       </RightSide>
     </Container>
@@ -216,6 +236,74 @@ const ProfileButton = styled.button`
   cursor: pointer;
   margin-right: 7px;
   line-height: 32px;
+`;
+
+const LevelDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin-left: 0; */
+  width: 100%;
+  height: 77px;
+  border-top: 1px solid #f4f4f4;
+`;
+
+const LevelSubDiv = styled.div`
+  width: 50%;
+  text-align: center;
+`;
+
+const Level = styled.div`
+  line-height: 19px;
+  font-size: 16px;
+  letter-spacing: -0.16px;
+  font-weight: 700;
+  border-right: 1px solid #ebebeb;
+`;
+
+const LevelTitle = styled.div`
+  line-height: 19px;
+  font-size: 13px;
+  letter-spacing: -0.07px;
+  color: rgba(34, 34, 34, 0.5);
+  border-right: 1px solid #ebebeb;
+`;
+
+const Point = styled.div`
+  line-height: 19px;
+  font-size: 16px;
+  letter-spacing: -0.16px;
+  font-weight: 700;
+`;
+
+const PointTitle = styled.div`
+  line-height: 19px;
+  font-size: 13px;
+  letter-spacing: -0.07px;
+  color: rgba(34, 34, 34, 0.5);
+`;
+
+const ListTitleDiv = styled.div`
+  margin-top: 42px;
+  padding-bottom: 16px;
+  display: flex;
+  max-width: 100%;
+`;
+
+const ListTitle = styled.p`
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: -0.27px;
+`;
+
+const SeeMore = styled.p`
+  margin-top: 3px;
+  margin-left: auto;
+  padding-top: 3px;
+  padding-left: 5px;
+  font-size: 13px;
+  letter-spacing: -0.07px;
+  color: rgba(34, 34, 34, 0.5);
 `;
 
 export default MyPage;
