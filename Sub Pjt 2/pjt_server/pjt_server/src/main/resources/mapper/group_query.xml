@@ -395,7 +395,7 @@
     </select>
 
     <insert id="groupViewsInsert" parameterType="int">
-        insert into dogather.board_views (group_no, user_no)
+        insert into dogather.group_views (group_no, user_no)
         values (#{groupNo}, #{userNo})
     </insert>
 
