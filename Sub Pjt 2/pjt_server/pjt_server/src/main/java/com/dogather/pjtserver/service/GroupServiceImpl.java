@@ -315,4 +315,22 @@ public class GroupServiceImpl implements GroupService {
         }
         return saleGroupList;
     }
+
+
+    @Override
+    public List<ReviewDto> reviewList(int userNo) {
+        return groupDao.reviewList(userNo);
+    }
+
+    @Override
+    public void groupViews(int userNo, int groupNo) {
+        int check = groupDao.groupViewsCheck(userNo, groupNo);
+        if(check == 0) {
+            groupDao.groupViewsInsert(userNo, groupNo);
+            groupDao.groupViewsPlus(groupNo);
+        }
+    }
+
 }
+
+

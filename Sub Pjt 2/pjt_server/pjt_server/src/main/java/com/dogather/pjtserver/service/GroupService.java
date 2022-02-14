@@ -46,4 +46,8 @@ public interface GroupService {
     public List<GroupSummaryDto> findPaymentGroup(int userNo);
 
     public List<GroupReturnDto> findSaleGroup(int userNo);
+
+    public List<ReviewDto> reviewList(int userNo);
+
+    public void groupViews(int userNo, int groupNo);
 }

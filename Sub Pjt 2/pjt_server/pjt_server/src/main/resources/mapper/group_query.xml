@@ -376,4 +376,28 @@
         where g.group_leader = #{userNo}
     </select>
 
+    <select id="reviewList" parameterType="int" resultType="com.dogather.pjtserver.dto.ReviewDto">
+        select *
+          from dogather.review
+         where user_to = #{userNo}
+    </select>
+
+    <insert id="groupViewsInsert" parameterType="int">
+        insert into dogather.board_views (group_no, user_no)
+        values (#{groupNo}, #{userNo})
+    </insert>
+
+    <select id="groupViewsCheck" parameterType="int" resultType="int">
+        select count(*)
+        from dogather.group_views
+        where group_no = #{groupNo}
+          and user_no = #{userNo}
+    </select>
+
+    <update id="groupViewsPlus" parameterType="int">
+        update dogather.group
+           set view = view + 1
+         where group_no = #{groupNo}
+    </update>
+
 </mapper>
