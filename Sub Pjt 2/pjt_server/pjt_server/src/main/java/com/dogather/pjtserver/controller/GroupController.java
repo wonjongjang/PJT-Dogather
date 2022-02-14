@@ -241,5 +241,12 @@ public class GroupController {
         }
     }
 
+    @GetMapping("/category")
+    public ResponseEntity<GroupListDto> categoryList(@RequestParam("category") int categoryNo,@RequestParam("page")int page){
+        GroupListDto list = new GroupListDto();
+        list.setList(groupService.getCategoryList(categoryNo, page));
+        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+    }
+
 
 }
