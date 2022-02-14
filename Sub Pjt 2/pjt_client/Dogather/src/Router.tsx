@@ -21,6 +21,7 @@ import FreeCommunity from "./pages/Community/FreeCommunity/FreeCommunity";
 import Error404 from "./pages/Error/Error404";
 
 
+import MoimChatbot from "./components/Chat/MoimChatbot"
 
 function Router() {
   const isLogin = useRecoilValue(isLoginAtom);
@@ -69,6 +70,11 @@ function Router() {
         <Route
           path="/moim/create"
           element={isLogin ? <CreateMoim /> : <Navigate replace to="/" />}
+        />
+
+        <Route 
+          path="/chat"
+          element={<MoimChatbot />}
         />
       </Routes>
       <Footer />
