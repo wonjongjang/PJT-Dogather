@@ -17,7 +17,7 @@ import FAQ from "./MoimDetailComponent/MoimTabs/MoimFAQ";
 import Review from "./MoimDetailComponent/MoimTabs/MoimReview";
 import Refund from "./MoimDetailComponent/MoimTabs/MoimRefund";
 import { useRecoilValue } from "recoil";
-import { userIdAtom } from "../../atoms/Login";
+import { userIdAtom, userNoAtom } from "../../atoms/Login";
 import Hoodie from "../../img/Hoodie.png";
 import MoimDetailImg from "./MoimDetailComponent/MoimDetailImg";
 import KakaoPay from "./KakaoPay";
@@ -76,7 +76,7 @@ function MoimDetail() {
 
   // groupNo에 따라 페이지가 변경되므로 그룹No가 넘어갈 수 있도록 해야함.
   const { groupNo } = useParams();
-  console.log(typeof groupNo);
+  // console.log(typeof groupNo);
 
   const { state } = useLocation() as RouteState;
   const productMatch = useMatch("/moim/:groupNo");
@@ -85,17 +85,19 @@ function MoimDetail() {
   const refundMatch = useMatch("/moim/:groupNo/refund");
 
   const userId = useRecoilValue(userIdAtom);
+  const userNo = useRecoilValue(userNoAtom);
   const JWT = localStorage.getItem("login_token");
 
   const { isLoading: groupLoading, data: groupData } = useQuery<IGroupData>(
-    ["group", groupNo, userId, JWT],
-    () => FetchMoimGroupAPI(groupNo!, userId!, JWT!)
+    ["group", groupNo, userId, JWT, userNo],
+    () => FetchMoimGroupAPI(groupNo!, userId!, JWT!, userNo)
   );
 
-  console.log(groupData?.options);
-  console.log(groupLoading);
   console.log(groupData);
-  console.log(groupData?.mediaList[0]);
+
+  // console.log(groupData?.options);
+  // console.log(groupLoading);
+  // console.log(groupData?.mediaList[0]);
 
   // const loading = productLoading || isLoading;
 
@@ -103,14 +105,15 @@ function MoimDetail() {
   const [hidden, setHidden] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-      setHidden(false);
-    }, 100);
+    return () => {
+      setTimeout(() => {
+        setLoading(false);
+        setHidden(false);
+      }, 100);
+    };
   }, []);
 
   const basePrice = groupData?.price;
-  const [options, setOption] = React.useState<string[]>([]);
   const [sum, setSum] = React.useState(0);
 
   const [sumPrice, setSumPrice] = React.useState(0);
@@ -118,11 +121,14 @@ function MoimDetail() {
   const [optionIdx, setOptionIdx] = useState(0);
   const [optionPrice, setOprionPrice] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [quantities, setQuantities] = useState<number[]>([]);
   const [isHidden, setIsHidden] = useState(true);
   const [optionHidden, setOptionHidden] = useState(true);
-  const [price, setPrice] = useState(groupData?.price);
-  console.log(price);
 
+  const [options, setOption] = React.useState<string[]>([]);
+  const [price, setPrice] = useState(groupData?.price);
+  // console.log(price);
+  // console.log(typeof quantity);
   // const selectOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
   //   const _options = options.filter((o, idx) => {
   //     if (o !== e.target.value) {
@@ -142,23 +148,25 @@ function MoimDetail() {
   // console.log(options);
   // console.log(options[0].optionName);
   const onSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(event.target.value);
     const value = event.target.value;
-    // console.log(typeof event.target.value);
+    console.log(value);
+    // console.log(typeof value);
     const _options: string[] = options.filter((i) => {
-      if (i !== event.target.value) {
+      if (i !== value) {
         return i;
       }
     });
     // const _quantitys: string[] = quantity.filter((q) => {
     //   if ()
     // })
+
     setOption([..._options, value]);
-    // setQuantity([])
-    // setPrice([])
     setIsHidden(false);
-    setOptionIdx(Number(event.target.value));
+    setOptionIdx(Number(value));
+    // setQuantity([]);
+    // setPrice([]);
   };
+  // console.log(options);
   //처음 랜더링되고 유저에게 보이는 수량의 값이 0일 필요가 없기 때문에 초기값으로 1로 주었다.
 
   const increaseQuantity = () => {
@@ -172,15 +180,15 @@ function MoimDetail() {
   const handleValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
     setQuantity(Number(value));
-    console.log(value);
+    // console.log(value);
   };
-  const mainImgAddress = "/doimage/" + groupData?.mainImage;
-  console.log(groupData?.mainImage);
-  const detailImgAddress = "/doimage/" + groupData?.mediaList[0];
-  console.log(mainImgAddress, detailImgAddress);
+  // const mainImgAddress = "/doimage/" + groupData?.mainImage;
+  // console.log(groupData?.mainImage);
+  // const detailImgAddress = "/doimage/" + groupData?.mediaList[0];
+  // console.log(mainImgAddress, detailImgAddress);
 
   const time = Date.now();
-  console.log(time);
+  // console.log(time);
   const makeComma = (price: number) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
@@ -227,10 +235,10 @@ function MoimDetail() {
                 <ProductDetail>{groupData?.detail}</ProductDetail>
                 <ProductPrice>
                   <ProductOriginalPrice>
-                    {makeComma(groupData?.originPrice!) + "원"}
+                    {/* {makeComma(groupData?.originPrice!) + "원"} */}
                   </ProductOriginalPrice>
                   <ProductMoimPrice>
-                    {makeComma(groupData?.price!) + "원"}
+                    {/* {makeComma(groupData?.price!) + "원"} */}
                   </ProductMoimPrice>
                 </ProductPrice>
                 <Option>{"옵션선택"}</Option>
@@ -250,11 +258,11 @@ function MoimDetail() {
                         <SelectOption value="0">
                           옵션을 선택해주세요.
                         </SelectOption>
-                        {groupData?.options.map((option, idx) => (
+                        {groupData?.options?.map((option, idx) => (
                           <SelectOption
-                            key={option.optionName}
+                            key={idx}
                             // onChange={}
-                            value={idx}
+                            value={option.optionName + "/" + optionPrice}
                           >
                             {option.optionName}
                           </SelectOption>
@@ -308,13 +316,13 @@ function MoimDetail() {
                             {"총 " + quantity + "개"}
                           </ProductQuantity>
                           <FinalPrice>
-                            {makeComma(
+                            {/* {makeComma(
                               (basePrice! +
                                 Number(
-                                  groupData?.options[optionIdx].optionPrice
+                                  groupData?.options[optionIdx]?.optionPrice
                                 )) *
                                 quantity
-                            ) + "원"}
+                            ) + "원"} */}
                           </FinalPrice>
                         </PriceWrapper>
                       </CartOption>
@@ -326,6 +334,7 @@ function MoimDetail() {
                       <KakaoPay
                         groupNo={groupData?.groupNo!}
                         price={groupData?.price!}
+                        // option={options}
                       />
                     </SelectContent>
                   </SelectWrapper>
@@ -353,10 +362,7 @@ function MoimDetail() {
               </Tab>
             </Tabs>
             <Routes>
-              <Route
-                path=""
-                element={<Product detail={groupData?.detail} img={Img} />}
-              />
+              <Route path="" element={<Product img={Img} />} />
               <Route path="faq" element={<FAQ />} />
               <Route path="review" element={<Review />} />
               <Route path="refund" element={<Refund />} />
