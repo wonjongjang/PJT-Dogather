@@ -42,4 +42,8 @@ public interface GroupService {
     public double reviewAvg(int userNo);
 
     public List<GroupReturnDto> findUserLikeGroup(int userNo);
+
+    public List<GroupReturnDto> findPaymentGroup(int userNo);
+
+    public List<GroupReturnDto> findSaleGroup(int userNo);
 }

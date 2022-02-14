@@ -19,6 +19,9 @@ public class UserResponseDto {
     private String userEmail;
     private List<BoardDto> likeBoards;
     private List<GroupReturnDto> likeGroups;
+    private List<GroupReturnDto> paymentGroup;
+    private List<GroupReturnDto> saleGroup;
+
 
     public void setUserInfo(UserDto userDto){
         this.msg = userDto.getMsg();
