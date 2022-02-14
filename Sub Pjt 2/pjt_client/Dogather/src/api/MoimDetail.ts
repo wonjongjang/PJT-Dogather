@@ -11,6 +11,8 @@ export function FetchMoimGroupAPI(groupNo: string, userId:string, JWT:string, us
   }
 
   console.log(userNo)
+  // console.log(typeof userNo)
+  // console.log(typeof groupNo)
   return fetch(`${BASE_URL}/detail/${groupNo}/${userNo}`, {
     method: "GET",
     headers: {

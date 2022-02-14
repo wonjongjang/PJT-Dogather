@@ -93,8 +93,6 @@ function MoimDetail() {
     () => FetchMoimGroupAPI(groupNo!, userId!, JWT!, userNo)
   );
 
-  console.log(groupData);
-
   // console.log(groupData?.options);
   // console.log(groupLoading);
   // console.log(groupData?.mediaList[0]);
@@ -105,12 +103,11 @@ function MoimDetail() {
   const [hidden, setHidden] = useState(true);
 
   useEffect(() => {
-    return () => {
-      setTimeout(() => {
-        setLoading(false);
-        setHidden(false);
-      }, 100);
-    };
+    console.log(groupData);
+    setTimeout(() => {
+      setLoading(false);
+      setHidden(false);
+    }, 100);
   }, []);
 
   const basePrice = groupData?.price;
@@ -199,7 +196,10 @@ function MoimDetail() {
           <>
             <Overview>
               <ImgWrapper>
-                <Img src={"/img/Hoodie.png"} alt={"메인 이미지"} />
+                <Img
+                  src={process.env.PUBLIC_URL + "/img/Hoodie.png"}
+                  alt={"메인 이미지"}
+                />
                 {/* <Img
                 src={process.env.PUBLIC_URL + mainImgAddress}
                 alt={process.env.PUBLIC_URL + mainImgAddress}
@@ -211,23 +211,20 @@ function MoimDetail() {
                 {/* <MoimDetailImg /> */}
               </ImgWrapper>
               <OverviewItem>
-                <Link to={"여기 주소는 카테고리 검색으로"}>
-                  <img
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      width: "120px",
-                      height: "20px",
-                      marginBottom: "3px",
-                    }}
-                    src={process.env.PUBLIC_URL + "/img/베스트라벨.png"}
-                    alt=""
-                  />
-                  <CategoryName>{"남성패션"}</CategoryName>
-                </Link>
-                <Link to={groupData?.link!}>
-                  <LeaderName>{"Dogather(모임리더)"}</LeaderName>
-                </Link>
+                <img
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    width: "120px",
+                    height: "20px",
+                    marginBottom: "3px",
+                  }}
+                  src={process.env.PUBLIC_URL + "/img/베스트라벨.png"}
+                  alt=""
+                />
+                <CategoryName>{"남성패션"}</CategoryName>
+                <LeaderName>{"Dogather(모임리더)"}</LeaderName>
+
                 <ProductTitle>{groupData?.product}</ProductTitle>
                 <ProductDetail>{groupData?.detail}</ProductDetail>
                 <ProductPrice>
@@ -274,9 +271,9 @@ function MoimDetail() {
                               <SelectContentItem>
                                 <OptionName>
                                   옵션명 :{" "}
-                                  {groupData?.options[Number(o)].optionName +
+                                  {groupData?.options[Number(o)]?.optionName +
                                     "(+" +
-                                    groupData?.options[Number(o)].optionPrice +
+                                    groupData?.options[Number(o)]?.optionPrice +
                                     ")"}
                                 </OptionName>
                               </SelectContentItem>
@@ -401,7 +398,7 @@ const Option = styled.p`
   margin-bottom: 5px;
 `;
 
-const ProductPrice = styled.p`
+const ProductPrice = styled.div`
   margin-bottom: 20px;
 `;
 const ProductOriginalPrice = styled.p`
@@ -584,7 +581,7 @@ const OptionName = styled.p`
   margin-bottom: 5px;
 `;
 
-const PriceWrapper = styled.p`
+const PriceWrapper = styled.div`
   display: flex;
   justify-content: space-between;
 `;
