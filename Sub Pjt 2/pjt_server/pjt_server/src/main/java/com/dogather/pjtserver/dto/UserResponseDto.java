@@ -19,7 +19,7 @@ public class UserResponseDto {
     private String userEmail;
     private List<BoardDto> likeBoards;
     private List<GroupReturnDto> likeGroups;
-    private List<GroupReturnDto> paymentGroup;
+    private List<GroupSummaryDto> paymentGroup;
     private List<GroupReturnDto> saleGroup;
 
 
