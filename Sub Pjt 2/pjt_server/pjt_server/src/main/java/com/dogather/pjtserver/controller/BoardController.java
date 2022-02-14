@@ -48,8 +48,9 @@ public class BoardController {
         return boardService.createBoard(boardDto, files);
     }
 
-    @GetMapping("/{postNo}")
-    public ResponseEntity<BoardResponseDto> getBoard(@PathVariable int postNo) {
+    @GetMapping("/{postNo}/{userNo}")
+    public ResponseEntity<BoardResponseDto> getBoard(@PathVariable int postNo, @PathVariable int userNo) {
+        if(userNo != 0) boardService.boardViews(userNo,postNo);
         List<BoardMediaDto> mediaDtoList = mediaService.findAllMedia(postNo);
 
         List<Integer> mediaList = new ArrayList<Integer>();
@@ -59,8 +60,6 @@ public class BoardController {
         }
         BoardResponseDto boardResponseDto = boardService.findBoard(postNo);
         if (boardResponseDto != null) {
-            // viewcount + 1 부분 수정 필요
-            boardResponseDto.setBoardView(boardService.upView(postNo));
             boardResponseDto.setCommentList(commentService.findAllComment(postNo));
             boardResponseDto.setLikeUsers(likeService.findLikeAtBoard(postNo));
             boardResponseDto.setMediaNo(mediaList);

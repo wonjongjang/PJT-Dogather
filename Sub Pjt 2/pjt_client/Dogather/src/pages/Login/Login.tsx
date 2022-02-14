@@ -83,7 +83,8 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   background-color: whitesmoke;
-  height: 68vh;
+  /* height: ; */
+  padding-bottom: 150px;
 `;
 
 const SubContainer = styled.div`

@@ -199,10 +199,7 @@ function MoimDetail() {
           <>
             <Overview>
               <ImgWrapper>
-                <Img
-                  src={process.env.PUBLIC_URL + "/img/Hoodie.png"}
-                  alt={"메인 이미지"}
-                />
+                <Img src={"/img/Hoodie.png"} alt={"메인 이미지"} />
                 {/* <Img
                 src={process.env.PUBLIC_URL + mainImgAddress}
                 alt={process.env.PUBLIC_URL + mainImgAddress}
