@@ -34,6 +34,7 @@ public class GroupOptionDto {
     private List<String> mediaList;
     private List<FAQDto> FaqList;
     private String mainImage;
+    private int count;
 
     public void setGroupDto(GroupReturnDto groupReturnDto){
         this.groupNo = groupReturnDto.getGroupNo();
@@ -52,6 +53,7 @@ public class GroupOptionDto {
         this.link = groupReturnDto.getLink();
         this.originPrice = groupReturnDto.getOriginPrice();
         this.price = groupReturnDto.getPrice();
+        this.count = groupReturnDto.getCount();
 
     }
 
