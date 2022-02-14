@@ -18,6 +18,7 @@ import MyPage from "./pages/MyPage/MyPage";
 import AnnouncementCommunity from "./pages/Community/AnnouncementCommunity/AnnouncementCommunity";
 import InfoShareCommunity from "./pages/Community/InfoShareCommunity/InfoShareCommunity";
 import FreeCommunity from "./pages/Community/FreeCommunity/FreeCommunity";
+import MoimChatbot from "./components/Chat/MoimChatbot"
 
 function Router() {
   const isLogin = useRecoilValue(isLoginAtom);
@@ -61,6 +62,11 @@ function Router() {
         <Route
           path="/moim/create"
           element={isLogin ? <CreateMoim /> : <Navigate replace to="/" />}
+        />
+
+        <Route 
+          path="/chat"
+          element={<MoimChatbot />}
         />
       </Routes>
       <Footer />
