@@ -95,9 +95,9 @@ public class GroupController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Integer> register(@RequestPart(value = "groupRegisterDto") GroupRegisterDto groupRegisterDto,
-                                            @RequestPart(value = "file", required = false) List<MultipartFile> files,
-                                            @RequestPart(value = "mainImage", required = false) MultipartFile mainImage) throws Exception{
+    public Object register(@RequestPart(value = "groupRegisterDto") GroupRegisterDto groupRegisterDto,
+                           @RequestPart(value = "file", required = false) List<MultipartFile> files,
+                           @RequestPart(value = "mainImage", required = false) MultipartFile mainImage) throws Exception{
         int created = groupService.groupRegister(groupRegisterDto.getGroup(), files, mainImage);
         if(created != 0){
             groupService.addOptions(groupRegisterDto.getGroup().getGroupNo() ,groupRegisterDto.getOptions());
@@ -239,6 +239,13 @@ public class GroupController {
             reviewListDto.setReviewList(groupService.reviewList(userNo));
             return new ResponseEntity<ReviewListDto>(reviewListDto, HttpStatus.OK);
         }
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<GroupListDto> categoryList(@RequestParam("category") int categoryNo,@RequestParam("page")int page){
+        GroupListDto list = new GroupListDto();
+        list.setList(groupService.getCategoryList(categoryNo, page));
+        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
 
 
