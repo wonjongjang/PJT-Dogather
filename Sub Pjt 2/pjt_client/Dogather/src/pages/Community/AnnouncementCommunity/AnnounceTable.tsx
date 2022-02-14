@@ -92,20 +92,26 @@ function AnnounceTable() {
         <CustomStack>
           <Stack spacing={5} direction="column">
             <ThemeProvider theme={theme}>
-              <Button variant="contained" color="neutral">
-                <a href="announcement">공지사항게시판</a>
+              <Link to={"/community/announcement"}>
+                <Button variant="contained" color="neutral">
+                  공지사항게시판
+                </Button>
+              </Link>
+              <Link to={"/community/usedsale"}>
+                <Button variant="outlined" color="neutral">
+                  중고판매게시판
+                </Button>
+              </Link>
+              <Link to={"/community/infoshare"}>
+                <Button variant="outlined" color="neutral">
+                  정보공유게시판
+                </Button>
+              </Link>
+              <Button variant="outlined" color="neutral">
+                <a href="/free">자유게시판</a>
               </Button>
               <Button variant="outlined" color="neutral">
-                <a href="usedsale">중고판매게시판</a>
-              </Button>
-              <Button variant="outlined" color="neutral">
-                <a href="infoshare">정보공유게시판</a>
-              </Button>
-              <Button variant="outlined" color="neutral">
-                <a href="free">자유게시판</a>
-              </Button>
-              <Button variant="outlined" color="neutral">
-                <a href="review">후기게시판</a>
+                <a href="/review">후기게시판</a>
               </Button>
               <Btn2>사이즈 조정용</Btn2>
             </ThemeProvider>
