@@ -68,8 +68,9 @@ public class GroupController {
         return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
 
-    @GetMapping("/detail/{groupNo}")
-    public ResponseEntity<GroupOptionDto> group(@PathVariable int groupNo){
+    @GetMapping("/detail/{groupNo}/{userNo}")
+    public ResponseEntity<GroupOptionDto> group(@PathVariable int groupNo, @PathVariable int userNo){
+        if(userNo != 0) groupService.groupViews(userNo,groupNo);
         List<GroupMediaDto> mediaDtoList = mediaService.fineAllMedia(groupNo);
         GroupReturnDto groupReturnDto = groupService.group(groupNo);
         List<FAQDto> faqDtoList = faqService.readFaqAll(groupNo);
@@ -228,7 +229,17 @@ public class GroupController {
     }
 
     @GetMapping("/review/{userNo}")
-    public double reviewAvg(@PathVariable int userNo){
-        return groupService.reviewAvg(userNo);
+    public ResponseEntity<ReviewListDto> reviewAvg(@PathVariable int userNo){
+        ReviewListDto reviewListDto = new ReviewListDto();
+        double avgcheck = groupService.reviewAvg(userNo);
+        reviewListDto.setAvg(avgcheck);
+        if(avgcheck == -1){
+            return new ResponseEntity<ReviewListDto>(reviewListDto,HttpStatus.OK);
+        }else {
+            reviewListDto.setReviewList(groupService.reviewList(userNo));
+            return new ResponseEntity<ReviewListDto>(reviewListDto, HttpStatus.OK);
+        }
     }
+
+
 }

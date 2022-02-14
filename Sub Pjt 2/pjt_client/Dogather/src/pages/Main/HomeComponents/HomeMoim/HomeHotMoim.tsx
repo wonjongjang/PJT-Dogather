@@ -12,7 +12,7 @@ function HomeHotMoim() {
   const { data: hotData } = useQuery<iHomeCard>("hot", () =>
     FetchHomeHotMoimCard()
   );
-  console.log(hotData);
+  // console.log(hotData);
 
   const makeComma = (price: number) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
