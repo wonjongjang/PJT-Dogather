@@ -2,11 +2,12 @@ import DogatherLogo from "./Logo.svg";
 import styled from "styled-components";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { isLoginAtom, userIdAtom, userNoAtom } from "../../atoms/Login";
 import { CategoriesAtom } from "../../atoms/ProductCategories";
 import { OptionsAtom } from "../../atoms/Options";
 import { FAQsAtom } from "../../atoms/FAQs";
+import { motion, useAnimation } from "framer-motion";
 
 function Header() {
   const navigate = useNavigate();
@@ -19,7 +20,28 @@ function Header() {
   const [FAQS, setFAQs] = useRecoilState(FAQsAtom);
   const [categories, setCategories] = useRecoilState(CategoriesAtom);
 
-  // console.log(isLogin);
+  // 검색 디자인
+  const [searchOpen, setSearchOpen] = useState(false);
+  const inputAnimation = useAnimation();
+  const toggleSearch = () => {
+    if (searchOpen) {
+      inputAnimation.start({
+        scaleX: 0,
+      });
+    } else {
+      inputAnimation.start({ scaleX: 1 });
+    }
+    setSearchOpen((prev) => !prev);
+  };
+
+  // 검색 기능
+  const [enteredText, SetEnteredText] = useState(""); // 검색어 저장
+  const enterSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    // console.log(event);
+    if (event.code === "Enter") {
+      console.log(enteredText); // 엔터키 눌렀을 때
+    }
+  };
 
   useEffect(() => {
     if (!isLogin) {
@@ -28,6 +50,8 @@ function Header() {
     setOptions([]);
     setFAQs([]);
     setCategories([]);
+    setSearchOpen(false); // 검색 아이콘 위치 초기화
+    inputAnimation.start({ scaleX: 0 }); // 검색 input 위치 초기화
   }, [location]); // url 바뀔 때 마다 로컬 스토리지에 토큰이 있는지 확인하여 로그인 여부를 변경
 
   const Logout = () => {
@@ -72,11 +96,15 @@ function Header() {
           <Link to="/">
             <Logo src={`${DogatherLogo}`}></Logo>
           </Link>
-
+        </LowerCol>
+        <LowerCol>
           <LowerItems>
             {/* 검색 아이콘 (svg로 가져오면 CSS로 자유롭게 변경 가능 */}
             <Search>
-              <svg
+              <motion.svg
+                onClick={toggleSearch}
+                animate={{ x: searchOpen ? -215 : 0 }}
+                transition={{ type: "linear" }}
                 fill="currentColor"
                 viewBox="0 0 768 768"
                 xmlns="http://www.w3.org/2000/svg"
@@ -86,7 +114,15 @@ function Header() {
                   d="M513.312 507.392c-1.088 0.832-2.144 1.76-3.168 2.784s-1.92 2.048-2.784 3.168c-40.256 38.816-95.008 62.656-155.36 62.656-61.856 0-117.824-25.024-158.4-65.6s-65.6-96.544-65.6-158.4 25.024-117.824 65.6-158.4 96.544-65.6 158.4-65.6 117.824 25.024 158.4 65.6 65.6 96.544 65.6 158.4c0 60.352-23.84 115.104-62.688 155.392zM694.624 649.376l-117.6-117.6c39.392-49.28 62.976-111.776 62.976-179.776 0-79.52-32.256-151.552-84.352-203.648s-124.128-84.352-203.648-84.352-151.552 32.256-203.648 84.352-84.352 124.128-84.352 203.648 32.256 151.552 84.352 203.648 124.128 84.352 203.648 84.352c68 0 130.496-23.584 179.776-62.976l117.6 117.6c12.512 12.512 32.768 12.512 45.248 0s12.512-32.768 0-45.248z"
                   clipRule="evenodd"
                 ></path>
-              </svg>
+              </motion.svg>
+              <Input
+                animate={inputAnimation}
+                initial={{ scaleX: 0 }}
+                transition={{ type: "linear" }}
+                placeholder="검색 내용 입력 후 엔터"
+                onChange={(e) => SetEnteredText(e.target.value)}
+                onKeyPress={enterSearch}
+              />
             </Search>
             <LowerItem>
               {isLogin ? (
@@ -145,7 +181,9 @@ const LogoutDiv = styled.div`
 
 const LowerNav = styled.nav`
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
   padding-right: 50px;
   padding-left: 50px;
   height: 68px;
@@ -158,9 +196,7 @@ const LowerNav = styled.nav`
 
 const LowerCol = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  width: 100%;
 `;
 
 const Logo = styled.img`
@@ -173,19 +209,36 @@ const LowerItems = styled.ul`
   align-items: center;
 `;
 
-// 검색 아이콘
-const Search = styled.span`
-  margin: 0 20px;
-  color: black;
-  svg {
-    height: 20px;
-  }
-`;
-
 const LowerItem = styled.li`
   font-size: 15px;
   font-weight: bold;
   margin: 0 20px;
+`;
+
+// 검색
+const Search = styled.span`
+  margin: 0 20px;
+  display: flex;
+  align-items: center;
+  color: black;
+  position: relative;
+  svg {
+    height: 20px;
+    z-index: 3;
+  }
+`;
+const Input = styled(motion.input)`
+  transform-origin: right center;
+  position: absolute;
+  right: 0px;
+  padding: 5px 10px;
+  padding-left: 40px;
+  z-index: 2;
+  font-size: 16px;
+  background-color: transparent;
+  border: 2px solid ${(props) => props.theme.textColor};
+  border-radius: 5px;
+  height: 45px;
 `;
 
 export default Header;
