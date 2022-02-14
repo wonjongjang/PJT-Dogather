@@ -84,20 +84,21 @@ function InfoShareTable() {
           <Stack spacing={5} direction="column">
             <ThemeProvider theme={theme}>
               <Button variant="outlined" color="neutral">
-                공지사항게시판
+                <a href="announcement">공지사항게시판</a>
               </Button>
               <Button variant="outlined" color="neutral">
-                중고판매게시판
+                <a href="usedsale">중고판매게시판</a>
               </Button>
               <Button variant="contained" color="neutral">
-                정보공유게시판
+                <a href="infoshare">정보공유게시판</a>
               </Button>
               <Button variant="outlined" color="neutral">
-                자유게시판
+                <a href="free">자유게시판</a>
               </Button>
               <Button variant="outlined" color="neutral">
-                후기게시판
+                <a href="review">후기게시판</a>
               </Button>
+              <Btn2>사이즈 조정용</Btn2>
             </ThemeProvider>
           </Stack>
         </CustomStack>
@@ -171,6 +172,13 @@ function InfoShareTable() {
 }
 
 const Container = styled.div``;
+
+const Btn2 = styled.button`
+  width: 8vw;
+  color: white;
+  background-color: white;
+  border: 0;
+`;
 
 const Mid = styled.span`
   display: flex;

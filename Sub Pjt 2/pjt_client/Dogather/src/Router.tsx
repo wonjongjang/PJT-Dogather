@@ -18,6 +18,8 @@ import MyPage from "./pages/MyPage/MyPage";
 import AnnouncementCommunity from "./pages/Community/AnnouncementCommunity/AnnouncementCommunity";
 import InfoShareCommunity from "./pages/Community/InfoShareCommunity/InfoShareCommunity";
 import FreeCommunity from "./pages/Community/FreeCommunity/FreeCommunity";
+import UsedSaleCommunity from "./pages/Community/UsedSaleCommunity/UsedSaleCommunity";
+import ReviewCommunity from "./pages/Community/ReviewCommunity/ReviewCommunity";
 
 function Router() {
   const isLogin = useRecoilValue(isLoginAtom);
@@ -42,6 +44,8 @@ function Router() {
         />
         <Route path="/community/infoshare/" element={<InfoShareCommunity />} />
         <Route path="/community/free/" element={<FreeCommunity />} />
+        <Route path="/community/usedsale/" element={<UsedSaleCommunity />} />
+        <Route path="/community/review/" element={<ReviewCommunity />} />
 
         {/* 로그인 하지 않았을 때 url 직접 접근 가능 */}
         <Route

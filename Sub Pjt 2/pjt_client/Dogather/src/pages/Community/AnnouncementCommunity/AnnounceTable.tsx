@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Table from "@mui/material/Table";
@@ -25,16 +25,17 @@ function createData(
   return { postno, title, writer, view, created };
 }
 
+// 데이터
 const rows = [
   createData(1, "Frozen yoghurt", "Asd", 159, "asd"),
   createData(2, "Ice cream sandwich", "Asd", 237, "ASd"),
   createData(3, "Eclair", "Asd", 262, "fsdf"),
   createData(4, "Cupcake", "Asd", 305, "Sdgd"),
   createData(5, "Gingerbread", "Asd", 356, "Dfgdf"),
-  createData(6, "Gingerbread", "Asd", 356, "Dfgdf"),
+  createData(6, "Gingerbread", "Asd", 16, "Dfgdf"),
   createData(7, "Gingerbread", "Asd", 356, "Dfgdf"),
   createData(8, "Gingerbread", "Asd", 356, "Dfgdf"),
-  createData(9, "Gingerbread", "Asd", 356, "Dfgdf"),
+  createData(9, "Gingerbread", "Asd", 1000, "Dfgdf"),
   createData(10, "Gingerbread", "Asd", 356, "Dfgdf"),
 ];
 
@@ -63,9 +64,16 @@ declare module "@mui/material/Button" {
     neutral: true;
   }
 }
-// neutral 색깔
 
+//메인
 function AnnounceTable() {
+  //정렬
+  const [postList, setPostList] = useState(rows);
+  const sortView = () => {
+    const _postList = postList.sort((a, b) => a.view - b.view);
+    setPostList(_postList);
+    console.log(postList);
+  };
   return (
     <Container>
       <Top>
@@ -73,7 +81,7 @@ function AnnounceTable() {
         <CustomTabs>
           <Tabs>
             <Tab label="최신글" />
-            <Tab label="조회수" />
+            <Tab label="조회수" onClick={sortView} />
             <Tab label="랭킹순" />
           </Tabs>
         </CustomTabs>
@@ -85,20 +93,21 @@ function AnnounceTable() {
           <Stack spacing={5} direction="column">
             <ThemeProvider theme={theme}>
               <Button variant="contained" color="neutral">
-                공지사항게시판
+                <a href="announcement">공지사항게시판</a>
               </Button>
               <Button variant="outlined" color="neutral">
-                중고판매게시판
+                <a href="usedsale">중고판매게시판</a>
               </Button>
               <Button variant="outlined" color="neutral">
-                정보공유게시판
+                <a href="infoshare">정보공유게시판</a>
               </Button>
               <Button variant="outlined" color="neutral">
-                자유게시판
+                <a href="free">자유게시판</a>
               </Button>
               <Button variant="outlined" color="neutral">
-                후기게시판
+                <a href="review">후기게시판</a>
               </Button>
+              <Btn2>사이즈 조정용</Btn2>
             </ThemeProvider>
           </Stack>
         </CustomStack>
@@ -115,7 +124,7 @@ function AnnounceTable() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
+                {postList.map((row) => (
                   <TableRow
                     key={row.postno}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -172,6 +181,13 @@ function AnnounceTable() {
 }
 
 const Container = styled.div``;
+
+const Btn2 = styled.button`
+  width: 8vw;
+  color: white;
+  background-color: white;
+  border: 0;
+`;
 
 const Mid = styled.span`
   display: flex;
