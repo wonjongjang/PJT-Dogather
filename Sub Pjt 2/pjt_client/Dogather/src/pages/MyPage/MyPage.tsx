@@ -7,17 +7,6 @@ import LikeGroup from "./MyPageComponents/LikeGroup";
 import PaymentGroup from "./MyPageComponents/PaymentGroup";
 import { useState } from "react";
 
-// interface IBoard {
-//   boardContent: string;
-//   boardTitle: string;
-//   boardType: string; // 나중에 변경
-//   boardView: number;
-//   created: string;
-//   postNo: number;
-//   updated: string;
-//   writerNo: number;
-// }
-
 export interface IPay {
   amount: number;
   amountOfPrice: number;
