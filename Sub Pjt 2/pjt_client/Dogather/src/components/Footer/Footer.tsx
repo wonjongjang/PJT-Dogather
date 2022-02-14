@@ -14,6 +14,7 @@ function Footer() {
         <FooterImg src={process.env.PUBLIC_URL + "/img/mysql.png"} />
         <FooterImg src={process.env.PUBLIC_URL + "/img/jenkins.png"} />
         <FooterImg src={process.env.PUBLIC_URL + "/img/docker.png"} />
+        <FooterImg src={process.env.PUBLIC_URL + "/img/nginx.png"} />
       </FooterDiv>
       <FooterDiv>
         <FooterP2>ⓒ SSAFY BUK1 Team4 Dogather. All right reserved.</FooterP2>
@@ -32,6 +33,7 @@ const FooterImg = styled.img.attrs({
   alt: "LOGO",
 })`
   display: inline;
+  margin-left:10px;
   margin-right: 10px;
 `;
 const FooterDiv = styled.div`
