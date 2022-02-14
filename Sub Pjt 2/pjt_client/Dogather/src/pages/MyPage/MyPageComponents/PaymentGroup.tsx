@@ -24,7 +24,9 @@ function PaymentGroup(group: IGroup) {
         <ProductDiv>
           <ProductTitle>{group.product}</ProductTitle>
 
-          <Option>/ {group.maxPeople}</Option>
+          <Option>
+            {group.count} / {group.maxPeople}
+          </Option>
           <ProductInfo>{group.deadline}</ProductInfo>
         </ProductDiv>
       </LeftSide>
