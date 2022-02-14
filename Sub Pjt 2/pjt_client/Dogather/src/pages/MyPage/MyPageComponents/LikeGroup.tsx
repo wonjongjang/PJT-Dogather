@@ -12,7 +12,9 @@ function LikeGroup(group: IGroup) {
         </ImgDiv>
         <ProductDiv>
           <ProductTitle>{group.product}</ProductTitle>
-          <ProductPeople>/ {group.maxPeople}</ProductPeople>
+          <ProductPeople>
+            {group.count} / {group.maxPeople}
+          </ProductPeople>
           <ProductDeadline>{group.deadline}</ProductDeadline>
         </ProductDiv>
       </LeftSide>
