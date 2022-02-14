@@ -5,12 +5,12 @@ import { userIdAtom, userNoAtom } from "../../atoms/Login";
 import { useNavigate } from "react-router-dom";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 
-import CreateOption from "./CreateMoimComponent/Option/CreateOption";
+import CreateOption from "./CreateMoimComponents/Option/CreateOption";
 import { OptionsAtom } from "../../atoms/Options";
-import Option from "./CreateMoimComponent/Option/Option";
-import CreateFAQ from "./CreateMoimComponent/FAQ/CreateFAQ";
+import Option from "./CreateMoimComponents/Option/Option";
+import CreateFAQ from "./CreateMoimComponents/FAQ/CreateFAQ";
 import { FAQsAtom } from "../../atoms/FAQs";
-import FAQ from "./CreateMoimComponent/FAQ/FAQ";
+import FAQ from "./CreateMoimComponents/FAQ/FAQ";
 import { useState } from "react";
 import { ProductCategories } from "../../atoms/ProductCategories";
 

@@ -19,6 +19,8 @@ function Header() {
   const [FAQS, setFAQs] = useRecoilState(FAQsAtom);
   const [categories, setCategories] = useRecoilState(CategoriesAtom);
 
+  console.log(isLogin);
+
   useEffect(() => {
     setIsLogin(localStorage.getItem("login_token") !== null);
     setOptions([]);
