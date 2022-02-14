@@ -71,7 +71,8 @@ function AnnounceTable() {
 
   //정렬
   const sortView = () => {
-    const _postList = postList.sort((a, b) => a.view - b.view);
+    postList.sort((a, b) => a.view - b.view);
+    const _postList = [...postList];
     setPostList(_postList);
   };
 
