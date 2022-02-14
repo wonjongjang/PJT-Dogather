@@ -82,8 +82,6 @@
 
 
 
-
-
     <select id="getAllboard" resultType="com.dogather.pjtserver.dto.BoardResponseDto">
         select * from board
     </select>
