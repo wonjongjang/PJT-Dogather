@@ -30,4 +30,5 @@ public class GroupReturnDto {
     private int groupLeader;
     private String leaderName;
     private int amount;
+    private int count;
 }
