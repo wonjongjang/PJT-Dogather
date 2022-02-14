@@ -30,6 +30,7 @@ public class GroupSummaryDto {
     private String categoryName;
     private int groupLeader;
     private String leaderName;
+    private int count;
 
     private List<ResultPaymentDto> resultPaymentDtos;
 }
