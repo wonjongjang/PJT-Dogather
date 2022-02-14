@@ -17,9 +17,9 @@ public interface BoardService {
 
     public int updateBoard(int postNo, BoardDto updateBoardDto, List<MultipartFile> addMediaList) throws IOException;
 
-    public int upView(int postNo);
-
     public List<BoardResponseDto> getAllboard();
 
     public List<BoardDto> findUserLikeBoard(int userNo);
+
+    public void boardViews(int userNo, int postNo);
 }

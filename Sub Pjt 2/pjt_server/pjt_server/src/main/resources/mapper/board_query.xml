@@ -23,14 +23,6 @@
         where post_no = #{postNo}
     </update>
 
-    <update id="upView" parameterType="int">
-        <selectKey keyColumn= "board_view" resultType="java.lang.Integer" order="AFTER">
-            select board_view from board where post_no = #{postNo}
-        </selectKey>
-        update board
-        set board_view = board_view+1 where post_no = #{postNo}
-    </update>
-
 <!--    <resultMap id="boardMap" type="com.dogather.pjtserver.dto.TestDto">-->
 <!--        <id column="post_no" property="postNo"/>-->
 <!--        <result column="post_no" property="postNo"/>-->
@@ -85,5 +77,23 @@
     <select id="getAllboard" resultType="com.dogather.pjtserver.dto.BoardResponseDto">
         select * from board
     </select>
+
+    <select id="boardViewsCheck" parameterType="int" resultType="int">
+        select count(*)
+        from dogather.board_views
+        where post_no = #{postNo}
+        and user_no = #{userNo}
+    </select>
+
+    <insert id="boardViewsInsert" parameterType="int">
+        insert into dogather.board_views (post_no, user_no)
+        values (#{postNo}, #{userNo})
+    </insert>
+
+    <update id="boardViewsPlus" parameterType="int">
+        update dogather.board
+        set board_view = board_view + 1
+        where post_no = #{postNo}
+    </update>
 
 </mapper>
