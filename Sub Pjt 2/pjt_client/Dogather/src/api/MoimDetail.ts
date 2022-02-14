@@ -1,10 +1,17 @@
+
 const BASE_URL = `http://i6e104.p.ssafy.io/api/group`
 
 
 
-export function FetchMoimGroupAPI(groupNo: string, userId:string, JWT:string) {
+
+export function FetchMoimGroupAPI(groupNo: string, userId:string, JWT:string, userNo:number) {
 // const JWT = localStorage.getItem("login_token");
-  return fetch(`${BASE_URL}/detail/${groupNo}`, {
+  if (typeof userNo !== typeof 0) {
+    userNo = 0
+  }
+
+  console.log(userNo)
+  return fetch(`${BASE_URL}/detail/${groupNo}/${userNo}`, {
     method: "GET",
     headers: {
       jwt: `${JWT}`,

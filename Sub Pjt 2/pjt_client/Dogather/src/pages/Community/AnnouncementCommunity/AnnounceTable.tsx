@@ -15,40 +15,6 @@ import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 
-function createData(
-  postno: number,
-  title: string,
-  writer: string,
-  view: number,
-  created: string
-) {
-  return { postno, title, writer, view, created };
-}
-
-// 데이터
-const rows = [
-  createData(1, "Frozen yoghurt", "Asd", 159, "asd"),
-  createData(2, "Ice cream sandwich", "Asd", 237, "ASd"),
-  createData(3, "Eclair", "Asd", 262, "fsdf"),
-  createData(4, "Cupcake", "Asd", 305, "Sdgd"),
-  createData(5, "Gingerbread", "Asd", 356, "Dfgdf"),
-  createData(6, "Gingerbread", "Asd", 16, "Dfgdf"),
-  createData(7, "Gingerbread", "Asd", 356, "Dfgdf"),
-  createData(8, "Gingerbread", "Asd", 356, "Dfgdf"),
-  createData(9, "Gingerbread", "Asd", 1000, "Dfgdf"),
-  createData(10, "Gingerbread", "Asd", 356, "Dfgdf"),
-];
-
-// neutral 색깔
-const theme = createTheme({
-  palette: {
-    neutral: {
-      main: "#000000",
-      contrastText: "#fff",
-    },
-  },
-});
-
 declare module "@mui/material/styles" {
   interface Palette {
     neutral: Palette["primary"];
@@ -67,8 +33,43 @@ declare module "@mui/material/Button" {
 
 //메인
 function AnnounceTable() {
-  //정렬
+  function createData(
+    postno: number,
+    title: string,
+    writer: string,
+    view: number,
+    created: string
+  ) {
+    return { postno, title, writer, view, created };
+  }
+
+  // 데이터
+  const rows = [
+    createData(1, "Frozen yoghurt", "Asd", 159, "asd"),
+    createData(2, "Ice cream sandwich", "Asd", 237, "ASd"),
+    createData(3, "Eclair", "Asd", 262, "fsdf"),
+    createData(4, "Cupcake", "Asd", 305, "Sdgd"),
+    createData(5, "Gingerbread", "Asd", 356, "Dfgdf"),
+    createData(6, "Gingerbread", "Asd", 16, "Dfgdf"),
+    createData(7, "Gingerbread", "Asd", 356, "Dfgdf"),
+    createData(8, "Gingerbread", "Asd", 356, "Dfgdf"),
+    createData(9, "Gingerbread", "Asd", 1000, "Dfgdf"),
+    createData(10, "Gingerbread", "Asd", 356, "Dfgdf"),
+  ];
+
+  // neutral 색깔
+  const theme = createTheme({
+    palette: {
+      neutral: {
+        main: "#000000",
+        contrastText: "#fff",
+      },
+    },
+  });
+
   const [postList, setPostList] = useState(rows);
+
+  //정렬
   const sortDate = () => {
     postList.sort((a, b) => a.postno - b.postno);
     const _postList = [...postList];
@@ -79,8 +80,8 @@ function AnnounceTable() {
     postList.sort((a, b) => b.view - a.view);
     const _postList = [...postList];
     setPostList(_postList);
-    console.log(postList);
   };
+
   return (
     <Container>
       <Top>
@@ -92,7 +93,6 @@ function AnnounceTable() {
             <Tab label="랭킹순" />
           </Tabs>
         </CustomTabs>
-        <div></div>
         <Hr />
       </Top>
       <Mid>
