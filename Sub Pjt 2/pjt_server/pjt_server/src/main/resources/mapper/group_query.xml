@@ -94,6 +94,31 @@
                  left join dogather.category as c on g.category_no = c.category_no
         order by group_no DESC limit 4
     </select>
+
+    <select id="getEndSoonList" resultMap="grouplistMap">
+        select
+            g.group_no,
+            g.group_leader,
+            u.user_no,
+            u.user_nickname,
+            c.category_name,
+            g.category_no,
+            g.created,
+            g.updated,
+            g.deadline,
+            g.max_people,
+            g.status,
+            g.product,
+            g.detail,
+            g.link,
+            g.origin_price,
+            g.price,
+            g.view
+        from dogather.group as g
+                 left join dogather.user as u on g.group_leader = u.user_no
+                 left join dogather.category as c on g.category_no = c.category_no
+        where g.status="모집중" and g.deadline > now() order by g.deadline limit 4
+    </select>
 <!--    <select id="getList" resultType="com.dogather.pjtserver.dto.GroupReturnDto">-->
 <!--        select g.group_no, g.group_leader, u.user_nickname, g.deadline, g.max_people, g.view, g.status, g.product, g.price, c.category_no, c.category_name-->
 <!--        from dogather.group AS g-->
@@ -271,5 +296,78 @@
         where user_no = #{userNo}
     </select>
 
+    <resultMap id="paymentGroupMap" type="com.dogather.pjtserver.dto.GroupReturnDto">
+        <id column="group_no" property="groupNo"/>
+        <result column="created" property="created"/>
+        <result column="updated" property="updated"/>
+        <result column="max_people" property="maxPeople"/>
+        <result column="deadline" property="deadline"/>
+        <result column="status" property="status"/>
+        <result column="amount" property="amount"/>
+        <result column="product" property="product"/>
+        <result column="detail" property="detail"/>
+        <result column="link" property="link"/>
+        <result column="origin_price" property="originPrice"/>
+        <result column="price" property="price"/>
+        <result column="user_no" property="groupLeader"/>
+        <result column="user_nickname" property="leaderName"/>
+        <result column="category_no" property="categoryNo"/>
+        <result column="category_name" property="categoryName"/>
+    </resultMap>
+
+    <select id="findPaymentGroup" parameterType="int" resultMap="paymentGroupMap">
+        select
+        g.group_no,
+        g.group_leader,
+        u.user_no,
+        u.user_nickname,
+        c.category_name,
+        p.amount,
+        g.category_no,
+        g.created,
+        g.updated,
+        g.deadline,
+        g.max_people,
+        g.status,
+        g.product,
+        g.detail,
+        g.link,
+        g.origin_price,
+        g.price,
+        g.view
+        from dogather.payment as p
+        left join dogather.group as g on g.group_no = p.group_no
+        left join dogather.category as c on g.category_no = c.category_no
+        left join dogather.user as u on u.user_no = g.group_leader
+        where p.user_no = #{userNo}
+
+    </select>
+
+
+    <select id="findSaleGroup" parameterType="int" resultMap="grouplistMap">
+        select
+        g.group_no,
+        g.group_leader,
+        u.user_no,
+        u.user_nickname,
+        c.category_name,
+        g.category_no,
+        g.created,
+        g.updated,
+        g.deadline,
+        g.max_people,
+        g.status,
+        g.product,
+        g.detail,
+        g.link,
+        g.origin_price,
+        g.price,
+        g.view
+        from dogather.group as g
+        left join dogather.user as u on g.group_leader = u.user_no
+        left join dogather.category as c on g.category_no = c.category_no
+        where g.group_leader = #{userNo}
+
+    </select>
 
 </mapper>

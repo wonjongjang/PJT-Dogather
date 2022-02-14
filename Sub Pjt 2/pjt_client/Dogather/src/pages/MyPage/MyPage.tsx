@@ -61,7 +61,7 @@ function MyPage() {
 
   return (
     <Container>
-      <Side>
+      <LeftSide>
         <Title>
           <span>마이 페이지</span>
         </Title>
@@ -85,29 +85,47 @@ function MyPage() {
             </ul>
           </BottomListArea>
         </nav>
-      </Side>
-      <div>
+      </LeftSide>
+      <RightSide>
         <div>
-          <div>프로필</div>
-          <div>등급, 포인트</div>
+          <Membership>
+            <Profile>
+              <ProfileImg>
+                <Img
+                  src="https://www.bigjungbo.com/files/attach/images/163/017/178/010/f1f78c3b5eaeb68788a9c98dc796b4c7.jpeg"
+                  alt="이미지"
+                />
+              </ProfileImg>
+              <ProfileInfo>
+                <div>
+                  <Nickname>{data?.userNickname}</Nickname>
+                  <ProfileButton>프로필 수정</ProfileButton>
+                  <ProfileButton>내 프로필</ProfileButton>
+                </div>
+              </ProfileInfo>
+              <div></div>
+            </Profile>
+            <div>등급, 포인트</div>
+          </Membership>
+          <div>구매 내역</div>
+          <div>구매 내역 리스트</div>
+          <div>판매 내역</div>
+          <div>판매 내역 리스트</div>
+          <div>관심 모임</div>
+          <div>관심 모임 리스트</div>
         </div>
-        <div>구매 내역</div>
-        <div>구매 내역 리스트</div>
-        <div>판매 내역</div>
-        <div>판매 내역 리스트</div>
-        <div>관심 모임</div>
-        <div>관심 모임 리스트</div>
-      </div>
+      </RightSide>
     </Container>
   );
 }
 
 const Container = styled.div`
-  min-width: 1280px;
+  max-width: 1280px;
+  margin: 0 auto;
   padding: 40px 40px 160px;
 `;
 
-const Side = styled.div`
+const LeftSide = styled.div`
   float: left;
   width: 180px;
   margin-right: 20px;
@@ -140,6 +158,64 @@ const List = styled.div`
 
 const BottomListArea = styled.div`
   margin-top: 40px;
+`;
+
+const RightSide = styled.div`
+  overflow: hidden;
+  min-height: 380px;
+`;
+
+const Membership = styled.div`
+  border: 1px solid #ebebeb;
+  border-radius: 10px;
+  background-color: #fff;
+`;
+
+const Profile = styled.div`
+  display: flex;
+  padding: 30px 32px 22px;
+`;
+
+const ProfileImg = styled.div`
+  position: relative;
+  margin-right: 12px;
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+`;
+
+const Img = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+`;
+
+const ProfileInfo = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Nickname = styled.p`
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: -0.05px;
+  margin-bottom: 12px;
+`;
+
+const ProfileButton = styled.button`
+  height: 34px;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: ${(props) => props.theme.buttonColor};
+  color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-right: 7px;
+  line-height: 32px;
 `;
 
 export default MyPage;

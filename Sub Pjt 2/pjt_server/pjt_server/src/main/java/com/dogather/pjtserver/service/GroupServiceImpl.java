@@ -1,9 +1,6 @@
 package com.dogather.pjtserver.service;
 
-import com.dogather.pjtserver.dao.BoardMediaDao;
-import com.dogather.pjtserver.dao.FAQDao;
-import com.dogather.pjtserver.dao.GroupDao;
-import com.dogather.pjtserver.dao.GroupMediaDao;
+import com.dogather.pjtserver.dao.*;
 import com.dogather.pjtserver.dto.*;
 import com.dogather.pjtserver.handler.FileHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +30,9 @@ public class GroupServiceImpl implements GroupService {
 
     @Autowired
     GroupMediaDao mediaDao;
+
+    @Autowired
+    PaymentDao paymentDao;
 
 
     @Override
@@ -170,6 +170,24 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public List<GroupReturnDto> getEndSoonList() {
+        List<GroupReturnDto> groupList =  groupDao.getEndSoonList();
+        for (GroupReturnDto group:groupList) {
+//            if (!groupDao.getMainImage(group.getGroupNo()).toString().equals("no")){
+            Integer mainImage  = groupDao.getMainImage(group.getGroupNo());
+            if(mainImage != null) {
+                GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
+                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" +"s_"+ mediaDto.getMediaSavename();
+                group.setMainImage(uploadPath);
+            }
+
+            else
+                group.setMainImage("");
+        }
+        return groupList;
+    }
+
+    @Override
     public int addInterest(GroupInterestDto dto) {
         int result = groupDao.addInterest(dto);
         if(result == 1){
@@ -260,6 +278,18 @@ public class GroupServiceImpl implements GroupService {
             groupListDto.add(groupDao.group(likeGroupNo));
         }
         return groupListDto;
+    }
+
+    @Override
+    public List<GroupReturnDto> findPaymentGroup(int userNo) {
+        List<GroupReturnDto> paymentGroupList = groupDao.findPaymentGroup(userNo);
+        return paymentGroupList;
+    }
+
+    @Override
+    public List<GroupReturnDto> findSaleGroup(int userNo) {
+        List<GroupReturnDto> saleGroupList = groupDao.findSaleGroup(userNo);
+        return saleGroupList;
     }
 
 }
