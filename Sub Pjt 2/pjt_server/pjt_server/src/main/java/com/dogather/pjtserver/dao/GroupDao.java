@@ -17,6 +17,7 @@ public interface GroupDao {
     public List<GroupReturnDto> getList();
     public List<GroupReturnDto> getHotList();
     public List<GroupReturnDto> getNewList();
+    public List<GroupReturnDto> getEndSoonList();
 
 
     public int addInterest(GroupInterestDto dto);
@@ -35,4 +36,8 @@ public interface GroupDao {
     public double reviewAvg(int userNo);
 
     public List<Integer> findLikeGroupByUser(int userNo);
+
+    public List<GroupReturnDto> findPaymentGroup(int userNo);
+
+    public List<GroupReturnDto> findSaleGroup(int userNo);
 }

@@ -21,6 +21,7 @@ public interface GroupService {
     public List<GroupReturnDto> getList();
     public List<GroupReturnDto> getHotList();
     public List<GroupReturnDto> getNewList();
+    public List<GroupReturnDto> getEndSoonList();
 
 
 
@@ -41,4 +42,8 @@ public interface GroupService {
     public double reviewAvg(int userNo);
 
     public List<GroupReturnDto> findUserLikeGroup(int userNo);
+
+    public List<GroupReturnDto> findPaymentGroup(int userNo);
+
+    public List<GroupReturnDto> findSaleGroup(int userNo);
 }
