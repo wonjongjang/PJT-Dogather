@@ -57,6 +57,13 @@ export interface IGroupData {
   mediaList: Array<string>;
   faqList: Array<object>;
 }
+
+export interface IProductContent {
+  optionName: string;
+  optionNo: number;
+  amount: number;
+  price: number;
+}
 function MoimDetail() {
   // useEffect(() => {
   //   (async () => {
@@ -110,20 +117,24 @@ function MoimDetail() {
     }, 100);
   }, []);
 
-  const basePrice = groupData?.price;
+  const basePrice = groupData?.price!;
   const [sum, setSum] = React.useState(0);
 
   const [sumPrice, setSumPrice] = React.useState(0);
-  const [productOption, setProductOption] = useState(groupData?.options);
   const [optionIdx, setOptionIdx] = useState(0);
-  const [optionPrice, setOprionPrice] = useState(0);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(0);
   const [quantities, setQuantities] = useState<number[]>([]);
   const [isHidden, setIsHidden] = useState(true);
   const [optionHidden, setOptionHidden] = useState(true);
 
-  const [options, setOption] = React.useState<string[]>([]);
-  const [price, setPrice] = useState(groupData?.price);
+  const [options, setOption] = useState<string[]>([]);
+  const [optionPrice, setOptionPrice] = useState<string[]>([]);
+  const [amount, setAmount] = useState<Array<number>>([]);
+  const [price, setPrice] = useState(0);
+  const [product, setProduct] = useState<Array<IProductContent>>([]);
+  const [products, setProducts] = useState<Array<IProductContent>>([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [productOption, setProductOption] = useState(groupData?.options);
   // console.log(price);
   // console.log(typeof quantity);
   // const selectOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -148,37 +159,69 @@ function MoimDetail() {
     const value = event.target.value;
     console.log(value);
     // console.log(typeof value);
-    const _options: string[] = options.filter((i) => {
-      if (i !== value) {
-        return i;
-      }
-    });
-    // const _quantitys: string[] = quantity.filter((q) => {
-    //   if ()
-    // })
+    const splitValueOption = value.split("/")[0];
+    const splitValuePrice = value.split("/")[1];
 
-    setOption([..._options, value]);
+    product.splice(product.length, 0, {
+      optionName: splitValueOption,
+      optionNo: product.length,
+      amount: quantity,
+      price: Number(splitValuePrice),
+    });
+    // setProducts(newObject);
+
+    const newObject = [...product];
     setIsHidden(false);
     setOptionIdx(Number(value));
-    // setQuantity([]);
-    // setPrice([]);
+    setProducts(newObject);
   };
-  // console.log(options);
+  console.log(products);
+
   //처음 랜더링되고 유저에게 보이는 수량의 값이 0일 필요가 없기 때문에 초기값으로 1로 주었다.
 
-  const increaseQuantity = () => {
-    setQuantity((prevCount) => prevCount + 1);
-    setPrice(() => price! + basePrice!);
+  // const onSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const value = event.target.value;
+  //   console.log(value);
+  //   // console.log(typeof value);
+  //   const splitValueOption = value.split("/")[0];
+  //   const splitValuePrice = value.split("/")[1];
+  //   console.log(splitValueOption);
+  //   // console.log(typeof splitValuePrice);
+  //   options.map((option, idx) => {
+  //     if (options.length != groupData?.options.length!) {
+  //       console.log(splitValueOption);
+  //       if (option !== splitValueOption) {
+  //         console.log(splitValueOption);
+  //         setOption([...options, splitValueOption]);
+  //       }
+  //     }
+  //   });
+  //   // const _price : string[] = optionPrice.map((price, idx))
+  //   setIsHidden(false);
+  // };
+  // console.log(options);
+  // console.log(optionPrice)
+
+  const increaseQuantity = (o: IProductContent) => {
+    const sum = o.price + basePrice;
+    setPrice(price + sum);
+    o.amount += 1;
+    setTotalAmount(totalAmount + 1);
   };
-  const decreaseQuantity = () => {
-    setQuantity((prevCount) => prevCount - 1);
-    setPrice(() => price! - basePrice!);
+
+  const decreaseQuantity = (o: IProductContent) => {
+    const sum = o.price + basePrice;
+    setPrice(price - sum);
+    o.amount -= 1;
+    setTotalAmount(totalAmount - 1);
   };
+
   const handleValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
     setQuantity(Number(value));
     // console.log(value);
   };
+
   // const mainImgAddress = "/doimage/" + groupData?.mainImage;
   // console.log(groupData?.mainImage);
   // const detailImgAddress = "/doimage/" + groupData?.mediaList[0];
@@ -188,6 +231,8 @@ function MoimDetail() {
   // console.log(time);
   const makeComma = (price: number) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  console.log(groupData);
 
   return (
     <Container>
@@ -256,68 +301,59 @@ function MoimDetail() {
                           <SelectOption
                             key={idx}
                             // onChange={}
-                            value={option.optionName + "/" + optionPrice}
+                            value={option.optionName + "/" + option.optionPrice}
                           >
                             {option.optionName}
                           </SelectOption>
                         ))}
                       </SelectSelect>
                     </SelectContent>
-                    {options.map((o, idx) => {
-                      return (
-                        <>
-                          <OptionWrapper key={idx}>
-                            <CartOption>
-                              <SelectContentItem>
-                                <OptionName>
-                                  옵션명 :{" "}
-                                  {groupData?.options[Number(o)]?.optionName +
-                                    "(+" +
-                                    groupData?.options[Number(o)]?.optionPrice +
-                                    ")"}
-                                </OptionName>
-                              </SelectContentItem>
-                              <SelectContentItem>
-                                <QuantityButton
-                                  className="purchaseButton"
-                                  onClick={decreaseQuantity} //onClick이 되면 카운팅이 감소되는 함수실행
-                                  disabled={quantity < 1}
-                                >
-                                  {"-"}
-                                </QuantityButton>
-                                <SelectInput
-                                  className="productQuantity"
-                                  type="text"
-                                  onChange={handleValue} //onChange될때마다 값을 얻음
-                                  value={quantity} //값은 count의 state를 담는다.
-                                />
-                                <QuantityButton
-                                  className="purchaseButton"
-                                  onClick={increaseQuantity}
-                                >
-                                  {"+"}
-                                </QuantityButton>
-                              </SelectContentItem>
-                            </CartOption>
-                          </OptionWrapper>
-                        </>
-                      );
-                    })}
+                    {products &&
+                      products.map((o, idx) => {
+                        return (
+                          <>
+                            <OptionWrapper key={idx}>
+                              <CartOption>
+                                <SelectContentItem>
+                                  <OptionName>
+                                    옵션명 :{" "}
+                                    {o.optionName + "(+" + o.price + ")"}
+                                  </OptionName>
+                                </SelectContentItem>
+                                <SelectContentItem>
+                                  <QuantityButton
+                                    className="purchaseButton"
+                                    onClick={() => decreaseQuantity(o)} //onClick이 되면 카운팅이 감소되는 함수실행
+                                    disabled={o.amount < 1}
+                                  >
+                                    {"-"}
+                                  </QuantityButton>
+                                  <SelectInput
+                                    className="productQuantity"
+                                    type="text"
+                                    onChange={handleValue} //onChange될때마다 값을 얻음
+                                    value={o.amount} //값은 count의 state를 담는다.
+                                  />
+                                  <QuantityButton
+                                    className="purchaseButton"
+                                    onClick={() => increaseQuantity(o)}
+                                    disabled={o.amount < 0}
+                                  >
+                                    {"+"}
+                                  </QuantityButton>
+                                </SelectContentItem>
+                              </CartOption>
+                            </OptionWrapper>
+                          </>
+                        );
+                      })}
                     <OptionWrapper>
                       <CartOption>
                         <PriceWrapper>
                           <ProductQuantity>
-                            {"총 " + quantity + "개"}
+                            {"총 " + totalAmount + "개"}
                           </ProductQuantity>
-                          <FinalPrice>
-                            {/* {makeComma(
-                              (basePrice! +
-                                Number(
-                                  groupData?.options[optionIdx]?.optionPrice
-                                )) *
-                                quantity
-                            ) + "원"} */}
-                          </FinalPrice>
+                          <FinalPrice>{makeComma(price) + "원"}</FinalPrice>
                         </PriceWrapper>
                       </CartOption>
                     </OptionWrapper>
@@ -326,8 +362,9 @@ function MoimDetail() {
                         관심등록
                       </Button>
                       <KakaoPay
-                        groupNo={groupData?.groupNo!}
-                        price={groupData?.price!}
+                        groupNo={groupNo!}
+                        products={products}
+                        price={price}
                         // option={options}
                       />
                     </SelectContent>
