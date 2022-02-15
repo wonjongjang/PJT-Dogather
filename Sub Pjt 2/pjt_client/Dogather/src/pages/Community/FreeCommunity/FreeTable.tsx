@@ -14,27 +14,30 @@ import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import { Link } from "react-router-dom";
+
 function createData(
   postno: number,
   title: string,
   writer: string,
   view: number,
-  created: string
+  created: string,
+  like: number
 ) {
-  return { postno, title, writer, view, created };
+  return { postno, title, writer, view, created, like };
 }
 
+// 데이터
 const rows = [
-  createData(1, "Frozen yoghurt", "Asd", 159, "asd"),
-  createData(2, "Ice cream sandwich", "Asd", 237, "ASd"),
-  createData(3, "Eclair", "Asd", 262, "fsdf"),
-  createData(4, "Cupcake", "Asd", 305, "Sdgd"),
-  createData(5, "Gingerbread", "Asd", 356, "Dfgdf"),
-  createData(6, "Gingerbread", "Asd", 356, "Dfgdf"),
-  createData(7, "Gingerbread", "Asd", 356, "Dfgdf"),
-  createData(8, "Gingerbread", "Asd", 356, "Dfgdf"),
-  createData(9, "Gingerbread", "Asd", 356, "Dfgdf"),
-  createData(10, "Gingerbread", "Asd", 356, "Dfgdf"),
+  createData(1, "Frozen yoghurt", "Asd", 159, "asd", 1),
+  createData(2, "Ice cream sandwich", "Asd", 237, "ASd", 13),
+  createData(3, "Eclair", "Asd", 262, "fsdf", 4),
+  createData(4, "Cupcake", "Asd", 305, "Sdgd", 5),
+  createData(5, "Gingerbread", "Asd", 356, "Dfgdf", 6),
+  createData(6, "sdfmsdfsf", "Asd", 16, "Dfgdf", 6),
+  createData(7, "asdsadfs", "Asd", 351, "Dfgdf", 1),
+  createData(8, "dofofofof", "Asd", 356, "Dfgdf", 4),
+  createData(9, "lolo", "Asd", 1000, "Dfgdf", 43),
+  createData(10, "Gingerbread", "Asd", 356, "Dfgdf", 4),
 ];
 
 // neutral 색깔
@@ -66,7 +69,8 @@ declare module "@mui/material/Button" {
 
 function FreeTable() {
   //정렬
-  const [postList, setPostList] = useState(rows);
+  const _rows = [...rows];
+  const [postList, setPostList] = useState(_rows);
   const sortDate = () => {
     postList.sort((a, b) => a.postno - b.postno);
     const _postList = [...postList];
@@ -79,6 +83,12 @@ function FreeTable() {
     setPostList(_postList);
     console.log(postList);
   };
+  const sortLike = () => {
+    postList.sort((a, b) => b.like - a.like);
+    const _postList = [...postList];
+    setPostList(_postList);
+    console.log(postList);
+  };
   return (
     <Container>
       <Top>
@@ -87,7 +97,7 @@ function FreeTable() {
           <Tabs>
             <Tab label="최신글" onClick={sortDate} />
             <Tab label="조회수" onClick={sortView} />
-            <Tab label="랭킹순" />
+            <Tab label="랭킹순" onClick={sortLike} />
           </Tabs>
         </CustomTabs>
         <div></div>
@@ -141,7 +151,7 @@ function FreeTable() {
                       <Imo>
                         <img src={process.env.PUBLIC_URL + "/img/like.png"} />
                       </Imo>
-                      <H3>3</H3>
+                      <H3>{row.like}</H3>
                       <Imo>
                         <img
                           src={process.env.PUBLIC_URL + "/img/comment.png"}

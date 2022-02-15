@@ -15,6 +15,42 @@ import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 
+function createData(
+  postno: number,
+  title: string,
+  writer: string,
+  view: number,
+  created: string,
+  like: number
+) {
+  return { postno, title, writer, view, created, like };
+}
+
+// 데이터
+const rows = [
+  createData(1, "Frozen yoghurt", "Asd", 159, "asd", 1),
+  createData(2, "Ice cream sandwich", "Asd", 237, "ASd", 13),
+  createData(3, "Eclair", "Asd", 262, "fsdf", 4),
+  createData(4, "Cupcake", "Asd", 305, "Sdgd", 5),
+  createData(5, "Gingerbread", "Asd", 356, "Dfgdf", 6),
+  createData(6, "sdfmsdfsf", "Asd", 16, "Dfgdf", 6),
+  createData(7, "asdsadfs", "Asd", 351, "Dfgdf", 1),
+  createData(8, "dofofofof", "Asd", 356, "Dfgdf", 4),
+  createData(9, "lolo", "Asd", 1000, "Dfgdf", 43),
+  createData(10, "Gingerbread", "Asd", 356, "Dfgdf", 4),
+];
+
+// neutral 색깔
+const theme = createTheme({
+  palette: {
+    neutral: {
+      main: "#2d2c2e",
+      // #1E272E
+      contrastText: "#fff",
+    },
+  },
+});
+
 declare module "@mui/material/styles" {
   interface Palette {
     neutral: Palette["primary"];
@@ -33,43 +69,9 @@ declare module "@mui/material/Button" {
 
 //메인
 function AnnounceTable() {
-  function createData(
-    postno: number,
-    title: string,
-    writer: string,
-    view: number,
-    created: string
-  ) {
-    return { postno, title, writer, view, created };
-  }
-
-  // 데이터
-  const rows = [
-    createData(1, "Frozen yoghurt", "Asd", 159, "asd"),
-    createData(2, "Ice cream sandwich", "Asd", 237, "ASd"),
-    createData(3, "Eclair", "Asd", 262, "fsdf"),
-    createData(4, "Cupcake", "Asd", 305, "Sdgd"),
-    createData(5, "Gingerbread", "Asd", 356, "Dfgdf"),
-    createData(6, "Gingerbread", "Asd", 16, "Dfgdf"),
-    createData(7, "Gingerbread", "Asd", 356, "Dfgdf"),
-    createData(8, "Gingerbread", "Asd", 356, "Dfgdf"),
-    createData(9, "Gingerbread", "Asd", 1000, "Dfgdf"),
-    createData(10, "Gingerbread", "Asd", 356, "Dfgdf"),
-  ];
-
-  // neutral 색깔
-  const theme = createTheme({
-    palette: {
-      neutral: {
-        main: "#000000",
-        contrastText: "#fff",
-      },
-    },
-  });
-
-  const [postList, setPostList] = useState(rows);
-
   //정렬
+  const _rows = [...rows];
+  const [postList, setPostList] = useState(_rows);
   const sortDate = () => {
     postList.sort((a, b) => a.postno - b.postno);
     const _postList = [...postList];
@@ -81,7 +83,12 @@ function AnnounceTable() {
     const _postList = [...postList];
     setPostList(_postList);
   };
-
+  const sortLike = () => {
+    postList.sort((a, b) => b.like - a.like);
+    const _postList = [...postList];
+    setPostList(_postList);
+    console.log(postList);
+  };
   return (
     <Container>
       <Top>
@@ -90,14 +97,14 @@ function AnnounceTable() {
           <Tabs>
             <Tab label="최신글" onClick={sortDate} />
             <Tab label="조회수" onClick={sortView} />
-            <Tab label="랭킹순" />
+            <Tab label="랭킹순" onClick={sortLike} />
           </Tabs>
         </CustomTabs>
         <Hr />
       </Top>
       <Mid>
         <CustomStack>
-          <Stack spacing={5} direction="column">
+          <Stack spacing={2} direction="column">
             <ThemeProvider theme={theme}>
               <Button variant="contained" color="neutral">
                 <Link to={"/community/announcement"}>공지사항게시판</Link>
@@ -143,7 +150,7 @@ function AnnounceTable() {
                       <Imo>
                         <img src={process.env.PUBLIC_URL + "/img/like.png"} />
                       </Imo>
-                      <H3>3</H3>
+                      <H3>{row.like}</H3>
                       <Imo>
                         <img
                           src={process.env.PUBLIC_URL + "/img/comment.png"}
@@ -235,7 +242,7 @@ const Hr = styled.hr`
 `;
 
 const Top = styled.div`
-  margin-top: 50px;
+  padding-top: 50px;
 `;
 
 const Input = styled.input`
@@ -259,7 +266,7 @@ const CustomPage = styled.div`
 
 const Bottom = styled.div`
   margin-top: 2.5vw;
-  margin-bottom: 2.5vw;
+  padding-bottom: 2.5vw;
 `;
 
 const H3 = styled.h3`
