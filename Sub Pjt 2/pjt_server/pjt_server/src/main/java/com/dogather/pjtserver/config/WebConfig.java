@@ -31,7 +31,9 @@ public class WebConfig implements WebMvcConfigurer {
                         "/err/msg",
                         "/group/wsearch",
                         "/group/csearch/*",
-                        "/group/psearch"
+                        "/group/psearch",
+                        "/group/detail/**",
+                        "/group/list"
                 );
     }
 

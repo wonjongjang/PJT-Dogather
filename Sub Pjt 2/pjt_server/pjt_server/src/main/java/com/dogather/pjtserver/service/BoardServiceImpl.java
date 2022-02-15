@@ -92,14 +92,6 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int upView(int postNo) {
-        log.info("=====1up");
-        int result = boardDao.upView(postNo);
-        log.info(String.valueOf(result));
-        return result;
-    }
-
-    @Override
     public List<BoardResponseDto> getAllboard() {
         List<BoardResponseDto> BoardListAll =  boardDao.getAllboard();
         for(BoardResponseDto board :BoardListAll) {
@@ -125,6 +117,15 @@ public class BoardServiceImpl implements BoardService {
             likeBoards.add(boardDao.findUserLikeBoard(likeBoardNo));
         }
         return likeBoards;
+    }
+
+    @Override
+    public void boardViews(int userNo, int postNo) {
+        int check = boardDao.boardViewsCheck(userNo, postNo);
+        if(check == 0){
+            boardDao.boardViewsInsert(userNo, postNo);
+            boardDao.boardViewsPlus(postNo);
+        }
     }
 
 //    @Override

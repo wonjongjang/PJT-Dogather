@@ -82,7 +82,6 @@ function AnnounceTable() {
     postList.sort((a, b) => b.view - a.view);
     const _postList = [...postList];
     setPostList(_postList);
-    console.log(postList);
   };
   const sortLike = () => {
     postList.sort((a, b) => b.like - a.like);
@@ -101,7 +100,6 @@ function AnnounceTable() {
             <Tab label="랭킹순" onClick={sortLike} />
           </Tabs>
         </CustomTabs>
-        <div></div>
         <Hr />
       </Top>
       <Mid>

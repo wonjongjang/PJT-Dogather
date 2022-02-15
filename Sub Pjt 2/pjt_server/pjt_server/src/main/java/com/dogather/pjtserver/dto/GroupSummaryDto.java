@@ -6,11 +6,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 @ToString
-public class GroupReturnDto {
+public class GroupSummaryDto {
     private int groupNo;
     private LocalDateTime updated;
     private LocalDateTime created;
@@ -29,6 +30,7 @@ public class GroupReturnDto {
     private String categoryName;
     private int groupLeader;
     private String leaderName;
-    private int amount;
     private int count;
+
+    private List<ResultPaymentDto> resultPaymentDtos;
 }

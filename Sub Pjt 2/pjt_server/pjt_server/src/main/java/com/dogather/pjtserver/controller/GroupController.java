@@ -68,8 +68,9 @@ public class GroupController {
         return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
 
-    @GetMapping("/detail/{groupNo}")
-    public ResponseEntity<GroupOptionDto> group(@PathVariable int groupNo){
+    @GetMapping("/detail/{groupNo}/{userNo}")
+    public ResponseEntity<GroupOptionDto> group(@PathVariable int groupNo, @PathVariable int userNo){
+        if(userNo != 0) groupService.groupViews(userNo,groupNo);
         List<GroupMediaDto> mediaDtoList = mediaService.fineAllMedia(groupNo);
         GroupReturnDto groupReturnDto = groupService.group(groupNo);
         List<FAQDto> faqDtoList = faqService.readFaqAll(groupNo);
@@ -94,9 +95,9 @@ public class GroupController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Integer> register(@RequestPart(value = "groupRegisterDto") GroupRegisterDto groupRegisterDto,
-                                            @RequestPart(value = "file", required = false) List<MultipartFile> files,
-                                            @RequestPart(value = "mainImage", required = false) MultipartFile mainImage) throws Exception{
+    public Object register(@RequestPart(value = "groupRegisterDto") GroupRegisterDto groupRegisterDto,
+                           @RequestPart(value = "file", required = false) List<MultipartFile> files,
+                           @RequestPart(value = "mainImage", required = false) MultipartFile mainImage) throws Exception{
         int created = groupService.groupRegister(groupRegisterDto.getGroup(), files, mainImage);
         if(created != 0){
             groupService.addOptions(groupRegisterDto.getGroup().getGroupNo() ,groupRegisterDto.getOptions());
@@ -228,7 +229,24 @@ public class GroupController {
     }
 
     @GetMapping("/review/{userNo}")
-    public double reviewAvg(@PathVariable int userNo){
-        return groupService.reviewAvg(userNo);
+    public ResponseEntity<ReviewListDto> reviewAvg(@PathVariable int userNo){
+        ReviewListDto reviewListDto = new ReviewListDto();
+        double avgcheck = groupService.reviewAvg(userNo);
+        reviewListDto.setAvg(avgcheck);
+        if(avgcheck == -1){
+            return new ResponseEntity<ReviewListDto>(reviewListDto,HttpStatus.OK);
+        }else {
+            reviewListDto.setReviewList(groupService.reviewList(userNo));
+            return new ResponseEntity<ReviewListDto>(reviewListDto, HttpStatus.OK);
+        }
     }
+
+    @GetMapping("/category")
+    public ResponseEntity<GroupListDto> categoryList(@RequestParam("category") int categoryNo,@RequestParam("page")int page){
+        GroupListDto list = new GroupListDto();
+        list.setList(groupService.getCategoryList(categoryNo, page));
+        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+    }
+
+
 }

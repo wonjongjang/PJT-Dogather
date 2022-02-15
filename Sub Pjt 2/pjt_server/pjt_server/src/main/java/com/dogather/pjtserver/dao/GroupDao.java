@@ -2,6 +2,7 @@ package com.dogather.pjtserver.dao;
 
 import com.dogather.pjtserver.dto.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ public interface GroupDao {
     public int groupEnter(GroupEnterDto dto);
     public int groupOut(GroupEnterDto dto);
     public List<GroupReturnDto> getList();
+    public List<GroupReturnDto> getCategoryList(Map map);
     public List<GroupReturnDto> getHotList();
     public List<GroupReturnDto> getNewList();
     public List<GroupReturnDto> getEndSoonList();
@@ -37,7 +39,15 @@ public interface GroupDao {
 
     public List<Integer> findLikeGroupByUser(int userNo);
 
-    public List<GroupReturnDto> findPaymentGroup(int userNo);
+    public List<GroupSummaryDto> findPaymentGroup(int userNo);
 
     public List<GroupReturnDto> findSaleGroup(int userNo);
+
+    public List<ReviewDto> reviewList(int userNo);
+
+    public void groupViewsInsert(@Param("userNo")int userNo, @Param("groupNo") int groupNo);
+
+    public int groupViewsCheck(@Param("userNo") int userNo, @Param("groupNo") int groupNo);
+
+    public void groupViewsPlus(int groupNo);
 }

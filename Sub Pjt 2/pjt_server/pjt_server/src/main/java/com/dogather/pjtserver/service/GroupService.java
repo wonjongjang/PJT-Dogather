@@ -19,6 +19,7 @@ public interface GroupService {
     public int groupEnter(GroupEnterDto dto);
     public int groupOut(GroupEnterDto dto);
     public List<GroupReturnDto> getList();
+    public List<GroupReturnDto> getCategoryList(int categoryNo, int page);
     public List<GroupReturnDto> getHotList();
     public List<GroupReturnDto> getNewList();
     public List<GroupReturnDto> getEndSoonList();
@@ -43,7 +44,11 @@ public interface GroupService {
 
     public List<GroupReturnDto> findUserLikeGroup(int userNo);
 
-    public List<GroupReturnDto> findPaymentGroup(int userNo);
+    public List<GroupSummaryDto> findPaymentGroup(int userNo);
 
     public List<GroupReturnDto> findSaleGroup(int userNo);
+
+    public List<ReviewDto> reviewList(int userNo);
+
+    public void groupViews(int userNo, int groupNo);
 }

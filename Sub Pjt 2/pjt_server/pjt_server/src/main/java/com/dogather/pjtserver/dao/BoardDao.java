@@ -4,6 +4,7 @@ import com.dogather.pjtserver.dto.BoardDto;
 import com.dogather.pjtserver.dto.BoardResponseDto;
 import com.dogather.pjtserver.dto.CommentDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,9 +17,13 @@ public interface BoardDao {
 
     void updateBoard(BoardResponseDto updatedBoardDto);
 
-    public int upView(int postNo);
-
     public List<BoardResponseDto> getAllboard();
 
     public BoardDto findUserLikeBoard(int postNo);
+
+    public int boardViewsCheck(@Param("userNo") int userNo, @Param("postNo") int postNo);
+
+    public void boardViewsInsert(@Param("userNo") int userNo, @Param("postNo") int postNo);
+
+    public void boardViewsPlus(int postNo);
 }

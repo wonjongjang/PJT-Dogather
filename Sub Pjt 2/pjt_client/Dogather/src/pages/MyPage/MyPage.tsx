@@ -3,42 +3,44 @@ import { useQuery } from "react-query";
 import { useRecoilState } from "recoil";
 import { fetchMyPage } from "../../api/MyPage";
 import { userIdAtom } from "../../atoms/Login";
-import LikeGroups from "./MyPageComponents/LikeGroups";
+import LikeGroup from "./MyPageComponents/LikeGroup";
+import PaymentGroup from "./MyPageComponents/PaymentGroup";
+import { useState } from "react";
 
-interface IBoard {
-  boardContent: string;
-  boardTitle: string;
-  boardType: string; // 나중에 변경
-  boardView: number;
-  created: string;
-  postNo: number;
-  updated: string;
-  writerNo: number;
+export interface IPay {
+  amount: number;
+  amountOfPrice: number;
+  optionName: string;
 }
 
 export interface IGroup {
-  categoryName: string;
-  categoryNo: number;
-  created: string;
-  deadline: string;
-  detail: string;
-  groupLeader: number;
-  groupNo: number;
-  leaderName: string;
+  groupNo: number; // 그룹 pk
+  groupLeader: number; // 그룹 대표
+  leaderName: string; // 그룹 대표 닉네임
+  product: string; // 제목
+  detail: string; // 상세 설명
+  categoryNo: number; // 카테고리 pk
+  categoryName: string; // 카테고리 이름
   link: string;
   mainImage: string;
   maxPeople: number;
   originPrice: number;
   price: number;
-  product: string;
   status: string;
-  updated: string;
   view: number;
+  amount: number; // 구매 수량
+  deadline: string; // 마감 일시
+  created: string;
+  updated: string;
+  resultPaymentDtos: IPay[];
+  count: number;
 }
 
 interface IUserInfo {
-  likeBoards: IBoard[];
+  // likeBoards: IBoard[]; // 마이페이지에서 사용 안함
   likeGroups: IGroup[];
+  paymentGroup: IGroup[];
+  saleGroup: IGroup[];
   userAddr: string;
   userAddrDetail: string;
   userEmail: string;
@@ -58,6 +60,34 @@ function MyPage() {
     fetchMyPage(JWT!, userId!)
   );
 
+  // console.log(data);
+
+  // 더보기 toggle
+  const [morePaymentGroups, setMorePaymentGroups] = useState(3);
+  const [moreSaleGroups, setMoreSaleGroups] = useState(3);
+  const [moreLikeGroups, setMoreLikeGroups] = useState(3);
+  const togglePG = () => {
+    if (morePaymentGroups === 3) {
+      setMorePaymentGroups(Number(data?.paymentGroup.length));
+    } else {
+      setMorePaymentGroups(3);
+    }
+  };
+  const toggleSG = () => {
+    if (moreSaleGroups === 3) {
+      setMoreSaleGroups(Number(data?.saleGroup.length));
+    } else {
+      setMoreSaleGroups(3);
+    }
+  };
+  const toggleLG = () => {
+    if (moreLikeGroups === 3) {
+      setMoreLikeGroups(Number(data?.likeGroups.length));
+    } else {
+      setMoreLikeGroups(3);
+    }
+  };
+
   return (
     <Container>
       <LeftSide>
@@ -68,8 +98,8 @@ function MyPage() {
           <div>
             <SubTitle>모임 정보</SubTitle>
             <ul>
-              <List>구매 내역</List>
-              <List>판매 내역</List>
+              <List>내가 참여하는 모임</List>
+              <List>내가 관리하는 모임</List>
               <List>관심 모임</List>
             </ul>
           </div>
@@ -98,7 +128,7 @@ function MyPage() {
               <ProfileInfo>
                 <div>
                   <Nickname>{data?.userNickname}</Nickname>
-                  <ProfileButton>프로필 수정</ProfileButton>
+                  <ProfileButton>회원정보 수정</ProfileButton>
                   <ProfileButton>내 프로필</ProfileButton>
                 </div>
               </ProfileInfo>
@@ -115,22 +145,48 @@ function MyPage() {
             </LevelDiv>
           </Membership>
           <ListTitleDiv>
-            <ListTitle>구매 내역</ListTitle>
-            <SeeMore>더보기 〉</SeeMore>
-          </ListTitleDiv>
-          <div></div>
-          <ListTitleDiv>
-            <ListTitle>판매 내역</ListTitle>
-            <SeeMore>더보기 〉</SeeMore>
-          </ListTitleDiv>
-          <div></div>
-          <ListTitleDiv>
-            <ListTitle>관심 모임</ListTitle>
-            <SeeMore>더보기 〉</SeeMore>
+            <ListTitle>내가 참여하는 모임</ListTitle>
+            <SeeMore>
+              {Number(data?.paymentGroup.length) > 3 ? (
+                <SeeMoreBtn onClick={togglePG}>더보기 〉</SeeMoreBtn>
+              ) : (
+                <div></div>
+              )}
+            </SeeMore>
           </ListTitleDiv>
           <div>
-            {data?.likeGroups?.map((likeGroup) => (
-              <LikeGroups key={likeGroup.groupNo} {...likeGroup} />
+            {data?.paymentGroup?.slice(0, morePaymentGroups).map((group) => (
+              <PaymentGroup key={group.groupNo} {...group} />
+            ))}
+          </div>
+          <ListTitleDiv>
+            <ListTitle>내가 관리하는 모임</ListTitle>
+            <SeeMore>
+              {Number(data?.saleGroup.length) > 3 ? (
+                <SeeMoreBtn onClick={toggleSG}>더보기 〉</SeeMoreBtn>
+              ) : (
+                <div></div>
+              )}
+            </SeeMore>
+          </ListTitleDiv>
+          <div>
+            {data?.saleGroup?.slice(0, moreSaleGroups).map((group) => (
+              <LikeGroup key={group.groupNo} {...group} />
+            ))}
+          </div>
+          <ListTitleDiv>
+            <ListTitle>관심 모임</ListTitle>
+            <SeeMore>
+              {Number(data?.likeGroups.length) > 3 ? (
+                <SeeMoreBtn onClick={toggleLG}>더보기 〉</SeeMoreBtn>
+              ) : (
+                <div></div>
+              )}
+            </SeeMore>
+          </ListTitleDiv>
+          <div>
+            {data?.likeGroups?.slice(0, moreLikeGroups).map((group) => (
+              <LikeGroup key={group.groupNo} {...group} />
             ))}
           </div>
         </div>
@@ -174,6 +230,7 @@ const List = styled.div`
   margin-top: 12px;
   line-height: 18px;
   letter-spacing: -0.15px;
+  cursor: pointer;
 `;
 
 const BottomListArea = styled.div`
@@ -296,7 +353,7 @@ const ListTitle = styled.p`
   letter-spacing: -0.27px;
 `;
 
-const SeeMore = styled.p`
+const SeeMore = styled.div`
   margin-top: 3px;
   margin-left: auto;
   padding-top: 3px;
@@ -304,6 +361,10 @@ const SeeMore = styled.p`
   font-size: 13px;
   letter-spacing: -0.07px;
   color: rgba(34, 34, 34, 0.5);
+`;
+
+const SeeMoreBtn = styled.div`
+  cursor: pointer;
 `;
 
 export default MyPage;

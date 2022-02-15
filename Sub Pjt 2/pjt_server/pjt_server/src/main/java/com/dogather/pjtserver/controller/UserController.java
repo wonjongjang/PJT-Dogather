@@ -113,7 +113,7 @@ public class UserController {
 		userInfo.setUserPw(null);
 		List<BoardDto> likeBoards = boardService.findUserLikeBoard(userInfo.getUserNo());
 		List<GroupReturnDto> likeGroups = groupService.findUserLikeGroup(userInfo.getUserNo());
-		List<GroupReturnDto> paymentGroup = groupService.findPaymentGroup(userInfo.getUserNo());
+		List<GroupSummaryDto> paymentGroup = groupService.findPaymentGroup(userInfo.getUserNo());
 		List<GroupReturnDto> saleGroup = groupService.findSaleGroup(userInfo.getUserNo());
 		userResponseDto.setUserId(userId);
 		userResponseDto.setUserInfo(userInfo);
