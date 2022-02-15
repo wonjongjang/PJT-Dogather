@@ -1,8 +1,11 @@
 package com.dogather.pjtserver.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Data
 @Getter
@@ -12,5 +15,5 @@ public class PaymentDto {
     private int groupNo;
     private int optionNo;
     private int amount;
-    private int price;
+    private int amountOfPrice;
 }
