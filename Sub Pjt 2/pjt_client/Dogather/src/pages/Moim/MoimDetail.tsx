@@ -16,12 +16,13 @@ import Product from "./MoimDetailComponent/MoimTabs/MoimProduct";
 import FAQ from "./MoimDetailComponent/MoimTabs/MoimFAQ";
 import Review from "./MoimDetailComponent/MoimTabs/MoimReview";
 import Refund from "./MoimDetailComponent/MoimTabs/MoimRefund";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { userIdAtom, userNoAtom } from "../../atoms/Login";
 import Hoodie from "../../img/Hoodie.png";
 import MoimDetailImg from "./MoimDetailComponent/MoimDetailImg";
 import KakaoPay from "./KakaoPay";
 import MoimPayment from "./MoimDetailComponent/MoimPayment";
+import { detailProducts } from "../../atoms/MoimDetailProps";
 
 interface RouteState {
   state: {
@@ -88,8 +89,8 @@ function MoimDetail() {
   // groupNo에 따라 페이지가 변경되므로 그룹No가 넘어갈 수 있도록 해야함.
   const { groupNo } = useParams();
   // console.log(typeof groupNo);
-
-  const { state } = useLocation() as RouteState;
+  const [detailProduct, setDetailProduct] = useRecoilState(detailProducts);
+  // const { state } = useLocation() as RouteState;
   const productMatch = useMatch("/moim/:groupNo");
   const faqMatch = useMatch("/moim/:groupNo/faq");
   const reviewMatch = useMatch("/moim/:groupNo/review");
@@ -201,9 +202,12 @@ function MoimDetail() {
     // console.log(value);
   };
 
-  const mainImgAddress = "/doimage/" + groupData?.mainImage;
+  // const mainImgAddress =
+  //   process.env.PUBLIC_URL + "/doimage/" + groupData?.mainImage;
+  const mainImgAddress = process.env.PUBLIC_URL + "/img/Hoodie.png";
   // console.log(groupData?.mainImage);
-  const detailImgAddress = "/doimage/" + groupData?.mediaList[0];
+  const detailImgAddress =
+    process.env.PUBLIC_URL + "/doimage/" + groupData?.mediaList[0];
   // console.log(mainImgAddress, detailImgAddress);
 
   const time = Date.now();
@@ -225,12 +229,12 @@ function MoimDetail() {
                   alt={"메인 이미지"}
                 />
                 {/* <Img
-                  src={process.env.PUBLIC_URL + mainImgAddress}
-                  alt={process.env.PUBLIC_URL + mainImgAddress}
+                  src={mainImgAddress}
+                  alt={mainImgAddress}
                 /> */}
                 {/* <Img
-                src={process.env.PUBLIC_URL + detailImgAddress}
-                alt={process.env.PUBLIC_URL + detailImgAddress}
+                src={detailImgAddress}
+                alt={detailImgAddress}
               /> */}
                 {/* <MoimDetailImg /> */}
               </ImgWrapper>
@@ -349,13 +353,21 @@ function MoimDetail() {
                           borderColor: "black",
                         }}
                       >
-                        관심등록
+                        <Link to={"/"}>관심등록</Link>
                       </Button>
-                      <Link to={`/moim/${groupNo}/payment`}>
-                        <Button style={{ backgroundColor: "#6fbd63" }}>
+                      <Button style={{ backgroundColor: "#6fbd63" }}>
+                        <Link
+                          to={`/moim/${groupNo}/payment`}
+                          state={{
+                            products: products,
+                            groupNo: groupNo!,
+                            price: price,
+                            img: mainImgAddress,
+                          }}
+                        >
                           모임신청
-                        </Button>
-                      </Link>
+                        </Link>
+                      </Button>
                     </SelectContent>
                   </SelectWrapper>
                 </SelectContainer>
@@ -367,7 +379,7 @@ function MoimDetail() {
                 <span>마감 기한 : {groupData?.deadline}</span> */}
               </OverviewItem>
             </Overview>
-            <Tabs hidden={hidden}>
+            <Tabs>
               <Tab isActive={productMatch !== null}>
                 <Link to={`/moim/${groupNo}`}>상품상세</Link>
               </Tab>
@@ -386,16 +398,6 @@ function MoimDetail() {
               <Route path="faq" element={<FAQ />} />
               <Route path="review" element={<Review />} />
               <Route path="refund" element={<Refund />} />
-              <Route
-                path="payment"
-                element={
-                  <MoimPayment
-                    groupNo={groupNo!}
-                    products={products}
-                    price={price}
-                  />
-                }
-              />
             </Routes>
           </>
         )}
@@ -540,7 +542,7 @@ const OptionWrapper = styled.div`
 
 const SelectContent = styled.div`
   display: flex;
-  justify-content: right;
+  justify-content: center;
   font-size: 20px;
   width: 100%;
 `;

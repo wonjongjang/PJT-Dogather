@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -13,26 +13,26 @@ function HomeCarousel() {
   ];
 
   return (
-    <Container
-      style={{
-        height: "auto",
-        width: "100%",
-        objectFit: "cover",
-      }}
-    >
+    <Container>
       <Grids>
         <Slider
           autoPlay={true}
           animation={"fade"}
           navButtonsAlwaysVisible={true}
+          navButtonsProps={{
+            style: {
+              opacity: "0.7",
+            },
+          }}
         >
           {slides.map((slide, idx) => (
             <Link key={idx} to={"/moim/2"}>
               <img
                 style={{
-                  overflow: "hidden",
+                  // overflow: "hidden",
                   width: "100%",
-                  objectFit: "cover",
+                  height: "500px",
+                  objectFit: "contain",
                 }}
                 src={slide}
                 alt="끼잉낑"
@@ -46,23 +46,25 @@ function HomeCarousel() {
 }
 
 const Container = styled.div`
-  margin-bottom: 10px;
+  height: auto;
+  width: 100%;
+  object-fit: contain;
 `;
 
 const Slider = styled(Carousel)`
   display: flex;
   display: -webkit-box;
   justify-content: center;
-  height: 500px;
+  height: auto;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
   overflow: hidden;
 `;
 
 const Grids = styled(Grid)`
-  height: "90%";
+  height: "100%";
   width: "700px";
-  object-fit: cover;
+  object-fit: contain;
 `;
 
 export default HomeCarousel;
