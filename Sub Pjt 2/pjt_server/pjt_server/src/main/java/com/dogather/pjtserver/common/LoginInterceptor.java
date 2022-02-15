@@ -27,13 +27,13 @@ public class LoginInterceptor implements HandlerInterceptor {
             if( "GET".equals(request.getMethod()) && (request.getRequestURI().contains("board") || request.getRequestURI().contains("group")) ) {
                 return true;
             }
-            response.sendError(401,"다시 로그인해주세요");
-//            PrintWriter writer = response.getWriter();
-//            JSONObject json = new JSONObject();
-//            json.put("msg","relogin");
-//            writer.write(json.toString(4));
-//            writer.flush();
-//            writer.close();
+//            response.sendError(401,"다시 로그인해주세요");
+            PrintWriter writer = response.getWriter();
+            JSONObject json = new JSONObject();
+            json.put("msg","relogin");
+            writer.write(json.toString(4));
+            writer.flush();
+            writer.close();
             return false;
         }
     }
