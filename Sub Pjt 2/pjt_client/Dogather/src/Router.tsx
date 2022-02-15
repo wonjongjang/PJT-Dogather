@@ -23,6 +23,7 @@ import ReviewCommunity from "./pages/Community/ReviewCommunity/ReviewCommunity";
 import Error404 from "./pages/Error/Error404";
 import MoimChatbot from "./components/Chat/MoimChatbot";
 import SearchDetail from "./pages/Main/SearchDetail";
+import MoimPayment from "./pages/Moim/MoimDetailComponent/MoimPayment";
 
 function Router() {
   const isLogin = useRecoilValue(isLoginAtom);
@@ -57,8 +58,9 @@ function Router() {
           <Route path="faq" element={<MoimFAQ />} />
           <Route path="review" element={<MoimReview />} />
           <Route path="refund" element={<MoimRefund />} />
-          {/* <Route path="payment" element={<MoimPayment />} /> */}
         </Route>
+
+        <Route path="/moim/:groupNo/payment" element={<MoimPayment />} />
 
         <Route path="/community" element={<CommunityHome />} />
 
