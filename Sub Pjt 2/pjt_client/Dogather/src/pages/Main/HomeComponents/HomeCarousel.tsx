@@ -5,11 +5,11 @@ import styled from "styled-components";
 
 function HomeCarousel() {
   const slides = [
-    "img/사은품.png",
-    "img/포인트팡팡.png",
+    "img/두게더와함께.png",
     "img/할인팡팡.png",
+    "img/포인트팡팡.png",
     "img/콘텍트렌즈.png",
-    // "img/발렌타인데이.png",
+    "img/사은품.png",
   ];
 
   return (
