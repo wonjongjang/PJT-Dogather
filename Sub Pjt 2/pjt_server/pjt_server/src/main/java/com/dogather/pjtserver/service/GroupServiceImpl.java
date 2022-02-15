@@ -10,10 +10,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -199,6 +196,24 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public List<GroupReturnDto> search(String query, String nickname,int page) {
+        Map map = new HashMap<>();
+        List<String> words;
+        if(" ".equals(query)){
+            words = null;
+        }else{
+            words = Arrays.asList(query.split(" "));
+        }
+        if(" ".equals(nickname)){nickname = null;}
+        map.put("words", words);
+        map.put("nickname", nickname);
+        map.put("page",8*(page-1));
+        List<GroupReturnDto> list = groupDao.search(map);
+        return list;
+
+    }
+
+    @Override
     public int addInterest(GroupInterestDto dto) {
         int result = groupDao.addInterest(dto);
         if (result == 1) {
@@ -237,21 +252,6 @@ public class GroupServiceImpl implements GroupService {
         }
     }
 
-    @Override
-    public List<GroupReturnDto> categoryList(int categoryNo) {
-        List<GroupReturnDto> categoryList = groupDao.categoryList(categoryNo);
-        for (GroupReturnDto categoryGroupDto : categoryList) {
-            Integer mainImage = groupDao.getMainImage(categoryGroupDto.getGroupNo());
-            if (mainImage != null) {
-                GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
-                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + "s_" + mediaDto.getMediaSavename();
-                categoryGroupDto.setMainImage(uploadPath);
-            } else {
-                categoryGroupDto.setMainImage("");
-            }
-        }
-        return categoryList;
-    }
 
 
     @Override
