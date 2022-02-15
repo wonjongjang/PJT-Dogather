@@ -35,6 +35,7 @@ interface IProductData {
 }
 
 export interface IOptionsData {
+  optionNo: string;
   optionName: string;
   optionPrice: number;
 }
@@ -63,7 +64,7 @@ export interface IProductContent {
   userNo: number;
   groupNo: string;
   optionName: string;
-  optionNo: number;
+  optionNo: string;
   amount: number;
   price: number;
 }
@@ -136,12 +137,13 @@ function MoimDetail() {
     // console.log(typeof value);
     const splitValueOption = value.split("/")[0];
     const splitValuePrice = value.split("/")[1];
+    const splitValueOptionNo = value.split("/")[2];
 
     product.splice(product.length, 0, {
       userNo: userNo,
       groupNo: groupNo!,
       optionName: splitValueOption,
-      optionNo: product.length,
+      optionNo: splitValueOptionNo,
       amount: quantity,
       price: Number(splitValuePrice),
     });
@@ -218,14 +220,14 @@ function MoimDetail() {
           <>
             <Overview>
               <ImgWrapper>
-                {/* <Img
+                <Img
                   src={process.env.PUBLIC_URL + "/img/Hoodie.png"}
                   alt={"메인 이미지"}
-                /> */}
-                <Img
+                />
+                {/* <Img
                   src={process.env.PUBLIC_URL + mainImgAddress}
                   alt={process.env.PUBLIC_URL + mainImgAddress}
-                />
+                /> */}
                 {/* <Img
                 src={process.env.PUBLIC_URL + detailImgAddress}
                 alt={process.env.PUBLIC_URL + detailImgAddress}
@@ -278,7 +280,13 @@ function MoimDetail() {
                           <SelectOption
                             key={idx}
                             // onChange={}
-                            value={option.optionName + "/" + option.optionPrice}
+                            value={
+                              option.optionName +
+                              "/" +
+                              option.optionPrice +
+                              "/" +
+                              option.optionNo
+                            }
                           >
                             {option.optionName}
                           </SelectOption>
