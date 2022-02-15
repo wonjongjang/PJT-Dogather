@@ -167,6 +167,10 @@ const ProductName = styled.p`
   font-size: 12px;
   font-weight: bold;
   margin-bottom: 10px;
+  width:200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Price = styled.p`
@@ -184,6 +188,7 @@ const CategoryName = styled.p`
 `;
 
 const CardDetail = styled.div`
+  width: 100%;
   justify-content: left;
   margin-top: 5px;
 `;

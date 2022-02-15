@@ -6,6 +6,7 @@ import com.dogather.pjtserver.dto.PaymentListDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,7 +17,8 @@ public class PaymentServiceImpl implements PaymentService{
     PaymentDao dao;
 
     @Override
-    public int payment(List<PaymentDto> paymentList) {
-        return dao.payment(paymentList);
+    public int payment(PaymentListDto payments) {
+        List<PaymentDto> paymentDtoList = payments.getPayments();
+        return dao.payment(paymentDtoList);
     }
 }

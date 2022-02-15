@@ -44,8 +44,8 @@ const rows = [
 const theme = createTheme({
   palette: {
     neutral: {
-      main: "#2d2c2e",
-      // #1E272E
+      main: "#1E272E",
+      // #2d2c2e
       contrastText: "#fff",
     },
   },
@@ -77,49 +77,79 @@ function AnnounceTable() {
     const _postList = [...postList];
     setPostList(_postList);
     console.log(postList);
+    setTabValue(0);
   };
   const sortView = () => {
     postList.sort((a, b) => b.view - a.view);
     const _postList = [...postList];
     setPostList(_postList);
+    setTabValue(1);
   };
   const sortLike = () => {
     postList.sort((a, b) => b.like - a.like);
     const _postList = [...postList];
     setPostList(_postList);
     console.log(postList);
+    setTabValue(2);
   };
+  const [tabValue, setTabValue] = useState(0);
   return (
     <Container>
       <Top>
-        <H1>공지사항게시판</H1>
         <CustomTabs>
-          <Tabs>
+          <Tabs
+            value={tabValue}
+            textColor="inherit"
+            indicatorColor="primary"
+            sx={{ mb: 0.5 }}
+          >
             <Tab label="최신글" onClick={sortDate} />
             <Tab label="조회수" onClick={sortView} />
             <Tab label="랭킹순" onClick={sortLike} />
           </Tabs>
         </CustomTabs>
-        <Hr />
       </Top>
       <Mid>
         <CustomStack>
+          <H1>공지사항</H1>
           <Stack spacing={2} direction="column">
             <ThemeProvider theme={theme}>
-              <Button variant="contained" color="neutral">
-                <Link to={"/community/announcement"}>공지사항게시판</Link>
+              <Button
+                variant="contained"
+                color="neutral"
+                sx={{ height: 40, minWidth: 95 }}
+              >
+                <Link to={"/community/announcement"}>
+                  <Fontw>공지사항</Fontw>
+                </Link>
               </Button>
-              <Button variant="outlined" color="neutral">
-                <Link to={"/community/usedsale"}>중고판매게시판</Link>
-              </Button>
-              <Button variant="outlined" color="neutral">
+              <Button
+                variant="outlined"
+                color="neutral"
+                sx={{ height: 40, minWidth: 95 }}
+              >
                 <Link to={"/community/infoshare"}>정보공유게시판</Link>
               </Button>
-              <Button variant="outlined" color="neutral">
-                <Link to={"/community/free"}>자유게시판</Link>
-              </Button>
-              <Button variant="outlined" color="neutral">
+              <Button
+                variant="outlined"
+                color="neutral"
+                sx={{ height: 40, minWidth: 95 }}
+              >
                 <Link to={"/community/review"}>후기게시판</Link>
+              </Button>
+              <Button
+                variant="outlined"
+                color="neutral"
+                sx={{ height: 40, minWidth: 95 }}
+              >
+                <Link to={"/community/usedsale"}>중고판매게시판</Link>
+              </Button>
+              <Button
+                variant="outlined"
+                color="neutral"
+                sx={{ height: 40, minWidth: 95 }}
+              >
+                <Link to={"/community/free"}>자유게시판</Link>
               </Button>
             </ThemeProvider>
           </Stack>
@@ -127,13 +157,23 @@ function AnnounceTable() {
         <CustomTable>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
+              <TableHead sx={{ bgcolor: "#1E272E" }}>
                 <TableRow>
-                  <TableCell>#</TableCell>
-                  <TableCell align="left">제목</TableCell>
-                  <TableCell align="right">작성자</TableCell>
-                  <TableCell align="right">조회수</TableCell>
-                  <TableCell align="right">생성시간</TableCell>
+                  <TableCell sx={{ color: "white" }}>
+                    <Fontw>#</Fontw>
+                  </TableCell>
+                  <TableCell sx={{ color: "white" }} align="left">
+                    <Fontw>제목</Fontw>
+                  </TableCell>
+                  <TableCell sx={{ color: "white" }} align="right">
+                    <Fontw>작성자</Fontw>
+                  </TableCell>
+                  <TableCell sx={{ color: "white" }} align="right">
+                    <Fontw>조회수</Fontw>
+                  </TableCell>
+                  <TableCell sx={{ color: "white" }} align="right">
+                    <Fontw>생성시간</Fontw>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -180,13 +220,13 @@ function AnnounceTable() {
         </Btn>
         <CustomWrite>
           <ThemeProvider theme={theme}>
-            <Button variant="outlined" color="neutral">
-              글쓰기
+            <Button variant="contained" color="neutral">
+              <Fontw>글쓰기</Fontw>
             </Button>
           </ThemeProvider>
         </CustomWrite>
         <CustomPage>
-          <Pagination count={10} variant="outlined" shape="rounded" />
+          <Pagination count={5} variant="text" shape="rounded" />
         </CustomPage>
       </Bottom>
     </Container>
@@ -208,8 +248,9 @@ const Mid = styled.span`
 
 const H1 = styled.h1`
   display: inline-block;
-  font-size: 50px;
-  margin-left: 14vw;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 1vw;
 `;
 
 const CustomTabs = styled.div`
@@ -220,7 +261,6 @@ const CustomTabs = styled.div`
 
 const CustomStack = styled.div`
   display: inline-block;
-  margin-top: 8vw;
   margin-left: 4vw;
   width: 9vw;
 `;
@@ -242,7 +282,7 @@ const Hr = styled.hr`
 `;
 
 const Top = styled.div`
-  padding-top: 50px;
+  padding-top: 15px;
 `;
 
 const Input = styled.input`
@@ -286,4 +326,7 @@ const Btn = styled.button`
   cursor: pointer;
 `;
 
+const Fontw = styled.h1`
+  font-weight: 900;
+`;
 export default AnnounceTable;

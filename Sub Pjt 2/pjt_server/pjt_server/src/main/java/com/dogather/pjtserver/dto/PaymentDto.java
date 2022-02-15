@@ -13,7 +13,8 @@ import java.util.List;
 public class PaymentDto {
     private int userNo;
     private int groupNo;
+    private String optionName;
     private int optionNo;
     private int amount;
-    private int amountOfPrice;
+    private int price;
 }

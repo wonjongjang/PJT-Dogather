@@ -6,5 +6,5 @@ import com.dogather.pjtserver.dto.PaymentListDto;
 import java.util.List;
 
 public interface PaymentService {
-    public int payment(List<PaymentDto> dto);
+    public int payment(PaymentListDto payments);
 }

@@ -18,8 +18,8 @@ public class PaymentController {
     PaymentService service;
 
     @PostMapping
-    public int payment(@RequestPart List<PaymentDto> paymentList){
-        log.info(paymentList.toString());
-        return service.payment(paymentList);
+    public int payment(@RequestBody PaymentListDto payments){
+        log.info(payments.toString());
+        return service.payment(payments);
     }
 }
