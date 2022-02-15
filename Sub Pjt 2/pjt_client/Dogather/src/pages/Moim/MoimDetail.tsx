@@ -21,6 +21,7 @@ import { userIdAtom, userNoAtom } from "../../atoms/Login";
 import Hoodie from "../../img/Hoodie.png";
 import MoimDetailImg from "./MoimDetailComponent/MoimDetailImg";
 import KakaoPay from "./KakaoPay";
+import MoimPayment from "./MoimDetailComponent/MoimPayment";
 
 interface RouteState {
   state: {
@@ -342,15 +343,11 @@ function MoimDetail() {
                       >
                         관심등록
                       </Button>
-                      <Button style={{ backgroundColor: "#6fbd63" }}>
-                        <KakaoPay
-                          groupNo={groupNo!}
-                          products={products}
-                          price={price}
-                          // option={options}
-                        />
-                        모임신청
-                      </Button>
+                      <Link to={`/moim/${groupNo}/payment`}>
+                        <Button style={{ backgroundColor: "#6fbd63" }}>
+                          모임신청
+                        </Button>
+                      </Link>
                     </SelectContent>
                   </SelectWrapper>
                 </SelectContainer>
@@ -381,6 +378,16 @@ function MoimDetail() {
               <Route path="faq" element={<FAQ />} />
               <Route path="review" element={<Review />} />
               <Route path="refund" element={<Refund />} />
+              <Route
+                path="payment"
+                element={
+                  <MoimPayment
+                    groupNo={groupNo!}
+                    products={products}
+                    price={price}
+                  />
+                }
+              />
             </Routes>
           </>
         )}
@@ -630,6 +637,8 @@ const Button = styled.div`
   border-radius: 10px;
   font-weight: bold;
   color: white;
+    :hover {
+    cursor: pointer;
 `;
 
 export default MoimDetail;

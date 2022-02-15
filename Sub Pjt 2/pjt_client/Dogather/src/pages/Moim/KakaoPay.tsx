@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
+import styled from "styled-components";
 import { userIdAtom, userNoAtom } from "../../atoms/Login";
 import { IProductContent } from "./MoimDetail";
 
@@ -80,13 +82,14 @@ export interface RequestPayResponse extends RequestPayAdditionalResponse {
   /* price prop해주는 부분에서 가격 계산 제대로 된걸로 넣기 */
 }
 
-interface IKakaoContent {
+export interface IKakaoContent {
   groupNo: string;
   products: Array<IProductContent>;
   price: number;
 }
 
 function KakaoPay({ groupNo, products, price }: IKakaoContent) {
+  const navigate = useNavigate();
   const userNo = useRecoilValue(userNoAtom);
   const userId = useRecoilValue(userIdAtom);
   const [time, setTime] = useState(0);
@@ -123,7 +126,7 @@ function KakaoPay({ groupNo, products, price }: IKakaoContent) {
     //   "paymentList",
     //   new Blob([JSON.stringify(paymentData)], { type: "application/json" })
     // );
-
+    console.log(products);
     const paymentData = {
       payments: products,
     };
@@ -156,10 +159,23 @@ function KakaoPay({ groupNo, products, price }: IKakaoContent) {
     IMP?.request_pay(data, callback);
   };
   return (
-    <div>
-      <button onClick={handlePayment}></button>
-    </div>
+    <Container>
+      <Button onClick={handlePayment}>카카오페이</Button>
+    </Container>
   );
 }
+
+const Container = styled.div``;
+const Button = styled.div`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  border-radius: 10px;
+  font-weight: bold;
+  color: white;
+`;
 
 export default KakaoPay;
