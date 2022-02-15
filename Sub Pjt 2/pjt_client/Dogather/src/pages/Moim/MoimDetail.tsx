@@ -59,6 +59,8 @@ export interface IGroupData {
 }
 
 export interface IProductContent {
+  userNo: number;
+  groupNo: string;
   optionName: string;
   optionNo: number;
   amount: number;
@@ -135,6 +137,8 @@ function MoimDetail() {
     const splitValuePrice = value.split("/")[1];
 
     product.splice(product.length, 0, {
+      userNo: userNo,
+      groupNo: groupNo!,
       optionName: splitValueOption,
       optionNo: product.length,
       amount: quantity,
