@@ -5,21 +5,18 @@ import styled from "styled-components";
 
 function HomeCarousel() {
   const slides = [
-    "img/할인.png",
-    "img/봄할인.png",
-    "img/공동구매.png",
-    "img/발렌타인데이.png",
-    "img/감귤농장.png",
-    "img/크리스마스.png",
-    "img/아구찜.png",
-    "img/서점.png",
+    "img/사은품.png",
+    "img/포인트팡팡.png",
+    "img/할인팡팡.png",
+    "img/콘텍트렌즈.png",
+    // "img/발렌타인데이.png",
   ];
 
   return (
     <Container
       style={{
-        height: "500px",
-        width: "1000px",
+        height: "auto",
+        width: "100%",
         objectFit: "cover",
       }}
     >
@@ -31,7 +28,15 @@ function HomeCarousel() {
         >
           {slides.map((slide, idx) => (
             <Link key={idx} to={"/moim/2"}>
-              <img style={{ overflow: "hidden" }} src={slide} alt="끼잉낑" />
+              <img
+                style={{
+                  overflow: "hidden",
+                  width: "100%",
+                  objectFit: "cover",
+                }}
+                src={slide}
+                alt="끼잉낑"
+              />
             </Link>
           ))}
         </Slider>
@@ -49,6 +54,7 @@ const Slider = styled(Carousel)`
   display: -webkit-box;
   justify-content: center;
   height: 500px;
+  width: 100%;
   object-fit: cover;
   overflow: hidden;
 `;
