@@ -120,6 +120,13 @@ function KakaoPay({ groupNo, products, price }: IKakaoContent) {
       products: products,
     };
 
+    const formData = new FormData();
+
+    formData.append(
+      "paymentList",
+      new Blob([JSON.stringify(paymentData)], { type: "application/json" })
+    );
+
     const JWT = localStorage.getItem("login_token");
 
     const callback = (response: RequestPayResponse) => {
@@ -131,15 +138,14 @@ function KakaoPay({ groupNo, products, price }: IKakaoContent) {
           headers: {
             jwt: `${JWT}`,
             userId: userId,
-            "Content-Type": "application/json",
           },
-          body: JSON.stringify(paymentData),
+          body: formData,
         });
-        alert("결제 성공했습니다잉");
+        alert("결제가 완료됐습니다.");
         console.log(response);
       } else {
         console.log(error_msg);
-        alert("결제 실패했습니다잉");
+        alert("결제가 취소됐습니다.");
       }
     };
 
@@ -147,7 +153,7 @@ function KakaoPay({ groupNo, products, price }: IKakaoContent) {
   };
   return (
     <div>
-      <button onClick={handlePayment}>결제하기</button>
+      <button onClick={handlePayment}></button>
     </div>
   );
 }

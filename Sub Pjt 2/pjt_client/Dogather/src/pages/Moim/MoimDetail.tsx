@@ -118,43 +118,15 @@ function MoimDetail() {
   }, []);
 
   const basePrice = groupData?.price!;
-  const [sum, setSum] = React.useState(0);
-
-  const [sumPrice, setSumPrice] = React.useState(0);
   const [optionIdx, setOptionIdx] = useState(0);
   const [quantity, setQuantity] = useState(0);
-  const [quantities, setQuantities] = useState<number[]>([]);
   const [isHidden, setIsHidden] = useState(true);
-  const [optionHidden, setOptionHidden] = useState(true);
 
-  const [options, setOption] = useState<string[]>([]);
-  const [optionPrice, setOptionPrice] = useState<string[]>([]);
-  const [amount, setAmount] = useState<Array<number>>([]);
   const [price, setPrice] = useState(0);
   const [product, setProduct] = useState<Array<IProductContent>>([]);
   const [products, setProducts] = useState<Array<IProductContent>>([]);
   const [totalAmount, setTotalAmount] = useState(0);
-  const [productOption, setProductOption] = useState(groupData?.options);
-  // console.log(price);
-  // console.log(typeof quantity);
-  // const selectOption = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   const _options = options.filter((o, idx) => {
-  //     if (o !== e.target.value) {
-  //       return o;
-  //     }
-  //   });
-  //   let price = Number(e.target.value.slice(-7, -1).split(",").join("").trim());
-  //   setOption([
-  //     ..._options,
-  //     { text: e.target.value, num: 1, prd: prd, sum: price },
-  //   ]);
-  //   setSum(sum + price);
-  //   setHidden(false);
-  //   setOptionIdx(Number(e.target.value));
-  // };
 
-  // console.log(options);
-  // console.log(options[0].optionName);
   const onSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     console.log(value);
@@ -358,15 +330,23 @@ function MoimDetail() {
                       </CartOption>
                     </OptionWrapper>
                     <SelectContent>
-                      <Button style={{ backgroundColor: "tomato" }}>
+                      <Button
+                        style={{
+                          backgroundColor: "tomato",
+                          borderColor: "black",
+                        }}
+                      >
                         관심등록
                       </Button>
-                      <KakaoPay
-                        groupNo={groupNo!}
-                        products={products}
-                        price={price}
-                        // option={options}
-                      />
+                      <Button style={{ backgroundColor: "#6fbd63" }}>
+                        <KakaoPay
+                          groupNo={groupNo!}
+                          products={products}
+                          price={price}
+                          // option={options}
+                        />
+                        모임신청
+                      </Button>
                     </SelectContent>
                   </SelectWrapper>
                 </SelectContainer>
@@ -565,8 +545,12 @@ const QuantityButton = styled.button`
   background-color: white;
   border-width: 1px;
   border-color: grey;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 5px;
+
   :hover {
-    background-color: lightgrey;
+    background-color: #f3f3f3;
     opacity: 0.5;
   }
 `;
@@ -578,6 +562,7 @@ const SelectInput = styled.input`
   height: 30px;
   text-align: center;
   margin-bottom: 10px;
+  border-radius: 5px;
   /* border-radius: 5px; */
   border-color: black;
   border-width: 1px;
@@ -631,7 +616,7 @@ const FinalPrice = styled.p`
   font-weight: bold;
 `;
 
-const Button = styled.button`
+const Button = styled.div`
   width: 100%;
   height: 50px;
   display: flex;
