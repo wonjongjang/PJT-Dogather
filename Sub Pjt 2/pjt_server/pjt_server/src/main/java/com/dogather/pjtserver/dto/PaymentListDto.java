@@ -10,5 +10,5 @@ import java.util.List;
 @Getter
 @Setter
 public class PaymentListDto {
-    List<PaymentDto> paymentList;
+    List<PaymentDto> payments;
 }
