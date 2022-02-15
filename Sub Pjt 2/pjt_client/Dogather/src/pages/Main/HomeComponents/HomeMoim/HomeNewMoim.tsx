@@ -4,6 +4,8 @@ import { FetchHomeNewMoimCard } from "../../../../api/MoimDetail";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import { iHomeCard } from "../../Home";
+import { ImgAtom } from "../../../../atoms/HomeMoimImg";
+import { useRecoilValue } from "recoil";
 
 function HomeNewMoim() {
   const { data: newData } = useQuery<iHomeCard>("new", () =>
@@ -13,7 +15,7 @@ function HomeNewMoim() {
 
   const makeComma = (price: number) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
+  const defaultImg = useRecoilValue(ImgAtom);
   return (
     <Container>
       <Title>
@@ -50,7 +52,11 @@ function HomeNewMoim() {
                       component="img"
                       height="auto"
                       width="100px"
-                      image="img/Hoodie.png"
+                      image={
+                        d.mainImage
+                          ? process.env.PUBLIC_URL + "/doimage/" + d?.mainImage
+                          : defaultImg
+                      }
                       alt="Product Image"
                     />
                   </Card>
@@ -164,7 +170,7 @@ const ProductName = styled.p`
   font-size: 12px;
   font-weight: bold;
   margin-bottom: 10px;
-  width:200px;
+  width: 200px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
