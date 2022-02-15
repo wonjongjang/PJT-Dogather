@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
+import styled from "styled-components";
 import { userIdAtom, userNoAtom } from "../../atoms/Login";
 import { IProductContent } from "./MoimDetail";
 
@@ -80,17 +82,21 @@ export interface RequestPayResponse extends RequestPayAdditionalResponse {
   /* price prop해주는 부분에서 가격 계산 제대로 된걸로 넣기 */
 }
 
-interface IKakaoContent {
+export interface IKakaoContent {
   groupNo: string;
   products: Array<IProductContent>;
   price: number;
 }
 
 function KakaoPay({ groupNo, products, price }: IKakaoContent) {
+  const navigate = useNavigate();
   const userNo = useRecoilValue(userNoAtom);
   const userId = useRecoilValue(userIdAtom);
   const [time, setTime] = useState(0);
-  setTimeout(() => setTime(1), 500);
+  useEffect(() => {
+    setTimeout(() => setTime(1), 500);
+  }, []);
+
   const handlePayment = () => {
     const { IMP } = window;
     IMP?.init("imp60712675");
@@ -114,18 +120,16 @@ function KakaoPay({ groupNo, products, price }: IKakaoContent) {
     };
     console.log(price);
 
+    // const formData = new FormData();
+
+    // formData.append(
+    //   "paymentList",
+    //   new Blob([JSON.stringify(paymentData)], { type: "application/json" })
+    // );
+    console.log(products);
     const paymentData = {
-      userNo: userNo,
-      groupNo: groupNo,
-      products: products,
+      payments: products,
     };
-
-    const formData = new FormData();
-
-    formData.append(
-      "paymentList",
-      new Blob([JSON.stringify(paymentData)], { type: "application/json" })
-    );
 
     const JWT = localStorage.getItem("login_token");
 
@@ -133,13 +137,16 @@ function KakaoPay({ groupNo, products, price }: IKakaoContent) {
       const { success, merchant_uid, error_msg, imp_uid, error_code } =
         response;
       if (success) {
+        console.log(paymentData);
         fetch("http://i6e104.p.ssafy.io:8090/api/payment", {
           method: "POST",
           headers: {
             jwt: `${JWT}`,
             userId: userId,
+            "Content-Type": "application/json",
           },
-          body: formData,
+          // body: formData,
+          body: JSON.stringify(paymentData),
         });
         alert("결제가 완료됐습니다.");
         console.log(response);
@@ -152,10 +159,23 @@ function KakaoPay({ groupNo, products, price }: IKakaoContent) {
     IMP?.request_pay(data, callback);
   };
   return (
-    <div>
-      <button onClick={handlePayment}></button>
-    </div>
+    <Container>
+      <Button onClick={handlePayment}>카카오페이</Button>
+    </Container>
   );
 }
+
+const Container = styled.div``;
+const Button = styled.div`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  border-radius: 10px;
+  font-weight: bold;
+  color: white;
+`;
 
 export default KakaoPay;
