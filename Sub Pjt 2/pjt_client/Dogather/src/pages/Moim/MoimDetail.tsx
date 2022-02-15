@@ -645,8 +645,9 @@ const Button = styled.div`
   border-radius: 10px;
   font-weight: bold;
   color: white;
-    :hover {
+  :hover {
     cursor: pointer;
+  }
 `;
 
 export default MoimDetail;

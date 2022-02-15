@@ -1,11 +1,12 @@
 import styled from "styled-components";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { useRecoilState } from "recoil";
 import { fetchMyPage } from "../../api/MyPage";
-import { userIdAtom } from "../../atoms/Login";
+import { userIdAtom, userNoAtom, isLoginAtom } from "../../atoms/Login";
 import LikeGroup from "./MyPageComponents/LikeGroup";
 import PaymentGroup from "./MyPageComponents/PaymentGroup";
-import { useState } from "react";
 
 export interface IPay {
   amount: number;
@@ -50,10 +51,14 @@ interface IUserInfo {
   userNo: number;
   userTel: string;
   userZip: number;
+  msg: string;
 }
 
 function MyPage() {
   const JWT = localStorage.getItem("login_token");
+  const navigate = useNavigate();
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
+  const [userNo, setUserNo] = useRecoilState(userNoAtom);
   const [userId, setUserId] = useRecoilState(userIdAtom);
 
   const { isLoading, data } = useQuery<IUserInfo>([JWT, userId], () =>
@@ -61,6 +66,18 @@ function MyPage() {
   );
 
   // console.log(data);
+
+  // 토큰 만료 시
+  if (data?.msg === "relogin") {
+    localStorage.clear(); // 로컬 스토리지 비우기
+    setIsLogin(false); // 로그인 여부 초기화
+    setUserNo(""); // 저장된 user pk 초기화
+    setUserId(""); // 저장된 user id 초기화
+    alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
+    setTimeout(() => {
+      navigate("/login");
+    }, 1); // 로그인 페이지로 이동
+  }
 
   // 더보기 toggle
   const [morePaymentGroups, setMorePaymentGroups] = useState(3);
@@ -147,48 +164,72 @@ function MyPage() {
           <ListTitleDiv>
             <ListTitle>내가 참여하는 모임</ListTitle>
             <SeeMore>
-              {Number(data?.paymentGroup.length) > 3 ? (
+              {Number(data?.paymentGroup?.length) > 3 ? (
                 <SeeMoreBtn onClick={togglePG}>더보기 〉</SeeMoreBtn>
               ) : (
                 <div></div>
               )}
             </SeeMore>
           </ListTitleDiv>
-          <div>
-            {data?.paymentGroup?.slice(0, morePaymentGroups).map((group) => (
-              <PaymentGroup key={group.groupNo} {...group} />
-            ))}
-          </div>
+          {data?.paymentGroup?.length ? (
+            <div>
+              {data?.paymentGroup?.slice(0, morePaymentGroups).map((group) => (
+                <LikeGroup key={group.groupNo} {...group} />
+              ))}
+            </div>
+          ) : (
+            <div>
+              <Wrapper>
+                <p>표시할 모임이 없습니다.</p>
+              </Wrapper>
+            </div>
+          )}
           <ListTitleDiv>
             <ListTitle>내가 관리하는 모임</ListTitle>
             <SeeMore>
-              {Number(data?.saleGroup.length) > 3 ? (
+              {Number(data?.saleGroup?.length) > 3 ? (
                 <SeeMoreBtn onClick={toggleSG}>더보기 〉</SeeMoreBtn>
               ) : (
                 <div></div>
               )}
             </SeeMore>
           </ListTitleDiv>
-          <div>
-            {data?.saleGroup?.slice(0, moreSaleGroups).map((group) => (
-              <LikeGroup key={group.groupNo} {...group} />
-            ))}
-          </div>
+          {data?.saleGroup?.length ? (
+            <div>
+              {data?.saleGroup?.slice(0, moreSaleGroups).map((group) => (
+                <LikeGroup key={group.groupNo} {...group} />
+              ))}
+            </div>
+          ) : (
+            <div>
+              <Wrapper>
+                <p>표시할 모임이 없습니다.</p>
+              </Wrapper>
+            </div>
+          )}
           <ListTitleDiv>
             <ListTitle>관심 모임</ListTitle>
             <SeeMore>
-              {Number(data?.likeGroups.length) > 3 ? (
+              {Number(data?.likeGroups?.length) > 3 ? (
                 <SeeMoreBtn onClick={toggleLG}>더보기 〉</SeeMoreBtn>
               ) : (
                 <div></div>
               )}
             </SeeMore>
           </ListTitleDiv>
-          <div>
-            {data?.likeGroups?.slice(0, moreLikeGroups).map((group) => (
-              <LikeGroup key={group.groupNo} {...group} />
-            ))}
-          </div>
+          {data?.likeGroups?.length ? (
+            <div>
+              {data?.likeGroups?.slice(0, moreLikeGroups).map((group) => (
+                <LikeGroup key={group.groupNo} {...group} />
+              ))}
+            </div>
+          ) : (
+            <div>
+              <Wrapper>
+                <p>표시할 모임이 없습니다.</p>
+              </Wrapper>
+            </div>
+          )}
         </div>
       </RightSide>
     </Container>
@@ -365,6 +406,17 @@ const SeeMore = styled.div`
 
 const SeeMoreBtn = styled.div`
   cursor: pointer;
+`;
+
+const Wrapper = styled.div`
+  background-color: #fafafa;
+  border-radius: 12px;
+  margin: 0 10px;
+  padding: 80px 0;
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: -0.21px;
+  color: rgba(34, 34, 34, 0.5);
 `;
 
 export default MyPage;

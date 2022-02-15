@@ -13,6 +13,8 @@ function Header() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // console.log(new Date().getMinutes());
+
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const [userNo, setUserNo] = useRecoilState(userNoAtom);
   const [userId, setUserId] = useRecoilState(userIdAtom);
@@ -40,6 +42,12 @@ function Header() {
     // console.log(event);
     if (event.code === "Enter") {
       console.log(enteredText); // 엔터키 눌렀을 때
+
+      fetch(
+        `http://i6e104.p.ssafy.io/api/group/search?page=1&query=${enteredText}`
+      )
+        .then((response) => response.json())
+        .then((result) => console.log(result));
     }
   };
 
@@ -225,6 +233,7 @@ const Search = styled.span`
   svg {
     height: 20px;
     z-index: 3;
+    cursor: pointer;
   }
 `;
 const Input = styled(motion.input)`
