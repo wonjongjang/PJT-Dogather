@@ -138,7 +138,7 @@ function KakaoPay({ groupNo, products, price }: IKakaoContent) {
         response;
       if (success) {
         console.log(paymentData);
-        fetch("http://i6e104.p.ssafy.io:8090/api/payment", {
+        fetch("http://i6e104.p.ssafy.io/api/payment", {
           method: "POST",
           headers: {
             jwt: `${JWT}`,

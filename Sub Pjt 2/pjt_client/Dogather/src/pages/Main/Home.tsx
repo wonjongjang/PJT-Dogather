@@ -29,6 +29,7 @@ interface Ilist {
   product: string;
   status: string;
   view: number;
+  mainImage: string;
 }
 
 export interface iHomeCard {

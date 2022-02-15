@@ -199,9 +199,9 @@ function MoimDetail() {
     // console.log(value);
   };
 
-  // const mainImgAddress = "/doimage/" + groupData?.mainImage;
+  const mainImgAddress = "/doimage/" + groupData?.mainImage;
   // console.log(groupData?.mainImage);
-  // const detailImgAddress = "/doimage/" + groupData?.mediaList[0];
+  const detailImgAddress = "/doimage/" + groupData?.mediaList[0];
   // console.log(mainImgAddress, detailImgAddress);
 
   const time = Date.now();
@@ -218,15 +218,15 @@ function MoimDetail() {
           <>
             <Overview>
               <ImgWrapper>
-                <Img
+                {/* <Img
                   src={process.env.PUBLIC_URL + "/img/Hoodie.png"}
                   alt={"메인 이미지"}
+                /> */}
+                <Img
+                  src={process.env.PUBLIC_URL + mainImgAddress}
+                  alt={process.env.PUBLIC_URL + mainImgAddress}
                 />
                 {/* <Img
-                src={process.env.PUBLIC_URL + mainImgAddress}
-                alt={process.env.PUBLIC_URL + mainImgAddress}
-              />
-              <Img
                 src={process.env.PUBLIC_URL + detailImgAddress}
                 alt={process.env.PUBLIC_URL + detailImgAddress}
               /> */}
