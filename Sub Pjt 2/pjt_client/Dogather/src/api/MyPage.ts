@@ -1,10 +1,6 @@
-const BASE_URL = "http://i6e104.p.ssafy.io/api/";
+const BASE_URL = "http://i6e104.p.ssafy.io/api";
 
 export async function fetchMyPage(JWT: string, userId: string) {
-  // const dd = {
-  //   msg: "relogin",
-  // };
-  // return dd;
   return fetch(`${BASE_URL}/user/${userId}`, {
     method: "GET",
     headers: {

@@ -1,19 +1,23 @@
 import DogatherLogo from "./Logo.svg";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { useEffect, useState } from "react";
+import { motion, useAnimation } from "framer-motion";
+
 import { isLoginAtom, userIdAtom, userNoAtom } from "../../atoms/Login";
 import { CategoriesAtom } from "../../atoms/ProductCategories";
 import { OptionsAtom } from "../../atoms/Options";
 import { FAQsAtom } from "../../atoms/FAQs";
-import { motion, useAnimation } from "framer-motion";
+
+interface IForm {
+  keyword: string;
+}
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-
-  // console.log(new Date().getMinutes());
 
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const [userNo, setUserNo] = useRecoilState(userNoAtom);
@@ -37,18 +41,12 @@ function Header() {
   };
 
   // 검색 기능
-  const [enteredText, SetEnteredText] = useState(""); // 검색어 저장
-  const enterSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    // console.log(event);
-    if (event.code === "Enter") {
-      console.log(enteredText); // 엔터키 눌렀을 때
-
-      fetch(
-        `http://i6e104.p.ssafy.io/api/group/search?page=1&query=${enteredText}`
-      )
-        .then((response) => response.json())
-        .then((result) => console.log(result));
-    }
+  const { register, handleSubmit, setValue } = useForm<IForm>();
+  const onValid = (data: IForm) => {
+    // console.log(data.keyword);
+    const keyword = data.keyword;
+    setValue("keyword", "");
+    navigate(`/search/${keyword}`, { state: { option: "query" } });
   };
 
   useEffect(() => {
@@ -108,7 +106,7 @@ function Header() {
         <LowerCol>
           <LowerItems>
             {/* 검색 아이콘 (svg로 가져오면 CSS로 자유롭게 변경 가능 */}
-            <Search>
+            <Search onSubmit={handleSubmit(onValid)}>
               <motion.svg
                 onClick={toggleSearch}
                 animate={{ x: searchOpen ? -215 : 0 }}
@@ -124,12 +122,11 @@ function Header() {
                 ></path>
               </motion.svg>
               <Input
+                {...register("keyword", { required: true })}
                 animate={inputAnimation}
                 initial={{ scaleX: 0 }}
                 transition={{ type: "linear" }}
                 placeholder="검색 내용 입력 후 엔터"
-                onChange={(e) => SetEnteredText(e.target.value)}
-                onKeyPress={enterSearch}
               />
             </Search>
             <LowerItem>
@@ -224,7 +221,7 @@ const LowerItem = styled.li`
 `;
 
 // 검색
-const Search = styled.span`
+const Search = styled.form`
   margin: 0 20px;
   display: flex;
   align-items: center;

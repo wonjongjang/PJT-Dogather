@@ -21,8 +21,8 @@ import FreeCommunity from "./pages/Community/FreeCommunity/FreeCommunity";
 import UsedSaleCommunity from "./pages/Community/UsedSaleCommunity/UsedSaleCommunity";
 import ReviewCommunity from "./pages/Community/ReviewCommunity/ReviewCommunity";
 import Error404 from "./pages/Error/Error404";
-
 import MoimChatbot from "./components/Chat/MoimChatbot";
+import SearchDetail from "./pages/Main/SearchDetail";
 
 function Router() {
   const isLogin = useRecoilValue(isLoginAtom);
@@ -76,6 +76,7 @@ function Router() {
         {/* error */}
         <Route path="/error404" element={<Error404 />} />
 
+        <Route path="/search/:keyword/*" element={<SearchDetail />} />
         <Route path="/" element={<Home />} />
       </Routes>
       <Footer />
