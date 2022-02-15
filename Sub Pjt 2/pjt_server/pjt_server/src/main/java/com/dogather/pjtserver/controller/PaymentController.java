@@ -18,7 +18,7 @@ public class PaymentController {
     PaymentService service;
 
     @PostMapping
-    public int payment(@RequestPart List<PaymentDto> paymentList){
+    public int payment(@RequestBody PaymentListDto paymentList){
         log.info(paymentList.toString());
         return service.payment(paymentList);
     }
