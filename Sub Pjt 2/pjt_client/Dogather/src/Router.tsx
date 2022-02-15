@@ -21,8 +21,8 @@ import FreeCommunity from "./pages/Community/FreeCommunity/FreeCommunity";
 import UsedSaleCommunity from "./pages/Community/UsedSaleCommunity/UsedSaleCommunity";
 import ReviewCommunity from "./pages/Community/ReviewCommunity/ReviewCommunity";
 import Error404 from "./pages/Error/Error404";
-
 import MoimChatbot from "./components/Chat/MoimChatbot";
+import SearchDetail from "./pages/Main/SearchDetail";
 import MoimPayment from "./pages/Moim/MoimDetailComponent/MoimPayment";
 
 function Router() {
@@ -78,6 +78,7 @@ function Router() {
         {/* error */}
         <Route path="/error404" element={<Error404 />} />
 
+        <Route path="/search/:keyword/*" element={<SearchDetail />} />
         <Route path="/" element={<Home />} />
       </Routes>
       <Footer />
