@@ -17,4 +17,10 @@ public class PaymentDto {
     private int optionNo;
     private int amount;
     private int price;
+
+    private List<PaymentDto> payments;
+
+
+
+
 }

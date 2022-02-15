@@ -9,6 +9,6 @@ import java.util.List;
 
 @Mapper
 public interface PaymentDao {
-    public int payment(List<PaymentDto> paymentDtoList) ;
+    public int payment(List<PaymentDto> paymentList) ;
 
 }

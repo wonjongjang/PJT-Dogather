@@ -9,6 +9,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class OptionDto {
+    private int optionNo;
     private String optionName;
     private int optionPrice;
 }
