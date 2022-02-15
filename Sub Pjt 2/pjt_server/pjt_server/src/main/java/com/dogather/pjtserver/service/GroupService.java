@@ -24,15 +24,13 @@ public interface GroupService {
     public List<GroupReturnDto> getNewList();
     public List<GroupReturnDto> getEndSoonList();
 
-
+    public List<GroupReturnDto> search(String query, String nickname, int page);
 
     public int addInterest(GroupInterestDto dto);
     public List<OptionDto> getOptions(int groupNo);
     public void addOptions(int groupNo, List<OptionDto> options);
 
     public void addFaq(int groupNo, List<FAQRequsetDto> faq);
-
-    public List<GroupReturnDto> categoryList(int categoryNo);
 
     public List<GroupReturnDto> wordSearch(List<String> wordList);
 

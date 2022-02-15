@@ -74,6 +74,42 @@
             limit 8 offset #{page}
     </select>
 
+    <select id="search" resultMap="grouplistMap" parameterType="Map">
+        select DISTINCT
+            g.group_no,
+            g.group_leader,
+            u.user_no,
+            u.user_nickname,
+            c.category_name,
+            g.category_no,
+            g.created,
+            g.updated,
+            g.deadline,
+            g.max_people,
+            g.status,
+            g.product,
+            g.detail,
+            g.link,
+            g.origin_price,
+            g.price,
+            g.view
+        from dogather.group as g
+                 left join dogather.user as u on g.group_leader = u.user_no
+                 left join dogather.category as c on g.category_no = c.category_no
+
+            <if test="nickname==null">
+                where
+                <foreach nullable="true" collection="words" item="word" separator="or">
+                    g.product Like Concat('%',#{word},'%') or g.detail Like Concat('%',#{word},'%')
+                </foreach>
+            </if>
+            <if test="words==null">
+                where
+                u.user_nickname=#{nickname}
+            </if>
+            limit 8 offset #{page}
+    </select>
+
     <select id="getHotList" resultMap="grouplistMap">
         select
         g.group_no,

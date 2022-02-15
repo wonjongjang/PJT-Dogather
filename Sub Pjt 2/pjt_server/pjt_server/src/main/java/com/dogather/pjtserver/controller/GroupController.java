@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -194,12 +195,14 @@ public class GroupController {
         }
     }
 
-    @GetMapping("/csearch/{categoryNo}")
-    public ResponseEntity<GroupListDto> categorySearch(@PathVariable int categoryNo){
+    @GetMapping("/search")
+    public ResponseEntity<GroupListDto> search(@RequestParam("page")int page, @RequestParam(value="query", required = false, defaultValue = " ")@Nullable String query, @RequestParam(value="nickname",required = false,defaultValue = " ")@Nullable String nickname){
         GroupListDto list = new GroupListDto();
-        list.setList(groupService.categoryList(categoryNo));
+        System.out.println(query+nickname);
+        list.setList(groupService.search(query, nickname, page));
         return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
+
 
     @PostMapping("/wsearch")
     public ResponseEntity<GroupListDto> wordSearch(@RequestBody HashMap map){
