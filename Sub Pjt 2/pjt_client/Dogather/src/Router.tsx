@@ -57,6 +57,7 @@ function Router() {
           <Route path="faq" element={<MoimFAQ />} />
           <Route path="review" element={<MoimReview />} />
           <Route path="refund" element={<MoimRefund />} />
+          {/* <Route path="payment" element={<MoimPayment />} /> */}
         </Route>
 
         <Route path="/community" element={<CommunityHome />} />
