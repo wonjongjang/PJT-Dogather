@@ -174,7 +174,7 @@ function MyPage() {
           {data?.paymentGroup?.length ? (
             <div>
               {data?.paymentGroup?.slice(0, morePaymentGroups).map((group) => (
-                <LikeGroup key={group.groupNo} {...group} />
+                <PaymentGroup key={group.groupNo} {...group} />
               ))}
             </div>
           ) : (
