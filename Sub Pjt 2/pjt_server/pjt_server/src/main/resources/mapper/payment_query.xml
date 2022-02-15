@@ -12,7 +12,7 @@
             #{item.groupNo},
             #{item.optionNo},
             #{item.amount},
-            #{item.amountOfPrice}
+            #{item.price}
             )
         </foreach>
     </insert>
