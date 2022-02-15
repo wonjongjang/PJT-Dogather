@@ -18,11 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -43,9 +39,10 @@ public class UserController {
 	//회원가입
 	@PostMapping("/register")
 	public ResponseEntity<UserRegisterDto> register(@RequestBody UserRegisterDto dto){
-		System.err.println("(Post)User Controller Register Method run!");
  		try{
+			 // SHA256을 이용한 PW, Email hashing
 			dto.setUserPw(SecureHash.hashing256(dto.getUserPw()));
+			dto.setUserEmail(SecureHash.hashing256(dto.getUserEmail()));
 			int created = userService.userRegister(dto);
 			List<Integer> list = dto.getUserCategory();
 			if( list != null && created > 0) {
@@ -67,7 +64,6 @@ public class UserController {
 	//로그인
 	@PostMapping("/login")
 	public ResponseEntity<JwtRet> login(@RequestBody UserDto userDto){
-		System.err.println("(Post)User Controller Login Method run!");
 		JwtRet ret =  new JwtRet(); //return value for client by JSON
 		try{
 			userDto.setUserPw(SecureHash.hashing256(userDto.getUserPw()));
@@ -106,7 +102,6 @@ public class UserController {
 	}
 	@PutMapping("/{userId}")
 	public ResponseEntity<UserDto> update(@PathVariable String userId, @RequestHeader String jwt, @RequestBody UserDto userDto){
-		System.err.println("(Put)User Controller Update Method run!");
 		try {
 			userDto.setUserPw(SecureHash.hashing256(userDto.getUserPw()));
 		} catch (NoSuchAlgorithmException e) {
@@ -147,20 +142,13 @@ public class UserController {
 
 	@GetMapping("/idcheck")
 	public ResponseEntity<Boolean> idCheck(@RequestParam String id){
-		System.err.println("(Get)User Controller idCheck Method run!");
 		boolean result = userService.userIdCheck(id);
-//		JSONObject json = new JSONObject();
-//		json.put("result", result);
-//		json.put("requested_id", id);
 		return ResponseEntity.status(HttpStatus.OK).body(result);//ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 	}
 
 	@GetMapping("/nickcheck")
 	public ResponseEntity<Boolean> nickCheck(@RequestParam String nick){
 		boolean result = userService.userNickCheck(nick);
-//		JSONObject json = new JSONObject();
-//		json.put("result", result);
-//		json.put("requested_id", nick);
 		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
 	}
 
