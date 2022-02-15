@@ -121,7 +121,7 @@ function HomeCategory() {
 const Container = styled.div`
   display: flex;
   width: 65%;
-  justify-content : center
+  justify-content : center;
   align-items: center;
 `;
 
@@ -131,6 +131,8 @@ const CategoryList = styled.div`
 `;
 
 const CategoryName = styled.p`
+  text-align: center;
+  white-space: nowrap;
   font-size: 11px;
   font-weight: bold;
   color: grey;
@@ -141,6 +143,7 @@ const CardDetail = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  overflow: visible;
   width: 60px;
   margin-top: 5px;
 `;
