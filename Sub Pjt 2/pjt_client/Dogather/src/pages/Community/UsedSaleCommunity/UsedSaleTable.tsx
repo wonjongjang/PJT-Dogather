@@ -16,35 +16,12 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import UsedSaleCard from "./UsedSaleCard";
 
-function createData(
-  postno: number,
-  title: string,
-  writer: string,
-  view: number,
-  created: string
-) {
-  return { postno, title, writer, view, created };
-}
-
-// 데이터
-const rows = [
-  createData(1, "Frozen yoghurt", "Asd", 159, "asd"),
-  createData(2, "Ice cream sandwich", "Asd", 237, "ASd"),
-  createData(3, "Eclair", "Asd", 262, "fsdf"),
-  createData(4, "Cupcake", "Asd", 305, "Sdgd"),
-  createData(5, "Gingerbread", "Asd", 356, "Dfgdf"),
-  createData(6, "Gingerbread", "Asd", 16, "Dfgdf"),
-  createData(7, "Gingerbread", "Asd", 356, "Dfgdf"),
-  createData(8, "Gingerbread", "Asd", 356, "Dfgdf"),
-  createData(9, "Gingerbread", "Asd", 1000, "Dfgdf"),
-  createData(10, "Gingerbread", "Asd", 356, "Dfgdf"),
-];
-
 // neutral 색깔
 const theme = createTheme({
   palette: {
     neutral: {
-      main: "#000000",
+      main: "#1E272E",
+      // #2d2c2e
       contrastText: "#fff",
     },
   },
@@ -71,31 +48,49 @@ function UsedSaleTable() {
   return (
     <Container>
       <Top>
-        <H1>중고판매게시판</H1>
-        <CustomTabs>
-          <Tabs></Tabs>
-        </CustomTabs>
         <div></div>
-        <Hr />
       </Top>
       <Mid>
         <CustomStack>
-          <Stack spacing={5} direction="column">
+          <H1>중고판매게시판</H1>
+          <Stack spacing={2} direction="column">
             <ThemeProvider theme={theme}>
-              <Button variant="outlined" color="neutral">
-                <Link to={"/community/announcement"}>공지사항게시판</Link>
+              <Button
+                variant="outlined"
+                color="neutral"
+                sx={{ height: 40, minWidth: 95 }}
+              >
+                <Link to={"/community/announcement"}>공지사항</Link>
               </Button>
-              <Button variant="contained" color="neutral">
-                <Link to={"/community/usedsale"}>중고판매게시판</Link>
-              </Button>
-              <Button variant="outlined" color="neutral">
+              <Button
+                variant="outlined"
+                color="neutral"
+                sx={{ height: 40, minWidth: 95 }}
+              >
                 <Link to={"/community/infoshare"}>정보공유게시판</Link>
               </Button>
-              <Button variant="outlined" color="neutral">
-                <Link to={"/community/free"}>자유게시판</Link>
-              </Button>
-              <Button variant="outlined" color="neutral">
+              <Button
+                variant="outlined"
+                color="neutral"
+                sx={{ height: 40, minWidth: 95 }}
+              >
                 <Link to={"/community/review"}>후기게시판</Link>
+              </Button>
+              <Button
+                variant="contained"
+                color="neutral"
+                sx={{ height: 40, minWidth: 95 }}
+              >
+                <Link to={"/community/usedsale"}>
+                  <Fontw>중고판매게시판</Fontw>
+                </Link>
+              </Button>
+              <Button
+                variant="outlined"
+                color="neutral"
+                sx={{ height: 40, minWidth: 95 }}
+              >
+                <Link to={"/community/free"}>자유게시판</Link>
               </Button>
             </ThemeProvider>
           </Stack>
@@ -123,13 +118,13 @@ function UsedSaleTable() {
         </Btn>
         <CustomWrite>
           <ThemeProvider theme={theme}>
-            <Button variant="outlined" color="neutral">
+            <Button variant="contained" color="neutral">
               글쓰기
             </Button>
           </ThemeProvider>
         </CustomWrite>
         <CustomPage>
-          <Pagination count={10} variant="outlined" shape="rounded" />
+          <Pagination count={5} variant="text" shape="rounded" />
         </CustomPage>
       </Bottom>
     </Container>
@@ -156,8 +151,9 @@ const Mid2 = styled.span`
 
 const H1 = styled.h1`
   display: inline-block;
-  font-size: 50px;
-  margin-left: 14vw;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 1vw;
 `;
 
 const CustomTabs = styled.div`
@@ -168,7 +164,6 @@ const CustomTabs = styled.div`
 
 const CustomStack = styled.div`
   display: inline-block;
-  margin-top: 8vw;
   margin-left: 4vw;
   width: 9vw;
 `;
@@ -236,6 +231,10 @@ const Btn = styled.button`
 
 const CustomCard = styled.div`
   display: flex;
+`;
+
+const Fontw = styled.h1`
+  font-weight: 900;
 `;
 
 export default UsedSaleTable;
