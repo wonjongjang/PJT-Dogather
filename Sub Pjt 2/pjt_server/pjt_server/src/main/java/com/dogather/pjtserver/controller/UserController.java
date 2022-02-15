@@ -7,17 +7,22 @@ import com.dogather.pjtserver.dto.UserResponseDto;
 import com.dogather.pjtserver.dto.*;
 import com.dogather.pjtserver.jwt.JwtProvider;
 import com.dogather.pjtserver.jwt.JwtRet;
+import com.dogather.pjtserver.jwt.SecureHash;
 import com.dogather.pjtserver.service.BoardService;
 import com.dogather.pjtserver.service.GroupService;
 import com.dogather.pjtserver.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -39,20 +44,23 @@ public class UserController {
 	@PostMapping("/register")
 	public ResponseEntity<UserRegisterDto> register(@RequestBody UserRegisterDto dto){
 		System.err.println("(Post)User Controller Register Method run!");
-
-		int created = userService.userRegister(dto);
-
-		List<Integer> list = dto.getUserCategory();
-		if( list != null && created > 0) {
-			for (int i : list) {
-				userService.addCategory(dto.getUserNo(), i);
+ 		try{
+			dto.setUserPw(SecureHash.hashing256(dto.getUserPw()));
+			int created = userService.userRegister(dto);
+			List<Integer> list = dto.getUserCategory();
+			if( list != null && created > 0) {
+				for (int i : list) {
+					userService.addCategory(dto.getUserNo(), i);
+				}
 			}
-		}
-		if (created > 0){
-			dto.setMsg("가입완료");
-			return new ResponseEntity<UserRegisterDto>(dto, HttpStatus.OK);
-		}else{
-			return new ResponseEntity<UserRegisterDto>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
+			if (created > 0) {
+				dto.setMsg("가입완료");
+				return new ResponseEntity<UserRegisterDto>(dto, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<UserRegisterDto>(dto, HttpStatus.BAD_REQUEST);
+			}
+		}catch (Exception e){
+			 return new ResponseEntity<UserRegisterDto>((UserRegisterDto) null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -61,7 +69,15 @@ public class UserController {
 	public ResponseEntity<JwtRet> login(@RequestBody UserDto userDto){
 		System.err.println("(Post)User Controller Login Method run!");
 		JwtRet ret =  new JwtRet(); //return value for client by JSON
-
+		try{
+			userDto.setUserPw(SecureHash.hashing256(userDto.getUserPw()));
+		} catch (NoSuchAlgorithmException e) {
+			ret.setMsg(e.toString());
+			return new ResponseEntity<JwtRet>(ret,HttpStatus.BAD_REQUEST);
+		} catch (Exception e){
+			ret.setMsg(e.toString());
+			return new ResponseEntity<JwtRet>(ret,HttpStatus.BAD_REQUEST);
+		}
 		// 로그인
 		UserDto loginResult = userService.userLogin(userDto); // userService에 로그인 요청
 		if (loginResult != null) {
@@ -91,6 +107,11 @@ public class UserController {
 	@PutMapping("/{userId}")
 	public ResponseEntity<UserDto> update(@PathVariable String userId, @RequestHeader String jwt, @RequestBody UserDto userDto){
 		System.err.println("(Put)User Controller Update Method run!");
+		try {
+			userDto.setUserPw(SecureHash.hashing256(userDto.getUserPw()));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 		userDto.setUserId(userId);
 		int created = userService.userUpdate(userDto);
 		if (created == 1 ){
