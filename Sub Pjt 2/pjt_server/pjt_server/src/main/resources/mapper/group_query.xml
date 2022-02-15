@@ -316,7 +316,7 @@
     </select>
 
     <select id="getOptions" resultType="com.dogather.pjtserver.dto.OptionDto">
-        select option_name, option_price from dogather.option where group_no = #{groupNo}
+        select option_no, option_name, option_price from dogather.option where group_no = #{groupNo}
     </select>
 
     <insert id="addOption" parameterType="Map">
