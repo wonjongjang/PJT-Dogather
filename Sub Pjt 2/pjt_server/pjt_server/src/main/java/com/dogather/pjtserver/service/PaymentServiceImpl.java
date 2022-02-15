@@ -17,8 +17,8 @@ public class PaymentServiceImpl implements PaymentService{
     PaymentDao dao;
 
     @Override
-    public int payment(PaymentListDto paymentList) {
-        List<PaymentDto> paymentDtoList = paymentList.getPaymentList();
+    public int payment(PaymentListDto payments) {
+        List<PaymentDto> paymentDtoList = payments.getPayments();
         return dao.payment(paymentDtoList);
     }
 }
