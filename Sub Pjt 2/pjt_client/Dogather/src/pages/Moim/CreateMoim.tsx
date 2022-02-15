@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { userIdAtom, userNoAtom } from "../../atoms/Login";
+import { useRecoilState } from "recoil";
+import { isLoginAtom, userIdAtom, userNoAtom } from "../../atoms/Login";
 import { useNavigate } from "react-router-dom";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 
@@ -35,8 +35,9 @@ interface IAreaProps {
 function CreateMoim() {
   const navigate = useNavigate();
 
-  const userNo = useRecoilValue(userNoAtom);
-  const userId = useRecoilValue(userIdAtom);
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
+  const [userNo, setUserNo] = useRecoilState(userNoAtom);
+  const [userId, setUserId] = useRecoilState(userIdAtom);
   const [options, setOptions] = useRecoilState(OptionsAtom);
   const [FAQs, setFAQs] = useRecoilState(FAQsAtom);
 
@@ -46,10 +47,20 @@ function CreateMoim() {
     formState: { errors },
     setError,
     watch,
+    getValues,
   } = useForm<IMoimForm>({ mode: "onBlur" });
+
+  // 현재 날짜와 시간 (모임 마감 일시 최소값)
+  let nowDate = new Date(
+    new Date().getTime() - new Date().getTimezoneOffset() * 60000
+  )
+    .toISOString()
+    .slice(0, -5);
 
   // 대표 이미지
   const [file, setFile] = useState<FileList | undefined>();
+  const [fileAttachment, setFileAttachment] = useState(); // 미리보기
+
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { files },
@@ -57,6 +68,16 @@ function CreateMoim() {
 
     if (files != null) {
       setFile(files);
+      const mainFile = files[0];
+      const reader = new FileReader();
+      reader.onloadend = (finishedEvent: any) => {
+        const {
+          currentTarget: { result },
+        } = finishedEvent;
+        // console.log(finishedEvent);
+        setFileAttachment(result);
+      };
+      reader.readAsDataURL(mainFile); // 파일 읽음
     }
   };
 
@@ -115,9 +136,21 @@ function CreateMoim() {
       .then((response) => response.json())
       .then((result) => {
         if (result) {
-          console.log(result);
-          const ObjectToString = JSON.stringify(result); // 반환값이 object
-          navigate(`/moim/${ObjectToString}`);
+          // console.log(result);
+          if (result.msg === "relogin") {
+            // 토큰 만료 시
+            localStorage.clear(); // 로컬 스토리지 비우기
+            setIsLogin(false); // 로그인 여부 초기화
+            setUserNo(""); // 저장된 user pk 초기화
+            setUserId(""); // 저장된 user id 초기화
+            alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
+            setTimeout(() => {
+              navigate("/login");
+            }, 1); // 로그인 페이지로 이동
+          } else {
+            const ObjectToString = JSON.stringify(result); // 반환값이 object
+            navigate(`/moim/${ObjectToString}`);
+          }
         }
       });
   };
@@ -323,6 +356,12 @@ function CreateMoim() {
               <MiniInput
                 {...register("deadline", {
                   required: "필수 정보입니다.",
+                  validate: {
+                    checkDate: (value) =>
+                      nowDate < value
+                        ? true
+                        : "현재 시간 이후로 설정 가능합니다.",
+                  },
                 })}
                 type="datetime-local"
               />
@@ -362,6 +401,57 @@ function CreateMoim() {
           </Block>
           <Block>
             <InputTitle>
+              <span>대표 이미지</span>
+            </InputTitle>
+            <ImgDiv>
+              <ImgBox htmlFor="file">
+                <ImgBoxInside>+</ImgBoxInside>
+              </ImgBox>
+              <Files
+                type="file"
+                id="file"
+                accept="image/*"
+                onChange={onChangeFile}
+              />
+              {fileAttachment && (
+                <Img>
+                  <img src={fileAttachment} width="150px" height="150px" />
+                </Img>
+              )}
+            </ImgDiv>
+            <ExpDiv>
+              <Exp>모임 리스트에서 보일 대표 이미지를 설정해 주세요.</Exp>
+            </ExpDiv>
+          </Block>
+          <Block>
+            <InputTitle>
+              <span>상품 상세 이미지 ({fileList ? fileList.length : 0})</span>
+            </InputTitle>
+            <ImgDiv>
+              <ImgBox htmlFor="files">
+                <ImgBoxInside>+</ImgBoxInside>
+              </ImgBox>
+              <Files
+                type="file"
+                id="files"
+                multiple
+                accept="image/*"
+                onChange={onChangeFiles}
+              />
+              {fileList && (
+                <Img>
+                  {Array.from(fileList).map((file) => (
+                    <ImgList key={file.name}>{file.name}</ImgList>
+                  ))}
+                </Img>
+              )}
+            </ImgDiv>
+            <ExpDiv>
+              <Exp>상품 상세 내용을 보여줄 다수의 사진을 첨부해 주세요.</Exp>
+            </ExpDiv>
+          </Block>
+          <Block>
+            <InputTitle>
               <span>링크</span>
               <Required>*</Required>
             </InputTitle>
@@ -386,34 +476,6 @@ function CreateMoim() {
             </ExpDiv>
           </Block>
         </form>
-        <Block>
-          <InputTitle>
-            <span>대표 이미지 ({file ? "upload" : "not"})</span>
-          </InputTitle>
-          <InputDiv>
-            <ImgBox htmlFor="file">
-              <ImgBoxInside>+</ImgBoxInside>
-            </ImgBox>
-            <Files type="file" id="file" onChange={onChangeFile} />
-          </InputDiv>
-          <ExpDiv>
-            <Exp>모임 리스트에서 보일 대표 이미지를 설정해 주세요.</Exp>
-          </ExpDiv>
-        </Block>
-        <Block>
-          <InputTitle>
-            <span>상품 상세 이미지 ({fileList ? fileList.length : 0})</span>
-          </InputTitle>
-          <InputDiv>
-            <ImgBox htmlFor="files">
-              <ImgBoxInside>+</ImgBoxInside>
-            </ImgBox>
-            <Files type="file" id="files" multiple onChange={onChangeFiles} />
-          </InputDiv>
-          <ExpDiv>
-            <Exp>상품 상세 내용을 보여줄 다수의 사진을 첨부해 주세요.</Exp>
-          </ExpDiv>
-        </Block>
         <Block>
           <InputTitle>
             <span>옵션</span>
@@ -556,6 +618,24 @@ const Required = styled.span`
   font-size: 16px;
   color: #ff5e57;
   margin-left: 5px;
+`;
+
+const ImgDiv = styled.div`
+  display: flex;
+  padding: 1rem;
+`;
+
+const Img = styled.div`
+  margin-left: 1rem;
+`;
+
+const ImgList = styled.p`
+  color: #575fcf;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 19px;
+  letter-spacing: -0.5px;
+  margin-top: 4px;
 `;
 
 const InputDiv = styled.div`

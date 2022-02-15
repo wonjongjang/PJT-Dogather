@@ -34,6 +34,10 @@ function Login() {
       .then((result) => {
         if (result.msg === "success") {
           // 로그인 성공 시
+          // let JWTToken = {
+          //   "token": result.jwt,
+          //   "created": new Date().get
+          // }
           localStorage.setItem("login_token", result.jwt);
           setIsLogin(true);
           setUserNo(result.userInfo.userNo);

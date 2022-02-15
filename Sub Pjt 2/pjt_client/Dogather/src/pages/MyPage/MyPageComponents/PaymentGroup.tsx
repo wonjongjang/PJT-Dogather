@@ -1,11 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IGroup } from "../MyPage";
 
 function PaymentGroup(group: IGroup) {
+  const navigate = useNavigate();
+
+  const moveToDetail = () => {
+    navigate(`/moim/${group.groupNo}`);
+  };
+
   const totalPriceCal = () => {
-    let tot = group.price;
+    let price = group.price;
+    let tot = 0;
     group.resultPaymentDtos.map(
-      (option) => (tot += option.amountOfPrice * option.amount)
+      (option) => (tot += (price + option.amountOfPrice) * option.amount)
     );
     // console.log(tot);
     return tot;
@@ -14,11 +22,11 @@ function PaymentGroup(group: IGroup) {
   const totalPrice = totalPriceCal();
 
   return (
-    <Container>
+    <Container onClick={moveToDetail}>
       <LeftSide>
         <ImgDiv>
           <ImgRadius>
-            <Img src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/e125b578-4173-401a-ab13-f066979c8848/air-force-1-older-shoes-11jxCZ.png" />
+            <Img src={process.env.PUBLIC_URL + "/doimage/" + group.mainImage} />
           </ImgRadius>
         </ImgDiv>
         <ProductDiv>
@@ -51,6 +59,7 @@ const Container = styled.div`
   /* align-items: center; */
   padding: 12px;
   border-bottom: 1px solid #ebebeb;
+  cursor: pointer;
 `;
 
 const LeftSide = styled.div`
@@ -91,6 +100,7 @@ const ProductDiv = styled.div`
 
 const ProductTitle = styled.p`
   font-size: 14px;
+  font-weight: 700;
   line-height: 17px;
 `;
 
