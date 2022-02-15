@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userIdAtom, userNoAtom } from "../../atoms/Login";
-import { IGroupData } from "./MoimDetail";
+import { IProductContent } from "./MoimDetail";
 
 export type RequestPayResponseCallback = (response: RequestPayResponse) => void;
 
@@ -79,7 +79,14 @@ export interface RequestPayResponse extends RequestPayAdditionalResponse {
 {
   /* price prop해주는 부분에서 가격 계산 제대로 된걸로 넣기 */
 }
-function KakaoPay({ groupNo, price }: any) {
+
+interface IKakaoContent {
+  groupNo: string;
+  products: Array<IProductContent>;
+  price: number;
+}
+
+function KakaoPay({ groupNo, products, price }: IKakaoContent) {
   const userNo = useRecoilValue(userNoAtom);
   const userId = useRecoilValue(userIdAtom);
   const [time, setTime] = useState(0);
@@ -110,9 +117,7 @@ function KakaoPay({ groupNo, price }: any) {
     const paymentData = {
       userNo: userNo,
       groupNo: groupNo,
-      optionNo: 1,
-      amount: 1,
-      price: price,
+      products: products,
     };
 
     const JWT = localStorage.getItem("login_token");
