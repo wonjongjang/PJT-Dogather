@@ -32,27 +32,6 @@ function Router() {
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/moim/:groupNo/*" element={<MoimDetail />}>
-          <Route path="" element={<MoimProduct />} />
-          <Route path="faq" element={<MoimFAQ />} />
-          <Route path="review" element={<MoimReview />} />
-          <Route path="refund" element={<MoimRefund />} />
-        </Route>
-
-        <Route path="/community" element={<CommunityHome />} />
-        {/* error */}
-        <Route path="/error404" element={<Error404 />} />
-
-        <Route
-          path="/community/announcement/"
-          element={<AnnouncementCommunity />}
-        />
-        <Route path="/community/infoshare/" element={<InfoShareCommunity />} />
-        <Route path="/community/free/" element={<FreeCommunity />} />
-        <Route path="/community/usedsale/" element={<UsedSaleCommunity />} />
-        <Route path="/community/review/" element={<ReviewCommunity />} />
-
         {/* 로그인 하지 않았을 때 url 직접 접근 가능 */}
         <Route
           path="/login"
@@ -73,7 +52,30 @@ function Router() {
           element={isLogin ? <CreateMoim /> : <Navigate replace to="/" />}
         />
 
+        <Route path="/moim/:groupNo/*" element={<MoimDetail />}>
+          <Route path="" element={<MoimProduct />} />
+          <Route path="faq" element={<MoimFAQ />} />
+          <Route path="review" element={<MoimReview />} />
+          <Route path="refund" element={<MoimRefund />} />
+        </Route>
+
+        <Route path="/community" element={<CommunityHome />} />
+
+        <Route
+          path="/community/announcement/"
+          element={<AnnouncementCommunity />}
+        />
+        <Route path="/community/infoshare/" element={<InfoShareCommunity />} />
+        <Route path="/community/free/" element={<FreeCommunity />} />
+        <Route path="/community/usedsale/" element={<UsedSaleCommunity />} />
+        <Route path="/community/review/" element={<ReviewCommunity />} />
+
         <Route path="/chat" element={<MoimChatbot />} />
+
+        {/* error */}
+        <Route path="/error404" element={<Error404 />} />
+
+        <Route path="/" element={<Home />} />
       </Routes>
       <Footer />
     </BrowserRouter>

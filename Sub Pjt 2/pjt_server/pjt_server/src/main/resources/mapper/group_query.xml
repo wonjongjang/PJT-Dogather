@@ -18,6 +18,7 @@
         <result column="user_nickname" property="leaderName"/>
         <result column="category_no" property="categoryNo"/>
         <result column="category_name" property="categoryName"/>
+        <result column="count" property="count"/>
     </resultMap>
 
 
@@ -39,10 +40,38 @@
         g.link,
         g.origin_price,
         g.price,
-        g.view
+        g.view,
+        (SELECT count(distinct user_no) from dogather.payment where group_no = g.group_no) as count
         from dogather.group as g
         left join dogather.user as u on g.group_leader = u.user_no
         left join dogather.category as c on g.category_no = c.category_no
+
+    </select>
+
+    <select id="getCategoryList" resultMap="grouplistMap" parameterType="Map">
+        select
+            g.group_no,
+            g.group_leader,
+            u.user_no,
+            u.user_nickname,
+            c.category_name,
+            g.category_no,
+            g.created,
+            g.updated,
+            g.deadline,
+            g.max_people,
+            g.status,
+            g.product,
+            g.detail,
+            g.link,
+            g.origin_price,
+            g.price,
+            g.view
+        from dogather.group as g
+        left join dogather.user as u on g.group_leader = u.user_no
+        left join dogather.category as c on g.category_no = c.category_no
+        where g.category_no = #{categoryNo}
+            limit 8 offset #{page}
     </select>
 
     <select id="getHotList" resultMap="grouplistMap">
@@ -63,7 +92,8 @@
         g.link,
         g.origin_price,
         g.price,
-        g.view
+        g.view,
+        (SELECT count(distinct user_no) from dogather.payment where group_no = g.group_no) as count
         from dogather.group as g
         left join dogather.user as u on g.group_leader = u.user_no
         left join dogather.category as c on g.category_no = c.category_no
@@ -88,7 +118,8 @@
             g.link,
             g.origin_price,
             g.price,
-            g.view
+            g.view,
+        (SELECT count(distinct user_no) from dogather.payment where group_no = g.group_no) as count
         from dogather.group as g
                  left join dogather.user as u on g.group_leader = u.user_no
                  left join dogather.category as c on g.category_no = c.category_no
@@ -113,7 +144,8 @@
             g.link,
             g.origin_price,
             g.price,
-            g.view
+            g.view,
+        (SELECT count(distinct user_no) from dogather.payment where group_no = g.group_no) as count
         from dogather.group as g
                  left join dogather.user as u on g.group_leader = u.user_no
                  left join dogather.category as c on g.category_no = c.category_no
@@ -194,6 +226,7 @@
         <result column="user_nickname" property="leaderName"/>
         <result column="category_no" property="categoryNo"/>
         <result column="category_name" property="categoryName"/>
+        <result column="count" property="count"/>
     </resultMap>
 
     <select id="group" parameterType="int" resultMap="groupMap">
@@ -214,7 +247,8 @@
         g.link,
         g.origin_price,
         g.price,
-        g.view
+        g.view,
+        (SELECT count(distinct user_no) from dogather.payment where group_no = #{groupNo}) as count
         from dogather.group as g
         left join dogather.user as u on g.group_leader = u.user_no
         left join dogather.category as c on g.category_no = c.category_no
@@ -255,7 +289,8 @@
     </insert>
 
     <select id="categoryList" parameterType="int" resultMap="grouplistMap">
-        select g.group_no, u.user_no, u.user_nickname, g.deadline, g.created, g.updated, g.detail, g.link, g.max_people, g.view, g.status, g.product, g.price, c.category_no, c.category_name
+        select g.group_no, u.user_no, u.user_nickname, g.deadline, g.created, g.updated, g.detail, g.link, g.max_people, g.view, g.status, g.product, g.price, c.category_no, c.category_name,
+        (SELECT count(distinct user_no) from dogather.payment where group_no = g.group_no) as count
         from dogather.group AS g
         left join category as c on g.category_no = c.category_no
         left join dogather.user as u on g.group_leader = u.user_no
@@ -263,7 +298,8 @@
     </select>
 
     <select id="wordSearch" parameterType="List" resultType="com.dogather.pjtserver.dto.GroupReturnDto">
-        select g.group_no, u.user_no, u.user_nickname, g.deadline, g.max_people, g.view, g.status, g.product, g.price, c.category_no, c.category_name
+        select g.group_no, u.user_no, u.user_nickname, g.deadline, g.created, g.updated, g.detail, g.link, g.max_people, g.view, g.status, g.product, g.price, c.category_no, c.category_name,
+        (SELECT count(distinct user_no) from dogather.payment where group_no = g.group_no) as count
         from dogather.group AS g
         left join category as c on g.category_no = c.category_no
         left join dogather.user as u on g.group_leader = u.user_no
@@ -312,6 +348,7 @@
         <result column="user_nickname" property="leaderName"/>
         <result column="category_no" property="categoryNo"/>
         <result column="category_name" property="categoryName"/>
+        <result column="count" property="count"/>
         <collection property="resultPaymentDtos" ofType="com.dogather.pjtserver.dto.ResultPaymentDto">
             <result column="option_name" property="optionName"/>
             <result column="amount" property="amount"/>
@@ -341,7 +378,8 @@
         g.link,
         g.origin_price,
         g.price,
-        g.view
+        g.view,
+        (SELECT count(distinct user_no) from dogather.payment where group_no = p.group_no) as count
         from dogather.payment as p
         left join dogather.group as g on g.group_no = p.group_no
         left join dogather.option as o on p.option_no = o.option_no
@@ -369,7 +407,8 @@
         g.link,
         g.origin_price,
         g.price,
-        g.view
+        g.view,
+        (SELECT count(distinct user_no) from dogather.payment where group_no = g.group_no) as count
         from dogather.group as g
         left join dogather.user as u on g.group_leader = u.user_no
         left join dogather.category as c on g.category_no = c.category_no
@@ -383,7 +422,7 @@
     </select>
 
     <insert id="groupViewsInsert" parameterType="int">
-        insert into dogather.board_views (group_no, user_no)
+        insert into dogather.group_views (group_no, user_no)
         values (#{groupNo}, #{userNo})
     </insert>
 

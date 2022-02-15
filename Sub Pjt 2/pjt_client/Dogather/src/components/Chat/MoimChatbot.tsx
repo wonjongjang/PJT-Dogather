@@ -6,8 +6,20 @@ function MoimChatbot() {
       <ChatTitle>1:1 Dogather Talk</ChatTitle>
       <Chatbox>
         <ChatMenuBox>
-          <ChatMenuIconBox>sdsd</ChatMenuIconBox>
-          <ChatMenuIconBox>sdsd</ChatMenuIconBox>
+          <ChatMenuIconBox>
+            <CustomerIcon>
+              <div>img</div>
+              <div>text</div>
+            </CustomerIcon>
+            <CustomerIcon>
+              <div>img</div>
+              <div>text</div>
+            </CustomerIcon>
+          </ChatMenuIconBox>
+          <SearchBar>
+            searchbar
+            <SearchBarIcon>sdsd</SearchBarIcon>
+          </SearchBar>
         </ChatMenuBox>
         <ChatTalkBox>
 
@@ -60,7 +72,40 @@ const ChatMenuIconBox = styled.div`
   flex-direction: row;
   height: 80px;
   justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #758a87;
 `;
+
+const CustomerIcon = styled.div`
+  background-color: #7e147e;
+  display: flex;
+  flex-direction: column;
+  height: 80px;
+  width: 70px;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 4px;
+`;
+
+const SearchBar = styled.div`
+  background-color: #cbc5cb;
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+  width: 230px;
+  justify-content: center;
+  align-items: center;
+  margin: 15px auto;
+`;
+
+const SearchBarIcon = styled.div`
+  background-color: #6f076f;
+  position: absolute
+  height: 40px;
+  width: 30px
+  right: 0px;
+`;
+
 
 
 const ChatTalkBox = styled.div`

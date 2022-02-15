@@ -1,7 +1,18 @@
 import styled from "styled-components";
 import { IGroup } from "../MyPage";
 
-function LikeGroup(group: IGroup) {
+function PaymentGroup(group: IGroup) {
+  const totalPriceCal = () => {
+    let tot = group.price;
+    group.resultPaymentDtos.map(
+      (option) => (tot += option.amountOfPrice * option.amount)
+    );
+    // console.log(tot);
+    return tot;
+  };
+
+  const totalPrice = totalPriceCal();
+
   return (
     <Container>
       <LeftSide>
@@ -12,20 +23,24 @@ function LikeGroup(group: IGroup) {
         </ImgDiv>
         <ProductDiv>
           <ProductTitle>{group.product}</ProductTitle>
-          <ProductPeople>
+
+          <Option>
             {group.count} / {group.maxPeople}
-          </ProductPeople>
-          <ProductDeadline>{group.deadline}</ProductDeadline>
+          </Option>
+          <ProductInfo>{group.deadline}</ProductInfo>
         </ProductDiv>
       </LeftSide>
+      <MidSide>
+        {group.resultPaymentDtos.map((option) => (
+          <Option key={option.optionName}>
+            {option.optionName} : {option.amount}
+          </Option>
+        ))}
+      </MidSide>
       <RightSide>
-        <StatusDiv>
-          {group.status === "마감" ? (
-            <StatusOff>{group.status}</StatusOff>
-          ) : (
-            <StatusOn>{group.status}</StatusOn>
-          )}
-        </StatusDiv>
+        <PriceDiv>
+          <Price>{totalPrice}</Price>
+        </PriceDiv>
       </RightSide>
     </Container>
   );
@@ -79,14 +94,7 @@ const ProductTitle = styled.p`
   line-height: 17px;
 `;
 
-const ProductPeople = styled.p`
-  font-size: 14px;
-  line-height: 19px;
-  letter-spacing: -0.5px;
-  margin-top: 4px;
-`;
-
-const ProductDeadline = styled.p`
+const ProductInfo = styled.p`
   color: rgba(34, 34, 34, 0.5);
   font-size: 14px;
   font-weight: 700;
@@ -102,21 +110,30 @@ const RightSide = styled.div`
   margin-left: auto;
 `;
 
-const StatusDiv = styled.div`
+const PriceDiv = styled.div`
   margin-left: 10px;
   width: 134px;
 `;
 
-const StatusOn = styled.div`
-  color: #05c46b;
+const Price = styled.div`
   font-size: 14px;
+  font-weight: 600;
   letter-spacing: -0.21px;
 `;
 
-const StatusOff = styled.div`
-  color: #c23616;
-  font-size: 14px;
-  letter-spacing: -0.21px;
+const MidSide = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
 `;
 
-export default LikeGroup;
+const Option = styled.p`
+  font-size: 14px;
+  line-height: 19px;
+  letter-spacing: -0.5px;
+  margin-top: 4px;
+`;
+
+export default PaymentGroup;

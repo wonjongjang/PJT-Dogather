@@ -132,6 +132,25 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public List<GroupReturnDto> getCategoryList(int categoryNo, int page) {
+        Map map = new HashMap();
+        map.put("categoryNo", categoryNo);
+        map.put("page", 8*(page-1));
+        List<GroupReturnDto> list = groupDao.getCategoryList(map);
+        for (GroupReturnDto group : list) {
+//            if (!groupDao.getMainImage(group.getGroupNo()).toString().equals("no")){
+            Integer mainImage = groupDao.getMainImage(group.getGroupNo());
+            if (mainImage != null) {
+                GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
+                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + "s_" + mediaDto.getMediaSavename();
+                group.setMainImage(uploadPath);
+            } else
+                group.setMainImage("");
+        }
+        return list;
+    }
+
+    @Override
     public List<GroupReturnDto> getHotList() {
         List<GroupReturnDto> groupList = groupDao.getHotList();
         for (GroupReturnDto group : groupList) {
