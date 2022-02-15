@@ -44,7 +44,8 @@ const rows = [
 const theme = createTheme({
   palette: {
     neutral: {
-      main: "#000000",
+      main: "#2d2c2e",
+      // #1E272E
       contrastText: "#fff",
     },
   },
@@ -105,7 +106,7 @@ function AnnounceTable() {
       </Top>
       <Mid>
         <CustomStack>
-          <Stack spacing={5} direction="column">
+          <Stack spacing={2} direction="column">
             <ThemeProvider theme={theme}>
               <Button variant="contained" color="neutral">
                 <Link to={"/community/announcement"}>공지사항게시판</Link>
@@ -243,7 +244,7 @@ const Hr = styled.hr`
 `;
 
 const Top = styled.div`
-  margin-top: 50px;
+  padding-top: 50px;
 `;
 
 const Input = styled.input`
@@ -267,7 +268,7 @@ const CustomPage = styled.div`
 
 const Bottom = styled.div`
   margin-top: 2.5vw;
-  margin-bottom: 2.5vw;
+  padding-bottom: 2.5vw;
 `;
 
 const H3 = styled.h3`
