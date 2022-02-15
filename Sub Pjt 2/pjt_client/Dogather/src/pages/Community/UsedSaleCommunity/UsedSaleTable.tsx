@@ -73,11 +73,7 @@ function UsedSaleTable() {
       <Top>
         <H1>중고판매게시판</H1>
         <CustomTabs>
-          <Tabs>
-            <Tab label="최신글" />
-            <Tab label="조회수" />
-            <Tab label="랭킹순" />
-          </Tabs>
+          <Tabs></Tabs>
         </CustomTabs>
         <div></div>
         <Hr />
