@@ -37,8 +37,10 @@ function HomeRecommendedMoim() {
                 <Link to={`/moim/${d.groupNo}`}>
                   <Card
                     sx={{
-                      width: 200,
-                      height: 200,
+                      minWidth: 250,
+                      minHeight: 250,
+                      maxWidth: 250,
+                      maxHeight: 250,
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
