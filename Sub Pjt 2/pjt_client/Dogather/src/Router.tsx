@@ -24,6 +24,7 @@ import Error404 from "./pages/Error/Error404";
 import MoimChatbot from "./components/Chat/MoimChatbot";
 import SearchDetail from "./pages/Main/SearchDetail";
 import MoimPayment from "./pages/Moim/MoimDetailComponent/MoimPayment";
+import UserUpdate from "./pages/Signup/UserUpdate";
 
 function Router() {
   const isLogin = useRecoilValue(isLoginAtom);
@@ -45,7 +46,11 @@ function Router() {
 
         {/* 로그인 했을 때 url 직접 접근 가능 */}
         <Route
-          path="/mypage"
+          path="/user/update"
+          element={isLogin ? <UserUpdate /> : <Navigate replace to="/" />}
+        />
+        <Route
+          path="/user"
           element={isLogin ? <MyPage /> : <Navigate replace to="/" />}
         />
         <Route

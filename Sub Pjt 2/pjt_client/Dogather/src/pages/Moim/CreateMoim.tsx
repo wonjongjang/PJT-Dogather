@@ -14,6 +14,7 @@ import FAQ from "./CreateMoimComponents/FAQ/FAQ";
 import { useState } from "react";
 import { ProductCategories } from "../../atoms/ProductCategories";
 
+// useForm에 담길 데이터 타입
 export interface IMoimForm {
   groupLeader: number; // 모임 대표
   categoryNo: number; // 카테고리 pk
@@ -33,7 +34,7 @@ interface IAreaProps {
 }
 
 function CreateMoim() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // 페이지 이동
 
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const [userNo, setUserNo] = useRecoilState(userNoAtom);
@@ -41,14 +42,16 @@ function CreateMoim() {
   const [options, setOptions] = useRecoilState(OptionsAtom);
   const [FAQs, setFAQs] = useRecoilState(FAQsAtom);
 
+  // useForm으로 form 내용 한 번에 받음
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setError,
-    watch,
-    getValues,
-  } = useForm<IMoimForm>({ mode: "onBlur" });
+    register, // 지정된 form 내부 입력값들을 받아와서 저장
+    handleSubmit, // validation 담당
+    formState: { errors }, // formState: form 상태 정보, errors: 입력값들의 에러 정보
+    setError, // 특정한 에러 발생 생성
+    watch, // 입력값들의 변화 관찰
+    getValues, // 입력값들을 읽음
+    setValue, // 입력값들을 설정
+  } = useForm<IMoimForm>({ mode: "onBlur" }); // onBlur: 입력 후 input 벗어났을 때 유효성 검사
 
   // 현재 날짜와 시간 (모임 마감 일시 최소값)
   let nowDate = new Date(
@@ -57,10 +60,10 @@ function CreateMoim() {
     .toISOString()
     .slice(0, -5);
 
-  // 대표 이미지
-  const [file, setFile] = useState<FileList | undefined>();
+  // 대표 이미지 업로드
+  const [file, setFile] = useState<FileList | undefined>(); // 대표 이미지 저장 (useForm과 따로 관리)
   const [fileAttachment, setFileAttachment] = useState(); // 미리보기
-
+  // 파일 업로드 시 실행
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { files },
@@ -69,20 +72,20 @@ function CreateMoim() {
     if (files != null) {
       setFile(files);
       const mainFile = files[0];
-      const reader = new FileReader();
+      const reader = new FileReader(); // 미리보기
       reader.onloadend = (finishedEvent: any) => {
         const {
           currentTarget: { result },
         } = finishedEvent;
-        // console.log(finishedEvent);
         setFileAttachment(result);
       };
       reader.readAsDataURL(mainFile); // 파일 읽음
     }
   };
 
-  // 상세 이미지
-  const [fileList, setFileList] = useState<FileList | undefined>();
+  // 상세 이미지 업로드
+  const [fileList, setFileList] = useState<FileList | undefined>(); // 상세 이미지 저장 (useForm과 따로 관리)
+  // 파일 업로드 시 실행
   const onChangeFiles = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { files },
@@ -93,11 +96,13 @@ function CreateMoim() {
     }
   };
 
+  // form 제출 시 실행
   const onValid = (data: IMoimForm) => {
     const JWT = localStorage.getItem("login_token"); // 토큰 가져오기 (Interceptor 정보)
 
+    // 마감 날짜 시간 형식 변환 (DB에 맞는 양식)
     const newDeadline =
-      data.deadline.replace("T", " ").substring(0, 19) + ":00"; // 마감 날짜 시간 형식 변환
+      data.deadline.replace("T", " ").substring(0, 19) + ":00";
 
     const newData = {
       group: {
@@ -110,24 +115,29 @@ function CreateMoim() {
       requestfaq: FAQs,
     };
 
-    const formData = new FormData();
+    const formData = new FormData(); // 이미지 보내기 위해 FormData() 사용
 
     formData.append(
+      // 파일 외 데이터들 추가
       "groupRegisterDto",
-      new Blob([JSON.stringify(newData)], { type: "application/json" })
+      new Blob([JSON.stringify(newData)], { type: "application/json" }) // 데이터 전송 시 FormData는 body에 따로 처리없이 보내기 때문에 파일 외 데이터들은 append 할 때 Blob 처리 해줌
     );
 
     if (fileList != null) {
+      // 상세 이미지 추가
       Array.from(fileList).forEach((f) => formData.append("file", f));
     }
 
     if (file != null) {
+      // 대표 이미지 추가
       formData.append("mainImage", file[0]);
     }
 
+    // 데이터 전송
     fetch("http://i6e104.p.ssafy.io:8090/api/group/register", {
       method: "POST",
       headers: {
+        // Interceptor
         jwt: `${JWT}`,
         userId: userId,
       },
@@ -136,7 +146,6 @@ function CreateMoim() {
       .then((response) => response.json())
       .then((result) => {
         if (result) {
-          // console.log(result);
           if (result.msg === "relogin") {
             // 토큰 만료 시
             localStorage.clear(); // 로컬 스토리지 비우기
@@ -145,11 +154,13 @@ function CreateMoim() {
             setUserId(""); // 저장된 user id 초기화
             alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
             setTimeout(() => {
-              navigate("/login");
-            }, 1); // 로그인 페이지로 이동
+              // 1ms (0.001초) 후 navigate 실행 (미세한 차이로 isLogin이 false 되는 것 보다 navigate가 빨라 isLogin이 true라고 판단하여 로그인 페이지에서 메인 페이지로 튕김)
+              navigate("/login"); // 로그인 페이지로 이동
+            }, 1);
           } else {
-            const ObjectToString = JSON.stringify(result); // 반환값이 object
-            navigate(`/moim/${ObjectToString}`);
+            // 토큰 만료 아닐 시
+            const ObjectToString = JSON.stringify(result); // 반환값이 object이므로 string으로 변환 (navigate시 url 깨지는 현상 해결)
+            navigate(`/moim/${ObjectToString}`); // 모임 상세 페이지로 이동
           }
         }
       });

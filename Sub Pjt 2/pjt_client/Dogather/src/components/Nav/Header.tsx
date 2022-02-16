@@ -41,21 +41,22 @@ function Header() {
   };
 
   // 검색 기능
+  // useForm으로 form 내용 한 번에 받음
   const { register, handleSubmit, setValue } = useForm<IForm>();
+  // form 제출 시 실행
   const onValid = (data: IForm) => {
-    // console.log(data.keyword);
-    const keyword = data.keyword;
-    setValue("keyword", "");
-    navigate(`/search/${keyword}`, { state: { option: "query" } });
+    const keyword = data.keyword; // 아래 setValue를 위해 다른 변수에 넣어줌
+    setValue("keyword", ""); // 검색 후 input에 글자 남아있는 것 초기화
+    navigate(`/search/${keyword}`, { state: { option: "query" } }); // 검색 상세 페이지로 이동 (여기선 select가 없기 때문에 옵션은 모임 검색으로 지정한 후 전달)
   };
 
   useEffect(() => {
     if (!isLogin) {
-      setIsLogin(localStorage.getItem("login_token") !== null);
+      setIsLogin(localStorage.getItem("login_token") !== null); // 로컬 스토리지에 login_token이 비어있지 않으면 isLogin을 true로 바꿈
     }
-    setOptions([]);
-    setFAQs([]);
-    setCategories([]);
+    setOptions([]); // 모임 생성의 옵션 초기화
+    setFAQs([]); // 모임 생성의 FAQ 초기화
+    setCategories([]); // 회원가입의 체크박스 초기화
     setSearchOpen(false); // 검색 아이콘 위치 초기화
     inputAnimation.start({ scaleX: 0 }); // 검색 input 위치 초기화
   }, [location]); // url 바뀔 때 마다 로컬 스토리지에 토큰이 있는지 확인하여 로그인 여부를 변경
@@ -81,7 +82,7 @@ function Header() {
                   <LogoutDiv>로그아웃</LogoutDiv>
                 </UpperItem>
                 <UpperItem>
-                  <Link to="/mypage">마이페이지</Link>
+                  <Link to="/user">마이페이지</Link>
                 </UpperItem>
               </>
             ) : (
