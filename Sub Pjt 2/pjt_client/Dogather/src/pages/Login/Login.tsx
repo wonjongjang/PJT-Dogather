@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { isLoginAtom, userIdAtom, userNoAtom } from "../../atoms/Login";
 
+// useForm에 담길 데이터 타입
 interface ILoginForm {
   userId: string;
   userPw: string;
@@ -16,12 +17,14 @@ function Login() {
   const setUserNo = useSetRecoilState(userNoAtom);
   const setUserId = useSetRecoilState(userIdAtom);
 
+  // useForm으로 form 내용 한 번에 받음
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<ILoginForm>();
 
+  // form 제출 시 실행
   const onValid = (data: ILoginForm) => {
     fetch("http://i6e104.p.ssafy.io:8090/api/user/login", {
       method: "POST",
@@ -33,11 +36,6 @@ function Login() {
       .then((response) => response.json())
       .then((result) => {
         if (result.msg === "success") {
-          // 로그인 성공 시
-          // let JWTToken = {
-          //   "token": result.jwt,
-          //   "created": new Date().get
-          // }
           localStorage.setItem("login_token", result.jwt);
           setIsLogin(true);
           setUserNo(result.userInfo.userNo);
@@ -87,8 +85,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   background-color: whitesmoke;
-  /* height: ; */
-  padding-bottom: 150px;
+  padding-bottom: 150px; // footer와 Container 사이 공간 제거
 `;
 
 const SubContainer = styled.div`

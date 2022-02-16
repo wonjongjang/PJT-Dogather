@@ -20,10 +20,10 @@ import {
 import {
   CategoriesAtom,
   ProductCategories,
-} from "../../atoms/ProductCategories";
+} from "../../../atoms/ProductCategories";
 import { useRecoilState } from "recoil";
 
-function Category() {
+function UpdateCategory() {
   const [categories, setCategories] = useRecoilState(CategoriesAtom);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +37,6 @@ function Category() {
       setCategories(categories.filter((el: number) => el !== Number(value)));
     }
   };
-  // console.log(categories);
 
   return (
     <>
@@ -47,6 +46,9 @@ function Category() {
             type="checkbox"
             value={ProductCategories.남성패션}
             onChange={onChange}
+            checked={
+              categories.includes(ProductCategories.남성패션) ? true : false
+            }
           />
           <Text>
             <FontAwesomeIcon icon={faTshirt} size="lg" fixedWidth />
@@ -58,6 +60,9 @@ function Category() {
             type="checkbox"
             value={ProductCategories.여성패션}
             onChange={onChange}
+            checked={
+              categories.includes(ProductCategories.여성패션) ? true : false
+            }
           />
           <Text>
             <FontAwesomeIcon icon={faTshirt} size="lg" fixedWidth />
@@ -69,6 +74,9 @@ function Category() {
             type="checkbox"
             value={ProductCategories["뷰티/미용"]}
             onChange={onChange}
+            checked={
+              categories.includes(ProductCategories["뷰티/미용"]) ? true : false
+            }
           />
           <Text>
             <FontAwesomeIcon icon={faAirFreshener} size="lg" fixedWidth />
@@ -80,6 +88,7 @@ function Category() {
             type="checkbox"
             value={ProductCategories.식품}
             onChange={onChange}
+            checked={categories.includes(ProductCategories.식품) ? true : false}
           />
           <Text>
             <FontAwesomeIcon icon={faPizzaSlice} size="lg" fixedWidth />
@@ -93,6 +102,11 @@ function Category() {
             type="checkbox"
             value={ProductCategories["건강/의료용품"]}
             onChange={onChange}
+            checked={
+              categories.includes(ProductCategories["건강/의료용품"])
+                ? true
+                : false
+            }
           />
           <Text>
             <FontAwesomeIcon icon={faPills} size="lg" fixedWidth />
@@ -104,6 +118,9 @@ function Category() {
             type="checkbox"
             value={ProductCategories.생활가전}
             onChange={onChange}
+            checked={
+              categories.includes(ProductCategories.생활가전) ? true : false
+            }
           />
           <Text>
             <FontAwesomeIcon icon={faTv} size="lg" fixedWidth />
@@ -115,6 +132,9 @@ function Category() {
             type="checkbox"
             value={ProductCategories.디지털기기}
             onChange={onChange}
+            checked={
+              categories.includes(ProductCategories.디지털기기) ? true : false
+            }
           />
           <Text>
             <FontAwesomeIcon icon={faTabletAlt} size="lg" fixedWidth />
@@ -126,6 +146,11 @@ function Category() {
             type="checkbox"
             value={ProductCategories["가구/인테리어"]}
             onChange={onChange}
+            checked={
+              categories.includes(ProductCategories["가구/인테리어"])
+                ? true
+                : false
+            }
           />
           <Text>
             <FontAwesomeIcon icon={faCouch} size="lg" fixedWidth />
@@ -139,6 +164,9 @@ function Category() {
             type="checkbox"
             value={ProductCategories.생활용품}
             onChange={onChange}
+            checked={
+              categories.includes(ProductCategories.생활용품) ? true : false
+            }
           />
           <Text>
             <FontAwesomeIcon icon={faUtensils} size="lg" fixedWidth />
@@ -150,6 +178,11 @@ function Category() {
             type="checkbox"
             value={ProductCategories["도서/티켓/E쿠폰"]}
             onChange={onChange}
+            checked={
+              categories.includes(ProductCategories["도서/티켓/E쿠폰"])
+                ? true
+                : false
+            }
           />
           <Text>
             <FontAwesomeIcon icon={faBook} size="lg" fixedWidth />
@@ -161,6 +194,11 @@ function Category() {
             type="checkbox"
             value={ProductCategories["출산/유아동"]}
             onChange={onChange}
+            checked={
+              categories.includes(ProductCategories["출산/유아동"])
+                ? true
+                : false
+            }
           />
           <Text>
             <FontAwesomeIcon icon={faBabyCarriage} size="lg" fixedWidth />
@@ -172,6 +210,9 @@ function Category() {
             type="checkbox"
             value={ProductCategories.반려동물용품}
             onChange={onChange}
+            checked={
+              categories.includes(ProductCategories.반려동물용품) ? true : false
+            }
           />
           <Text>
             <FontAwesomeIcon icon={faPaw} size="lg" fixedWidth />
@@ -185,6 +226,11 @@ function Category() {
             type="checkbox"
             value={ProductCategories["스포츠/레저"]}
             onChange={onChange}
+            checked={
+              categories.includes(ProductCategories["스포츠/레저"])
+                ? true
+                : false
+            }
           />
           <Text>
             <FontAwesomeIcon icon={faBaseballBall} size="lg" fixedWidth />
@@ -196,6 +242,11 @@ function Category() {
             type="checkbox"
             value={ProductCategories["자동차/공구"]}
             onChange={onChange}
+            checked={
+              categories.includes(ProductCategories["자동차/공구"])
+                ? true
+                : false
+            }
           />
           <Text>
             <FontAwesomeIcon icon={faCarSide} size="lg" fixedWidth />
@@ -207,6 +258,7 @@ function Category() {
             type="checkbox"
             value={ProductCategories.악기}
             onChange={onChange}
+            checked={categories.includes(ProductCategories.악기) ? true : false}
           />
           <Text>
             <FontAwesomeIcon icon={faGuitar} size="lg" fixedWidth />
@@ -218,6 +270,9 @@ function Category() {
             type="checkbox"
             value={ProductCategories["게임/놀이"]}
             onChange={onChange}
+            checked={
+              categories.includes(ProductCategories["게임/놀이"]) ? true : false
+            }
           />
           <Text>
             <FontAwesomeIcon icon={faGamepad} size="lg" fixedWidth />
@@ -255,4 +310,4 @@ const Text = styled.div`
   width: 100%;
 `;
 
-export default Category;
+export default UpdateCategory;
