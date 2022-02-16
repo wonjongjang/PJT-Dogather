@@ -24,6 +24,7 @@ public class UserRegisterDto {
     private List<Integer> userCategory;
 
     public void setUserInfo(UserDto userDto){
+        this.userId = userDto.getUserId();
         this.msg = userDto.getMsg();
         this.userNo = userDto.getUserNo();
         this.userPw = userDto.getUserPw();
