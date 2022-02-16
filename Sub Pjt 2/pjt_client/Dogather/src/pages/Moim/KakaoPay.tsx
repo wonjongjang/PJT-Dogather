@@ -160,7 +160,7 @@ function KakaoPay({ groupNo, products, price }: IKakaoContent) {
   };
   return (
     <Container>
-      <Button onClick={handlePayment}>카카오페이</Button>
+      <Button onClick={handlePayment}>{""}</Button>
     </Container>
   );
 }
