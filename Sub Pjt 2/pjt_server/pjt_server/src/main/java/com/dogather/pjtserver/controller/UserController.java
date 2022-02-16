@@ -42,7 +42,7 @@ public class UserController {
  		try{
 			 // SHA256을 이용한 PW, Email hashing
 			dto.setUserPw(SecureHash.hashing256(dto.getUserPw()));
-			dto.setUserEmail(SecureHash.hashing256(dto.getUserEmail()));
+//			dto.setUserEmail(SecureHash.hashing256(dto.getUserEmail()));
 			int created = userService.userRegister(dto);
 			List<Integer> list = dto.getUserCategory();
 			if( list != null && created > 0) {
@@ -120,6 +120,13 @@ public class UserController {
 	public ResponseEntity<String> delete(@PathVariable String userId, @RequestHeader String jwt){
 		userService.userDelete(userId);
 		return ResponseEntity.status(HttpStatus.OK).body(userId + " deleted completely!");
+	}
+
+	@GetMapping("/{userNo}/info")
+	public ResponseEntity<UserDto> getUserInfo(@PathVariable int userNo){
+		UserDto user = userService.userFind(userNo);
+		user.setUserPw("*******");
+		return new ResponseEntity<UserDto>(user, HttpStatus.OK);
 	}
 
 	@GetMapping("/{userId}")
