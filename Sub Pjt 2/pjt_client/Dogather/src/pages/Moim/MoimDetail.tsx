@@ -266,11 +266,11 @@ function MoimDetail() {
           <>
             <Overview>
               <ImgWrapper>
-                {/* <Img
+                <Img
                   src={process.env.PUBLIC_URL + "/img/Hoodie.png"}
                   alt={"메인 이미지"}
-                /> */}
-                <Img
+                />
+                {/* <Img
                   src={
                     groupData?.mainImage
                       ? process.env.PUBLIC_URL +
@@ -279,7 +279,7 @@ function MoimDetail() {
                       : defaultImg
                   }
                   alt={mainImgAddress}
-                />
+                /> */}
                 {/* <Img src={detailImgAddress} alt={detailImgAddress} /> */}
                 {/* <MoimDetailImg /> */}
               </ImgWrapper>
@@ -293,8 +293,11 @@ function MoimDetail() {
                     marginBottom: "3px",
                   }}
                   src={process.env.PUBLIC_URL + "/img/베스트라벨.png"}
-                  alt=""
-                />
+                  alt="기본라벨"
+                >
+                  {/* <span>남성패션</span> */}
+                </img>
+
                 <CategoryName>{groupData?.categoryName}</CategoryName>
                 <LeaderName>{groupData?.leaderName}</LeaderName>
 
@@ -533,7 +536,7 @@ const ImgWrapper = styled.div`
 const Img = styled.img`
   height: 500px;
   width: 500px;
-  object-fit: cover;
+  object-fit: contain;
   overflow: hidden;
 `;
 
