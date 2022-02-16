@@ -5,6 +5,7 @@ import {
   Routes,
   useLocation,
   useMatch,
+  useNavigate,
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
@@ -59,6 +60,8 @@ export interface IGroupData {
   options: Array<IOptionsData>;
   mediaList: Array<string>;
   faqList: Array<object>;
+  categoryName: string;
+  leaderName: string;
 }
 
 export interface IProductContent {
@@ -68,6 +71,7 @@ export interface IProductContent {
   optionNo: string;
   amount: number;
   price: number;
+  // priceByOption: number;
 }
 function MoimDetail() {
   // useEffect(() => {
@@ -88,6 +92,7 @@ function MoimDetail() {
 
   // groupNo에 따라 페이지가 변경되므로 그룹No가 넘어갈 수 있도록 해야함.
   const { groupNo } = useParams();
+  const navigate = useNavigate();
   // console.log(typeof groupNo);
   const [detailProduct, setDetailProduct] = useRecoilState(detailProducts);
   // const { state } = useLocation() as RouteState;
@@ -123,6 +128,7 @@ function MoimDetail() {
   }, []);
 
   const basePrice = groupData?.price!;
+  // console.log(basePrice);
   const [optionIdx, setOptionIdx] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const [isHidden, setIsHidden] = useState(true);
@@ -131,15 +137,18 @@ function MoimDetail() {
   const [product, setProduct] = useState<Array<IProductContent>>([]);
   const [products, setProducts] = useState<Array<IProductContent>>([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [priceByOption, setPriceByOption] = useState(0);
+  const [totalPriceByOption, setTotalPriceByOption] = useState(0);
+  const [payment, setPayment] = useState("");
 
   const onSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
-    console.log(value);
     // console.log(typeof value);
     const splitValueOption = value.split("/")[0];
     const splitValuePrice = value.split("/")[1];
     const splitValueOptionNo = value.split("/")[2];
-
+    console.log(totalPriceByOption);
+    console.log(quantity);
     product.splice(product.length, 0, {
       userNo: userNo,
       groupNo: groupNo!,
@@ -147,15 +156,21 @@ function MoimDetail() {
       optionNo: splitValueOptionNo,
       amount: quantity,
       price: Number(splitValuePrice),
+      // priceByOption: totalPriceByOption,
+      // price: totalPriceByOption,
     });
     // setProducts(newObject);
 
     const newObject = [...product];
+    const newPrice = priceByOption;
     setIsHidden(false);
     setOptionIdx(Number(value));
     setProducts(newObject);
+    setTotalPriceByOption(newPrice);
   };
   console.log(products);
+
+  // const onApply = (event: React.ChangeEvent<HTMLButtonElement>) => {};
 
   //처음 랜더링되고 유저에게 보이는 수량의 값이 0일 필요가 없기 때문에 초기값으로 1로 주었다.
 
@@ -182,25 +197,47 @@ function MoimDetail() {
   // console.log(options);
   // console.log(optionPrice)
 
-  const increaseQuantity = (o: IProductContent) => {
+  const increaseQuantity = (o: IProductContent, idx: number) => {
     const sum = o.price + basePrice;
     setPrice(price + sum);
     o.amount += 1;
     setTotalAmount(totalAmount + 1);
+    setPriceByOption(sum * o.amount);
   };
 
-  const decreaseQuantity = (o: IProductContent) => {
+  const decreaseQuantity = (o: IProductContent, idx: number) => {
     const sum = o.price + basePrice;
     setPrice(price - sum);
     o.amount -= 1;
     setTotalAmount(totalAmount - 1);
+    setPriceByOption(sum * o.amount);
   };
 
   const handleValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
     setQuantity(Number(value));
-    // console.log(value);
+    setTotalPriceByOption(priceByOption);
+    console.log(value);
   };
+
+  // const onApply = () => {
+  //   console.log(products.length, price);
+  //   console.log(payment);
+  //   if (!products.length) {
+  //     alert("옵션을 선택해주세요");
+  //     setTimeout(() => navigate(`/moim/${groupNo}`), 1);
+  //   } else {
+  //     if (!price) {
+  //       alert("물품 수량을 선택해주세요");
+  //       setTimeout(() => navigate(`/moim/${groupNo}`), 1);
+  //     } else {
+  //       if (price < basePrice * totalAmount) {
+  //         alert("옵션별 수량을 모두 선택해주세요.");
+  //         setTimeout(() => navigate(`/moim/${groupNo}`), 1);
+  //       }
+  //     }
+  //   }
+  // };
 
   // const mainImgAddress =
   //   process.env.PUBLIC_URL + "/doimage/" + groupData?.mainImage;
@@ -250,8 +287,8 @@ function MoimDetail() {
                   src={process.env.PUBLIC_URL + "/img/베스트라벨.png"}
                   alt=""
                 />
-                <CategoryName>{"남성패션"}</CategoryName>
-                <LeaderName>{"Dogather(모임리더)"}</LeaderName>
+                <CategoryName>{groupData?.categoryName}</CategoryName>
+                <LeaderName>{groupData?.leaderName}</LeaderName>
 
                 <ProductTitle>{groupData?.product}</ProductTitle>
                 <ProductDetail>{groupData?.detail}</ProductDetail>
@@ -292,7 +329,11 @@ function MoimDetail() {
                               option.optionNo
                             }
                           >
-                            {option.optionName}
+                            {option.optionName +
+                              " / " +
+                              "+" +
+                              option.optionPrice +
+                              "원"}
                           </SelectOption>
                         ))}
                       </SelectSelect>
@@ -312,7 +353,7 @@ function MoimDetail() {
                                 <SelectContentItem>
                                   <QuantityButton
                                     className="purchaseButton"
-                                    onClick={() => decreaseQuantity(o)} //onClick이 되면 카운팅이 감소되는 함수실행
+                                    onClick={() => decreaseQuantity(o, idx)} //onClick이 되면 카운팅이 감소되는 함수실행
                                     disabled={o.amount < 1}
                                   >
                                     {"-"}
@@ -325,7 +366,7 @@ function MoimDetail() {
                                   />
                                   <QuantityButton
                                     className="purchaseButton"
-                                    onClick={() => increaseQuantity(o)}
+                                    onClick={() => increaseQuantity(o, idx)}
                                     disabled={o.amount < 0}
                                   >
                                     {"+"}
@@ -355,19 +396,26 @@ function MoimDetail() {
                       >
                         <Link to={"/"}>관심등록</Link>
                       </Button>
-                      <Button style={{ backgroundColor: "#6fbd63" }}>
-                        <Link
-                          to={`/moim/${groupNo}/payment`}
-                          state={{
-                            products: products,
-                            groupNo: groupNo!,
-                            price: price,
-                            img: mainImgAddress,
-                          }}
-                        >
+                      <Link
+                        // onClick={() => onApply()}
+                        style={{ width: "100%" }}
+                        to={`/moim/${groupNo}/payment`}
+                        state={{
+                          products: products,
+                          groupNo: groupNo!,
+                          price: price,
+                          img: mainImgAddress,
+                          leaderName: groupData?.leaderName!,
+                          productName: groupData?.product!,
+                          ProductDetail: groupData?.detail!,
+                          categoryName: groupData?.categoryName!,
+                          basePrice: basePrice,
+                        }}
+                      >
+                        <Button style={{ backgroundColor: "#6fbd63" }}>
                           모임신청
-                        </Link>
-                      </Button>
+                        </Button>
+                      </Link>
                     </SelectContent>
                   </SelectWrapper>
                 </SelectContainer>
