@@ -4,6 +4,7 @@ import com.dogather.pjtserver.dto.UserDto;
 import com.dogather.pjtserver.dto.UserRegisterDto;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -16,4 +17,5 @@ public interface UserDao {
     public void addCategory(Map map);
     public int userIdCheck(String userId);
     public int userNickCheck(String userNickname);
+    public List getUserCategory(int UserNo);
 }

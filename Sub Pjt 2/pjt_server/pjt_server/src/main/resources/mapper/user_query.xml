@@ -42,4 +42,8 @@
         select count(*) from user where user_nickname = #{userNickname}
     </select>
 
+    <select id="getUserCategory" parameterType="int" resultType="int">
+        select category_no from dogather.user_category where user_no = #{userNo}
+    </select>
+
 </mapper>
