@@ -103,11 +103,13 @@ public class UserController {
 	@PutMapping("/{userId}")
 	public ResponseEntity<UserRegisterDto> update(@PathVariable String userId, @RequestHeader String jwt, @RequestBody UserRegisterDto userDto){
 		userDto.setUserId(userId);
+		int userNo = userService.userFind(userId).getUserNo();
+		userDto.setUserNo(userNo);
 		int created = userService.userUpdate(userDto);
 		List<Integer> list = userDto.getUserCategory();
 		if( list != null && created > 0) {
 			for (int i : list) {
-				userService.addCategory(userDto.getUserNo(), i);
+				userService.addCategory(userNo, i);
 			}
 		}
 		if (created == 1 ){
