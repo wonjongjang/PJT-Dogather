@@ -11,7 +11,7 @@ public interface UserService {
     public UserDto userLogin(UserDto userDto);
     public UserDto userFind(String userId);
     public UserDto userFind(int userNo);
-    public int userUpdate(UserDto userDto);
+    public int userUpdate(UserRegisterDto userDto);
     public void userDelete(String userId);
     public void addCategory(int userNo, int categoryNo);
     public boolean userIdCheck(String id);
