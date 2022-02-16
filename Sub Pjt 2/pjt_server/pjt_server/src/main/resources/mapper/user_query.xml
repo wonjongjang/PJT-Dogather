@@ -46,4 +46,8 @@
         select category_no from dogather.user_category where user_no = #{userNo}
     </select>
 
+    <delete id="deleteCategory" parameterType="int">
+        delete from dogather.user_category where user_no=#{userNo}
+    </delete>
+
 </mapper>
