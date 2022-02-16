@@ -25,8 +25,8 @@
 	
     <update id="userUpdate" parameterType="com.dogather.pjtserver.dto.UserDto">
         update user
-        set user_pw = #{userPw}, user_nickname = #{userNickname}, user_addr = #{userAddr}, user_addr_detail = #{userAddrDetail}, user_zip = #{userZip}, user_tel = #{userTel}, user_email = #{userEmail}
-        where user_id = #{userId}
+        set user_nickname = #{userNickname}, user_addr = #{userAddr}, user_addr_detail = #{userAddrDetail}, user_zip = #{userZip}, user_tel = #{userTel}, user_email = #{userEmail}
+         where user_id = #{userId}
     </update>
 
     <delete id="userDelete" parameterType="String">
