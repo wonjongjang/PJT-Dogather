@@ -28,6 +28,7 @@ import MoimProduct from "./MoimDetailComponent/MoimTabs/MoimProduct";
 import MoimFAQ from "./MoimDetailComponent/MoimTabs/MoimFAQ";
 import MoimReview from "./MoimDetailComponent/MoimTabs/MoimReview";
 import MoimRefund from "./MoimDetailComponent/MoimTabs/MoimRefund";
+import { ImgAtom } from "../../atoms/HomeMoimImg";
 
 interface RouteState {
   state: {
@@ -255,7 +256,7 @@ function MoimDetail() {
   // console.log(time);
   const makeComma = (price: number) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
+  const defaultImg = useRecoilValue(ImgAtom);
   console.log(groupData);
 
   return (
@@ -269,7 +270,16 @@ function MoimDetail() {
                   src={process.env.PUBLIC_URL + "/img/Hoodie.png"}
                   alt={"메인 이미지"}
                 /> */}
-                <Img src={mainImgAddress} alt={mainImgAddress} />
+                <Img
+                  src={
+                    groupData?.mainImage
+                      ? process.env.PUBLIC_URL +
+                        "/doimage/" +
+                        groupData?.mainImage
+                      : defaultImg
+                  }
+                  alt={mainImgAddress}
+                />
                 {/* <Img src={detailImgAddress} alt={detailImgAddress} /> */}
                 {/* <MoimDetailImg /> */}
               </ImgWrapper>

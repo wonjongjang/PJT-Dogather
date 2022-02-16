@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { fetchMyPage } from "../../api/MyPage";
 import { userIdAtom, userNoAtom, isLoginAtom } from "../../atoms/Login";
 import LikeGroup from "./MyPageComponents/LikeGroup";
 import PaymentGroup from "./MyPageComponents/PaymentGroup";
+import { myPageImgAtom } from "../../atoms/HomeMoimImg";
 
 export interface IPay {
   amount: number;
@@ -60,6 +61,7 @@ function MyPage() {
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const [userNo, setUserNo] = useRecoilState(userNoAtom);
   const [userId, setUserId] = useRecoilState(userIdAtom);
+  const defaultImg = useRecoilValue(myPageImgAtom);
 
   const { isLoading, data } = useQuery<IUserInfo>([JWT, userId], () =>
     fetchMyPage(JWT!, userId!)
@@ -137,10 +139,7 @@ function MyPage() {
           <Membership>
             <Profile>
               <ProfileImg>
-                <Img
-                  src="https://www.bigjungbo.com/files/attach/images/163/017/178/010/f1f78c3b5eaeb68788a9c98dc796b4c7.jpeg"
-                  alt="이미지"
-                />
+                <Img src={defaultImg} alt="이미지" />
               </ProfileImg>
               <ProfileInfo>
                 <div>
