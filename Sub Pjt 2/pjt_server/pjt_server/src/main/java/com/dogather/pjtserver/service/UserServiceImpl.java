@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
 	public int userUpdate(UserRegisterDto userDto){
+		userDao.deleteCategory(userDto.getUserNo());
 		int created = userDao.userUpdate(userDto);
 		return created;
 	}
@@ -64,7 +65,6 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void addCategory(int userNo, int categoryNo) {
-		userDao.deleteCategory(userNo);
 		Map map = new HashMap();
 		map.put("userNo", userNo);
 		map.put("categoryNo", categoryNo);
