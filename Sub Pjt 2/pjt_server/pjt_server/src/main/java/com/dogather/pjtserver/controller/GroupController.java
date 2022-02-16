@@ -198,7 +198,6 @@ public class GroupController {
     @GetMapping("/search")
     public ResponseEntity<GroupListDto> search(@RequestParam("page")int page, @RequestParam(value="query", required = false, defaultValue = " ")@Nullable String query, @RequestParam(value="nickname",required = false,defaultValue = " ")@Nullable String nickname){
         GroupListDto list = new GroupListDto();
-        System.out.println(query+nickname);
         list.setList(groupService.search(query, nickname, page));
         return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
