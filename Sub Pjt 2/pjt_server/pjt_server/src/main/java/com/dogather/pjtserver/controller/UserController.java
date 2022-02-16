@@ -123,10 +123,12 @@ public class UserController {
 	}
 
 	@GetMapping("/{userNo}/info")
-	public ResponseEntity<UserDto> getUserInfo(@PathVariable int userNo){
-		UserDto user = userService.userFind(userNo);
+	public ResponseEntity<UserRegisterDto> getUserInfo(@PathVariable int userNo){
+		UserRegisterDto user= new UserRegisterDto();
+		user.setUserInfo(userService.userFind(userNo));
+		user.setUserCategory(userService.getUserCategory(userNo));
 		user.setUserPw("*******");
-		return new ResponseEntity<UserDto>(user, HttpStatus.OK);
+		return new ResponseEntity<UserRegisterDto>(user, HttpStatus.OK);
 	}
 
 	@GetMapping("/{userId}")

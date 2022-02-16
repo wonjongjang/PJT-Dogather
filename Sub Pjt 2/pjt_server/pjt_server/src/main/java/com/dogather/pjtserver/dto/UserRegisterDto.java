@@ -23,4 +23,17 @@ public class UserRegisterDto {
     private String userEmail;
     private List<Integer> userCategory;
 
+    public void setUserInfo(UserDto userDto){
+        this.msg = userDto.getMsg();
+        this.userNo = userDto.getUserNo();
+        this.userPw = userDto.getUserPw();
+        this.userName = userDto.getUserName();
+        this.userNickname = userDto.getUserNickname();
+        this.userAddr = userDto.getUserAddr();
+        this.userAddrDetail = userDto.getUserAddrDetail();
+        this.userZip = userDto.getUserZip();
+        this.userTel = userDto.getUserTel();
+        this.userEmail = userDto.getUserEmail();
+    }
+
 }

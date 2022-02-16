@@ -16,5 +16,5 @@ public interface UserService {
     public void addCategory(int userNo, int categoryNo);
     public boolean userIdCheck(String id);
     public boolean userNickCheck(String nick);
-
+    public List getUserCategory(int userNo);
 }

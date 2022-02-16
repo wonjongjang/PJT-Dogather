@@ -90,4 +90,10 @@ public class UserServiceImpl implements UserService{
 		return result;
 	}
 
+	@Override
+	public List getUserCategory(int userNo) {
+		List<Integer> categories = userDao.getUserCategory(userNo);
+		return categories;
+	}
+
 }
