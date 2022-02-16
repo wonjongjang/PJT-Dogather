@@ -102,11 +102,6 @@ public class UserController {
 	}
 	@PutMapping("/{userId}")
 	public ResponseEntity<UserRegisterDto> update(@PathVariable String userId, @RequestHeader String jwt, @RequestBody UserRegisterDto userDto){
-		try {
-			userDto.setUserPw(SecureHash.hashing256(userDto.getUserPw()));
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
 		userDto.setUserId(userId);
 		int created = userService.userUpdate(userDto);
 		List<Integer> list = userDto.getUserCategory();
