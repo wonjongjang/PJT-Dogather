@@ -42,7 +42,7 @@ public class UserController {
  		try{
 			 // SHA256을 이용한 PW, Email hashing
 			dto.setUserPw(SecureHash.hashing256(dto.getUserPw()));
-			dto.setUserEmail(SecureHash.hashing256(dto.getUserEmail()));
+//			dto.setUserEmail(SecureHash.hashing256(dto.getUserEmail()));
 			int created = userService.userRegister(dto);
 			List<Integer> list = dto.getUserCategory();
 			if( list != null && created > 0) {
