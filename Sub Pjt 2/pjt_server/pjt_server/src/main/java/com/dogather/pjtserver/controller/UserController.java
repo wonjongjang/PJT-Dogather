@@ -122,11 +122,11 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(userId + " deleted completely!");
 	}
 
-	@GetMapping("/{userNo}")
+	@GetMapping("/{userNo}/info")
 	public ResponseEntity<UserDto> getUserInfo(@PathVariable int userNo){
 		UserDto user = userService.userFind(userNo);
 		user.setUserPw("*******");
-		return new ResponseEntity<>(user, HttpStatus.OK);
+		return new ResponseEntity<UserDto>(user, HttpStatus.OK);
 	}
 
 	@GetMapping("/{userId}")
