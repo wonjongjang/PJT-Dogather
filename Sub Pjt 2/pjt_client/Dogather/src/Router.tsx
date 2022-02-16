@@ -54,7 +54,7 @@ function Router() {
         />
 
         <Route path="/moim/:groupNo/*" element={<MoimDetail />}>
-          <Route path="" element={<MoimProduct />} />
+          <Route path="" element={<MoimProduct detailImage={[]} />} />
           <Route path="faq" element={<MoimFAQ />} />
           <Route path="review" element={<MoimReview />} />
           <Route path="refund" element={<MoimRefund />} />

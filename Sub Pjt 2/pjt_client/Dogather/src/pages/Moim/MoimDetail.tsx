@@ -24,6 +24,10 @@ import MoimDetailImg from "./MoimDetailComponent/MoimDetailImg";
 import KakaoPay from "./KakaoPay";
 import MoimPayment from "./MoimDetailComponent/MoimPayment";
 import { detailProducts } from "../../atoms/MoimDetailProps";
+import MoimProduct from "./MoimDetailComponent/MoimTabs/MoimProduct";
+import MoimFAQ from "./MoimDetailComponent/MoimTabs/MoimFAQ";
+import MoimReview from "./MoimDetailComponent/MoimTabs/MoimReview";
+import MoimRefund from "./MoimDetailComponent/MoimTabs/MoimRefund";
 
 interface RouteState {
   state: {
@@ -239,12 +243,12 @@ function MoimDetail() {
   //   }
   // };
 
-  // const mainImgAddress =
-  //   process.env.PUBLIC_URL + "/doimage/" + groupData?.mainImage;
-  const mainImgAddress = process.env.PUBLIC_URL + "/img/Hoodie.png";
+  const mainImgAddress =
+    process.env.PUBLIC_URL + "/doimage/" + groupData?.mainImage;
+  // const mainImgAddress = process.env.PUBLIC_URL + "/img/Hoodie.png";
   // console.log(groupData?.mainImage);
   const detailImgAddress =
-    process.env.PUBLIC_URL + "/doimage/" + groupData?.mediaList[0];
+    process.env.PUBLIC_URL + "/doimage/" + groupData?.mediaList;
   // console.log(mainImgAddress, detailImgAddress);
 
   const time = Date.now();
@@ -266,7 +270,7 @@ function MoimDetail() {
                   alt={"메인 이미지"}
                 /> */}
                 <Img src={mainImgAddress} alt={mainImgAddress} />
-                <Img src={detailImgAddress} alt={detailImgAddress} />
+                {/* <Img src={detailImgAddress} alt={detailImgAddress} /> */}
                 {/* <MoimDetailImg /> */}
               </ImgWrapper>
               <OverviewItem>
@@ -436,10 +440,13 @@ function MoimDetail() {
               </Tab>
             </Tabs>
             <Routes>
-              <Route path="" element={<Product img={Img} />} />
-              <Route path="faq" element={<FAQ />} />
-              <Route path="review" element={<Review />} />
-              <Route path="refund" element={<Refund />} />
+              <Route
+                path=""
+                element={<MoimProduct detailImage={groupData?.mediaList!} />}
+              />
+              <Route path="faq" element={<MoimFAQ />} />
+              <Route path="review" element={<MoimReview />} />
+              <Route path="refund" element={<MoimRefund />} />
             </Routes>
           </>
         )}
