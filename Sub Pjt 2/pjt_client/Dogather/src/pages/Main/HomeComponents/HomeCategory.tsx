@@ -36,7 +36,7 @@ function HomeCategory() {
           marginTop={"0px"}
           marginLeft={"0px"}
         >
-          {categoryImg.slice(0, 8).map((cat, idx) => (
+          {categoryImg.slice(0, 16).map((cat, idx) => (
             <Link key={idx} to={"/moim/1"}>
               <Grid item>
                 <Card
@@ -70,7 +70,7 @@ function HomeCategory() {
             </Link>
           ))}
         </Grid>
-        <Grid
+        {/* <Grid
           container
           spacing={2}
           width={"100%"}
@@ -79,6 +79,39 @@ function HomeCategory() {
           marginTop={"0px"}
           marginLeft={"0px"}
         >
+          {categoryImg.slice(0, 8).map((cat, idx) => (
+            <Link key={idx} to={"/moim/1"}>
+              <Grid item>
+                <Card
+                  elevation={0}
+                  sx={{
+                    width: "60px",
+                    height: "60px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "white",
+                    ":hover": {
+                      // boxShadow: 20, // theme.shadows[20]
+                      transform: "scale3d(1.1, 1.1, 1)",
+                    },
+                    // objectFit: "cover",
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    height="100%"
+                    width="100%"
+                    image={cat}
+                    alt="Product Image"
+                  />
+                </Card>
+                <CardDetail>
+                  <CategoryName>{Category(idx + 1)}</CategoryName>
+                </CardDetail>
+              </Grid>
+            </Link>
+          ))}
           {categoryImg.slice(8, 17).map((cat, idx) => (
             <Link key={idx} to={"/moim/1"}>
               <Grid item>
@@ -112,7 +145,7 @@ function HomeCategory() {
               </Grid>
             </Link>
           ))}
-        </Grid>
+        </Grid> */}
       </CategoryList>
     </Container>
   );
@@ -120,8 +153,8 @@ function HomeCategory() {
 
 const Container = styled.div`
   display: flex;
-  width: 65%;
-  justify-content : center;
+  width: 80%;
+  justify-content: center;
   align-items: center;
 `;
 
@@ -145,6 +178,7 @@ const CardDetail = styled.div`
   flex-wrap: wrap;
   overflow: visible;
   width: 60px;
+  height: auto;
   margin-top: 5px;
 `;
 
