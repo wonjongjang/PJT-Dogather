@@ -101,19 +101,24 @@ public class UserController {
 
 	}
 	@PutMapping("/{userId}")
-	public ResponseEntity<UserDto> update(@PathVariable String userId, @RequestHeader String jwt, @RequestBody UserDto userDto){
+	public ResponseEntity<Integer> update(@PathVariable String userId, @RequestHeader String jwt, @RequestBody UserRegisterDto userDto){
+		int created = 0;
 		try {
-			userDto.setUserPw(SecureHash.hashing256(userDto.getUserPw()));
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			userDto.setUserId(userId);
+			int userNo = userService.userFind(userId).getUserNo();
+			userDto.setUserNo(userNo);
+			created = userService.userUpdate(userDto);
+			List<Integer> list = userDto.getUserCategory();
+			if( list != null && created > 0) {
+				for (int i : list) {
+					userService.addCategory(userNo, i);
+				}
+			}
+		}catch(Exception e){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
-		userDto.setUserId(userId);
-		int created = userService.userUpdate(userDto);
-		if (created == 1 ){
-			// 수정완료
-			return ResponseEntity.status(HttpStatus.OK).body(userDto);
-		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			return ResponseEntity.status(HttpStatus.OK).body(created);
+
 	}
 
 	@DeleteMapping("/{userId}")

@@ -1,15 +1,24 @@
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-interface IData {}
+interface IData {
+  detailImage: Array<string>;
+}
 
-function MoimProduct({ detail }: any) {
+function MoimProduct({ detailImage }: IData) {
+  const { state } = useLocation();
+  console.log(state);
   return (
     <Container>
       <ImgWrapper>
-        <Img
-          src="https://image.musinsa.com/images/prd_img/2021031512340000000090657.jpg"
-          alt=""
-        />
+        {detailImage
+          ? detailImage.map((d, idx) => (
+              <Img
+                src={process.env.PUBLIC_URL + "/doimage/" + d}
+                alt={process.env.PUBLIC_URL + "/doimage/" + d}
+              />
+            ))
+          : null}
       </ImgWrapper>
     </Container>
   );

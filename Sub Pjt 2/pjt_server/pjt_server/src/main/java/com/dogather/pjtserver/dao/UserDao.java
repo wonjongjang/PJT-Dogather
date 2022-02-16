@@ -12,9 +12,10 @@ public interface UserDao {
     public int userRegister(UserRegisterDto userDto);
     public UserDto userFindById(String userId);
     public UserDto userFindByNo(int userNo);
-    public int userUpdate(UserDto userDto);
+    public int userUpdate(UserRegisterDto userDto);
     public void userDelete(String userId);
     public void addCategory(Map map);
+    public void deleteCategory(int userNo);
     public int userIdCheck(String userId);
     public int userNickCheck(String userNickname);
     public List getUserCategory(int UserNo);

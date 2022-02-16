@@ -1,8 +1,4 @@
-
 const BASE_URL = `http://i6e104.p.ssafy.io/api/group`
-
-
-
 
 export function FetchMoimGroupAPI(groupNo: string, userId:string, JWT:string, userNo:number) {
 // const JWT = localStorage.getItem("login_token");
@@ -35,4 +31,14 @@ export function FetchHomeHotMoimCard() {
 
 export function FetchMoimMediaAPI(mediaNo:number) {
   return fetch(`${BASE_URL}/image/${mediaNo}`).then((res) => res.json())
+}
+
+export function FetchUserInfoAPI(userNo:number, JWT:string, userId:string) {
+  return fetch(`http://i6e104.p.ssafy.io/api/user/${userNo}/info`, {
+    method: "GET",
+    headers: {
+      jwt: `${JWT}`,
+      userId:userId,
+    }
+  }).then((res) => res.json())
 }

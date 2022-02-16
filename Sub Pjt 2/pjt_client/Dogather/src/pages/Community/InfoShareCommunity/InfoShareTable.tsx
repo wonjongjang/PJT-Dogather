@@ -28,16 +28,16 @@ function createData(
 
 // 데이터
 const rows = [
-  createData(1, "Frozen yoghurt", "Asd", 159, "asd", 1),
-  createData(2, "Ice cream sandwich", "Asd", 237, "ASd", 13),
-  createData(3, "Eclair", "Asd", 262, "fsdf", 4),
-  createData(4, "Cupcake", "Asd", 305, "Sdgd", 5),
-  createData(5, "Gingerbread", "Asd", 356, "Dfgdf", 6),
-  createData(6, "sdfmsdfsf", "Asd", 16, "Dfgdf", 6),
-  createData(7, "asdsadfs", "Asd", 351, "Dfgdf", 1),
-  createData(8, "dofofofof", "Asd", 356, "Dfgdf", 4),
-  createData(9, "lolo", "Asd", 1000, "Dfgdf", 43),
-  createData(10, "Gingerbread", "Asd", 356, "Dfgdf", 4),
+  createData(1, "이용약관", "dogather", 159, "02-16", 10),
+  createData(2, "개인정보취급방침", "dogather", 178, "02-15", 13),
+  createData(3, "이용안내", "dogather", 746, "02-15", 11),
+  createData(4, "입점문의", "dogather", 153, "02-14", 7),
+  createData(5, "필독사항3", "dogather", 356, "02-14", 6),
+  createData(6, "필독사항2", "dogather", 347, "02-14", 6),
+  createData(7, "필독사항1", "dogather", 384, "02-13", 8),
+  createData(8, "주의사항2", "dogather", 246, "02-12", 10),
+  createData(9, "주의사항1", "dogather", 244, "02-10", 14),
+  createData(10, "안녕하세요", "dogather", 780, "02-10", 15),
 ];
 
 // neutral 색깔
@@ -111,7 +111,7 @@ function AnnounceTable() {
       </Top>
       <Mid>
         <CustomStack>
-          <H1>정보공유게시판</H1>
+          <H1>정보공유</H1>
           <Stack spacing={2} direction="column">
             <ThemeProvider theme={theme}>
               <Button
@@ -248,15 +248,18 @@ const Mid = styled.span`
 
 const H1 = styled.h1`
   display: inline-block;
-  font-size: 24px;
-  font-weight: 400;
-  margin-bottom: 1vw;
+  font-size: 38px;
+  font-weight: 600;
+  margin-bottom: 3vw;
+  color: #1e272e;
+  white-space: nowrap;
+  overflow: visible;
 `;
 
 const CustomTabs = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-right: 7vw;
+  margin-right: 6vw;
 `;
 
 const CustomStack = styled.div`
@@ -268,7 +271,7 @@ const CustomStack = styled.div`
 const CustomTable = styled.div`
   dispaly: inline-block;
   width: 75vw;
-  margin-left: 4vw;
+  margin-left: 5vw;
 `;
 
 const Hr = styled.hr`
@@ -289,7 +292,7 @@ const Input = styled.input`
   width: 20vw;
   height: 4vh;
   border-radius: 7px;
-  margin-left: 43vw;
+  margin-left: 44vw;
 `;
 
 const CustomWrite = styled.div`
@@ -301,7 +304,7 @@ const CustomPage = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 25px;
-  margin-left: 6.3vw;
+  margin-left: 10vw;
 `;
 
 const Bottom = styled.div`
