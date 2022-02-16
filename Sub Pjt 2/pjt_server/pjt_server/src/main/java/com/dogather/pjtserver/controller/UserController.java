@@ -101,7 +101,7 @@ public class UserController {
 
 	}
 	@PutMapping("/{userId}")
-	public ResponseEntity<UserDto> update(@PathVariable String userId, @RequestHeader String jwt, @RequestBody UserDto userDto){
+	public ResponseEntity<UserRegisterDto> update(@PathVariable String userId, @RequestHeader String jwt, @RequestBody UserRegisterDto userDto){
 		try {
 			userDto.setUserPw(SecureHash.hashing256(userDto.getUserPw()));
 		} catch (NoSuchAlgorithmException e) {
@@ -109,6 +109,12 @@ public class UserController {
 		}
 		userDto.setUserId(userId);
 		int created = userService.userUpdate(userDto);
+		List<Integer> list = userDto.getUserCategory();
+		if( list != null && created > 0) {
+			for (int i : list) {
+				userService.addCategory(userDto.getUserNo(), i);
+			}
+		}
 		if (created == 1 ){
 			// 수정완료
 			return ResponseEntity.status(HttpStatus.OK).body(userDto);
@@ -120,6 +126,15 @@ public class UserController {
 	public ResponseEntity<String> delete(@PathVariable String userId, @RequestHeader String jwt){
 		userService.userDelete(userId);
 		return ResponseEntity.status(HttpStatus.OK).body(userId + " deleted completely!");
+	}
+
+	@GetMapping("/{userNo}/info")
+	public ResponseEntity<UserRegisterDto> getUserInfo(@PathVariable int userNo){
+		UserRegisterDto user= new UserRegisterDto();
+		user.setUserInfo(userService.userFind(userNo));
+		user.setUserCategory(userService.getUserCategory(userNo));
+		user.setUserPw("*******");
+		return new ResponseEntity<UserRegisterDto>(user, HttpStatus.OK);
 	}
 
 	@GetMapping("/{userId}")

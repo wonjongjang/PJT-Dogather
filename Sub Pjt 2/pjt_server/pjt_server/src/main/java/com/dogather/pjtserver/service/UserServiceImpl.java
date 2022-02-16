@@ -52,7 +52,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-	public int userUpdate(UserDto userDto){
+	public int userUpdate(UserRegisterDto userDto){
+		userDao.deleteCategory(userDto.getUserNo());
 		int created = userDao.userUpdate(userDto);
 		return created;
 	}
@@ -88,6 +89,12 @@ public class UserServiceImpl implements UserService{
 			result = false;
 		}
 		return result;
+	}
+
+	@Override
+	public List getUserCategory(int userNo) {
+		List<Integer> categories = userDao.getUserCategory(userNo);
+		return categories;
 	}
 
 }

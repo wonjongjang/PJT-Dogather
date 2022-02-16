@@ -209,6 +209,16 @@ public class GroupServiceImpl implements GroupService {
         map.put("nickname", nickname);
         map.put("page",8*(page-1));
         List<GroupReturnDto> list = groupDao.search(map);
+        for (GroupReturnDto group : list) {
+//            if (!groupDao.getMainImage(group.getGroupNo()).toString().equals("no")){
+            Integer mainImage = groupDao.getMainImage(group.getGroupNo());
+            if (mainImage != null) {
+                GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
+                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + "s_" + mediaDto.getMediaSavename();
+                group.setMainImage(uploadPath);
+            } else
+                group.setMainImage("");
+        }
         return list;
 
     }
