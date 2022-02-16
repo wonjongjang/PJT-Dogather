@@ -52,7 +52,7 @@ function UsedSaleTable() {
       </Top>
       <Mid>
         <CustomStack>
-          <H1>중고판매게시판</H1>
+          <H1>중고판매</H1>
           <Stack spacing={2} direction="column">
             <ThemeProvider theme={theme}>
               <Button
@@ -131,47 +131,27 @@ function UsedSaleTable() {
   );
 }
 
-const Btn2 = styled.button`
-  width: 8vw;
-  color: white;
-  background-color: white;
-  border: 0;
-`;
-
 const Container = styled.div``;
 
 const Mid = styled.span`
   display: flex;
 `;
 
-const Mid2 = styled.span`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const H1 = styled.h1`
   display: inline-block;
-  font-size: 24px;
-  font-weight: 400;
-  margin-bottom: 1vw;
-`;
-
-const CustomTabs = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-right: 7vw;
+  font-size: 38px;
+  font-weight: 600;
+  margin-bottom: 3vw;
+  color: #1e272e;
+  white-space: nowrap;
+  overflow: visible;
 `;
 
 const CustomStack = styled.div`
   display: inline-block;
+  margin-top: 3vw;
   margin-left: 4vw;
   width: 9vw;
-`;
-
-const CustomTable = styled.div`
-  dispaly: inline-block;
-  width: 75vw;
-  margin-left: 4vw;
 `;
 
 const Hr = styled.hr`
@@ -185,26 +165,27 @@ const Hr = styled.hr`
 `;
 
 const Top = styled.div`
-  margin-top: 50px;
+  margin-top: 25px;
+  margin-bottom: 15px;
 `;
 
 const Input = styled.input`
   width: 20vw;
   height: 4vh;
   border-radius: 7px;
-  margin-left: 43vw;
+  margin-left: 45vw;
 `;
 
 const CustomWrite = styled.div`
   display: inline-flex;
-  margin-left: 22vw;
+  margin-left: 23vw;
 `;
 
 const CustomPage = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 25px;
-  margin-left: 6.3vw;
+  margin-left: 12vw;
 `;
 
 const Bottom = styled.div`
@@ -231,10 +212,10 @@ const Btn = styled.button`
 
 const CustomCard = styled.div`
   display: flex;
+  margin-left: 3vw;
 `;
 
 const Fontw = styled.h1`
   font-weight: 900;
 `;
-
 export default UsedSaleTable;

@@ -20,9 +20,9 @@ function ReviewCard() {
     <CustomFrame>
       <Card sx={{ minWidth: "17.5vw", maxWidth: "17.5vw" }}>
         <CardHeader
-          avatar={<Avatar aria-label="recipe">V</Avatar>}
-          title="pqdmaskp"
-          subheader="September 14, 2021"
+          avatar={<Avatar aria-label="recipe">D</Avatar>}
+          title="dogather"
+          subheader="02-16"
         />
         <CardMedia
           component="img"
@@ -30,7 +30,7 @@ function ReviewCard() {
           image={process.env.PUBLIC_URL + "/img/community_card.jpg"}
           alt="Paella dish"
         />
-        <CardContent>제목을 쓰세요!</CardContent>
+        <CardContent>후기</CardContent>
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites">
             <FavoriteIcon />
