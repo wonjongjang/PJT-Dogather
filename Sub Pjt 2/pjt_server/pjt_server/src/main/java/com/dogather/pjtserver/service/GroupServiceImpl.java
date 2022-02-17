@@ -210,6 +210,13 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public List<GroupReturnDto> getRecommendList(List<Integer> categories) {
+        List list = groupDao.getRecommendList(categories);
+
+        return list;
+    }
+
+    @Override
     public List<GroupReturnDto> search(String query, String nickname,int page) {
         Map map = new HashMap<>();
         List<String> words;

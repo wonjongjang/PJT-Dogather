@@ -187,6 +187,38 @@
                  left join dogather.category as c on g.category_no = c.category_no
         where g.status="모집중" and g.deadline > now() order by g.deadline limit 4
     </select>
+
+    <select id="getEndSoonList" resultMap="grouplistMap">
+        select
+            g.group_no,
+            g.group_leader,
+            u.user_no,
+            u.user_nickname,
+            c.category_name,
+            g.category_no,
+            g.created,
+            g.updated,
+            g.deadline,
+            g.max_people,
+            g.status,
+            g.product,
+            g.detail,
+            g.link,
+            g.origin_price,
+            g.price,
+            g.view,
+            (SELECT count(distinct user_no) from dogather.payment where group_no = g.group_no) as count
+        from dogather.group as g
+            left join dogather.user as u on g.group_leader = u.user_no
+            left join dogather.category as c on g.category_no = c.category_no
+        where g.status="모집중" and g.deadline > now() and c.category_no in
+        <foreach collection="categories" item="category" open="(" close=")" separator=",">
+            category
+        </foreach>
+        order by g.deadline limit 4
+    </select>
+
+
 <!--    <select id="getList" resultType="com.dogather.pjtserver.dto.GroupReturnDto">-->
 <!--        select g.group_no, g.group_leader, u.user_nickname, g.deadline, g.max_people, g.view, g.status, g.product, g.price, c.category_no, c.category_name-->
 <!--        from dogather.group AS g-->

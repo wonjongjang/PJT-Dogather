@@ -69,6 +69,14 @@ public class GroupController {
         return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
 
+    @GetMapping("/recommend/{userNo}")
+    public ResponseEntity<GroupListDto> recommendList(@PathVariable int userNo){
+        List<Integer> categories = userService.getUserCategory(userNo);
+        GroupListDto list = new GroupListDto();
+        list.setList(groupService.getRecommendList(categories));
+        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+    }
+
     @GetMapping("/detail/{groupNo}/{userNo}")
     public ResponseEntity<GroupOptionDto> group(@PathVariable int groupNo, @PathVariable int userNo){
         if(userNo != 0) groupService.groupViews(userNo,groupNo);
