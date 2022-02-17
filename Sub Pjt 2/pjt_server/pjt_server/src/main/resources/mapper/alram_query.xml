@@ -4,7 +4,7 @@
     <select id="getAlarm" parameterType="String" resultType="com.dogather.pjtserver.dto.AlarmDto">
         select *
         from dogather.message
-        where user_nick = #{userNick}
+        where user_nick = #{userNick} order by msg_no DESC
     </select>
 
     <insert id="insertAlarm" parameterType="list">
