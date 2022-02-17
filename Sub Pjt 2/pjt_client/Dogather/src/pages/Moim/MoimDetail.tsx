@@ -29,6 +29,7 @@ import MoimFAQ from "./MoimDetailComponent/MoimTabs/MoimFAQ";
 import MoimReview from "./MoimDetailComponent/MoimTabs/MoimReview";
 import MoimRefund from "./MoimDetailComponent/MoimTabs/MoimRefund";
 import { ImgAtom } from "../../atoms/HomeMoimImg";
+import Swal from "sweetalert2";
 
 interface RouteState {
   state: {
@@ -45,6 +46,14 @@ export interface IOptionsData {
   optionNo: string;
   optionName: string;
   optionPrice: number;
+}
+
+export interface IFAQData {
+  categoryNo: number;
+  faqAnswer: string;
+  faqNo: number;
+  faqQuestion: string;
+  groupNo: number;
 }
 
 export interface IGroupData {
@@ -64,9 +73,10 @@ export interface IGroupData {
   mainImage: string;
   options: Array<IOptionsData>;
   mediaList: Array<string>;
-  faqList: Array<object>;
+  faqList: Array<IFAQData>;
   categoryName: string;
   leaderName: string;
+  isliked: number;
 }
 
 export interface IProductContent {
@@ -78,6 +88,12 @@ export interface IProductContent {
   price: number;
   // priceByOption: number;
 }
+
+interface IInterestData {
+  userNo: number;
+  groupNo: string;
+}
+
 function MoimDetail() {
   // useEffect(() => {
   //   (async () => {
@@ -175,6 +191,45 @@ function MoimDetail() {
   };
   console.log(products);
 
+  // const sweetAlertSucc = (title, contents, icon, confirmButtonText) => {
+  //   Swal.fire({
+  //     title: title,
+  //     text: contents,
+  //     icon: icon,
+  //     confirmButtonText: confirmButtonText,
+  //   });
+  // };
+
+  const onInterest = () => {
+    const interestData: IInterestData = {
+      userNo: userNo,
+      groupNo: groupNo!,
+    };
+    if (!groupData?.isliked) {
+      fetch("http://i6e104.p.ssafy.io/api/group/interest", {
+        method: "POST",
+        headers: {
+          jwt: `${JWT}`,
+          userId: userId,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(interestData),
+      })
+        .then((response) => console.log(response))
+        .then(() => {
+          if (
+            window.confirm(
+              "관심등록에 성공했습니다. 마이페이지로 이동하시겠습니까?"
+            )
+          ) {
+            navigate("/user");
+          }
+        });
+    } else {
+      alert("이미 관심등록된 모임입니다.");
+    }
+  };
+
   // const onApply = (event: React.ChangeEvent<HTMLButtonElement>) => {};
 
   //처음 랜더링되고 유저에게 보이는 수량의 값이 0일 필요가 없기 때문에 초기값으로 1로 주었다.
@@ -266,11 +321,11 @@ function MoimDetail() {
           <>
             <Overview>
               <ImgWrapper>
-                <Img
+                {/* <Img
                   src={process.env.PUBLIC_URL + "/img/Hoodie.png"}
                   alt={"메인 이미지"}
-                />
-                {/* <Img
+                /> */}
+                <Img
                   src={
                     groupData?.mainImage
                       ? process.env.PUBLIC_URL +
@@ -279,7 +334,7 @@ function MoimDetail() {
                       : defaultImg
                   }
                   alt={mainImgAddress}
-                /> */}
+                />
                 {/* <Img src={detailImgAddress} alt={detailImgAddress} /> */}
                 {/* <MoimDetailImg /> */}
               </ImgWrapper>
@@ -302,7 +357,7 @@ function MoimDetail() {
                 <LeaderName>{groupData?.leaderName}</LeaderName>
 
                 <ProductTitle>{groupData?.product}</ProductTitle>
-                <ProductDetail>{groupData?.detail}</ProductDetail>
+                {/* <ProductDetail>{groupData?.detail}</ProductDetail> */}
                 <ProductPrice>
                   <ProductOriginalPrice>
                     {/* {makeComma(groupData?.originPrice!) + "원"} */}
@@ -400,12 +455,13 @@ function MoimDetail() {
                     </OptionWrapper>
                     <SelectContent>
                       <Button
+                        onClick={() => onInterest()}
                         style={{
                           backgroundColor: "tomato",
                           borderColor: "black",
                         }}
                       >
-                        <Link to={"/"}>관심등록</Link>
+                        관심등록
                       </Button>
                       <Link
                         // onClick={() => onApply()}
@@ -443,7 +499,14 @@ function MoimDetail() {
                 <Link to={`/moim/${groupNo}`}>상품상세</Link>
               </Tab>
               <Tab isActive={faqMatch !== null}>
-                <Link to={`/moim/${groupNo}/faq`}>FAQ</Link>
+                <Link
+                  to={`/moim/${groupNo}/faq`}
+                  state={{
+                    faqs: groupData?.faqList,
+                  }}
+                >
+                  FAQ
+                </Link>
               </Tab>
               <Tab isActive={reviewMatch !== null}>
                 <Link to={`/moim/${groupNo}/review`}>모임평</Link>

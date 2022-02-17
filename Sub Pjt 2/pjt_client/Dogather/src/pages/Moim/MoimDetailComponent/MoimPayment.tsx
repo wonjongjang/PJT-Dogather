@@ -119,6 +119,11 @@ function MoimPayment() {
   );
   console.log(userData);
   // console.log(state.groupNo);
+  const [color, setColor] = useState("white");
+
+  const colorChange = () => {
+    color === "white" ? setColor("#d3d3d3") : setColor("white");
+  };
 
   const handlePayment = () => {
     const { IMP } = window;
@@ -553,11 +558,11 @@ function MoimPayment() {
                 }}
               >
                 <AddressSimplePay
-                  onClick={handlePayment}
+                  onClick={() => colorChange()}
                   style={{
                     border: "2px solid lightgrey",
                     borderRadius: "15px",
-                    backgroundColor: "#ffffff",
+                    backgroundColor: `${color}`,
                     width: "50%",
                     display: "flex",
                     justifyContent: "space-between",
