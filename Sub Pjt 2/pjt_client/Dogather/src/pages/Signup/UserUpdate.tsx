@@ -83,8 +83,6 @@ function UserUpdate() {
       userCategory: categories,
     };
 
-    console.log(newData);
-
     if (window.confirm("변경 사항을 적용하시겠습니까?") == true) {
       // 데이터 전송
       fetch(`http://i6e104.p.ssafy.io/api/user/${userId}`, {
@@ -159,8 +157,6 @@ function UserUpdate() {
 
   // 회원 탈퇴
   const deleteUser = () => {
-    console.log("삭제");
-
     if (window.confirm("정말 탈퇴하시겠습니까?") == true) {
       // 데이터 전송
       fetch(`http://i6e104.p.ssafy.io/api/user/${userId}`, {
@@ -172,7 +168,7 @@ function UserUpdate() {
       })
         .then((response) => response.text())
         .then((result) => {
-          console.log(result);
+          // console.log(result);
           if (result === `{"msg": "relogin"}`) {
             // 토큰 만료 시
             localStorage.clear(); // 로컬 스토리지 비우기
@@ -297,7 +293,6 @@ function UserUpdate() {
                   message: "전화번호 양식을 지켜주세요.",
                 },
               })}
-              // type="number"
               placeholder="숫자만 입력   ex) 01012345678"
               maxLength={12}
             />

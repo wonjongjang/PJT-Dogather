@@ -5,26 +5,52 @@ import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { motion, useAnimation } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
 
-import { isLoginAtom, userIdAtom, userNoAtom } from "../../atoms/Login";
+import {
+  isLoginAtom,
+  userIdAtom,
+  userNickAtom,
+  userNoAtom,
+} from "../../atoms/Login";
 import { CategoriesAtom } from "../../atoms/ProductCategories";
 import { OptionsAtom } from "../../atoms/Options";
 import { FAQsAtom } from "../../atoms/FAQs";
+import { useQuery } from "react-query";
+import { fetchAlarm } from "../../api/Alarm";
+import { AlarmsAtom, AlarmsCountAtom, IAlarm } from "../../atoms/Alarm";
 
 interface IForm {
   keyword: string;
 }
-
 function Header() {
+  const JWT = localStorage.getItem("login_token");
+
   const navigate = useNavigate();
   const location = useLocation();
 
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const [userNo, setUserNo] = useRecoilState(userNoAtom);
   const [userId, setUserId] = useRecoilState(userIdAtom);
+  const [userNick, setUserNick] = useRecoilState(userNickAtom);
+  const [alarms, setAlarms] = useRecoilState(AlarmsAtom);
+  const [count, setCount] = useRecoilState(AlarmsCountAtom);
   const [options, setOptions] = useRecoilState(OptionsAtom);
   const [FAQS, setFAQs] = useRecoilState(FAQsAtom);
   const [categories, setCategories] = useRecoilState(CategoriesAtom);
+
+  // url 바뀔 때 마다 로컬 스토리지에 토큰이 있는지 확인하여 로그인 여부를 변경
+  useEffect(() => {
+    if (!isLogin) {
+      setIsLogin(localStorage.getItem("login_token") !== null); // 로컬 스토리지에 login_token이 비어있지 않으면 isLogin을 true로 바꿈
+    }
+    setOptions([]); // 모임 생성의 옵션 초기화
+    setFAQs([]); // 모임 생성의 FAQ 초기화
+    setCategories([]); // 회원가입의 체크박스 초기화
+    setSearchOpen(false); // 검색 아이콘 위치 초기화
+    inputAnimation.start({ scaleX: 0 }); // 검색 input 위치 초기화
+  }, [location]);
 
   // 검색 디자인
   const [searchOpen, setSearchOpen] = useState(false);
@@ -50,23 +76,59 @@ function Header() {
     navigate(`/search/${keyword}`, { state: { option: "query" } }); // 검색 상세 페이지로 이동 (여기선 select가 없기 때문에 옵션은 모임 검색으로 지정한 후 전달)
   };
 
-  useEffect(() => {
-    if (!isLogin) {
-      setIsLogin(localStorage.getItem("login_token") !== null); // 로컬 스토리지에 login_token이 비어있지 않으면 isLogin을 true로 바꿈
+  // 알람 리스트 받아오기
+  const { isLoading, data: alarmList } = useQuery<IAlarm[]>(
+    [JWT, userId, userNick],
+    () => fetchAlarm(JWT!, userId!, userNick!),
+    {
+      enabled: !!JWT && !!userId && !!userNick, // JWT, userId, userNick 값이 있어야 실행 (로그인 했을 때만 실행되도록)
+      refetchInterval: 3000, // 3초 마다 useQuery 실행
     }
-    setOptions([]); // 모임 생성의 옵션 초기화
-    setFAQs([]); // 모임 생성의 FAQ 초기화
-    setCategories([]); // 회원가입의 체크박스 초기화
-    setSearchOpen(false); // 검색 아이콘 위치 초기화
-    inputAnimation.start({ scaleX: 0 }); // 검색 input 위치 초기화
-  }, [location]); // url 바뀔 때 마다 로컬 스토리지에 토큰이 있는지 확인하여 로그인 여부를 변경
-
-  const Logout = () => {
-    // 로그아웃 클릭 시 작동
+  );
+  // 토큰 만료 시
+  if (
+    !!JWT &&
+    !!userId &&
+    !!userNick &&
+    Object.keys(Object(alarmList)).includes("msg")
+  ) {
     localStorage.clear(); // 로컬 스토리지 비우기
     setIsLogin(false); // 로그인 여부 초기화
     setUserNo(""); // 저장된 user pk 초기화
     setUserId(""); // 저장된 user id 초기화
+    setAlarms([]); // 저장된 알람 리스트 초기화
+    setCount(0); // 저장된 읽지 않은 알람 개수 초기화
+    alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
+    setTimeout(() => {
+      navigate("/login");
+    }, 1); // 로그인 페이지로 이동
+  }
+  // 읽지 않은 메세지 개수
+  const Count = (alarmList: IAlarm[]) => {
+    let sum = 0;
+    alarmList.map((alarm) => {
+      if (alarm.read === 0) {
+        sum += 1;
+      }
+    });
+    setCount(sum);
+  };
+  // 알람 리스트 바뀔 때 마다 AlarmsAtom 수정
+  useEffect(() => {
+    if (alarmList) {
+      setAlarms([...alarmList]);
+      Count(alarmList);
+    }
+  }, [alarmList]);
+
+  // 로그아웃 클릭 시 작동
+  const Logout = () => {
+    localStorage.clear(); // 로컬 스토리지 비우기
+    setIsLogin(false); // 로그인 여부 초기화
+    setUserNo(""); // 저장된 user pk 초기화
+    setUserId(""); // 저장된 user id 초기화
+    setAlarms([]); // 저장된 알람 리스트 초기화
+    setCount(0); // 저장된 읽지 않은 알람 개수 초기화
     navigate("/"); // 메인 페이지로 이동
   };
 
@@ -130,6 +192,22 @@ function Header() {
                 placeholder="검색 내용 입력 후 엔터"
               />
             </Search>
+            {isLogin ? (
+              <BellDiv>
+                <Link to="/alarm">
+                  <FontAwesomeIcon icon={faBell} size="lg" fixedWidth />
+                </Link>
+                {alarms.length ? (
+                  <AlarmCountDiv>
+                    <span>{count}</span>
+                  </AlarmCountDiv>
+                ) : (
+                  <></>
+                )}
+              </BellDiv>
+            ) : (
+              <></>
+            )}
             <LowerItem>
               {isLogin ? (
                 <Link to="/moim/create">모임 생성</Link>
@@ -146,6 +224,26 @@ function Header() {
     </Nav>
   );
 }
+
+// const Icon = styled(FontAwesomeIcon)`
+//   color: #e1b12c;
+// `;
+
+const AlarmCountDiv = styled.span`
+  position: absolute;
+  padding: 3px;
+  top: -9px;
+  right: -7px;
+  min-width: 16px;
+  min-height: 16px;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  background: #ec2c54;
+  color: #fff;
+  border: 0.5px solid #fff;
+  border-radius: 50%;
+`;
 
 const Nav = styled.nav`
   position: sticky; // 위치 고정
@@ -215,9 +313,16 @@ const LowerItems = styled.ul`
   align-items: center;
 `;
 
+const BellDiv = styled.li`
+  position: relative;
+  top: auto;
+  transform: none;
+  margin: 0 20px;
+`;
+
 const LowerItem = styled.li`
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 600;
   margin: 0 20px;
 `;
 
