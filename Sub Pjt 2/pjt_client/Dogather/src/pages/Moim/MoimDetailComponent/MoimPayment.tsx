@@ -180,7 +180,7 @@ function MoimPayment() {
         alert("결제가 완료됐습니다.");
         console.log(response);
       } else {
-        console.log(error_msg);
+        // console.log(error_msg);
         alert("결제가 취소됐습니다.");
       }
     };
