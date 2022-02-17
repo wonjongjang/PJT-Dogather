@@ -15,22 +15,29 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import styled from "styled-components";
 
-function UsedSaleCard() {
+function UsedSaleCard({
+  image,
+  avatar,
+  name,
+  content,
+  subheader,
+}: {
+  image: any;
+  avatar: string;
+  name: string;
+  content: string;
+  subheader: string;
+}) {
   return (
     <CustomFrame>
       <Card sx={{ minWidth: "17.5vw", maxWidth: "17.5vw" }}>
         <CardHeader
-          avatar={<Avatar aria-label="recipe">D</Avatar>}
-          title="dogather"
-          subheader="02-16"
+          avatar={<Avatar aria-label="recipe">{avatar}</Avatar>}
+          title={name}
+          subheader={subheader}
         />
-        <CardMedia
-          component="img"
-          height="194"
-          image={process.env.PUBLIC_URL + "/img/community_card.jpg"}
-          alt="Paella dish"
-        />
-        <CardContent>후기</CardContent>
+        <CardMedia component="img" height="194" image={image} alt="Error" />
+        <CardContent>{content}</CardContent>
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites">
             <FavoriteIcon />
