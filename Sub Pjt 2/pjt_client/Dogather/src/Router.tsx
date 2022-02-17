@@ -27,6 +27,7 @@ import MoimPayment from "./pages/Moim/MoimDetailComponent/MoimPayment";
 import UserUpdate from "./pages/Signup/UserUpdate";
 import Alarm from "./pages/Main/Alarm";
 import MoimUpdate from "./pages/Moim/MoimUpdate";
+import ReviewCardDetail from "./pages/Community/ReviewCommunity/ReviewCardDetail";
 
 function Router() {
   const isLogin = useRecoilValue(isLoginAtom);
@@ -88,6 +89,7 @@ function Router() {
         <Route path="/community/free/" element={<FreeCommunity />} />
         <Route path="/community/usedsale/" element={<UsedSaleCommunity />} />
         <Route path="/community/review/" element={<ReviewCommunity />} />
+        <Route path="/community/review/1" element={<ReviewCardDetail />} />
 
         <Route path="/chat" element={<MoimChatbot />} />
 

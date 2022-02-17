@@ -20,6 +20,7 @@
          <mapper resource="mapper/follow_query.xml" />
          <mapper resource="mapper/shipping_addr_query.xml" />
          <mapper resource="mapper/payment_query.xml" />
+         <mapper resource="mapper/alram_query.xml" />
 
     </mappers>
 </configuration>

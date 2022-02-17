@@ -31,4 +31,5 @@ public class GroupReturnDto {
     private String leaderName;
     private int amount;
     private int count;
+    private int isLiked;
 }

@@ -28,16 +28,16 @@ function createData(
 
 // 데이터
 const rows = [
-  createData(1, "이용약관", "dogather", 159, "02-16", 10),
-  createData(2, "개인정보취급방침", "dogather", 178, "02-15", 13),
-  createData(3, "이용안내", "dogather", 746, "02-15", 11),
-  createData(4, "입점문의", "dogather", 153, "02-14", 7),
-  createData(5, "필독사항3", "dogather", 356, "02-14", 6),
-  createData(6, "필독사항2", "dogather", 347, "02-14", 6),
-  createData(7, "필독사항1", "dogather", 384, "02-13", 8),
-  createData(8, "주의사항2", "dogather", 246, "02-12", 10),
-  createData(9, "주의사항1", "dogather", 244, "02-10", 14),
-  createData(10, "안녕하세요", "dogather", 780, "02-10", 15),
+  createData(1, "안녕하세요!!", "GWan", 159, "02-16", 10),
+  createData(2, "안녕하세요", "Jibum", 178, "02-15", 13),
+  createData(3, "반갑습니다", "sehen", 746, "02-15", 11),
+  createData(4, "공동구매", "Buksss", 153, "02-14", 7),
+  createData(5, "공구진행", "Buksss", 356, "02-14", 6),
+  createData(6, "질문", "doget", 347, "02-14", 6),
+  createData(7, "반가워요!", "wonr", 384, "02-13", 8),
+  createData(8, "반갑습니다", "djong", 246, "02-12", 10),
+  createData(9, "안녕하세요~", "wonjong", 244, "02-10", 14),
+  createData(10, "안녕하세요", "jspj", 780, "02-10", 15),
 ];
 
 // neutral 색깔

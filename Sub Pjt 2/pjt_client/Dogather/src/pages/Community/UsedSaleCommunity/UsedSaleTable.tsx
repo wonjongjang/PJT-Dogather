@@ -97,17 +97,65 @@ function UsedSaleTable() {
         </CustomStack>
         <div>
           <CustomCard>
-            <UsedSaleCard />
-            <UsedSaleCard />
-            <UsedSaleCard />
-            <UsedSaleCard />
+            <UsedSaleCard
+              image={process.env.PUBLIC_URL + "/img/usedsale1.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta8.jpg"}
+              name="gh0jhs"
+              content="판매합니다!!"
+              subheader="02-15"
+            />
+            <UsedSaleCard
+              image={process.env.PUBLIC_URL + "/img/usedsale2.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta7.jpg"}
+              name="balckgar"
+              content="상태 좋아요"
+              subheader="02-14"
+            />
+            <UsedSaleCard
+              image={process.env.PUBLIC_URL + "/img/usedsale3.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta5.jpg"}
+              name="haseok"
+              content="싸게 팔아요~"
+              subheader="02-12"
+            />
+            <UsedSaleCard
+              image={process.env.PUBLIC_URL + "/img/usedsale4.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta3.jpg"}
+              name="wonjong"
+              content="거의 새거!"
+              subheader="02-12"
+            />
           </CustomCard>
           <div></div>
           <CustomCard>
-            <UsedSaleCard />
-            <UsedSaleCard />
-            <UsedSaleCard />
-            <UsedSaleCard />
+            <UsedSaleCard
+              image={process.env.PUBLIC_URL + "/img/usedsale5.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta1.jpg"}
+              name="sehen"
+              content="!!!!!!!!!!!"
+              subheader="02-10"
+            />
+            <UsedSaleCard
+              image={process.env.PUBLIC_URL + "/img/usedsale6.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta3.jpg"}
+              name="jibum"
+              content="싸게 팝니다~"
+              subheader="01-31"
+            />
+            <UsedSaleCard
+              image={process.env.PUBLIC_URL + "/img/usedsale7.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta2.jpg"}
+              name="jinseong"
+              content="새거 팔아요!!"
+              subheader="01-30"
+            />
+            <UsedSaleCard
+              image={process.env.PUBLIC_URL + "/img/usedsale8.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta4.jpg"}
+              name="Guan"
+              content="판매중!"
+              subheader="01-28"
+            />
           </CustomCard>
         </div>
       </Mid>

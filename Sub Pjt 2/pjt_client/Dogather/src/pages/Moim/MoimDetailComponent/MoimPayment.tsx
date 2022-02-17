@@ -3,7 +3,7 @@ import { width } from "@mui/system";
 
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { FetchUserInfoAPI } from "../../../api/MoimDetail";
@@ -101,6 +101,7 @@ interface RouteState {
 
 function MoimPayment() {
   const { state } = useLocation() as RouteState;
+  const navigate = useNavigate();
   const JWT = localStorage.getItem("login_token");
   const userId = useRecoilValue(userIdAtom);
   const userNo = useRecoilValue(userNoAtom);
@@ -119,6 +120,11 @@ function MoimPayment() {
   );
   console.log(userData);
   // console.log(state.groupNo);
+  const [color, setColor] = useState("white");
+
+  const colorChange = () => {
+    color === "white" ? setColor("#d3d3d3") : setColor("white");
+  };
 
   const handlePayment = () => {
     const { IMP } = window;
@@ -174,7 +180,7 @@ function MoimPayment() {
         alert("결제가 완료됐습니다.");
         console.log(response);
       } else {
-        console.log(error_msg);
+        // console.log(error_msg);
         alert("결제가 취소됐습니다.");
       }
     };
@@ -553,11 +559,11 @@ function MoimPayment() {
                 }}
               >
                 <AddressSimplePay
-                  onClick={handlePayment}
+                  onClick={() => colorChange()}
                   style={{
                     border: "2px solid lightgrey",
                     borderRadius: "15px",
-                    backgroundColor: "#ffffff",
+                    backgroundColor: `${color}`,
                     width: "50%",
                     display: "flex",
                     justifyContent: "space-between",
@@ -827,7 +833,9 @@ function MoimPayment() {
               </Address>
             </PriceWrapper>
             <ButtonWrapper>
-              <KakaoPayButton>결제하기</KakaoPayButton>
+              <KakaoPayButton onClick={() => handlePayment()}>
+                결제하기
+              </KakaoPayButton>
             </ButtonWrapper>
           </AddressWrapper>
         </PaymentWrapper>
@@ -1005,6 +1013,7 @@ const KakaoPayButton = styled.button`
   font-weight: bold;
   height: 50px;
   width: 80%;
+  cursor: pointer;
 `;
 const TotalPriceWrapper = styled.div``;
 

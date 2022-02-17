@@ -34,6 +34,9 @@
         delete from faq where group_no = #{groupNo} and faq_no = #{faqNo}
     </delete>
 
+    <delete id="deleteFaqs" parameterType="int">
+        delete from faq where group_no = #{groupNo}
+    </delete>
 
 
 </mapper>

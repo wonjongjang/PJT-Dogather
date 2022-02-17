@@ -69,12 +69,25 @@ public class GroupController {
         return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
 
+    @GetMapping("/recommend/{userNo}")
+    public ResponseEntity<GroupListDto> recommendList(@PathVariable int userNo){
+        List<Integer> categories = userService.getUserCategory(userNo);
+        GroupListDto list = new GroupListDto();
+        list.setList(groupService.getRecommendList(categories));
+        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+    }
+
     @GetMapping("/detail/{groupNo}/{userNo}")
     public ResponseEntity<GroupOptionDto> group(@PathVariable int groupNo, @PathVariable int userNo){
         if(userNo != 0) groupService.groupViews(userNo,groupNo);
         List<GroupMediaDto> mediaDtoList = mediaService.fineAllMedia(groupNo);
         GroupReturnDto groupReturnDto = groupService.group(groupNo);
         List<FAQDto> faqDtoList = faqService.readFaqAll(groupNo);
+        if (userNo != 0 && groupReturnDto != null) {
+            int isliked = groupService.isliked(userNo, groupNo);
+            groupReturnDto.setIsLiked(isliked);
+        }
+
         String mainImageName = null;
         List<String> mediaList = new ArrayList<>();
         for (GroupMediaDto mediaDto : mediaDtoList ) {
@@ -109,37 +122,50 @@ public class GroupController {
         }
     }
 
+//    @PutMapping("/{groupNo}")
+//    public ResponseEntity<Integer> update(@RequestPart(value="GroupDto") GroupDto updategroupDto,
+//                      @RequestPart(value="file", required = false) List<MultipartFile> updateFiles) throws IOException {
+//        int groupNo = updategroupDto.getGroupNo();
+//        List<GroupMediaDto> dbMediaList = mediaService.fineAllMedia(groupNo);
+//
+//        List<MultipartFile> addMediaList = new ArrayList<>();
+//
+//        if (CollectionUtils.isEmpty(dbMediaList)) {
+//            if (!CollectionUtils.isEmpty(updateFiles)) {
+//                for (MultipartFile multipartFile : updateFiles)
+//                    addMediaList.add(multipartFile);
+//            }
+//        } else {
+//            if (CollectionUtils.isEmpty(updateFiles)) {
+//                for (GroupMediaDto dbFile : dbMediaList) {
+//                    fileHandler.deleteGroupMediaFile(dbFile);
+//                    mediaService.deleteMedia(dbFile.getMediaNo());
+//                }
+//            } else {
+//                for (GroupMediaDto dbFile : dbMediaList) {
+//                    fileHandler.deleteGroupMediaFile(dbFile);
+//                    mediaService.deleteMedia(dbFile.getMediaNo());
+//                }
+//            for (MultipartFile multipartFile : updateFiles) {
+//                    addMediaList.add(multipartFile);
+//                }
+//            }
+//        }
+//        int updated =  groupService.groupUpdate(groupNo, updategroupDto, addMediaList);
+//        if (updated != 0) {
+//            return ResponseEntity.status(HttpStatus.OK).body(updated);
+//        } else {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(updated);
+//        }
+//    }
+
     @PutMapping("/{groupNo}")
-    public ResponseEntity<Integer> update(@RequestPart(value="GroupDto") GroupDto updategroupDto,
-                      @RequestPart(value="file", required = false) List<MultipartFile> updateFiles) throws IOException {
-        int groupNo = updategroupDto.getGroupNo();
-        List<GroupMediaDto> dbMediaList = mediaService.fineAllMedia(groupNo);
-
-        List<MultipartFile> addMediaList = new ArrayList<>();
-
-        if (CollectionUtils.isEmpty(dbMediaList)) {
-            if (!CollectionUtils.isEmpty(updateFiles)) {
-                for (MultipartFile multipartFile : updateFiles)
-                    addMediaList.add(multipartFile);
-            }
-        } else {
-            if (CollectionUtils.isEmpty(updateFiles)) {
-                for (GroupMediaDto dbFile : dbMediaList) {
-                    fileHandler.deleteGroupMediaFile(dbFile);
-                    mediaService.deleteMedia(dbFile.getMediaNo());
-                }
-            } else {
-                for (GroupMediaDto dbFile : dbMediaList) {
-                    fileHandler.deleteGroupMediaFile(dbFile);
-                    mediaService.deleteMedia(dbFile.getMediaNo());
-                }
-            for (MultipartFile multipartFile : updateFiles) {
-                    addMediaList.add(multipartFile);
-                }
-            }
-        }
-        int updated =  groupService.groupUpdate(groupNo, updategroupDto, addMediaList);
+    public ResponseEntity<Integer> update(@PathVariable int groupNo, @RequestBody GroupRegisterDto updategroupDto)throws IOException {
+        int updated =  groupService.groupUpdate(groupNo, updategroupDto.getGroup());
         if (updated != 0) {
+                groupService.addOptions(groupNo, updategroupDto.getOptions());
+                groupService.addFaq(groupNo, updategroupDto.getRequestfaq());
+
             return ResponseEntity.status(HttpStatus.OK).body(updated);
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(updated);
@@ -193,6 +219,7 @@ public class GroupController {
         } else {
             return new ResponseEntity<Integer>(result, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
     @GetMapping("/search")
@@ -203,27 +230,27 @@ public class GroupController {
     }
 
 
-    @PostMapping("/wsearch")
-    public ResponseEntity<GroupListDto> wordSearch(@RequestBody HashMap map){
-        String word = map.get("word").toString();
-        String[] tmp = word.split(" ");
-        List<String> wordList = Arrays.asList(tmp);
-
-        System.out.println(wordList.toString());
-
-        GroupListDto list = new GroupListDto();
-        list.setList(groupService.wordSearch(wordList));
-        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
-    }
-
-    @PostMapping("/psearch")
-    public ResponseEntity<GroupListDto> personSearch(@RequestBody HashMap map){
-        String person = map.get("person").toString();
-
-        GroupListDto list = new GroupListDto();
-        list.setList(groupService.personSearch(person));
-        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
-    }
+//    @PostMapping("/wsearch")
+//    public ResponseEntity<GroupListDto> wordSearch(@RequestBody HashMap map){
+//        String word = map.get("word").toString();
+//        String[] tmp = word.split(" ");
+//        List<String> wordList = Arrays.asList(tmp);
+//
+//        System.out.println(wordList.toString());
+//
+//        GroupListDto list = new GroupListDto();
+//        list.setList(groupService.wordSearch(wordList));
+//        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+//    }
+//
+//    @PostMapping("/psearch")
+//    public ResponseEntity<GroupListDto> personSearch(@RequestBody HashMap map){
+//        String person = map.get("person").toString();
+//
+//        GroupListDto list = new GroupListDto();
+//        list.setList(groupService.personSearch(person));
+//        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+//    }
 
     @PostMapping("/review")
     public int review(@RequestBody ReviewDto dto){
