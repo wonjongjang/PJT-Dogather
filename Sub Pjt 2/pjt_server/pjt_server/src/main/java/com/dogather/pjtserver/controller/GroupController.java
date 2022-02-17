@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -195,6 +196,11 @@ public class GroupController {
     @PutMapping("/{groupNo}")
     public ResponseEntity<Integer> update(@PathVariable int groupNo, @RequestBody GroupDto updategroupDto)throws IOException {
         log.info(updategroupDto.toString());
+        String deadline = updategroupDto.getDeadline().toString();
+        if (deadline.length() == 19) {
+            updategroupDto.setDeadline(LocalDateTime.parse(deadline.toString().substring(0, 15)));
+            log.info(deadline.toString().substring(0, 15));
+        }
         int updated =  groupService.groupUpdate(groupNo, updategroupDto);
         if (updated != 0) {
             return ResponseEntity.status(HttpStatus.OK).body(updated);
