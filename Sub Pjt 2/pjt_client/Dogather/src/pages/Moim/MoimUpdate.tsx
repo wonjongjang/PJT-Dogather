@@ -90,14 +90,20 @@ function MoimUpdate() {
       data.deadline.replace("T", " ").substring(0, 19) + ":00";
 
     const newData = {
-      ...data,
-      deadline: newDeadline,
+      categoryNo: data.categoryNo,
+      detail: data.detail,
+      link: data.link,
+      maxPeople: data.maxPeople,
+      originPrice: data.originPrice,
+      price: data.price,
+      product: data.product,
+      tmpDeadLine: data.deadline
     };
     console.log(newData);
 
     if (window.confirm("변경 사항을 적용하시겠습니까?") == true) {
       // 데이터 전송
-      fetch(`http://i6e104.p.ssafy.io/api/group/${groupNo}`, {
+      fetch(`http://localhost:8080/api/group/${groupNo}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

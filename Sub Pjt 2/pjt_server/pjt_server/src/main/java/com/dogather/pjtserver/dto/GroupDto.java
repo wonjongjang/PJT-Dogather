@@ -27,4 +27,5 @@ public class GroupDto {
     private String link;
     private int originPrice;
     private int price;
+    private String tmpDeadLine;
 }
