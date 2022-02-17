@@ -12,7 +12,8 @@ public interface GroupService {
     public int groupRegister(GroupDto groupDto);
     public int groupRegister(GroupDto groupDto, List<MultipartFile> files, MultipartFile mainImage) throws IOException;
 
-    public int groupUpdate(int groupNo, GroupDto updateGroupDto, List<MultipartFile> addMediaList) throws IOException;
+//    public int groupUpdate(int groupNo, GroupDto updateGroupDto, List<MultipartFile> addMediaList) throws IOException;
+    public int groupUpdate(int groupNo, GroupDto updateGroupDto) throws IOException;
 
     public int groupDelete(int groupNo);
     public GroupReturnDto group(int groupNo);
@@ -49,4 +50,8 @@ public interface GroupService {
     public List<ReviewDto> reviewList(int userNo);
 
     public void groupViews(int userNo, int groupNo);
+
+    public void updateOptions(int groupNo, List<OptionDto> options);
+
+    public void updateFaq(int groupNo, List<FAQRequsetDto> requestfaq);
 }

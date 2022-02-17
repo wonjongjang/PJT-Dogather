@@ -291,6 +291,15 @@
         where group_no = #{groupNo}
     </select>
 
+    <update id="updateOption" parameterType="Map">
+        update dogather.option
+        set
+            option_name = #{optionName},
+            option_price = #{optionPrice}
+        where
+            option_no = #{optionNo} and group_no = #{groupNo}
+    </update>
+
 
 
     <insert id="groupEnter" parameterType="com.dogather.pjtserver.dto.GroupEnterDto">
