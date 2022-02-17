@@ -131,17 +131,18 @@ function MoimDetail() {
     () => FetchMoimGroupAPI(groupNo!, userId!, JWT!, userNo)
   );
 
-  // console.log(groupData?.options);
+  // console.log(groupData?.groupLeader);
+  // console.log(userNo);
   // console.log(groupLoading);
   // console.log(groupData?.mediaList[0]);
 
   // const loading = productLoading || isLoading;
-
   const [loading, setLoading] = useState(true);
+
   const [hidden, setHidden] = useState(true);
   const [moimPrice, setMoimPrice] = useState(groupData?.originPrice!);
   useEffect(() => {
-    console.log(groupData);
+    // console.log(groupData);
     setTimeout(() => {
       setLoading(false);
       setHidden(false);
@@ -189,7 +190,7 @@ function MoimDetail() {
     setProducts(newObject);
     setTotalPriceByOption(newPrice);
   };
-  console.log(products);
+  // console.log(products);
 
   // const sweetAlertSucc = (title, contents, icon, confirmButtonText) => {
   //   Swal.fire({
@@ -277,7 +278,7 @@ function MoimDetail() {
     const value = Number(e.target.value);
     setQuantity(Number(value));
     setTotalPriceByOption(priceByOption);
-    console.log(value);
+    // console.log(value);
   };
 
   // const onApply = () => {
@@ -312,7 +313,11 @@ function MoimDetail() {
   const makeComma = (price: number) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const defaultImg = useRecoilValue(ImgAtom);
-  console.log(groupData);
+  // console.log(groupData);
+
+  const goToUpdate = () => {
+    navigate(`/moim/update/${groupNo}`);
+  };
 
   return (
     <Container>
@@ -453,37 +458,43 @@ function MoimDetail() {
                         </PriceWrapper>
                       </CartOption>
                     </OptionWrapper>
-                    <SelectContent>
-                      <Button
-                        onClick={() => onInterest()}
-                        style={{
-                          backgroundColor: "tomato",
-                          borderColor: "black",
-                        }}
-                      >
-                        관심등록
-                      </Button>
-                      <Link
-                        // onClick={() => onApply()}
-                        style={{ width: "100%" }}
-                        to={`/moim/${groupNo}/payment`}
-                        state={{
-                          products: products,
-                          groupNo: groupNo!,
-                          price: price,
-                          img: mainImgAddress,
-                          leaderName: groupData?.leaderName!,
-                          productName: groupData?.product!,
-                          ProductDetail: groupData?.detail!,
-                          categoryName: groupData?.categoryName!,
-                          basePrice: basePrice,
-                        }}
-                      >
-                        <Button style={{ backgroundColor: "#6fbd63" }}>
-                          모임신청
+                    {groupData?.groupLeader === userNo ? (
+                      <ButtonDiv onClick={goToUpdate}>
+                        <UpdateButton>모임 수정</UpdateButton>
+                      </ButtonDiv>
+                    ) : (
+                      <SelectContent>
+                        <Button
+                          onClick={() => onInterest()}
+                          style={{
+                            backgroundColor: "tomato",
+                            borderColor: "black",
+                          }}
+                        >
+                          관심등록
                         </Button>
-                      </Link>
-                    </SelectContent>
+                        <Link
+                          // onClick={() => onApply()}
+                          style={{ width: "100%" }}
+                          to={`/moim/${groupNo}/payment`}
+                          state={{
+                            products: products,
+                            groupNo: groupNo!,
+                            price: price,
+                            img: mainImgAddress,
+                            leaderName: groupData?.leaderName!,
+                            productName: groupData?.product!,
+                            ProductDetail: groupData?.detail!,
+                            categoryName: groupData?.categoryName!,
+                            basePrice: basePrice,
+                          }}
+                        >
+                          <Button style={{ backgroundColor: "#6fbd63" }}>
+                            모임신청
+                          </Button>
+                        </Link>
+                      </SelectContent>
+                    )}
                   </SelectWrapper>
                 </SelectContainer>
 
@@ -666,6 +677,10 @@ const OptionWrapper = styled.div`
   border-width: 1px;
 `;
 
+const ButtonDiv = styled.div`
+  font-size: 20px;
+`;
+
 const SelectContent = styled.div`
   display: flex;
   justify-content: center;
@@ -776,6 +791,18 @@ const Button = styled.div`
   :hover {
     cursor: pointer;
   }
+`;
+
+const UpdateButton = styled.button`
+  width: 100%;
+  height: 50px;
+  background-color: ${(props) => props.theme.buttonColor};
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
 `;
 
 export default MoimDetail;
