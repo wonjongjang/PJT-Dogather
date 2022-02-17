@@ -196,10 +196,11 @@ public class GroupController {
     @PutMapping("/{groupNo}")
     public ResponseEntity<Integer> update(@PathVariable int groupNo, @RequestBody GroupDto updategroupDto)throws IOException {
         log.info(updategroupDto.toString());
-        String deadline = updategroupDto.getDeadline().toString();
-        if (deadline.length() == 19) {
-            updategroupDto.setDeadline(LocalDateTime.parse(deadline.toString().substring(0, 15)));
-            log.info(deadline.toString().substring(0, 15));
+        String Deadline = updategroupDto.getTmpDeadLine();
+        if (Deadline.length() == 22) {
+            updategroupDto.setDeadline(LocalDateTime.parse(Deadline.substring(0, 19)));
+        } else {
+            updategroupDto.setDeadline(LocalDateTime.parse(Deadline));
         }
         int updated =  groupService.groupUpdate(groupNo, updategroupDto);
         if (updated != 0) {
