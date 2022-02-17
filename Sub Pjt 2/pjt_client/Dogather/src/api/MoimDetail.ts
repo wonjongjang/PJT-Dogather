@@ -29,6 +29,10 @@ export function FetchHomeHotMoimCard() {
   return fetch(`${BASE_URL}/hot`).then((res) => res.json())
 }
 
+export function FetchHomeEndMoimCard() {
+  return fetch(`${BASE_URL}/end`).then((res) => res.json())
+}
+
 export function FetchMoimMediaAPI(mediaNo:number) {
   return fetch(`${BASE_URL}/image/${mediaNo}`).then((res) => res.json())
 }
