@@ -24,6 +24,7 @@ public interface GroupService {
     public List<GroupReturnDto> getHotList();
     public List<GroupReturnDto> getNewList();
     public List<GroupReturnDto> getEndSoonList();
+    public List<GroupReturnDto> getRecommendList(List<Integer> categories);
 
     public List<GroupReturnDto> search(String query, String nickname, int page);
 
