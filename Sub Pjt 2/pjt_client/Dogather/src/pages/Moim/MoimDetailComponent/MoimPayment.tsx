@@ -178,7 +178,6 @@ function MoimPayment() {
           body: JSON.stringify(paymentData),
         });
         alert("결제가 완료됐습니다.");
-        navigate("/user");
         console.log(response);
       } else {
         console.log(error_msg);
