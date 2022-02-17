@@ -401,6 +401,16 @@ public class GroupServiceImpl implements GroupService {
         }
     }
 
+    @Override
+    public int isliked(int userNo, int groupNo) {
+        Integer queryResult = groupDao.isliked(userNo, groupNo);
+        if (queryResult != null)
+            queryResult = 1;
+        else
+            queryResult = (int)0;
+        return queryResult;
+    }
+
 
 }
 

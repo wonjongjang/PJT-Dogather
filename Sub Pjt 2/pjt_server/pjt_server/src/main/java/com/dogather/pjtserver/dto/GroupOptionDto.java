@@ -35,6 +35,8 @@ public class GroupOptionDto {
     private List<FAQDto> FaqList;
     private String mainImage;
     private int count;
+    private int isliked;
+
 
     public void setGroupDto(GroupReturnDto groupReturnDto){
         this.groupNo = groupReturnDto.getGroupNo();
@@ -54,6 +56,7 @@ public class GroupOptionDto {
         this.originPrice = groupReturnDto.getOriginPrice();
         this.price = groupReturnDto.getPrice();
         this.count = groupReturnDto.getCount();
+        this.isliked = groupReturnDto.getIsLiked();
 
     }
 
