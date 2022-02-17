@@ -14,6 +14,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 function ReviewCard({
   image,
@@ -32,11 +33,13 @@ function ReviewCard({
     <CustomFrame>
       <Card sx={{ minWidth: "17.5vw", maxWidth: "17.5vw" }}>
         <CardHeader
-          avatar={<Avatar aria-label="recipe">{avatar}</Avatar>}
+          avatar={<Avatar aria-label="recipe" src={avatar} />}
           title={name}
           subheader={subheader}
         />
-        <CardMedia component="img" height="194" image={image} alt="Error" />
+        <Link to={"/community/review/1"}>
+          <CardMedia component="img" height="194" image={image} alt="Error" />
+        </Link>
         <CardContent>{content}</CardContent>
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites">

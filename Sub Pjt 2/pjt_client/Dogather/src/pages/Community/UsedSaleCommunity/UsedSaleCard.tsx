@@ -32,7 +32,7 @@ function UsedSaleCard({
     <CustomFrame>
       <Card sx={{ minWidth: "17.5vw", maxWidth: "17.5vw" }}>
         <CardHeader
-          avatar={<Avatar aria-label="recipe">{avatar}</Avatar>}
+          avatar={<Avatar aria-label="recipe" src={avatar} />}
           title={name}
           subheader={subheader}
         />
