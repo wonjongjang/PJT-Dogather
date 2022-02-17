@@ -3,7 +3,7 @@ import { width } from "@mui/system";
 
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { FetchUserInfoAPI } from "../../../api/MoimDetail";
@@ -101,6 +101,7 @@ interface RouteState {
 
 function MoimPayment() {
   const { state } = useLocation() as RouteState;
+  const navigate = useNavigate();
   const JWT = localStorage.getItem("login_token");
   const userId = useRecoilValue(userIdAtom);
   const userNo = useRecoilValue(userNoAtom);
@@ -177,6 +178,7 @@ function MoimPayment() {
           body: JSON.stringify(paymentData),
         });
         alert("결제가 완료됐습니다.");
+        navigate("/user");
         console.log(response);
       } else {
         console.log(error_msg);
