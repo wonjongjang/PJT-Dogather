@@ -431,6 +431,7 @@
         left join dogather.category as c on g.category_no = c.category_no
         left join dogather.user as u on u.user_no = g.group_leader
         where p.user_no = #{userNo}
+        order by group_no desc;
     </select>
 
 
@@ -458,6 +459,7 @@
         left join dogather.user as u on g.group_leader = u.user_no
         left join dogather.category as c on g.category_no = c.category_no
         where g.group_leader = #{userNo}
+        order by group_no desc;
     </select>
 
     <select id="reviewList" parameterType="int" resultType="com.dogather.pjtserver.dto.ReviewDto">
@@ -487,5 +489,11 @@
     <delete id="deleteOptions" parameterType="int">
         delete from dogather.option where group_no = #{groupNo}
     </delete>
+
+    <select id="isliked" parameterType="int" resultType="integer">
+        select user_no
+        from user_group_interest
+        where user_no = #{userNo} and group_no = #{groupNo}
+    </select>
 
 </mapper>
