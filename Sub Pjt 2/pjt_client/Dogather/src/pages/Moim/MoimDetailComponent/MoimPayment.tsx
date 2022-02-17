@@ -832,7 +832,9 @@ function MoimPayment() {
               </Address>
             </PriceWrapper>
             <ButtonWrapper>
-              <KakaoPayButton>결제하기</KakaoPayButton>
+              <KakaoPayButton onClick={() => handlePayment()}>
+                결제하기
+              </KakaoPayButton>
             </ButtonWrapper>
           </AddressWrapper>
         </PaymentWrapper>
@@ -1010,6 +1012,7 @@ const KakaoPayButton = styled.button`
   font-weight: bold;
   height: 50px;
   width: 80%;
+  cursor: pointer;
 `;
 const TotalPriceWrapper = styled.div``;
 
