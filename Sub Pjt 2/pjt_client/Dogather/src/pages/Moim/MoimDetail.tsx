@@ -360,7 +360,7 @@ function MoimDetail() {
                 {/* <ProductDetail>{groupData?.detail}</ProductDetail> */}
                 <ProductPrice>
                   <ProductOriginalPrice>
-                    {/* {makeComma(moimPrice) + "원"} */}
+                    {makeComma(groupData?.originPrice!) + "원"}
                   </ProductOriginalPrice>
                   <ProductMoimPrice>
                     {makeComma(basePrice) + "원"}
@@ -579,6 +579,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   background-color: whitesmoke;
+  padding-bottom: 200px;
 `;
 
 const MoimWrapper = styled.div`

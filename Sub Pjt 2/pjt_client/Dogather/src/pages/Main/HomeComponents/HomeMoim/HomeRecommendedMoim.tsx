@@ -9,11 +9,12 @@ import { Link } from "react-router-dom";
 import { iHomeCard } from "../../Home";
 import { useRecoilValue } from "recoil";
 import { ImgAtom } from "../../../../atoms/HomeMoimImg";
-import { isLoginAtom } from "../../../../atoms/Login";
+import { isLoginAtom, userNoAtom } from "../../../../atoms/Login";
 
 function HomeRecommendedMoim() {
+  const userNo = useRecoilValue(userNoAtom);
   const { data: recommendedData } = useQuery<iHomeCard>("recommend", () =>
-    FetchHomeRecommendedMoimCard()
+    FetchHomeRecommendedMoimCard(userNo)
   );
   const { data: endData } = useQuery<iHomeCard>("end", () =>
     FetchHomeEndMoimCard()

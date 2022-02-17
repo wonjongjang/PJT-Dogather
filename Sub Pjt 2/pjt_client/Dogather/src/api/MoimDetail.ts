@@ -17,8 +17,8 @@ export function FetchMoimGroupAPI(groupNo: string, userId:string, JWT:string, us
   // .then((res) => console.log(res))
 }
 
-export function FetchHomeRecommendedMoimCard() {
-  return fetch(`${BASE_URL}/list`).then((res) => res.json())
+export function FetchHomeRecommendedMoimCard(userNo:number) {
+  return fetch(`${BASE_URL}/recommend/${userNo}`).then((res) => res.json())
 }
 
 export function FetchHomeNewMoimCard() {
