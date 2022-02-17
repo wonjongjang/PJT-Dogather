@@ -11,6 +11,6 @@ import java.util.List;
 @Setter
 public class GroupRegisterDto {
     private GroupDto group;
-        private List<OptionDto> options;
+    private List<OptionDto> options;
     private List<FAQRequsetDto> requestfaq;
 }

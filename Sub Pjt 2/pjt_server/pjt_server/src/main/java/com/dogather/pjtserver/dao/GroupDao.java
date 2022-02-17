@@ -56,4 +56,6 @@ public interface GroupDao {
     public void updateOption(Map<String, Object> map);
 
     public void deleteOptions(int groupNo);
+
+    public Integer isliked(int userNo, int groupNo);
 }

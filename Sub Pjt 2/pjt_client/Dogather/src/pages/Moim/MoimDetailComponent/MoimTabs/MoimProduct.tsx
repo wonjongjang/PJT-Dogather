@@ -5,9 +5,16 @@ interface IData {
   detailImage: Array<string>;
 }
 
+// interface RouteState {
+//   state: {
+//     detail: string;
+//     // detailImage: Array<string>;
+//   };
+// }
+
 function MoimProduct({ detailImage }: IData) {
-  const { state } = useLocation();
-  console.log(state);
+  // const { state } = useLocation() as RouteState;
+  // console.log(state);
   return (
     <Container>
       <ImgWrapper>

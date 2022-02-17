@@ -15,10 +15,9 @@
         </foreach>
     </insert>
 
-    <update id="readAlarm" parameterType="com.dogather.pjtserver.dto.AlarmDto">
+    <update id="readAlarm" parameterType="int">
         update dogather.message
            set message.read = 1
-         where user_nick = #{userNick}
-           and msg = #{msg}
+         where msg_no = #{msgNo}
     </update>
 </mapper>

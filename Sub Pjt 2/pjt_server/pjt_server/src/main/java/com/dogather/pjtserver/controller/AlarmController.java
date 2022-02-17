@@ -27,8 +27,8 @@ public class AlarmController {
     }
 
     @PutMapping
-    public void readAlarm(@RequestBody AlarmDto dto){
-        alarmService.readAlarm(dto);
+    public void readAlarm(@RequestParam("msgNo") int msgNo){
+        alarmService.readAlarm(msgNo);
     }
 
 }

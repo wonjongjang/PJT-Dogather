@@ -83,6 +83,11 @@ public class GroupController {
         List<GroupMediaDto> mediaDtoList = mediaService.fineAllMedia(groupNo);
         GroupReturnDto groupReturnDto = groupService.group(groupNo);
         List<FAQDto> faqDtoList = faqService.readFaqAll(groupNo);
+        if (userNo != 0 && groupReturnDto != null) {
+            int isliked = groupService.isliked(userNo, groupNo);
+            groupReturnDto.setIsLiked(isliked);
+        }
+
         String mainImageName = null;
         List<String> mediaList = new ArrayList<>();
         for (GroupMediaDto mediaDto : mediaDtoList ) {
@@ -214,6 +219,7 @@ public class GroupController {
         } else {
             return new ResponseEntity<Integer>(result, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
     @GetMapping("/search")

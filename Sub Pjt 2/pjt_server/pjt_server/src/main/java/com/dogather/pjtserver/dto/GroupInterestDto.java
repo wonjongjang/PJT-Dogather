@@ -14,4 +14,5 @@ import java.time.LocalDateTime;
 public class GroupInterestDto {
     private int userNo;
     private int groupNo;
+
 }

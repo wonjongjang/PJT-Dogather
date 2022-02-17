@@ -9,5 +9,5 @@ public interface AlarmService {
 
     public void insertAlarm(List<AlarmDto> list);
 
-    public void readAlarm(AlarmDto dto);
+    public void readAlarm(int msgNo);
 }

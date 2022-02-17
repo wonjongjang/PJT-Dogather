@@ -55,4 +55,6 @@ public interface GroupService {
     public void updateOptions(int groupNo, List<OptionDto> options);
 
     public void updateFaq(int groupNo, List<FAQRequsetDto> requestfaq);
+
+    public int isliked(int userNo, int groupNo);
 }
