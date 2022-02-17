@@ -61,7 +61,7 @@ function Router() {
           element={isLogin ? <CreateMoim /> : <Navigate replace to="/" />}
         />
         <Route
-          path="/moim/update"
+          path="/moim/update/:groupNo/*"
           element={isLogin ? <MoimUpdate /> : <Navigate replace to="/" />}
         />
         <Route

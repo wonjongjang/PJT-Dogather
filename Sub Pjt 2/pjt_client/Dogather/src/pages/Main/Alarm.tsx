@@ -2,17 +2,10 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { AlarmsAtom } from "../../atoms/Alarm";
-import { userIdAtom, userNickAtom } from "../../atoms/Login";
 import AlarmElement from "./AlarmComponents/AlarmElement";
 
 function Alarm() {
-  const JWT = localStorage.getItem("login_token");
-
-  const [userId, setUserId] = useRecoilState(userIdAtom);
-  const [userNick, setUserNick] = useRecoilState(userNickAtom);
   const [alarms, setAlarms] = useRecoilState(AlarmsAtom);
-
-  // console.log(alarms);
 
   return (
     <Container>
@@ -33,24 +26,6 @@ function Alarm() {
     </Container>
   );
 }
-
-const ThirdBox = styled.div`
-  width: 100px;
-`;
-
-const SecondBox = styled.div`
-  width: 100%;
-`;
-
-const FirstBox = styled.div`
-  width: 300px;
-`;
-
-const Element = styled.li`
-  display: flex;
-  padding: 30px 20px;
-  border-bottom: 1px solid #e3e7eb;
-`;
 
 const Boards = styled.ul`
   margin-top: 30px;

@@ -9,6 +9,7 @@ import { fetchUserUpdate } from "../../api/UserInfo";
 import { isLoginAtom, userIdAtom, userNoAtom } from "../../atoms/Login";
 import { CategoriesAtom } from "../../atoms/ProductCategories";
 import UpdateCategory from "./SignupComponents/UpdateCategory";
+import { AlarmsAtom, AlarmsCountAtom } from "../../atoms/Alarm";
 
 // useForm에 담길 데이터 타입
 interface IForm {
@@ -46,6 +47,8 @@ function UserUpdate() {
   const [userNo, setUserNo] = useRecoilState(userNoAtom);
   const [userId, setUserId] = useRecoilState(userIdAtom);
   const [categories, setCategories] = useRecoilState(CategoriesAtom);
+  const [alarms, setAlarms] = useRecoilState(AlarmsAtom);
+  const [count, setCount] = useRecoilState(AlarmsCountAtom);
 
   const { isLoading, data } = useQuery<IUserInfo>([JWT, userNo, userId], () =>
     fetchUserUpdate(JWT!, userNo!, userId!)
@@ -103,6 +106,8 @@ function UserUpdate() {
             setIsLogin(false); // 로그인 여부 초기화
             setUserNo(""); // 저장된 user pk 초기화
             setUserId(""); // 저장된 user id 초기화
+            setAlarms([]); // 저장된 알람 리스트 초기화
+            setCount(0); // 저장된 읽지 않은 알람 개수 초기화
             alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
             setTimeout(() => {
               // 1ms (0.001초) 후 navigate 실행 (미세한 차이로 isLogin이 false 되는 것 보다 navigate가 빨라 isLogin이 true라고 판단하여 로그인 페이지에서 메인 페이지로 튕김)

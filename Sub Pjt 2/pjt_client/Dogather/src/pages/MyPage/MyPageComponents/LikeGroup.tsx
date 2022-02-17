@@ -58,6 +58,7 @@ const Container = styled.div`
 
 const LeftSide = styled.div`
   display: flex;
+  width: 100%;
 `;
 
 const ImgDiv = styled.div`
@@ -118,7 +119,8 @@ const RightSide = styled.div`
   display: flex;
   align-items: center;
   text-align: right;
-  margin-left: auto;
+  /* margin-left: auto; */
+  width: 100px;
 `;
 
 const StatusDiv = styled.div`

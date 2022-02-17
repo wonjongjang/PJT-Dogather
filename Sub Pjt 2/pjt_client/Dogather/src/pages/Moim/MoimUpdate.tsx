@@ -2,20 +2,41 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { isLoginAtom, userIdAtom, userNoAtom } from "../../atoms/Login";
-import { useNavigate } from "react-router-dom";
-import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import { useNavigate, useParams } from "react-router-dom";
 
-import CreateOption from "./CreateMoimComponents/Option/CreateOption";
 import { OptionsAtom } from "../../atoms/Options";
-import Option from "./CreateMoimComponents/Option/Option";
-import CreateFAQ from "./CreateMoimComponents/FAQ/CreateFAQ";
 import { FAQsAtom } from "../../atoms/FAQs";
-import FAQ from "./CreateMoimComponents/FAQ/FAQ";
-import { useState } from "react";
 import { ProductCategories } from "../../atoms/ProductCategories";
+import { fetchMoimUpdate } from "../../api/MoimInfo";
+import { useQuery } from "react-query";
+import { useEffect } from "react";
+import { AlarmsAtom, AlarmsCountAtom } from "../../atoms/Alarm";
+
+// useQuery에 담길 타입
+interface IMoim {
+  categoryName: string;
+  categoryNo: number;
+  count: number;
+  created: string;
+  deadline: string;
+  detail: string;
+  groupLeader: number;
+  groupNo: number;
+  isliked: number;
+  leaderName: string;
+  link: string;
+  mainImage: null;
+  maxPeople: number;
+  originPrice: number;
+  price: number;
+  product: string;
+  status: string;
+  updated: string;
+  view: number;
+}
 
 // useForm에 담길 데이터 타입
-export interface IMoimForm {
+interface IMoimForm {
   groupLeader: number; // 모임 대표
   categoryNo: number; // 카테고리 pk
   deadline: string; // *공구 마감 날짜
@@ -28,19 +49,22 @@ export interface IMoimForm {
   price: number; // 공구 가격
 }
 
-interface IAreaProps {
-  isDraggingOver: boolean; // 드래그 해서 들어오고 있음
-  isDraggingFromThis: boolean;
-}
-
 function MoimUpdate() {
+  const { groupNo } = useParams();
+  const JWT = localStorage.getItem("login_token");
+
   const navigate = useNavigate(); // 페이지 이동
 
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const [userNo, setUserNo] = useRecoilState(userNoAtom);
   const [userId, setUserId] = useRecoilState(userIdAtom);
-  const [options, setOptions] = useRecoilState(OptionsAtom);
-  const [FAQs, setFAQs] = useRecoilState(FAQsAtom);
+  const [alarms, setAlarms] = useRecoilState(AlarmsAtom);
+  const [count, setCount] = useRecoilState(AlarmsCountAtom);
+
+  const { isLoading, data: queryData } = useQuery<IMoim>(
+    [userNo, groupNo],
+    () => fetchMoimUpdate(userNo!, groupNo!)
+  );
 
   // useForm으로 form 내용 한 번에 받음
   const {
@@ -60,151 +84,81 @@ function MoimUpdate() {
     .toISOString()
     .slice(0, -5);
 
-  // 대표 이미지 업로드
-  const [file, setFile] = useState<FileList | undefined>(); // 대표 이미지 저장 (useForm과 따로 관리)
-  const [fileAttachment, setFileAttachment] = useState(); // 미리보기
-  // 파일 업로드 시 실행
-  const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { files },
-    } = event;
-
-    if (files != null) {
-      setFile(files);
-      const mainFile = files[0];
-      const reader = new FileReader(); // 미리보기
-      reader.onloadend = (finishedEvent: any) => {
-        const {
-          currentTarget: { result },
-        } = finishedEvent;
-        setFileAttachment(result);
-      };
-      reader.readAsDataURL(mainFile); // 파일 읽음
-    }
-  };
-
-  // 상세 이미지 업로드
-  const [fileList, setFileList] = useState<FileList | undefined>(); // 상세 이미지 저장 (useForm과 따로 관리)
-  // 파일 업로드 시 실행
-  const onChangeFiles = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { files },
-    } = event;
-
-    if (files != null) {
-      setFileList(files);
-    }
-  };
-
   // form 제출 시 실행
   const onValid = (data: IMoimForm) => {
-    const JWT = localStorage.getItem("login_token"); // 토큰 가져오기 (Interceptor 정보)
-
-    // 마감 날짜 시간 형식 변환 (DB에 맞는 양식)
     const newDeadline =
       data.deadline.replace("T", " ").substring(0, 19) + ":00";
 
     const newData = {
-      group: {
-        ...data,
-        deadline: newDeadline,
-        groupLeader: userNo,
-        status: "모집중",
-      },
-      options: options,
-      requestfaq: FAQs,
+      ...data,
+      deadline: newDeadline,
     };
+    console.log(newData);
 
-    const formData = new FormData(); // 이미지 보내기 위해 FormData() 사용
-
-    formData.append(
-      // 파일 외 데이터들 추가
-      "groupRegisterDto",
-      new Blob([JSON.stringify(newData)], { type: "application/json" }) // 데이터 전송 시 FormData는 body에 따로 처리없이 보내기 때문에 파일 외 데이터들은 append 할 때 Blob 처리 해줌
-    );
-
-    if (fileList != null) {
-      // 상세 이미지 추가
-      Array.from(fileList).forEach((f) => formData.append("file", f));
-    }
-
-    if (file != null) {
-      // 대표 이미지 추가
-      formData.append("mainImage", file[0]);
-    }
-
-    // 데이터 전송
-    fetch("http://i6e104.p.ssafy.io:8090/api/group/register", {
-      method: "POST",
-      headers: {
-        // Interceptor
-        jwt: `${JWT}`,
-        userId: userId,
-      },
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result) {
+    if (window.confirm("변경 사항을 적용하시겠습니까?") == true) {
+      // 데이터 전송
+      fetch(`http://i6e104.p.ssafy.io/api/group/${groupNo}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          jwt: `${JWT}`,
+          userId: userId,
+        },
+        body: JSON.stringify(newData),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          // console.log(result);
           if (result.msg === "relogin") {
             // 토큰 만료 시
             localStorage.clear(); // 로컬 스토리지 비우기
             setIsLogin(false); // 로그인 여부 초기화
             setUserNo(""); // 저장된 user pk 초기화
             setUserId(""); // 저장된 user id 초기화
+            setAlarms([]); // 저장된 알람 리스트 초기화
+            setCount(0); // 저장된 읽지 않은 알람 개수 초기화
             alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
             setTimeout(() => {
               // 1ms (0.001초) 후 navigate 실행 (미세한 차이로 isLogin이 false 되는 것 보다 navigate가 빨라 isLogin이 true라고 판단하여 로그인 페이지에서 메인 페이지로 튕김)
               navigate("/login"); // 로그인 페이지로 이동
             }, 1);
+          } else if (result.error) {
+            alert(result.status + " " + result.error);
           } else {
             // 토큰 만료 아닐 시
-            const ObjectToString = JSON.stringify(result); // 반환값이 object이므로 string으로 변환 (navigate시 url 깨지는 현상 해결)
-            navigate(`/moim/${ObjectToString}`); // 모임 상세 페이지로 이동
+            alert("모임 정보를 수정하였습니다.");
+            // navigate(`/user`); // 마이페이지로 이동
           }
-        }
-      });
+        });
+    }
   };
 
-  // 옵션 drop 했을 때 불려지는 함수
-  const onDragEndOption = (info: DropResult) => {
-    const { destination, draggableId, source } = info;
+  // useQuery로 받아온 데이터를 useForm에 넣어 놓기 (useEffect로 data 변경 마다 실행)
+  useEffect(() => {
+    const newDeadline = queryData?.deadline.replace(" ", "T");
 
-    if (!destination) return;
-
-    setOptions((options) => {
-      const optionsCopy = [...options];
-      const optionToMove = optionsCopy[source.index];
-      optionsCopy.splice(source.index, 1);
-      optionsCopy.splice(destination?.index, 0, optionToMove);
-      return optionsCopy;
-    });
-  };
-
-  // FAQ drop 했을 때 불려지는 함수
-  const onDragEndFAQ = (info: DropResult) => {
-    const { destination, draggableId, source } = info;
-
-    if (!destination) return;
-
-    setFAQs((faqs) => {
-      const faqsCopy = [...faqs];
-      const faqToMove = faqsCopy[source.index];
-      faqsCopy.splice(source.index, 1);
-      faqsCopy.splice(destination?.index, 0, faqToMove);
-      return faqsCopy;
-    });
-  };
+    // undefind 보이는 것 방지하기 위해 Loading이 끝난 후 setValue
+    if (!isLoading) {
+      setValue("categoryNo", Number(queryData?.categoryNo));
+      setValue("product", `${queryData?.product}`);
+      setValue("originPrice", Number(queryData?.originPrice));
+      setValue("price", Number(queryData?.price));
+      setValue("maxPeople", Number(queryData?.maxPeople));
+      setValue("deadline", `${newDeadline}`);
+      setValue("detail", `${queryData?.detail}`);
+      setValue("link", `${queryData?.link}`);
+    }
+  }, [queryData]);
 
   return (
     <Container>
       <FormContainer>
         <Block>
           <FormTitle>
-            <span>모임 생성</span>
+            <span>모임 정보 수정</span>
           </FormTitle>
         </Block>
-        <form id="total" onSubmit={handleSubmit(onValid)}>
+        <form onSubmit={handleSubmit(onValid)}>
           <Block>
             <InputTitle>
               <span>카테고리</span>
@@ -410,57 +364,7 @@ function MoimUpdate() {
               </Exp>
             </ExpDiv>
           </Block>
-          <Block>
-            <InputTitle>
-              <span>대표 이미지</span>
-            </InputTitle>
-            <ImgDiv>
-              <ImgBox htmlFor="file">
-                <ImgBoxInside>+</ImgBoxInside>
-              </ImgBox>
-              <Files
-                type="file"
-                id="file"
-                accept="image/*"
-                onChange={onChangeFile}
-              />
-              {fileAttachment && (
-                <Img>
-                  <img src={fileAttachment} width="150px" height="150px" />
-                </Img>
-              )}
-            </ImgDiv>
-            <ExpDiv>
-              <Exp>모임 리스트에서 보일 대표 이미지를 설정해 주세요.</Exp>
-            </ExpDiv>
-          </Block>
-          <Block>
-            <InputTitle>
-              <span>상품 상세 이미지 ({fileList ? fileList.length : 0})</span>
-            </InputTitle>
-            <ImgDiv>
-              <ImgBox htmlFor="files">
-                <ImgBoxInside>+</ImgBoxInside>
-              </ImgBox>
-              <Files
-                type="file"
-                id="files"
-                multiple
-                accept="image/*"
-                onChange={onChangeFiles}
-              />
-              {fileList && (
-                <Img>
-                  {Array.from(fileList).map((file) => (
-                    <ImgList key={file.name}>{file.name}</ImgList>
-                  ))}
-                </Img>
-              )}
-            </ImgDiv>
-            <ExpDiv>
-              <Exp>상품 상세 내용을 보여줄 다수의 사진을 첨부해 주세요.</Exp>
-            </ExpDiv>
-          </Block>
+
           <Block>
             <InputTitle>
               <span>링크</span>
@@ -486,105 +390,8 @@ function MoimUpdate() {
               </Exp>
             </ExpDiv>
           </Block>
+          <Button>수정하기</Button>
         </form>
-        <Block>
-          <InputTitle>
-            <span>옵션</span>
-          </InputTitle>
-          <InputDiv>
-            <CreateOption />
-            <Table>
-              <TableTitleDiv>
-                <TableTitle>옵션 조합</TableTitle>
-                <TableTitle>추가 가격</TableTitle>
-                <TableTitle></TableTitle>
-              </TableTitleDiv>
-              <DragDropContext onDragEnd={onDragEndOption}>
-                <Droppable droppableId="option">
-                  {(magic, snapshot) => (
-                    <Area
-                      isDraggingOver={snapshot.isDraggingOver}
-                      isDraggingFromThis={Boolean(
-                        snapshot.draggingFromThisWith
-                      )}
-                      ref={magic.innerRef}
-                      {...magic.droppableProps}
-                    >
-                      {options?.map((option, index) => (
-                        <Option
-                          key={option.id}
-                          index={index}
-                          id={option.id}
-                          optionName={option.optionName}
-                          optionPrice={option.optionPrice}
-                        />
-                      ))}
-                      {magic.placeholder}
-                    </Area>
-                  )}
-                </Droppable>
-              </DragDropContext>
-            </Table>
-          </InputDiv>
-          <ExpDiv>
-            <Exp>
-              ※ 드래그 앤 드롭으로 옵션 순서를 변경할 수 있습니다.
-              <br />
-              옵션 조합 : 각 옵션의 조합을 하나씩 입력해 주시기 바랍니다.
-              <br />
-              추가 가격 : 해당 옵션을 선택했을 때 추가 되는 가격을 숫자로만
-              입력해 주시기 바랍니다.
-            </Exp>
-          </ExpDiv>
-        </Block>
-        <Block>
-          <InputTitle>
-            <span>FAQ</span>
-          </InputTitle>
-          <InputDiv>
-            <CreateFAQ />
-            <Table>
-              <TableTitleDiv>
-                <TableTitle>질문</TableTitle>
-                <TableTitle>답변</TableTitle>
-                <TableTitle></TableTitle>
-              </TableTitleDiv>
-              <DragDropContext onDragEnd={onDragEndFAQ}>
-                <Droppable droppableId="faq">
-                  {(magic, snapshot) => (
-                    <Area
-                      isDraggingOver={snapshot.isDraggingOver}
-                      isDraggingFromThis={Boolean(
-                        snapshot.draggingFromThisWith
-                      )}
-                      ref={magic.innerRef}
-                      {...magic.droppableProps}
-                    >
-                      {FAQs?.map((faq, index) => (
-                        <FAQ
-                          key={faq.id}
-                          index={index}
-                          id={faq.id}
-                          faqQuestion={faq.faqQuestion}
-                          faqAnswer={faq.faqAnswer}
-                        />
-                      ))}
-                      {magic.placeholder}
-                    </Area>
-                  )}
-                </Droppable>
-              </DragDropContext>
-            </Table>
-          </InputDiv>
-          <ExpDiv>
-            <Exp>
-              ※ 드래그 앤 드롭으로 FAQ 순서를 변경할 수 있습니다.
-              <br />
-              자주하는 질문을 미리 등록하여 빠르게 응답할 수 있습니다.
-            </Exp>
-          </ExpDiv>
-        </Block>
-        <Button form="total">생성하기</Button>
       </FormContainer>
     </Container>
   );
@@ -772,17 +579,6 @@ const Button = styled.button`
   background-color: ${(props) => props.theme.buttonColor};
   color: white;
   cursor: pointer;
-`;
-
-// Drag and Drop 가능한 범위
-const Area = styled.div<IAreaProps>`
-  background-color: ${(props) =>
-    props.isDraggingOver
-      ? "#dfe6e9"
-      : props.isDraggingFromThis
-      ? "b2bec3"
-      : "tranparent"};
-  transition: background-color 0.3s ease-in-out;
 `;
 
 export default MoimUpdate;
