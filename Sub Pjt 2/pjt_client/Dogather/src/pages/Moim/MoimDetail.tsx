@@ -139,7 +139,7 @@ function MoimDetail() {
 
   const [loading, setLoading] = useState(true);
   const [hidden, setHidden] = useState(true);
-
+  const [moimPrice, setMoimPrice] = useState(groupData?.originPrice!);
   useEffect(() => {
     console.log(groupData);
     setTimeout(() => {
@@ -360,7 +360,7 @@ function MoimDetail() {
                 {/* <ProductDetail>{groupData?.detail}</ProductDetail> */}
                 <ProductPrice>
                   <ProductOriginalPrice>
-                    {makeComma(groupData?.originPrice!) + "원"}
+                    {/* {makeComma(moimPrice) + "원"} */}
                   </ProductOriginalPrice>
                   <ProductMoimPrice>
                     {makeComma(basePrice) + "원"}
