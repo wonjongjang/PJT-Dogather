@@ -18,4 +18,6 @@ public interface FAQDao {
     int deleteFaq(int groupNo, int faqNo);
 
     public List<FAQDto> readFaqAll(int groupNo);
+
+    public void deleteFaqs(int groupNo);
 }

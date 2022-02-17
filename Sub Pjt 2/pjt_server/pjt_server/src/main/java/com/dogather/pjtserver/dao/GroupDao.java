@@ -21,6 +21,7 @@ public interface GroupDao {
     public List<GroupReturnDto> getHotList();
     public List<GroupReturnDto> getNewList();
     public List<GroupReturnDto> getEndSoonList();
+    public List<GroupReturnDto> getRecommendList(List categories);
 
 
     public int addInterest(GroupInterestDto dto);
@@ -51,4 +52,10 @@ public interface GroupDao {
     public int groupViewsCheck(@Param("userNo") int userNo, @Param("groupNo") int groupNo);
 
     public void groupViewsPlus(int groupNo);
+
+    public void updateOption(Map<String, Object> map);
+
+    public void deleteOptions(int groupNo);
+
+    public Integer isliked(int userNo, int groupNo);
 }

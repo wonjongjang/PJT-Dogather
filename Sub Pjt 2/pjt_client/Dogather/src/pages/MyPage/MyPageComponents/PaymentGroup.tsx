@@ -1,9 +1,13 @@
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { ImgAtom } from "../../../atoms/HomeMoimImg";
 import { IGroup } from "../MyPage";
 
 function PaymentGroup(group: IGroup) {
   const navigate = useNavigate();
+
+  const defaultImg = useRecoilValue(ImgAtom);
 
   const moveToDetail = () => {
     navigate(`/moim/${group.groupNo}`);
@@ -16,7 +20,7 @@ function PaymentGroup(group: IGroup) {
       (option) => (tot += (price + option.amountOfPrice) * option.amount)
     );
     // console.log(tot);
-    return tot;
+    return tot.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   const totalPrice = totalPriceCal();
@@ -26,7 +30,13 @@ function PaymentGroup(group: IGroup) {
       <LeftSide>
         <ImgDiv>
           <ImgRadius>
-            <Img src={process.env.PUBLIC_URL + "/doimage/" + group.mainImage} />
+            <Img
+              src={
+                group.mainImage
+                  ? process.env.PUBLIC_URL + "/doimage/" + group?.mainImage
+                  : defaultImg
+              }
+            />
           </ImgRadius>
         </ImgDiv>
         <ProductDiv>
@@ -64,6 +74,7 @@ const Container = styled.div`
 
 const LeftSide = styled.div`
   display: flex;
+  min-width: 400px;
 `;
 
 const ImgDiv = styled.div`
@@ -118,6 +129,7 @@ const RightSide = styled.div`
   align-items: center;
   text-align: right;
   margin-left: auto;
+  min-width: 100px;
 `;
 
 const PriceDiv = styled.div`

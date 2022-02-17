@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import Category from "./Category";
+import Category from "./SignupComponents/Category";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { CategoriesAtom } from "../../atoms/ProductCategories";
 
+// useForm에 담길 데이터 타입
 interface ISignUpForm {
   userId: string;
   userPw: string;
@@ -25,6 +26,7 @@ function Singup() {
 
   const [categories, setCategories] = useRecoilState(CategoriesAtom);
 
+  // useForm으로 form 내용 한 번에 받음
   const {
     register,
     handleSubmit,
@@ -33,7 +35,7 @@ function Singup() {
     setValue,
     setError,
     watch,
-  } = useForm<ISignUpForm>({ mode: "onBlur" });
+  } = useForm<ISignUpForm>({ mode: "onBlur" }); // onBlur: 입력 후 input 벗어났을 때 유효성 검사
 
   // 중복검사 시작했는지 확인 (중복검사를 시작했을때부터 SuccessMessage 보이기 위함)
   const [startCheckId, setStartCheckId] = useState(false);
@@ -58,12 +60,14 @@ function Singup() {
     }).open();
   };
 
+  // form 제출 시 실행
   const onValid = (data: ISignUpForm) => {
     const newData = {
       ...data,
       userCategory: categories,
     };
 
+    // 데이터 전송
     fetch("http://i6e104.p.ssafy.io:8090/api/user/register", {
       method: "POST",
       headers: {
@@ -74,8 +78,8 @@ function Singup() {
       .then((response) => response.json())
       .then((result) => {
         if (result.msg === "가입완료") {
-          alert(`${data.userName}님, 회원가입을 축하합니다.`);
-          navigate("/login");
+          alert(`${data.userName}님, 회원가입을 축하합니다!`);
+          navigate("/login"); // 로그인 페이지로 이동
         }
       });
   };

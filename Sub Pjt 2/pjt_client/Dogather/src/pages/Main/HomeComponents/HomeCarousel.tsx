@@ -9,8 +9,9 @@ function HomeCarousel() {
     "img/두게더와함께.png",
     "img/할인팡팡.png",
     "img/포인트팡팡.png",
-    "img/콘텍트렌즈.png",
     "img/사은품.png",
+    "img/봄할인.png",
+    "img/화이트데이.png",
   ];
   const onClick = (idx: number) => {
     navigate(`/moim/${idx}`);

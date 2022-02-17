@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { fetchMyPage } from "../../api/MyPage";
+import { fetchMyPage } from "../../api/UserInfo";
 import { userIdAtom, userNoAtom, isLoginAtom } from "../../atoms/Login";
 import LikeGroup from "./MyPageComponents/LikeGroup";
 import PaymentGroup from "./MyPageComponents/PaymentGroup";
@@ -58,6 +58,7 @@ interface IUserInfo {
 function MyPage() {
   const JWT = localStorage.getItem("login_token");
   const navigate = useNavigate();
+
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const [userNo, setUserNo] = useRecoilState(userNoAtom);
   const [userId, setUserId] = useRecoilState(userIdAtom);
@@ -144,7 +145,9 @@ function MyPage() {
               <ProfileInfo>
                 <div>
                   <Nickname>{data?.userNickname}</Nickname>
-                  <ProfileButton>회원정보 수정</ProfileButton>
+                  <Link to="/user/update">
+                    <ProfileButton>회원정보 수정</ProfileButton>
+                  </Link>
                   <ProfileButton>내 프로필</ProfileButton>
                 </div>
               </ProfileInfo>

@@ -1,3 +1,4 @@
+import { Button, Checkbox, FormControlLabel } from "@mui/material";
 import { width } from "@mui/system";
 
 import { useEffect, useState } from "react";
@@ -118,6 +119,11 @@ function MoimPayment() {
   );
   console.log(userData);
   // console.log(state.groupNo);
+  const [color, setColor] = useState("white");
+
+  const colorChange = () => {
+    color === "white" ? setColor("#d3d3d3") : setColor("white");
+  };
 
   const handlePayment = () => {
     const { IMP } = window;
@@ -489,6 +495,7 @@ function MoimPayment() {
                     backgroundColor: "#ffffff",
                     width: "50%",
                     display: "flex",
+                    justifyContent: "space-between",
                     marginLeft: "10px",
                     marginRight: "10px",
                     // alignItems: "center",
@@ -506,6 +513,11 @@ function MoimPayment() {
                   >
                     {"신용/체크카드"}
                   </AddressTitle>
+                  <ProductImg
+                    style={{ width: "40px", height: "auto" }}
+                    src={process.env.PUBLIC_URL + "/img/신용카드.png"}
+                    alt={"신용카드"}
+                  />
                 </AddressSimplePay>
                 <AddressSimplePay
                   style={{
@@ -514,8 +526,9 @@ function MoimPayment() {
                     backgroundColor: "#ffffff",
                     width: "50%",
                     display: "flex",
-                    // marginLeft: "10px",
-                    // marginRight: "10px",
+                    justifyContent: "space-between",
+                    marginLeft: "10px",
+                    marginRight: "10px",
                     // alignItems: "center",
                     marginBottom: "10px",
                     height: "65px",
@@ -531,6 +544,10 @@ function MoimPayment() {
                   >
                     {"네이버페이"}
                   </AddressTitle>
+                  <ProductImg
+                    src={process.env.PUBLIC_URL + "/img/네이버페이.png"}
+                    alt={"네이버페이"}
+                  />
                 </AddressSimplePay>
               </Address>
               <Address
@@ -541,13 +558,14 @@ function MoimPayment() {
                 }}
               >
                 <AddressSimplePay
-                  onClick={handlePayment}
+                  onClick={() => colorChange()}
                   style={{
                     border: "2px solid lightgrey",
                     borderRadius: "15px",
-                    backgroundColor: "#ffffff",
+                    backgroundColor: `${color}`,
                     width: "50%",
                     display: "flex",
+                    justifyContent: "space-between",
                     marginLeft: "10px",
                     marginRight: "10px",
                     // alignItems: "center",
@@ -565,12 +583,11 @@ function MoimPayment() {
                     }}
                   >
                     {"카카오페이"}
-                    <KakaoPay
-                      groupNo={state.groupNo!}
-                      products={state.products}
-                      price={state.price}
-                    />
                   </AddressTitle>
+                  <ProductImg
+                    src={process.env.PUBLIC_URL + "/img/카카오페이.png"}
+                    alt={"카카오페이"}
+                  />
                 </AddressSimplePay>
                 <AddressSimplePay
                   style={{
@@ -579,8 +596,9 @@ function MoimPayment() {
                     backgroundColor: "#ffffff",
                     width: "50%",
                     display: "flex",
-                    // marginLeft: "10px",
-                    // marginRight: "10px",
+                    marginLeft: "10px",
+                    marginRight: "10px",
+                    justifyContent: "space-between",
                     // alignItems: "center",
                     marginBottom: "20px",
                     height: "65px",
@@ -596,9 +614,228 @@ function MoimPayment() {
                   >
                     {"무통장결제"}
                   </AddressTitle>
+                  <ProductImg
+                    src={process.env.PUBLIC_URL + "/img/무통장거래.png"}
+                    alt={"무통장거래"}
+                  />
                 </AddressSimplePay>
               </Address>
             </AddressItem>
+          </AddressWrapper>
+        </PaymentWrapper>
+        <PaymentWrapper>
+          <AddressWrapper>
+            <AddressItem style={{ width: "100%" }}>
+              <Address
+                style={{
+                  height: "50px",
+                  borderBottom: "1px solid lightgrey",
+                }}
+              >
+                <AddressTitle
+                  style={{
+                    fontSize: "16px",
+                    display: "flex",
+                    alignItems: "center",
+
+                    marginBottom: "5px",
+                  }}
+                >
+                  {"결제 혜택"}
+                  <ProductImg
+                    style={{
+                      width: "40px",
+                      height: "auto",
+                      marginLeft: "5px",
+                    }}
+                    src={process.env.PUBLIC_URL + "/img/카카오페이.png"}
+                    alt={"카카오페이"}
+                  />
+                </AddressTitle>
+              </Address>
+              <AddressTitle style={{ fontSize: "12px", fontWeight: "normal" }}>
+                {
+                  " 카카오페이로 결제시 매일 선착순 222명 3천원 할인. 단, 5만원 이상 구매시 할인적용"
+                }
+              </AddressTitle>
+            </AddressItem>
+          </AddressWrapper>
+        </PaymentWrapper>
+        <PaymentWrapper>
+          <AddressWrapper style={{ display: "block" }}>
+            <Address
+              style={{
+                width: "100%",
+                borderBottom: "1px solid lightgrey",
+                justifyContent: "space-between",
+              }}
+            >
+              <AddressItem
+                style={{
+                  height: "auto",
+                  width: "100%",
+                  marginBottom: "0px",
+                  // borderBottom: "1px solid lightgrey",
+                }}
+              >
+                <AddressTitle
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "normal",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {
+                    "두게더 모임은 보관판매 상품만 판매하며, 모임 완료 시 즉시 출고를 준비합니다."
+                  }
+                </AddressTitle>
+                <AddressTitle
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: "normal",
+                    color: "#9e9ea0",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                  }}
+                >
+                  {
+                    "판매자의 보관 판매 상품으로 검수를 거친 후 모임 완료 즉시 출고를 준비합니다. 단, 수량이 많은 경우 지연될 수 있습니다."
+                  }
+                </AddressTitle>
+                <AddressTitle
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: "normal",
+                    color: "#9e9ea0",
+                    marginTop: "5px",
+                  }}
+                >
+                  {"보관판매란?"}
+                </AddressTitle>
+              </AddressItem>
+              <FormControlLabel control={<Checkbox />} label="" />
+            </Address>
+            <Address
+              style={{
+                width: "100%",
+                borderBottom: "1px solid lightgrey",
+                justifyContent: "space-between",
+              }}
+            >
+              <AddressItem
+                style={{
+                  height: "auto",
+                  width: "100%",
+                  marginBottom: "0px",
+                  // borderBottom: "1px solid lightgrey",
+                }}
+              >
+                <AddressTitle
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "normal",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {
+                    "`결제하기`를 선택하시면 즉시 결제가 진행되며, 취소 및 환불은 환불정책에 따라 진행됩니다."
+                  }
+                </AddressTitle>
+                <AddressTitle
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: "normal",
+                    color: "#9e9ea0",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                  }}
+                >
+                  {
+                    "구매자의 단순 변심, 착오구매의 경우 상품수령 후 7일 이내에 교환 및 환불이 가능하며, 교환/반품비는 구매자가 부담합니다."
+                  }
+                </AddressTitle>
+                <AddressTitle
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: "normal",
+                    color: "#9e9ea0",
+                    marginTop: "5px",
+                  }}
+                >
+                  {
+                    "상품의 하자, 오배송의 경우 상품 수령 후 3개월 이내, 혹은 그 사실을 알 수 있었던 날로부터 30일 이내에 교환 및 반품이 가능합니다."
+                  }
+                </AddressTitle>
+              </AddressItem>
+              <FormControlLabel control={<Checkbox />} label="" />
+            </Address>
+            <Address
+              style={{
+                width: "100%",
+                borderBottom: "1px solid lightgrey",
+                justifyContent: "space-between",
+              }}
+            >
+              <AddressItem
+                style={{
+                  height: "auto",
+                  width: "100%",
+                  marginBottom: "25px",
+                  // borderBottom: "1px solid lightgrey",
+                }}
+              >
+                <AddressTitle
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "normal",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {"구매 조건을 모두 확인하였으며, 거래 진행에 동의합니다."}
+                </AddressTitle>
+              </AddressItem>
+              <FormControlLabel control={<Checkbox />} label="" />
+            </Address>
+
+            <PriceWrapper>
+              <Address
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "80%",
+                  // borderBottom: "3px solid lightgrey",
+                }}
+              >
+                <AddressTitle
+                  style={{
+                    // margin: "0px",
+                    marginTop: "30px",
+                    marginLeft: "0px",
+                    marginRight: "0px",
+                    marginBottom: "15px",
+                    fontSize: "16px",
+                  }}
+                >
+                  {"총 결제금액"}
+                </AddressTitle>
+                <AddressTitle
+                  style={{
+                    marginTop: "30px",
+                    marginLeft: "0px",
+                    marginRight: "0px",
+                    marginBottom: "15px",
+                    color: "tomato",
+                  }}
+                >
+                  {makeComma(state.price) + "원"}
+                </AddressTitle>
+              </Address>
+            </PriceWrapper>
+            <ButtonWrapper>
+              <KakaoPayButton onClick={() => handlePayment()}>
+                결제하기
+              </KakaoPayButton>
+            </ButtonWrapper>
           </AddressWrapper>
         </PaymentWrapper>
       </Wrapper>
@@ -658,9 +895,11 @@ const AddressImg = styled.img`
   margin-right: 0px;
 `;
 const ProductImg = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 45px;
+  height: auto;
+  object-fit: contain;
   border-radius: 10px;
+  margin-right: 20px;
   /* margin: 10px; */
 `;
 const ProductContent = styled.div`
@@ -756,9 +995,25 @@ const ProductAmountWrapper = styled.div`
 `;
 const AddressSimplePay = styled.div``;
 const ProductAmount = styled.p``;
-const PriceWrapper = styled.div``;
-const ButtonWrapper = styled.div``;
-const KakaoPayButton = styled.button``;
+const PriceWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+const KakaoPayButton = styled.button`
+  background-color: #ff5e57;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  height: 50px;
+  width: 80%;
+  cursor: pointer;
+`;
 const TotalPriceWrapper = styled.div``;
 
 export default MoimPayment;

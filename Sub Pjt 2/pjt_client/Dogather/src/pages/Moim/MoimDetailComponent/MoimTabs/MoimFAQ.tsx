@@ -1,5 +1,16 @@
+import { useLocation } from "react-router-dom";
+import { IFAQData } from "../../MoimDetail";
+
+interface RouteState {
+  state: {
+    faqs: IFAQData;
+  };
+}
+
 function MoimFAQ() {
-  return <h1>FAQ</h1>;
+  const { state } = useLocation();
+  console.log(state);
+  return <div>하이</div>;
 }
 
 export default MoimFAQ;
