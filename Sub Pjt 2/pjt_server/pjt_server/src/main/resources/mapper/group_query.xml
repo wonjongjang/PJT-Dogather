@@ -484,4 +484,8 @@
          where group_no = #{groupNo}
     </update>
 
+    <delete id="deleteOptions" parameterType="int">
+        delete from dogather.option where group_no = #{groupNo}
+    </delete>
+
 </mapper>

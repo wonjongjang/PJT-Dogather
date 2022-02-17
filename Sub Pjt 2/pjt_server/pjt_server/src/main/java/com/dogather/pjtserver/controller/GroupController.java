@@ -150,8 +150,8 @@ public class GroupController {
     public ResponseEntity<Integer> update(@PathVariable int groupNo, @RequestBody GroupRegisterDto updategroupDto)throws IOException {
         int updated =  groupService.groupUpdate(groupNo, updategroupDto.getGroup());
         if (updated != 0) {
-                groupService.updateOptions(groupNo, updategroupDto.getOptions());
-                groupService.updateFaq(groupNo, updategroupDto.getRequestfaq());
+                groupService.addOptions(groupNo, updategroupDto.getOptions());
+                groupService.addFaq(groupNo, updategroupDto.getRequestfaq());
 
             return ResponseEntity.status(HttpStatus.OK).body(updated);
         } else {

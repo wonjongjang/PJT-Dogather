@@ -53,4 +53,6 @@ public interface GroupDao {
     public void groupViewsPlus(int groupNo);
 
     public void updateOption(Map<String, Object> map);
+
+    public void deleteOptions(int groupNo);
 }

@@ -76,6 +76,14 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public int groupUpdate(int groupNo, GroupDto updategroupDto) throws IOException {
         int queryResult = groupDao.groupUpdate(updategroupDto);
+        if (queryResult == 1) {
+            List<OptionDto> options = groupDao.getOptions(groupNo);
+            List<FAQDto> faqs = faqDao.readFaqAll(groupNo);
+            if (options != null)
+                groupDao.deleteOptions(groupNo);
+            if (faqs != null)
+                faqDao.deleteFaqs(groupNo);
+        }
         return queryResult;
     }
 
