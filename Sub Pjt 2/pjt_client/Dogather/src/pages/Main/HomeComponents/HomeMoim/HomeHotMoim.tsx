@@ -40,10 +40,10 @@ function HomeHotMoim() {
                 <Link to={`/moim/${d.groupNo}`}>
                   <Card
                     sx={{
-                      minWidth: 200,
-                      minHeight: 200,
-                      maxWidth: 200,
-                      maxHeight: 200,
+                      minWidth: 250,
+                      minHeight: 250,
+                      maxWidth: 250,
+                      maxHeight: 250,
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",

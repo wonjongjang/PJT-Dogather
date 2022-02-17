@@ -1,7 +1,89 @@
+import { Button, Checkbox, FormControlLabel } from "@mui/material";
+import { width } from "@mui/system";
+
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { Link, useLocation } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { FetchUserInfoAPI } from "../../../api/MoimDetail";
+import { userIdAtom, userNoAtom } from "../../../atoms/Login";
 import KakaoPay from "../KakaoPay";
 import { IProductContent } from "../MoimDetail";
+
+export type RequestPayResponseCallback = (response: RequestPayResponse) => void;
+
+export interface Iamport {
+  init: (accountID: string) => void;
+  request_pay: (
+    params: RequestPayParams,
+    callback?: RequestPayResponseCallback
+  ) => void;
+}
+
+declare global {
+  interface Window {
+    IMP?: Iamport;
+  }
+}
+
+export interface RequestPayAdditionalParams {
+  digital?: boolean;
+  vbank_due?: string;
+  m_redirect_url?: string;
+  app_scheme?: string;
+  biz_num?: string;
+}
+
+export interface Display {
+  card_quota?: number[];
+}
+
+export interface RequestPayParams extends RequestPayAdditionalParams {
+  pg?: string;
+  pay_method: string;
+  escrow?: boolean;
+  merchant_uid: string;
+  name?: string;
+  amount: number;
+  custom_data?: any;
+  tax_free?: number;
+  currency?: string;
+  language?: string;
+  buyer_name?: string;
+  notice_url?: string | string[];
+  display?: Display;
+}
+
+export interface RequestPayAdditionalResponse {
+  apply_num?: string;
+  vbank_num?: string;
+  vbank_name?: string;
+  vbank_holder?: string | null;
+  vbank_date?: number;
+}
+
+export interface RequestPayResponse extends RequestPayAdditionalResponse {
+  success: boolean;
+  error_code: string;
+  error_msg: string;
+  imp_uid: string | null;
+  merchant_uid: string;
+  pay_method?: string;
+  paid_amount?: number;
+  status?: string;
+  name?: string;
+  pg_provider?: string;
+  pg_tid?: string;
+  buyer_name?: string;
+  buyer_email?: string;
+  buyer_tel?: string;
+  buyer_addr?: string;
+  buyer_postcode?: string;
+  custom_data?: any;
+  paid_at?: number;
+  receipt_url?: string;
+}
 
 interface RouteState {
   state: {
@@ -19,10 +101,87 @@ interface RouteState {
 
 function MoimPayment() {
   const { state } = useLocation() as RouteState;
+  const JWT = localStorage.getItem("login_token");
+  const userId = useRecoilValue(userIdAtom);
+  const userNo = useRecoilValue(userNoAtom);
+  const [time, setTime] = useState(0);
+  useEffect(() => {
+    setTimeout(() => setTime(1), 500);
+  }, []);
+
   const makeComma = (price: number) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   console.log(state);
+
+  const { isLoading: userLoading, data: userData } = useQuery<any>(
+    ["group", userNo, JWT, userId],
+    () => FetchUserInfoAPI(userNo, JWT!, userId!)
+  );
+  console.log(userData);
   // console.log(state.groupNo);
+
+  const handlePayment = () => {
+    const { IMP } = window;
+    IMP?.init("imp60712675");
+    // const amount: number =
+    //   priceSelections
+    //     .filter((price) => price.value === order.price)
+    //     .map((price) => price.amount)[0] || 0
+    // if (!amount) {
+    //   alert('결제 금액을 확인해주세요')
+    //   return
+    // }
+
+    const data: RequestPayParams = {
+      pg: "html5_inicis",
+      pay_method: "card",
+      merchant_uid: `${userNo!}_${state?.groupNo!}`,
+      name: `${state?.productName!}`,
+      // amount부분은 수정 필요
+      amount: Number(`${state?.price!}`),
+      buyer_name: `${userId!}`,
+    };
+    // console.log(price);
+
+    // const formData = new FormData();
+
+    // formData.append(
+    //   "paymentList",
+    //   new Blob([JSON.stringify(paymentData)], { type: "application/json" })
+    // );
+    // console.log(products);
+    const paymentData = {
+      payments: state.products,
+    };
+
+    const JWT = localStorage.getItem("login_token");
+
+    const callback = (response: RequestPayResponse) => {
+      const { success, merchant_uid, error_msg, imp_uid, error_code } =
+        response;
+      if (success) {
+        console.log(paymentData);
+        fetch("http://i6e104.p.ssafy.io/api/payment", {
+          method: "POST",
+          headers: {
+            jwt: `${JWT}`,
+            userId: userId,
+            "Content-Type": "application/json",
+          },
+          // body: formData,
+          body: JSON.stringify(paymentData),
+        });
+        alert("결제가 완료됐습니다.");
+        console.log(response);
+      } else {
+        console.log(error_msg);
+        alert("결제가 취소됐습니다.");
+      }
+    };
+
+    IMP?.request_pay(data, callback);
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -86,34 +245,591 @@ function MoimPayment() {
         </PaymentWrapper>
         <PaymentWrapper>
           <AddressWrapper>
-            <AddressImgWrapper>
-              <AddressImg
-                src={process.env.PUBLIC_URL + "/img/배송로고.png"}
-                alt={"배송로고이미지"}
-              />
-            </AddressImgWrapper>
             <AddressItem>
-              <AddressTitle>{"배송주소"}</AddressTitle>
-              <AddressContent>{"유저배송주소"}</AddressContent>
+              <Address>
+                <AddressTitle>{"배송 주소"}</AddressTitle>
+              </Address>
+              <Address>
+                <AddressContentWrapper>
+                  <AddressContentTitle>{"받는 분"}</AddressContentTitle>
+                  <AddressContentTitle>{"연락처"}</AddressContentTitle>
+                  <AddressContentTitle>{"배송 주소"}</AddressContentTitle>
+                </AddressContentWrapper>
+                <AddressContentWrapper>
+                  <AddressContentDetail>
+                    {userData?.userName}
+                  </AddressContentDetail>
+                  <AddressContentDetail>
+                    {userData?.userTel}
+                  </AddressContentDetail>
+                  <AddressContentDetail>
+                    {userData?.userAddr + userData?.userAddrDetail}
+                  </AddressContentDetail>
+                </AddressContentWrapper>
+              </Address>
             </AddressItem>
           </AddressWrapper>
         </PaymentWrapper>
-        <PaymentWrapper></PaymentWrapper>
-        <PaymentWrapper></PaymentWrapper>
-        <PaymentWrapper></PaymentWrapper>
-        <PaymentWrapper></PaymentWrapper>
         <PaymentWrapper>
-          <PaymentItem>
+          <AddressWrapper>
+            <AddressMethod>
+              <Address>
+                <AddressTitle>{"배송 방법"}</AddressTitle>
+              </Address>
+              <AddressImgWrapper>
+                <Address>
+                  <AddressImg
+                    src={process.env.PUBLIC_URL + "/img/배송로고.png"}
+                    alt={"배송로고이미지"}
+                  />
+                </Address>
+                <Address>
+                  <AddressMethodContent>
+                    <AddressContentDetail
+                      style={{
+                        margin: "0px",
+                        fontWeight: "bold",
+                        marginBottom: "5px",
+                        fontSize: "18px",
+                      }}
+                    >
+                      {"무료배송"}
+                    </AddressContentDetail>
+                    <AddressContentDetail
+                      style={{ margin: "0px", display: "flex" }}
+                    >
+                      {"지금 결제시 무료배송"}
+                      <AddressMethodContentDetail
+                        style={{ marginLeft: "10px", color: "#0097e6" }}
+                      >
+                        {"모임완료 시 당일배송 예정"}
+                      </AddressMethodContentDetail>
+                    </AddressContentDetail>
+                  </AddressMethodContent>
+                </Address>
+              </AddressImgWrapper>
+            </AddressMethod>
+          </AddressWrapper>
+        </PaymentWrapper>
+        <PaymentWrapper>
+          <AddressWrapper>
+            <AddressItem style={{ width: "100%" }}>
+              <Address>
+                <AddressTitle>{"최종 주문 정보"}</AddressTitle>
+              </Address>
+              <Address
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  borderBottom: "3px solid lightgrey",
+                }}
+              >
+                <AddressTitle
+                  style={{
+                    margin: "0px",
+                    marginLeft: "15px",
+                    marginBottom: "15px",
+                    fontSize: "20px",
+                  }}
+                >
+                  {"총 결제금액"}
+                </AddressTitle>
+                <AddressTitle
+                  style={{
+                    margin: "0px",
+                    marginRight: "15px",
+                    marginBottom: "15px",
+                    color: "tomato",
+                  }}
+                >
+                  {makeComma(state.price) + "원"}
+                </AddressTitle>
+              </Address>
+              <Address
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  marginTop: "15px",
+                  // borderBottom: "3px solid lightgrey",
+                }}
+              >
+                <AddressTitle
+                  style={{
+                    margin: "0px",
+                    marginLeft: "15px",
+                    marginBottom: "15px",
+                    fontSize: "16px",
+                    fontWeight: "normal",
+                  }}
+                >
+                  {"즉시 구매가"}
+                </AddressTitle>
+                <AddressTitle
+                  style={{
+                    margin: "0px",
+                    marginRight: "15px",
+                    marginBottom: "15px",
+                    fontWeight: "bold",
+                    fontSize: "16px",
+                  }}
+                >
+                  {makeComma(state.price) + "원"}
+                </AddressTitle>
+              </Address>
+              <Address
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
+
+                  // borderBottom: "3px solid lightgrey",
+                }}
+              >
+                <AddressTitle
+                  style={{
+                    margin: "0px",
+                    marginLeft: "15px",
+                    marginBottom: "15px",
+                    fontSize: "14px",
+                    color: "#b6b7b9",
+                    fontWeight: "normal",
+                  }}
+                >
+                  {"배송비"}
+                </AddressTitle>
+                <AddressTitle
+                  style={{
+                    margin: "0px",
+                    marginRight: "15px",
+                    marginBottom: "15px",
+                    // fontWeight: "bold",
+                    fontSize: "14px",
+                  }}
+                >
+                  {"무료"}
+                </AddressTitle>
+              </Address>
+            </AddressItem>
+          </AddressWrapper>
+        </PaymentWrapper>
+        <PaymentWrapper>
+          <AddressWrapper>
+            <AddressItem style={{ width: "100%" }}>
+              <Address>
+                <AddressTitle style={{ fontSize: "24px" }}>
+                  {"결제 방법"}
+                </AddressTitle>
+              </Address>
+              <Address style={{ width: "100%", display: "block" }}>
+                <AddressTitle
+                  style={{ marginBottom: "20px", fontSize: "20px" }}
+                >
+                  {"간편 결제"}
+                </AddressTitle>
+                <AddressSimplePay
+                  style={{
+                    border: "2px solid lightgrey",
+                    borderRadius: "15px",
+                    backgroundColor: "#f5f6fa",
+                    width: "98%",
+                    display: "flex",
+                    marginLeft: "10px",
+                    marginRight: "10px",
+                    // alignItems: "center",
+                    marginBottom: "20px",
+                    height: "auto",
+                  }}
+                >
+                  <AddressTitle
+                    style={{
+                      marginTop: "30px",
+                      fontSize: "18px",
+                      fontWeight: "normal",
+                      color: "grey",
+                    }}
+                  >
+                    {"카드를 등록해주세요 >"}
+                  </AddressTitle>
+                </AddressSimplePay>
+              </Address>
+              <Address>
+                <AddressTitle
+                  style={{
+                    marginBottom: "20px",
+                    fontSize: "20px",
+                    marginRight: "10px",
+                  }}
+                >
+                  {"일반 결제"}
+                </AddressTitle>
+                <AddressTitle
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "normal",
+                    marginLeft: "0px",
+                    marginTop: "23px",
+                    color: "#a0a1a1",
+                  }}
+                >
+                  {"일시불・할부"}
+                </AddressTitle>
+              </Address>
+              <Address
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginRight: "10px",
+                }}
+              >
+                <AddressSimplePay
+                  style={{
+                    border: "2px solid lightgrey",
+                    borderRadius: "15px",
+                    backgroundColor: "#ffffff",
+                    width: "50%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginLeft: "10px",
+                    marginRight: "10px",
+                    // alignItems: "center",
+                    marginBottom: "10px",
+                    height: "65px",
+                  }}
+                >
+                  <AddressTitle
+                    style={{
+                      marginTop: "20px",
+                      fontSize: "18px",
+                      fontWeight: "normal",
+                      color: "grey",
+                    }}
+                  >
+                    {"신용/체크카드"}
+                  </AddressTitle>
+                  <ProductImg
+                    style={{ width: "40px", height: "auto" }}
+                    src={process.env.PUBLIC_URL + "/img/신용카드.png"}
+                    alt={"신용카드"}
+                  />
+                </AddressSimplePay>
+                <AddressSimplePay
+                  style={{
+                    border: "2px solid lightgrey",
+                    borderRadius: "15px",
+                    backgroundColor: "#ffffff",
+                    width: "50%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginLeft: "10px",
+                    marginRight: "10px",
+                    // alignItems: "center",
+                    marginBottom: "10px",
+                    height: "65px",
+                  }}
+                >
+                  <AddressTitle
+                    style={{
+                      marginTop: "20px",
+                      fontSize: "18px",
+                      fontWeight: "normal",
+                      color: "grey",
+                    }}
+                  >
+                    {"네이버페이"}
+                  </AddressTitle>
+                  <ProductImg
+                    src={process.env.PUBLIC_URL + "/img/네이버페이.png"}
+                    alt={"네이버페이"}
+                  />
+                </AddressSimplePay>
+              </Address>
+              <Address
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginRight: "10px",
+                }}
+              >
+                <AddressSimplePay
+                  onClick={handlePayment}
+                  style={{
+                    border: "2px solid lightgrey",
+                    borderRadius: "15px",
+                    backgroundColor: "#ffffff",
+                    width: "50%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginLeft: "10px",
+                    marginRight: "10px",
+                    // alignItems: "center",
+                    marginBottom: "20px",
+                    height: "65px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <AddressTitle
+                    style={{
+                      marginTop: "20px",
+                      fontSize: "18px",
+                      fontWeight: "normal",
+                      color: "grey",
+                    }}
+                  >
+                    {"카카오페이"}
+                  </AddressTitle>
+                  <ProductImg
+                    src={process.env.PUBLIC_URL + "/img/카카오페이.png"}
+                    alt={"카카오페이"}
+                  />
+                </AddressSimplePay>
+                <AddressSimplePay
+                  style={{
+                    border: "2px solid lightgrey",
+                    borderRadius: "15px",
+                    backgroundColor: "#ffffff",
+                    width: "50%",
+                    display: "flex",
+                    marginLeft: "10px",
+                    marginRight: "10px",
+                    justifyContent: "space-between",
+                    // alignItems: "center",
+                    marginBottom: "20px",
+                    height: "65px",
+                  }}
+                >
+                  <AddressTitle
+                    style={{
+                      marginTop: "20px",
+                      fontSize: "18px",
+                      fontWeight: "normal",
+                      color: "grey",
+                    }}
+                  >
+                    {"무통장결제"}
+                  </AddressTitle>
+                  <ProductImg
+                    src={process.env.PUBLIC_URL + "/img/무통장거래.png"}
+                    alt={"무통장거래"}
+                  />
+                </AddressSimplePay>
+              </Address>
+            </AddressItem>
+          </AddressWrapper>
+        </PaymentWrapper>
+        <PaymentWrapper>
+          <AddressWrapper>
+            <AddressItem style={{ width: "100%" }}>
+              <Address
+                style={{
+                  height: "50px",
+                  borderBottom: "1px solid lightgrey",
+                }}
+              >
+                <AddressTitle
+                  style={{
+                    fontSize: "16px",
+                    display: "flex",
+                    alignItems: "center",
+
+                    marginBottom: "5px",
+                  }}
+                >
+                  {"결제 혜택"}
+                  <ProductImg
+                    style={{
+                      width: "40px",
+                      height: "auto",
+                      marginLeft: "5px",
+                    }}
+                    src={process.env.PUBLIC_URL + "/img/카카오페이.png"}
+                    alt={"카카오페이"}
+                  />
+                </AddressTitle>
+              </Address>
+              <AddressTitle style={{ fontSize: "12px", fontWeight: "normal" }}>
+                {
+                  " 카카오페이로 결제시 매일 선착순 222명 3천원 할인. 단, 5만원 이상 구매시 할인적용"
+                }
+              </AddressTitle>
+            </AddressItem>
+          </AddressWrapper>
+        </PaymentWrapper>
+        <PaymentWrapper>
+          <AddressWrapper style={{ display: "block" }}>
+            <Address
+              style={{
+                width: "100%",
+                borderBottom: "1px solid lightgrey",
+                justifyContent: "space-between",
+              }}
+            >
+              <AddressItem
+                style={{
+                  height: "auto",
+                  width: "100%",
+                  marginBottom: "0px",
+                  // borderBottom: "1px solid lightgrey",
+                }}
+              >
+                <AddressTitle
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "normal",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {
+                    "두게더 모임은 보관판매 상품만 판매하며, 모임 완료 시 즉시 출고를 준비합니다."
+                  }
+                </AddressTitle>
+                <AddressTitle
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: "normal",
+                    color: "#9e9ea0",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                  }}
+                >
+                  {
+                    "판매자의 보관 판매 상품으로 검수를 거친 후 모임 완료 즉시 출고를 준비합니다. 단, 수량이 많은 경우 지연될 수 있습니다."
+                  }
+                </AddressTitle>
+                <AddressTitle
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: "normal",
+                    color: "#9e9ea0",
+                    marginTop: "5px",
+                  }}
+                >
+                  {"보관판매란?"}
+                </AddressTitle>
+              </AddressItem>
+              <FormControlLabel control={<Checkbox />} label="" />
+            </Address>
+            <Address
+              style={{
+                width: "100%",
+                borderBottom: "1px solid lightgrey",
+                justifyContent: "space-between",
+              }}
+            >
+              <AddressItem
+                style={{
+                  height: "auto",
+                  width: "100%",
+                  marginBottom: "0px",
+                  // borderBottom: "1px solid lightgrey",
+                }}
+              >
+                <AddressTitle
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "normal",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {
+                    "`결제하기`를 선택하시면 즉시 결제가 진행되며, 취소 및 환불은 환불정책에 따라 진행됩니다."
+                  }
+                </AddressTitle>
+                <AddressTitle
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: "normal",
+                    color: "#9e9ea0",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                  }}
+                >
+                  {
+                    "구매자의 단순 변심, 착오구매의 경우 상품수령 후 7일 이내에 교환 및 환불이 가능하며, 교환/반품비는 구매자가 부담합니다."
+                  }
+                </AddressTitle>
+                <AddressTitle
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: "normal",
+                    color: "#9e9ea0",
+                    marginTop: "5px",
+                  }}
+                >
+                  {
+                    "상품의 하자, 오배송의 경우 상품 수령 후 3개월 이내, 혹은 그 사실을 알 수 있었던 날로부터 30일 이내에 교환 및 반품이 가능합니다."
+                  }
+                </AddressTitle>
+              </AddressItem>
+              <FormControlLabel control={<Checkbox />} label="" />
+            </Address>
+            <Address
+              style={{
+                width: "100%",
+                borderBottom: "1px solid lightgrey",
+                justifyContent: "space-between",
+              }}
+            >
+              <AddressItem
+                style={{
+                  height: "auto",
+                  width: "100%",
+                  marginBottom: "25px",
+                  // borderBottom: "1px solid lightgrey",
+                }}
+              >
+                <AddressTitle
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "normal",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {"구매 조건을 모두 확인하였으며, 거래 진행에 동의합니다."}
+                </AddressTitle>
+              </AddressItem>
+              <FormControlLabel control={<Checkbox />} label="" />
+            </Address>
+
+            <PriceWrapper>
+              <Address
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "80%",
+                  // borderBottom: "3px solid lightgrey",
+                }}
+              >
+                <AddressTitle
+                  style={{
+                    // margin: "0px",
+                    marginTop: "30px",
+                    marginLeft: "0px",
+                    marginRight: "0px",
+                    marginBottom: "15px",
+                    fontSize: "16px",
+                  }}
+                >
+                  {"총 결제금액"}
+                </AddressTitle>
+                <AddressTitle
+                  style={{
+                    marginTop: "30px",
+                    marginLeft: "0px",
+                    marginRight: "0px",
+                    marginBottom: "15px",
+                    color: "tomato",
+                  }}
+                >
+                  {makeComma(state.price) + "원"}
+                </AddressTitle>
+              </Address>
+            </PriceWrapper>
             <ButtonWrapper>
-              <KakaoPayButton>
-                <KakaoPay
-                  groupNo={state.groupNo!}
-                  products={state.products}
-                  price={state.price}
-                />
-              </KakaoPayButton>
+              <KakaoPayButton>결제하기</KakaoPayButton>
             </ButtonWrapper>
-          </PaymentItem>
+          </AddressWrapper>
         </PaymentWrapper>
       </Wrapper>
     </Container>
@@ -156,20 +872,27 @@ const ProductImgWrapper = styled.div`
   justify-content: center;
 `;
 const AddressImgWrapper = styled.div`
-  margin: 15px;
-  width: 50px;
+  /* margin: 15px; */
+  width: 100%;
+  border: 2px solid black;
+  border-radius: 10px;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
 `;
+const AddressMethodContent = styled.div``;
+const AddressMethodContentDetail = styled.p``;
 const AddressImg = styled.img`
-  width: 80px;
+  width: 50px;
   height: auto;
   margin: 15px;
+  margin-right: 0px;
 `;
 const ProductImg = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 45px;
+  height: auto;
+  object-fit: contain;
   border-radius: 10px;
+  margin-right: 20px;
   /* margin: 10px; */
 `;
 const ProductContent = styled.div`
@@ -196,17 +919,32 @@ const ProductTitle = styled.p`
   margin-bottom: 3px;
 `;
 const AddressTitle = styled.p`
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   margin: 15px;
+  margin-bottom: 30px;
 `;
-const AddressContent = styled.p`
-  font-size: 14px;
-  margin: 15px;
+const AddressContentTitle = styled.p`
+  font-size: 16px;
+  color: grey;
+  opacity: 0.7;
+  margin-left: 15px;
+  margin-bottom: 10px;
 `;
+const AddressContentDetail = styled.p`
+  font-size: 16px;
+  margin-left: 15px;
+  margin-bottom: 10px;
+`;
+
 const AddressItem = styled.div`
   margin: 15px;
   /* margin-top: 10px; */
+`;
+const Address = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 30px;
 `;
 const ProductDetail = styled.p`
   margin-bottom: 3px;
@@ -220,6 +958,14 @@ const AddressWrapper = styled.div`
   background-color: white;
   display: flex;
   /* margin: 15px; */
+`;
+const AddressContentWrapper = styled.div`
+  margin-right: 30px;
+`;
+const AddressMethod = styled.div`
+  margin: 15px;
+  width: 100%;
+  /* border: 2px solid black; */
 `;
 const ProductPriceWrapper = styled.div`
   margin: 15px;
@@ -240,10 +986,26 @@ const ProductAmountWrapper = styled.div`
   width: 100px;
   text-align: center;
 `;
+const AddressSimplePay = styled.div``;
 const ProductAmount = styled.p``;
-const PriceWrapper = styled.div``;
-const ButtonWrapper = styled.div``;
-const KakaoPayButton = styled.button``;
+const PriceWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+const KakaoPayButton = styled.button`
+  background-color: #ff5e57;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  height: 50px;
+  width: 80%;
+`;
 const TotalPriceWrapper = styled.div``;
 
 export default MoimPayment;

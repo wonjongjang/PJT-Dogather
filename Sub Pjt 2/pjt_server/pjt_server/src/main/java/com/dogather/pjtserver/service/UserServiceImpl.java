@@ -52,13 +52,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-	public int userUpdate(UserDto userDto){
+	public int userUpdate(UserRegisterDto userDto){
+		userDao.deleteCategory(userDto.getUserNo());
 		int created = userDao.userUpdate(userDto);
 		return created;
 	}
 
 	@Override
 	public void userDelete(String userId){
+		UserDto dto = userDao.userFindById(userId);
+		userDao.deleteCategory(dto.getUserNo());
 		userDao.userDelete(userId);
 	}
 

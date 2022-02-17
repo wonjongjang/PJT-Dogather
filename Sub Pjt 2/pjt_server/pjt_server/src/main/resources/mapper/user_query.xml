@@ -25,8 +25,8 @@
 	
     <update id="userUpdate" parameterType="com.dogather.pjtserver.dto.UserDto">
         update user
-        set user_pw = #{userPw}, user_nickname = #{userNickname}, user_addr = #{userAddr}, user_addr_detail = #{userAddrDetail}, user_zip = #{userZip}, user_tel = #{userTel}, user_email = #{userEmail}
-        where user_id = #{userId}
+        set user_nickname = #{userNickname}, user_addr = #{userAddr}, user_addr_detail = #{userAddrDetail}, user_zip = #{userZip}, user_tel = #{userTel}, user_email = #{userEmail}
+         where user_id = #{userId}
     </update>
 
     <delete id="userDelete" parameterType="String">
@@ -45,5 +45,9 @@
     <select id="getUserCategory" parameterType="int" resultType="int">
         select category_no from dogather.user_category where user_no = #{userNo}
     </select>
+
+    <delete id="deleteCategory" parameterType="int">
+        delete from dogather.user_category where user_no=#{userNo}
+    </delete>
 
 </mapper>

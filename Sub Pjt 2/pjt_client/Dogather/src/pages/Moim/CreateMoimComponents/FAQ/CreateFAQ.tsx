@@ -1,8 +1,10 @@
+/* FAQ Form */
+
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { FAQsAtom } from "../../../../atoms/FAQs";
-import { ErrorMessage, MiniInput, SubTitle } from "../../CreateMoim";
+import { ErrorMessage, SubTitle } from "../../CreateMoim";
 
 interface IFAQForm {
   faqQuestion: string;

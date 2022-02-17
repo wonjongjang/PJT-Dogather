@@ -60,10 +60,10 @@ function SearchDetail() {
   const { isLoading, data } = useQuery<IGroups>([keyword, state.option], () =>
     fetchSearch(keyword!, state.option!)
   );
-  // console.log(data);
+  console.log(data);
 
   const onValid = (formData: IForm) => {
-    console.log(formData);
+    // console.log(formData);
     const keyword = formData.keyword;
     setValue("keyword", "");
     navigate(`/search/${keyword}`, { state: { option: formData.option } });
@@ -202,12 +202,14 @@ const PriceDetail = styled.p`
 `;
 
 const ProductName = styled.p`
-  margin-top: 3px;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   line-height: 16px;
   font-size: 13px;
-  white-space: nowrap;
+  font-weight: 600;
+  width: 250px;
+  letter-spacing: -0.05em;
 `;
 
 const Price = styled.p`
@@ -220,10 +222,10 @@ const Price = styled.p`
 const CategoryName = styled.p`
   display: inline-block;
   vertical-align: top;
-  line-height: 16px;
-  font-size: 14px;
-  letter-spacing: -0.21px;
   font-weight: 700;
+  line-height: 13px;
+  font-size: 12px;
+  color: #3c40c6;
 `;
 
 const CardDetail = styled.div`
@@ -259,7 +261,7 @@ const ProductList = styled.div`
 `;
 
 const ProductSub = styled.div`
-  padding: 30px 40px 0;
+  padding: 30px 30px 0;
 `;
 
 const ProductContainer = styled.div`
