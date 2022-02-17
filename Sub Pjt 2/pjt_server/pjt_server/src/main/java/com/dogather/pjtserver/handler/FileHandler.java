@@ -139,7 +139,7 @@ public class FileHandler {
 
         GroupMediaDto mainImageDto = new GroupMediaDto();
         mainImageDto.setGroupNo(groupNo);
-        mainImageDto.setMediaTitile(mainImage.getOriginalFilename());
+        mainImageDto.setMediaTitle(mainImage.getOriginalFilename());
         mainImageDto.setMediaSavename(saveName);
         mainImageDto.setMediaFilesize(String.valueOf(mainImage.getSize()));
         mainImageDto.setInsertDate(today);
@@ -182,7 +182,7 @@ public class FileHandler {
 
             GroupMediaDto fileDto = new GroupMediaDto();
             fileDto.setGroupNo(groupNo);
-            fileDto.setMediaTitile(file.getOriginalFilename());
+            fileDto.setMediaTitle(file.getOriginalFilename());
             fileDto.setMediaSavename(saveName);
             fileDto.setMediaFilesize(String.valueOf(file.getSize()));
             fileDto.setInsertDate(today);
