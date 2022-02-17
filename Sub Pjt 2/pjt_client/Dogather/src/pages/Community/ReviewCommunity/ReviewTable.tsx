@@ -97,17 +97,65 @@ function ReviewTable() {
         </CustomStack>
         <div>
           <CustomCard>
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review1.jpg"}
+              avatar="A"
+              name="gh0jhs"
+              content="너무 좋아요!!"
+              subheader="02-15"
+            />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review2.jpg"}
+              avatar="B"
+              name="balckgar"
+              content="빠른 배송"
+              subheader="02-14"
+            />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review3.jpg"}
+              avatar="C"
+              name="haseok"
+              content="만족합니다"
+              subheader="02-12"
+            />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review4.jpg"}
+              avatar="D"
+              name="wonjong"
+              content="감사합니다~"
+              subheader="02-12"
+            />
           </CustomCard>
           <div></div>
           <CustomCard>
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review5.jpg"}
+              name="sehen"
+              avatar="E"
+              content="ootd"
+              subheader="02-10"
+            />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review6.jpg"}
+              avatar="F"
+              name="jibum"
+              content="잘 신을게요!!"
+              subheader="01-31"
+            />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review7.jpg"}
+              avatar="G"
+              name="jinseong"
+              content="감사합니다 후기!"
+              subheader="01-30"
+            />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review8.jpg"}
+              avatar="H"
+              name="Guan"
+              content="너무 마음에 들어요~!"
+              subheader="01-28"
+            />
           </CustomCard>
         </div>
       </Mid>
