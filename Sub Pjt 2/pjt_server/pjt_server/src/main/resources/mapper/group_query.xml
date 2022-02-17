@@ -188,7 +188,7 @@
         where g.status="모집중" and g.deadline > now() order by g.deadline limit 4
     </select>
 
-    <select id="getEndSoonList" resultMap="grouplistMap">
+    <select id="getRecommendList" resultMap="grouplistMap">
         select
             g.group_no,
             g.group_leader,
@@ -213,9 +213,9 @@
             left join dogather.category as c on g.category_no = c.category_no
         where g.status="모집중" and g.deadline > now() and c.category_no in
         <foreach collection="categories" item="category" open="(" close=")" separator=",">
-            category
+            #{category}
         </foreach>
-        order by g.deadline limit 4
+        order by g.deadline
     </select>
 
 

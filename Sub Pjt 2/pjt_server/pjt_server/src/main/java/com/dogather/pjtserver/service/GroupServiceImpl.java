@@ -212,7 +212,8 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<GroupReturnDto> getRecommendList(List<Integer> categories) {
         List list = groupDao.getRecommendList(categories);
-
+        Collections.shuffle(list);
+        list = list.subList(0,4);
         return list;
     }
 
