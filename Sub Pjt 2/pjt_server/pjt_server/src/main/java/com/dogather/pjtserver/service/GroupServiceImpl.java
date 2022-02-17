@@ -59,16 +59,30 @@ public class GroupServiceImpl implements GroupService {
     }
 
 
+//    @Override
+//    public int groupUpdate(int groupNo, GroupDto updategroupDto, List<MultipartFile> addMediaList) throws IOException {
+//        int queryResult = 1;
+//        groupDao.groupUpdate(updategroupDto);
+//        List<GroupMediaDto> mediaList = fileHandler.uploadGroupFiles(addMediaList, groupNo);
+//        if (CollectionUtils.isEmpty(mediaList) == false) {
+//            queryResult = mediaDao.insertMedia(mediaList);
+//            if (queryResult < 1) {
+//                queryResult = 0;
+//            }
+//        }
+//        return queryResult;
+//    }
+
     @Override
-    public int groupUpdate(int groupNo, GroupDto updategroupDto, List<MultipartFile> addMediaList) throws IOException {
-        int queryResult = 1;
-        groupDao.groupUpdate(updategroupDto);
-        List<GroupMediaDto> mediaList = fileHandler.uploadGroupFiles(addMediaList, groupNo);
-        if (CollectionUtils.isEmpty(mediaList) == false) {
-            queryResult = mediaDao.insertMedia(mediaList);
-            if (queryResult < 1) {
-                queryResult = 0;
-            }
+    public int groupUpdate(int groupNo, GroupDto updategroupDto) throws IOException {
+        int queryResult = groupDao.groupUpdate(updategroupDto);
+        if (queryResult == 1) {
+            List<OptionDto> options = groupDao.getOptions(groupNo);
+            List<FAQDto> faqs = faqDao.readFaqAll(groupNo);
+            if (options != null)
+                groupDao.deleteOptions(groupNo);
+            if (faqs != null)
+                faqDao.deleteFaqs(groupNo);
         }
         return queryResult;
     }
@@ -359,6 +373,34 @@ public class GroupServiceImpl implements GroupService {
             groupDao.groupViewsPlus(groupNo);
         }
     }
+
+    @Override
+    public void updateOptions(int groupNo, List<OptionDto> options) {
+        for (OptionDto option : options) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("optionNo", option.getOptionNo());
+            map.put("groupNo", groupNo);
+            map.put("optionName", option.getOptionName());
+            map.put("optionPrice", option.getOptionPrice());
+            log.info(map.toString());
+            groupDao.updateOption(map);
+        }
+
+    }
+
+    @Override
+    public void updateFaq(int groupNo, List<FAQRequsetDto> requestfaq) {
+        for (FAQRequsetDto Faq : requestfaq) {
+            FAQDto dbFaq = new FAQDto();
+            dbFaq.setGroupNo(groupNo);
+            dbFaq.setCategoryNo(Faq.getCategoryNo());
+            dbFaq.setFaqAnswer(Faq.getFaqAnswer());
+            dbFaq.setFaqQuestion(Faq.getFaqQuestion());
+            log.info(dbFaq.toString());
+            faqDao.updateFaq(dbFaq);
+        }
+    }
+
 
 }
 

@@ -51,4 +51,8 @@ public interface GroupDao {
     public int groupViewsCheck(@Param("userNo") int userNo, @Param("groupNo") int groupNo);
 
     public void groupViewsPlus(int groupNo);
+
+    public void updateOption(Map<String, Object> map);
+
+    public void deleteOptions(int groupNo);
 }

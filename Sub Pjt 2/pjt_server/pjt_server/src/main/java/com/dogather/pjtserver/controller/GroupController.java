@@ -109,37 +109,50 @@ public class GroupController {
         }
     }
 
+//    @PutMapping("/{groupNo}")
+//    public ResponseEntity<Integer> update(@RequestPart(value="GroupDto") GroupDto updategroupDto,
+//                      @RequestPart(value="file", required = false) List<MultipartFile> updateFiles) throws IOException {
+//        int groupNo = updategroupDto.getGroupNo();
+//        List<GroupMediaDto> dbMediaList = mediaService.fineAllMedia(groupNo);
+//
+//        List<MultipartFile> addMediaList = new ArrayList<>();
+//
+//        if (CollectionUtils.isEmpty(dbMediaList)) {
+//            if (!CollectionUtils.isEmpty(updateFiles)) {
+//                for (MultipartFile multipartFile : updateFiles)
+//                    addMediaList.add(multipartFile);
+//            }
+//        } else {
+//            if (CollectionUtils.isEmpty(updateFiles)) {
+//                for (GroupMediaDto dbFile : dbMediaList) {
+//                    fileHandler.deleteGroupMediaFile(dbFile);
+//                    mediaService.deleteMedia(dbFile.getMediaNo());
+//                }
+//            } else {
+//                for (GroupMediaDto dbFile : dbMediaList) {
+//                    fileHandler.deleteGroupMediaFile(dbFile);
+//                    mediaService.deleteMedia(dbFile.getMediaNo());
+//                }
+//            for (MultipartFile multipartFile : updateFiles) {
+//                    addMediaList.add(multipartFile);
+//                }
+//            }
+//        }
+//        int updated =  groupService.groupUpdate(groupNo, updategroupDto, addMediaList);
+//        if (updated != 0) {
+//            return ResponseEntity.status(HttpStatus.OK).body(updated);
+//        } else {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(updated);
+//        }
+//    }
+
     @PutMapping("/{groupNo}")
-    public ResponseEntity<Integer> update(@RequestPart(value="GroupDto") GroupDto updategroupDto,
-                      @RequestPart(value="file", required = false) List<MultipartFile> updateFiles) throws IOException {
-        int groupNo = updategroupDto.getGroupNo();
-        List<GroupMediaDto> dbMediaList = mediaService.fineAllMedia(groupNo);
-
-        List<MultipartFile> addMediaList = new ArrayList<>();
-
-        if (CollectionUtils.isEmpty(dbMediaList)) {
-            if (!CollectionUtils.isEmpty(updateFiles)) {
-                for (MultipartFile multipartFile : updateFiles)
-                    addMediaList.add(multipartFile);
-            }
-        } else {
-            if (CollectionUtils.isEmpty(updateFiles)) {
-                for (GroupMediaDto dbFile : dbMediaList) {
-                    fileHandler.deleteGroupMediaFile(dbFile);
-                    mediaService.deleteMedia(dbFile.getMediaNo());
-                }
-            } else {
-                for (GroupMediaDto dbFile : dbMediaList) {
-                    fileHandler.deleteGroupMediaFile(dbFile);
-                    mediaService.deleteMedia(dbFile.getMediaNo());
-                }
-            for (MultipartFile multipartFile : updateFiles) {
-                    addMediaList.add(multipartFile);
-                }
-            }
-        }
-        int updated =  groupService.groupUpdate(groupNo, updategroupDto, addMediaList);
+    public ResponseEntity<Integer> update(@PathVariable int groupNo, @RequestBody GroupRegisterDto updategroupDto)throws IOException {
+        int updated =  groupService.groupUpdate(groupNo, updategroupDto.getGroup());
         if (updated != 0) {
+                groupService.addOptions(groupNo, updategroupDto.getOptions());
+                groupService.addFaq(groupNo, updategroupDto.getRequestfaq());
+
             return ResponseEntity.status(HttpStatus.OK).body(updated);
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(updated);
