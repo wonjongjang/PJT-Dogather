@@ -375,6 +375,7 @@
         select group_no
         from user_group_interest
         where user_no = #{userNo}
+        order by group_no desc;
     </select>
 
     <resultMap id="paymentGroupMap" type="com.dogather.pjtserver.dto.GroupSummaryDto">
