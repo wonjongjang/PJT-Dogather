@@ -662,8 +662,8 @@ function MoimPayment() {
             </AddressItem>
           </AddressWrapper>
         </PaymentWrapper>
-        <PaymentWrapper>
-          <AddressWrapper style={{ display: "block" }}>
+        <PaymentWrapper style={{ marginBottom: "30px" }}>
+          <AddressWrapper style={{ display: "block", marginBottom: "30px" }}>
             <Address
               style={{
                 width: "100%",
@@ -848,6 +848,7 @@ const Container = styled.div`
   background-color: whitesmoke;
   display: flex;
   justify-content: center;
+  padding-bottom: 200px;
 `;
 const Title = styled.h1`
   font-size: 30px;
@@ -857,6 +858,7 @@ const Title = styled.h1`
 const Wrapper = styled.div`
   width: 960px;
   margin-top: 30px;
+  margin-bottom: 50px;
 `;
 
 const PaymentWrapper = styled.div`
@@ -1003,6 +1005,7 @@ const PriceWrapper = styled.div`
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
+  margin-bottom: 100px;
 `;
 const KakaoPayButton = styled.button`
   background-color: #ff5e57;

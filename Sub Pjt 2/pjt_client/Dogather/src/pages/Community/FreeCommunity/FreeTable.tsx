@@ -188,11 +188,15 @@ function AnnounceTable() {
                     <TableCell align="left">
                       {row.title}
                       <Imo>
-                        <img src={process.env.PUBLIC_URL + "/img/like.png"} />
+                        <img
+                          style={{ width: "15px", height: "auto" }}
+                          src={process.env.PUBLIC_URL + "/img/like.png"}
+                        />
                       </Imo>
                       <H3>{row.like}</H3>
                       <Imo>
                         <img
+                          style={{ width: "15px", height: "auto" }}
                           src={process.env.PUBLIC_URL + "/img/comment.png"}
                         />
                       </Imo>
@@ -200,8 +204,11 @@ function AnnounceTable() {
                     </TableCell>
                     <TableCell align="right">{row.writer}</TableCell>
                     <TableCell align="right">
-                      <Imo>
-                        <img src={process.env.PUBLIC_URL + "/img/view.png"} />
+                      <Imo style={{ margin: "0px" }}>
+                        <img
+                          style={{ width: "20px", height: "auto" }}
+                          src={process.env.PUBLIC_URL + "/img/view.png"}
+                        />
                       </Imo>
                       {row.view}
                     </TableCell>

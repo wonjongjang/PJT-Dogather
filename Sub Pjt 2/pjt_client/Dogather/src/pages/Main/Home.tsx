@@ -55,6 +55,7 @@ const Container = styled.div`
   align-items: center;
   flex-flow: wrap;
   row-gap: 20px;
+  padding-bottom: 200px;
 `;
 
 const SearchBar = styled.div`
