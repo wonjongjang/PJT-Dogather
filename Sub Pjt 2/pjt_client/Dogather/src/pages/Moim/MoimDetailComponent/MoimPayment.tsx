@@ -119,6 +119,11 @@ function MoimPayment() {
   );
   console.log(userData);
   // console.log(state.groupNo);
+  const [color, setColor] = useState("white");
+
+  const colorChange = () => {
+    color === "white" ? setColor("#d3d3d3") : setColor("white");
+  };
 
   const handlePayment = () => {
     const { IMP } = window;
@@ -553,11 +558,11 @@ function MoimPayment() {
                 }}
               >
                 <AddressSimplePay
-                  onClick={handlePayment}
+                  onClick={() => colorChange()}
                   style={{
                     border: "2px solid lightgrey",
                     borderRadius: "15px",
-                    backgroundColor: "#ffffff",
+                    backgroundColor: `${color}`,
                     width: "50%",
                     display: "flex",
                     justifyContent: "space-between",
@@ -827,7 +832,9 @@ function MoimPayment() {
               </Address>
             </PriceWrapper>
             <ButtonWrapper>
-              <KakaoPayButton>결제하기</KakaoPayButton>
+              <KakaoPayButton onClick={() => handlePayment()}>
+                결제하기
+              </KakaoPayButton>
             </ButtonWrapper>
           </AddressWrapper>
         </PaymentWrapper>
@@ -1005,6 +1012,7 @@ const KakaoPayButton = styled.button`
   font-weight: bold;
   height: 50px;
   width: 80%;
+  cursor: pointer;
 `;
 const TotalPriceWrapper = styled.div``;
 
