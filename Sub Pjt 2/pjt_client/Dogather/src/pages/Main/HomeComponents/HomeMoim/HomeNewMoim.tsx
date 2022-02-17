@@ -30,9 +30,7 @@ function HomeNewMoim() {
           {newData?.list.slice(0, 4).map((d, idx) => (
             // <li key={idx}>{d.groupNo}</li>
             <Grid item key={idx} sx={{ marginLeft: 2, marginRight: 2 }}>
-              <Alarm>
-                <Box>마감임박</Box>
-              </Alarm>
+              <Alarm>{/* <Box>마감임박</Box> */}</Alarm>
               <CardActionArea>
                 <Link to={`/moim/${d.groupNo}`}>
                   <Card

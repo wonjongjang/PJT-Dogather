@@ -60,7 +60,7 @@ function SearchDetail() {
   const { isLoading, data } = useQuery<IGroups>([keyword, state.option], () =>
     fetchSearch(keyword!, state.option!)
   );
-  console.log(data);
+  // console.log(data);
 
   const onValid = (formData: IForm) => {
     // console.log(formData);
@@ -314,7 +314,6 @@ const InputDiv = styled.div`
   border-bottom: 3px solid ${(props) => props.theme.textColor};
 `;
 const SearchDiv = styled.div`
-  padding-bottom: 36px;
   display: flex;
   align-items: center;
   justify-content: center;

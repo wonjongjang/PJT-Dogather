@@ -2,7 +2,12 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import { isLoginAtom, userIdAtom, userNoAtom } from "../../atoms/Login";
+import {
+  isLoginAtom,
+  userIdAtom,
+  userNickAtom,
+  userNoAtom,
+} from "../../atoms/Login";
 
 // useForm에 담길 데이터 타입
 interface ILoginForm {
@@ -16,6 +21,7 @@ function Login() {
   const setIsLogin = useSetRecoilState(isLoginAtom);
   const setUserNo = useSetRecoilState(userNoAtom);
   const setUserId = useSetRecoilState(userIdAtom);
+  const setUserNick = useSetRecoilState(userNickAtom);
 
   // useForm으로 form 내용 한 번에 받음
   const {
@@ -35,11 +41,13 @@ function Login() {
     })
       .then((response) => response.json())
       .then((result) => {
+        // console.log(result);
         if (result.msg === "success") {
           localStorage.setItem("login_token", result.jwt);
           setIsLogin(true);
           setUserNo(result.userInfo.userNo);
           setUserId(result.userInfo.userId);
+          setUserNick(result.userInfo.userNickname);
           navigate("/");
         } else if (result.msg === "wrongPw") {
           alert("비밀번호가 잘못 입력 되었습니다.");

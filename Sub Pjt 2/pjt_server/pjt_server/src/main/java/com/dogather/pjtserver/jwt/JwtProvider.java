@@ -1,15 +1,12 @@
 package com.dogather.pjtserver.jwt;
 
-import java.util.Date;
-
-import javax.crypto.SecretKey;
-
-import com.dogather.pjtserver.dto.UserDto;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+
+import javax.crypto.SecretKey;
+import java.util.Date;
 
 public class JwtProvider {
 
@@ -22,7 +19,7 @@ public class JwtProvider {
 	public static String getToken(String userId) {
 		String Subject = "Dogather";
 		String payload = userId;
-		int duration = 30 * 60 * 1000;
+		int duration = 60 * 60 * 1000;
 		Date expiration = new Date(System.currentTimeMillis() + duration); // 30m
 //		Date expiration = new Date(System.currentTimeMillis() + 0); // 30m
 

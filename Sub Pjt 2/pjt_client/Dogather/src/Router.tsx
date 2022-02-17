@@ -25,6 +25,9 @@ import MoimChatbot from "./components/Chat/MoimChatbot";
 import SearchDetail from "./pages/Main/SearchDetail";
 import MoimPayment from "./pages/Moim/MoimDetailComponent/MoimPayment";
 import UserUpdate from "./pages/Signup/UserUpdate";
+import Alarm from "./pages/Main/Alarm";
+import MoimUpdate from "./pages/Moim/MoimUpdate";
+import ReviewCardDetail from "./pages/Community/ReviewCommunity/ReviewCardDetail";
 
 function Router() {
   const isLogin = useRecoilValue(isLoginAtom);
@@ -34,7 +37,7 @@ function Router() {
     <BrowserRouter>
       <Header />
       <Routes>
-        {/* 로그인 하지 않았을 때 url 직접 접근 가능 */}
+        {/* 로그인 안했을 때만 url 직접 접근 가능 */}
         <Route
           path="/login"
           element={isLogin ? <Navigate replace to="/" /> : <Login />}
@@ -44,7 +47,7 @@ function Router() {
           element={isLogin ? <Navigate replace to="/" /> : <Signup />}
         />
 
-        {/* 로그인 했을 때 url 직접 접근 가능 */}
+        {/* 로그인 했을 때만 url 직접 접근 가능 */}
         <Route
           path="/user/update"
           element={isLogin ? <UserUpdate /> : <Navigate replace to="/" />}
@@ -57,7 +60,16 @@ function Router() {
           path="/moim/create"
           element={isLogin ? <CreateMoim /> : <Navigate replace to="/" />}
         />
+        <Route
+          path="/moim/update"
+          element={isLogin ? <MoimUpdate /> : <Navigate replace to="/" />}
+        />
+        <Route
+          path="/alarm"
+          element={isLogin ? <Alarm /> : <Navigate replace to="/" />}
+        />
 
+        {/* 로그인과 상관없이 url 직접 접근 가능 */}
         <Route path="/moim/:groupNo/*" element={<MoimDetail />}>
           <Route path="" element={<MoimProduct detailImage={[]} />} />
           <Route path="faq" element={<MoimFAQ />} />
@@ -77,6 +89,7 @@ function Router() {
         <Route path="/community/free/" element={<FreeCommunity />} />
         <Route path="/community/usedsale/" element={<UsedSaleCommunity />} />
         <Route path="/community/review/" element={<ReviewCommunity />} />
+        <Route path="/community/review/1" element={<ReviewCardDetail />} />
 
         <Route path="/chat" element={<MoimChatbot />} />
 

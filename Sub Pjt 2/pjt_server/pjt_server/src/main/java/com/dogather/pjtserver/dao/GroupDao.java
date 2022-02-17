@@ -21,6 +21,7 @@ public interface GroupDao {
     public List<GroupReturnDto> getHotList();
     public List<GroupReturnDto> getNewList();
     public List<GroupReturnDto> getEndSoonList();
+    public List<GroupReturnDto> getRecommendList(List categories);
 
 
     public int addInterest(GroupInterestDto dto);

@@ -69,6 +69,14 @@ public class GroupController {
         return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
     }
 
+    @GetMapping("/recommend/{userNo}")
+    public ResponseEntity<GroupListDto> recommendList(@PathVariable int userNo){
+        List<Integer> categories = userService.getUserCategory(userNo);
+        GroupListDto list = new GroupListDto();
+        list.setList(groupService.getRecommendList(categories));
+        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+    }
+
     @GetMapping("/detail/{groupNo}/{userNo}")
     public ResponseEntity<GroupOptionDto> group(@PathVariable int groupNo, @PathVariable int userNo){
         if(userNo != 0) groupService.groupViews(userNo,groupNo);
@@ -253,27 +261,27 @@ public class GroupController {
     }
 
 
-    @PostMapping("/wsearch")
-    public ResponseEntity<GroupListDto> wordSearch(@RequestBody HashMap map){
-        String word = map.get("word").toString();
-        String[] tmp = word.split(" ");
-        List<String> wordList = Arrays.asList(tmp);
-
-        System.out.println(wordList.toString());
-
-        GroupListDto list = new GroupListDto();
-        list.setList(groupService.wordSearch(wordList));
-        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
-    }
-
-    @PostMapping("/psearch")
-    public ResponseEntity<GroupListDto> personSearch(@RequestBody HashMap map){
-        String person = map.get("person").toString();
-
-        GroupListDto list = new GroupListDto();
-        list.setList(groupService.personSearch(person));
-        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
-    }
+//    @PostMapping("/wsearch")
+//    public ResponseEntity<GroupListDto> wordSearch(@RequestBody HashMap map){
+//        String word = map.get("word").toString();
+//        String[] tmp = word.split(" ");
+//        List<String> wordList = Arrays.asList(tmp);
+//
+//        System.out.println(wordList.toString());
+//
+//        GroupListDto list = new GroupListDto();
+//        list.setList(groupService.wordSearch(wordList));
+//        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+//    }
+//
+//    @PostMapping("/psearch")
+//    public ResponseEntity<GroupListDto> personSearch(@RequestBody HashMap map){
+//        String person = map.get("person").toString();
+//
+//        GroupListDto list = new GroupListDto();
+//        list.setList(groupService.personSearch(person));
+//        return new ResponseEntity<GroupListDto>(list,HttpStatus.OK);
+//    }
 
     @PostMapping("/review")
     public int review(@RequestBody ReviewDto dto){

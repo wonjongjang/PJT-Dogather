@@ -25,8 +25,8 @@ public class AlarmServiceImpl implements AlarmService{
     }
 
     @Override
-    public void readAlarm(AlarmDto dto) {
-        alarmDao.readAlarm(dto);
+    public void readAlarm(int msgNo) {
+        alarmDao.readAlarm(msgNo);
     }
 
 

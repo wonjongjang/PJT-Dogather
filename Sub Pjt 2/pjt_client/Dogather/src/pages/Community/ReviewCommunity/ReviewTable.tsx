@@ -97,17 +97,65 @@ function ReviewTable() {
         </CustomStack>
         <div>
           <CustomCard>
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review1.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta1.jpg"}
+              name="z00__Daa"
+              content="너무 좋아요!!"
+              subheader="02-13"
+            />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review2.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta2.jpg"}
+              name="balckgar"
+              content="빠른 배송"
+              subheader="02-14"
+            />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review3.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta3.jpg"}
+              name="haseok"
+              content="만족합니다"
+              subheader="02-12"
+            />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review4.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta4.jpg"}
+              name="wonjong"
+              content="감사합니다~"
+              subheader="02-12"
+            />
           </CustomCard>
           <div></div>
           <CustomCard>
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review5.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta5.jpg"}
+              name="sehen"
+              content="ootd"
+              subheader="02-10"
+            />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review6.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta6.jpg"}
+              name="jibum"
+              content="잘 신을게요!!"
+              subheader="01-31"
+            />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review7.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta7.jpg"}
+              name="jinseong"
+              content="감사합니다 후기!"
+              subheader="01-30"
+            />
+            <ReviewCard
+              image={process.env.PUBLIC_URL + "/img/review8.jpg"}
+              avatar={process.env.PUBLIC_URL + "/img/insta8.jpg"}
+              name="Guan"
+              content="너무 마음에 들어요~!"
+              subheader="01-28"
+            />
           </CustomCard>
         </div>
       </Mid>

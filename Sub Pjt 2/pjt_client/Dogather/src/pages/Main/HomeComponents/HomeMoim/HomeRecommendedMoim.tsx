@@ -1,78 +1,162 @@
 import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
 import styled, { keyframes } from "styled-components";
-import { FetchHomeRecommendedMoimCard } from "../../../../api/MoimDetail";
+import {
+  FetchHomeEndMoimCard,
+  FetchHomeRecommendedMoimCard,
+} from "../../../../api/MoimDetail";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import { iHomeCard } from "../../Home";
 import { useRecoilValue } from "recoil";
 import { ImgAtom } from "../../../../atoms/HomeMoimImg";
+import { isLoginAtom, userNoAtom } from "../../../../atoms/Login";
 
 function HomeRecommendedMoim() {
+  const userNo = useRecoilValue(userNoAtom);
   const { data: recommendedData } = useQuery<iHomeCard>("recommend", () =>
-    FetchHomeRecommendedMoimCard()
+    FetchHomeRecommendedMoimCard(userNo)
+  );
+  const { data: endData } = useQuery<iHomeCard>("end", () =>
+    FetchHomeEndMoimCard()
   );
   console.log(recommendedData);
 
   const makeComma = (price: number) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  const defaultImg = useRecoilValue(ImgAtom);
+  const defaultImg = useRecoilValue<string>(ImgAtom);
+  const isLogin = useRecoilValue(isLoginAtom);
+
   return (
     <Container>
       <Title>
         <CardDetail>
-          <TextENG>Recommended</TextENG>
-          <TextKOR>추천 모임</TextKOR>
+          {isLogin ? (
+            <>
+              <TextENG>Recommended</TextENG>
+              <TextKOR>추천 모임</TextKOR>
+            </>
+          ) : (
+            <>
+              <TextENG>CountDown</TextENG>
+              <TextKOR>마감임박 모임</TextKOR>
+            </>
+          )}
         </CardDetail>
       </Title>
 
       <ProductList>
-        <Grid container margin={0} display={"flex"} justifyContent={"center"}>
-          {recommendedData?.list.slice(0, 4).map((d, idx) => (
-            // <li key={idx}>{d.groupNo}</li>
-            <Grid item key={idx} sx={{ marginLeft: 2, marginRight: 2 }}>
-              <Alarm>
-                <Box>마감임박</Box>
-              </Alarm>
-              <CardActionArea>
-                <Link to={`/moim/${d.groupNo}`}>
-                  <Card
-                    sx={{
-                      minWidth: 250,
-                      minHeight: 250,
-                      maxWidth: 250,
-                      maxHeight: 250,
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      backgroundColor: "whitesmoke",
-                      transition: "all .25s linear",
-                    }}
-                  >
-                    <CardMedia
-                      component="img"
-                      height="auto"
-                      width="100px"
-                      image={
-                        d.mainImage
-                          ? process.env.PUBLIC_URL + "/doimage/" + d?.mainImage
-                          : defaultImg
-                      }
-                      alt="Product Image"
-                    />
-                  </Card>
-                </Link>
-              </CardActionArea>
-              <CardDetail>
-                <CategoryName>{d.categoryName}</CategoryName>
-                <ProductName>{d.product}</ProductName>
-                <Price>{makeComma(d.price)}원</Price>
-                <PriceDetail>공동구매가</PriceDetail>
-                {/* <MaxPeople>80/{d.maxPeople}명</MaxPeople>
+        {isLogin ? (
+          <>
+            <Grid
+              container
+              margin={0}
+              display={"flex"}
+              justifyContent={"center"}
+            >
+              {recommendedData?.list.slice(0, 4).map((d, idx) => (
+                // <li key={idx}>{d.groupNo}</li>
+                <Grid item key={idx} sx={{ marginLeft: 2, marginRight: 2 }}>
+                  <CardActionArea>
+                    <Link to={`/moim/${d.groupNo}`}>
+                      <Card
+                        sx={{
+                          minWidth: 250,
+                          minHeight: 250,
+                          maxWidth: 250,
+                          maxHeight: 250,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          backgroundColor: "whitesmoke",
+                          transition: "all .25s linear",
+                        }}
+                      >
+                        <CardMedia
+                          component="img"
+                          height="auto"
+                          width="100px"
+                          image={
+                            d.mainImage
+                              ? process.env.PUBLIC_URL +
+                                "/doimage/" +
+                                d?.mainImage
+                              : defaultImg
+                          }
+                          alt="Product Image"
+                        />
+                      </Card>
+                    </Link>
+                  </CardActionArea>
+                  <CardDetail>
+                    <CategoryName>{d.categoryName}</CategoryName>
+                    <ProductName>{d.product}</ProductName>
+                    <Price>{makeComma(d.price)}원</Price>
+                    <PriceDetail>공동구매가</PriceDetail>
+                    {/* <MaxPeople>80/{d.maxPeople}명</MaxPeople>
                 <DeadLine>마감 {d.deadline}일 전</DeadLine> */}
-              </CardDetail>
+                  </CardDetail>
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
+          </>
+        ) : (
+          <>
+            <Grid
+              container
+              margin={0}
+              display={"flex"}
+              justifyContent={"center"}
+            >
+              {endData?.list.slice(0, 4).map((d, idx) => (
+                // <li key={idx}>{d.groupNo}</li>
+                <Grid item key={idx} sx={{ marginLeft: 2, marginRight: 2 }}>
+                  <Alarm>
+                    <Box>마감임박</Box>
+                  </Alarm>
+                  <CardActionArea>
+                    <Link to={`/moim/${d.groupNo}`}>
+                      <Card
+                        sx={{
+                          minWidth: 250,
+                          minHeight: 250,
+                          maxWidth: 250,
+                          maxHeight: 250,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          backgroundColor: "whitesmoke",
+                          transition: "all .25s linear",
+                        }}
+                      >
+                        <CardMedia
+                          component="img"
+                          height="auto"
+                          width="100px"
+                          image={
+                            d.mainImage
+                              ? process.env.PUBLIC_URL +
+                                "/doimage/" +
+                                d?.mainImage
+                              : defaultImg
+                          }
+                          alt="Product Image"
+                        />
+                      </Card>
+                    </Link>
+                  </CardActionArea>
+                  <CardDetail>
+                    <CategoryName>{d.categoryName}</CategoryName>
+                    <ProductName>{d.product}</ProductName>
+                    <Price>{makeComma(d.price)}원</Price>
+                    <PriceDetail>공동구매가</PriceDetail>
+                    {/* <MaxPeople>80/{d.maxPeople}명</MaxPeople>
+                <DeadLine>마감 {d.deadline}일 전</DeadLine> */}
+                  </CardDetail>
+                </Grid>
+              ))}
+            </Grid>
+          </>
+        )}
       </ProductList>
     </Container>
   );
