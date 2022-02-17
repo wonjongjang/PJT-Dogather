@@ -40,11 +40,16 @@ function UsedSaleCard({
         <CardContent>{content}</CardContent>
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
+            <img
+              style={{ width: "2vw", height: "auto" }}
+              src={process.env.PUBLIC_URL + "/img/like5.png"}
+              alt="error"
+            />
           </IconButton>
           <IconButton aria-label="Like">
             <img
-              src={process.env.PUBLIC_URL + "/img/comment2.png"}
+              style={{ width: "2.5vw", height: "auto" }}
+              src={process.env.PUBLIC_URL + "/img/comment5.png"}
               alt="error"
             />
           </IconButton>

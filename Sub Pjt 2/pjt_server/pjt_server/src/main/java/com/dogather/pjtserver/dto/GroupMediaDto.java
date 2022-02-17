@@ -11,7 +11,7 @@ public class GroupMediaDto {
 
     private int groupNo;
 
-    private String mediaTitile;
+    private String mediaTitle;
 
     private String mediaSavename;
 

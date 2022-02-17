@@ -11,7 +11,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
-
+import axios from "axios";
 // function MoimReview() {
 //   return (
 //     <div>
@@ -28,6 +28,24 @@ import Avatar from "@mui/material/Avatar";
 //     </div>
 //   );
 // }
+
+axios({
+  method: "post",
+  url: "//i6e104.p.ssafy.io:8090/api/group/review",
+  data: {
+    userFrom: "userFrom",
+    userTo: "userTo",
+    star: "star",
+    content: "content",
+  },
+})
+  .then((response) => {
+    console.log(response.data);
+    console.log("ASDASD");
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 const labels: { [index: string]: string } = {
   0.5: "Useless",
   1: "Useless+",
