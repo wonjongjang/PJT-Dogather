@@ -4,10 +4,11 @@ import { width } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { FetchUserInfoAPI } from "../../../api/MoimDetail";
-import { userIdAtom, userNoAtom } from "../../../atoms/Login";
+import { AlarmsAtom, AlarmsCountAtom } from "../../../atoms/Alarm";
+import { isLoginAtom, userIdAtom, userNoAtom } from "../../../atoms/Login";
 import KakaoPay from "../KakaoPay";
 import { IProductContent } from "../MoimDetail";
 
@@ -103,8 +104,12 @@ function MoimPayment() {
   const { state } = useLocation() as RouteState;
   const navigate = useNavigate();
   const JWT = localStorage.getItem("login_token");
-  const userId = useRecoilValue(userIdAtom);
-  const userNo = useRecoilValue(userNoAtom);
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
+  const [userNo, setUserNo] = useRecoilState(userNoAtom);
+  const [userId, setUserId] = useRecoilState(userIdAtom);
+  const [alarms, setAlarms] = useRecoilState(AlarmsAtom);
+  const [count, setCount] = useRecoilState(AlarmsCountAtom);
+
   const [time, setTime] = useState(0);
   useEffect(() => {
     setTimeout(() => setTime(1), 500);
@@ -112,13 +117,28 @@ function MoimPayment() {
 
   const makeComma = (price: number) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  console.log(state);
+  // console.log(state);
 
   const { isLoading: userLoading, data: userData } = useQuery<any>(
     ["group", userNo, JWT, userId],
     () => FetchUserInfoAPI(userNo, JWT!, userId!)
   );
-  console.log(userData);
+  // console.log(userData);
+
+  // 토큰 만료 시
+  if (userData?.msg && userData?.msg === "relogin") {
+    localStorage.clear(); // 로컬 스토리지 비우기
+    setIsLogin(false); // 로그인 여부 초기화
+    setUserNo(""); // 저장된 user pk 초기화
+    setUserId(""); // 저장된 user id 초기화
+    setAlarms([]); // 저장된 알람 리스트 초기화
+    setCount(0); // 저장된 읽지 않은 알람 개수 초기화
+    alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
+    setTimeout(() => {
+      navigate("/login");
+    }, 1); // 로그인 페이지로 이동
+  }
+
   // console.log(state.groupNo);
   const [color, setColor] = useState("white");
 
@@ -941,7 +961,7 @@ const AddressContentTitle = styled.p`
   margin-left: 15px;
   margin-bottom: 10px;
 `;
-const AddressContentDetail = styled.p`
+const AddressContentDetail = styled.div`
   font-size: 16px;
   margin-left: 15px;
   margin-bottom: 10px;

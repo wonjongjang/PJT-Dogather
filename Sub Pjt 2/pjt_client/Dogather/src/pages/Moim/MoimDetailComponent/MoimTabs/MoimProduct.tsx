@@ -21,6 +21,7 @@ function MoimProduct({ detailImage }: IData) {
         {detailImage
           ? detailImage.map((d, idx) => (
               <Img
+                key={idx}
                 src={process.env.PUBLIC_URL + "/doimage/" + d}
                 alt={process.env.PUBLIC_URL + "/doimage/" + d}
               />
