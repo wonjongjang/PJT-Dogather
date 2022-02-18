@@ -123,7 +123,7 @@ function MoimPayment() {
     ["group", userNo, JWT, userId],
     () => FetchUserInfoAPI(userNo, JWT!, userId!)
   );
-  // console.log(userData);
+  console.log(userData);
 
   // 토큰 만료 시
   if (userData?.msg && userData?.msg === "relogin") {
@@ -198,7 +198,7 @@ function MoimPayment() {
           body: JSON.stringify(paymentData),
         });
         alert("결제가 완료됐습니다.");
-        console.log(response);
+        navigate(`/moim/review/:${state.leaderName}`);
       } else {
         // console.log(error_msg);
         alert("결제가 취소됐습니다.");
