@@ -31,8 +31,8 @@ public class FileHandler {
     private final LocalDate today = LocalDate.now();
 //    private final String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
 
-    public final String uploadPath = Paths.get("/doimage").toString();
-//    public String uploadPath = new File("").getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "upload" + File.separator;
+//    public final String uploadPath = Paths.get("/doimage").toString();
+    public String uploadPath = new File("").getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "upload" + File.separator;
 
 
 

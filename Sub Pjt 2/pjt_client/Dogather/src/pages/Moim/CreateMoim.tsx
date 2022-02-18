@@ -134,7 +134,7 @@ function CreateMoim() {
     }
 
     // 데이터 전송
-    fetch("http://i6e104.p.ssafy.io:8090/api/group/register", {
+    fetch("http://i6e104.p.ssafy.io/api/group/register", {
       method: "POST",
       headers: {
         // Interceptor
