@@ -71,7 +71,7 @@
         left join dogather.user as u on g.group_leader = u.user_no
         left join dogather.category as c on g.category_no = c.category_no
         where g.category_no = #{categoryNo}
-            limit 8 offset #{page}
+            limit 24 offset #{page}
     </select>
 
     <select id="search" resultMap="grouplistMap" parameterType="Map">
