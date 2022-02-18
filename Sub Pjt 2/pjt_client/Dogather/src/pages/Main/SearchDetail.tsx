@@ -7,10 +7,7 @@ import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
 import { useRecoilValue } from "recoil";
 import { ImgAtom } from "../../atoms/HomeMoimImg";
 import Pagination from "@mui/material/Pagination";
-<<<<<<< HEAD
 
-=======
->>>>>>> 1b480d90f223837f07259913d89d4f7a317d44f1
 interface IOption {
   state: {
     option: string;
@@ -164,13 +161,6 @@ function SearchDetail() {
     </Container>
   );
 }
-
-const CustomPage = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2vw;
-  margin-left: 0;
-`;
 
 const animation = keyframes`
 0% {
