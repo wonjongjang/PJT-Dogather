@@ -147,7 +147,7 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupReturnDto> getCategoryList(int categoryNo, int page) {
         Map map = new HashMap();
         map.put("categoryNo", categoryNo);
-        map.put("page", 8*(page-1));
+        map.put("page", 24*(page-1));
         List<GroupReturnDto> list = groupDao.getCategoryList(map);
         for (GroupReturnDto group : list) {
 //            if (!groupDao.getMainImage(group.getGroupNo()).toString().equals("no")){
@@ -240,7 +240,7 @@ public class GroupServiceImpl implements GroupService {
         if(" ".equals(nickname)){nickname = null;}
         map.put("words", words);
         map.put("nickname", nickname);
-        map.put("page",8*(page-1));
+        map.put("page",24*(page-1));
         List<GroupReturnDto> list = groupDao.search(map);
         for (GroupReturnDto group : list) {
 //            if (!groupDao.getMainImage(group.getGroupNo()).toString().equals("no")){
