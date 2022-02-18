@@ -147,24 +147,22 @@ function CreateMoim() {
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
-        if (result.msg) {
-          if (result.msg === "relogin") {
-            // 토큰 만료 시
-            localStorage.clear(); // 로컬 스토리지 비우기
-            setIsLogin(false); // 로그인 여부 초기화
-            setUserNo(""); // 저장된 user pk 초기화
-            setUserId(""); // 저장된 user id 초기화
-            alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
-            setTimeout(() => {
-              // 1ms (0.001초) 후 navigate 실행 (미세한 차이로 isLogin이 false 되는 것 보다 navigate가 빨라 isLogin이 true라고 판단하여 로그인 페이지에서 메인 페이지로 튕김)
-              navigate("/login"); // 로그인 페이지로 이동
-            }, 1);
-          } else {
-            // 토큰 만료 아닐 시
-            const ObjectToString = JSON.stringify(result); // 반환값이 object이므로 string으로 변환 (navigate시 url 깨지는 현상 해결)
-            navigate(`/moim/${ObjectToString}`); // 모임 상세 페이지로 이동
-          }
-        }
+        // if (result.msg && result.msg === "relogin") {
+        //   // 토큰 만료 시
+        //   localStorage.clear(); // 로컬 스토리지 비우기
+        //   setIsLogin(false); // 로그인 여부 초기화
+        //   setUserNo(""); // 저장된 user pk 초기화
+        //   setUserId(""); // 저장된 user id 초기화
+        //   alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
+        //   setTimeout(() => {
+        //     // 1ms (0.001초) 후 navigate 실행 (미세한 차이로 isLogin이 false 되는 것 보다 navigate가 빨라 isLogin이 true라고 판단하여 로그인 페이지에서 메인 페이지로 튕김)
+        //     navigate("/login"); // 로그인 페이지로 이동
+        //   }, 1);
+        // } else {
+        //   // 토큰 만료 아닐 시
+        const ObjectToString = JSON.stringify(result); // 반환값이 object이므로 string으로 변환 (navigate시 url 깨지는 현상 해결)
+        navigate(`/moim/${ObjectToString}`); // 모임 상세 페이지로 이동
+        // }
       });
   };
 
