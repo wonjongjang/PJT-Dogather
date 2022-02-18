@@ -1,6 +1,8 @@
-import { Card, CardMedia, Grid } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Card, CardMedia, Grid, responsiveFontSizes } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { userIdAtom } from "../../../atoms/Login";
 import Category from "../../../Category";
 
 const categoryImg = [
@@ -23,6 +25,23 @@ const categoryImg = [
 ];
 
 function HomeCategory() {
+  const navigate = useNavigate();
+  const userId = useRecoilValue(userIdAtom);
+  const JWT = localStorage.getItem("login_token");
+
+  const onClick = (idx: number) => {
+    (async () => {
+      const categoryData = await (
+        await fetch(
+          `http://i6e104.p.ssafy.io:8090/api/group/category?category=${
+            idx + 1
+          }&page=1`
+        )
+      ).json();
+    })();
+  };
+  // console.log(categoryData);
+
   return (
     <Container>
       <CategoryList>
@@ -37,10 +56,11 @@ function HomeCategory() {
           marginLeft={"0px"}
         >
           {categoryImg.slice(0, 16).map((cat, idx) => (
-            <Link key={idx} to={"/moim/1"}>
+            <Link key={idx} to={"/search"}>
               <Grid item>
                 <Card
                   elevation={0}
+                  onClick={() => onClick(idx)}
                   sx={{
                     width: "60px",
                     height: "60px",
