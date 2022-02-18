@@ -2,17 +2,12 @@ import { useForm } from "react-hook-form";
 import { useQuery } from "react-query";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import { fetchSearch } from "../../api/Search";
+import { fetchSearchCategory } from "../../api/Search";
 import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
 import { useRecoilValue } from "recoil";
 import { ImgAtom } from "../../atoms/HomeMoimImg";
 import Pagination from "@mui/material/Pagination";
-
-interface IOption {
-  state: {
-    option: string;
-  };
-}
+import { ProductCategories } from "../../atoms/ProductCategories";
 
 interface IGroup {
   amount: number;
@@ -40,55 +35,26 @@ interface IGroups {
   list: IGroup[];
 }
 
-interface IForm {
-  keyword: string;
-  option: string;
-}
-
-function SearchDetail() {
-  const navigate = useNavigate();
-  const { register, handleSubmit, setValue } = useForm<IForm>();
+function SearchCategory() {
   const defaultImg = useRecoilValue(ImgAtom);
+
   const makeComma = (price: number) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  const { keyword } = useParams();
-  // console.log(keyword);
-  setValue("keyword", `${keyword}`);
-  const { state } = useLocation() as IOption;
-  // console.log(state.option);
+  const { categoryId } = useParams();
 
-  const { isLoading, data } = useQuery<IGroups>([keyword, state.option], () =>
-    fetchSearch(keyword!, state.option!)
+  const { isLoading, data } = useQuery<IGroups>([categoryId], () =>
+    fetchSearchCategory(categoryId!)
   );
   // console.log(data);
-
-  const onValid = (formData: IForm) => {
-    // console.log(formData);
-    const keyword = formData.keyword;
-    setValue("keyword", "");
-    navigate(`/search/${keyword}`, { state: { option: formData.option } });
-  };
 
   return (
     <Container>
       <SearchContainer>
         <SearchSub>
-          <form onSubmit={handleSubmit(onValid)}>
-            <SearchDiv>
-              <Select
-                {...register("option", {
-                  required: "필수 정보입니다.",
-                })}
-              >
-                <Option value="query">모임</Option>
-                <Option value="nickname">닉네임</Option>
-              </Select>
-              <InputDiv>
-                <Input {...register("keyword", { required: true })} autoFocus />
-              </InputDiv>
-            </SearchDiv>
-          </form>
+          <InputDiv>
+            <Input>{ProductCategories[Number(categoryId)]}</Input>
+          </InputDiv>
         </SearchSub>
       </SearchContainer>
       <ProductContainer>
@@ -100,11 +66,8 @@ function SearchDetail() {
               display={"flex"}
               justifyContent={"center"}
             >
-              {data?.list.map((d) => (
+              {data?.list?.map((d) => (
                 <Grid item key={d.groupNo} sx={{ margin: 3 }}>
-                  {/* <Alarm>
-                    <Box>마감임박</Box>
-                  </Alarm> */}
                   <CardActionArea>
                     <Link to={`/moim/${d.groupNo}`}>
                       <Card
@@ -143,8 +106,6 @@ function SearchDetail() {
                       <Price>{makeComma(d.price)}원</Price>
                       <PriceDetail>공동구매가</PriceDetail>
                     </PriceDiv>
-                    {/* <MaxPeople>80/{d.maxPeople}명</MaxPeople>
-                <DeadLine>마감 {d.deadline}일 전</DeadLine> */}
                   </CardDetail>
                 </Grid>
               ))}
@@ -302,7 +263,7 @@ const Select = styled.select`
   outline: none;
 `;
 
-const Input = styled.input`
+const Input = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -314,6 +275,7 @@ const Input = styled.input`
   letter-spacing: -0.015em;
   border: none;
   outline: none;
+  text-align: center;
 `;
 const InputDiv = styled.div`
   width: 500px;
@@ -331,6 +293,8 @@ const SearchDiv = styled.div`
   position: relative;
 `;
 const SearchSub = styled.div`
+  display: flex;
+  justify-content: center;
   margin: 0 auto;
   max-width: 1200px;
 `;
@@ -340,4 +304,4 @@ const SearchContainer = styled.div`
 
 const Container = styled.div``;
 
-export default SearchDetail;
+export default SearchCategory;

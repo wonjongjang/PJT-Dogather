@@ -28,6 +28,8 @@ import UserUpdate from "./pages/Signup/UserUpdate";
 import Alarm from "./pages/Main/Alarm";
 import MoimUpdate from "./pages/Moim/MoimUpdate";
 import ReviewCardDetail from "./pages/Community/ReviewCommunity/ReviewCardDetail";
+import SearchCategory from "./pages/Main/SearchCategory";
+import CreateMoimReview from "./pages/Moim/CreateMoimReview";
 
 function Router() {
   const isLogin = useRecoilValue(isLoginAtom);
@@ -65,6 +67,10 @@ function Router() {
           element={isLogin ? <MoimUpdate /> : <Navigate replace to="/" />}
         />
         <Route
+          path="/moim/review/:leaderName/*"
+          element={isLogin ? <CreateMoimReview /> : <Navigate replace to="/" />}
+        />
+        <Route
           path="/alarm"
           element={isLogin ? <Alarm /> : <Navigate replace to="/" />}
         />
@@ -96,6 +102,7 @@ function Router() {
         {/* error */}
         <Route path="/error404" element={<Error404 />} />
 
+        <Route path="/search/:categoryId/*" element={<SearchCategory />} />
         <Route path="/search/:keyword/*" element={<SearchDetail />} />
         <Route path="/" element={<Home />} />
       </Routes>
