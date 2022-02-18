@@ -107,7 +107,7 @@
                 where
                 u.user_nickname=#{nickname}
             </if>
-            limit 8 offset #{page}
+            limit 24 offset #{page}
     </select>
 
     <select id="getHotList" resultMap="grouplistMap">
