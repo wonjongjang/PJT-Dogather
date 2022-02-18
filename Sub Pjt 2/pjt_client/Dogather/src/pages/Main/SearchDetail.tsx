@@ -6,7 +6,7 @@ import { fetchSearch } from "../../api/Search";
 import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
 import { useRecoilValue } from "recoil";
 import { ImgAtom } from "../../atoms/HomeMoimImg";
-
+import Pagination from "@mui/material/Pagination";
 interface IOption {
   state: {
     option: string;
@@ -151,9 +151,19 @@ function SearchDetail() {
           </ProductList>
         </ProductSub>
       </ProductContainer>
+      <CustomPage>
+        <Pagination count={5} variant="text" shape="rounded" />
+      </CustomPage>
     </Container>
   );
 }
+
+const CustomPage = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2vw;
+  margin-left: 0;
+`;
 
 const animation = keyframes`
 0% {
