@@ -74,7 +74,7 @@ function MyPage() {
   // console.log(data);
 
   // 토큰 만료 시
-  if (data?.msg === "relogin") {
+  if (data?.msg && data?.msg === "relogin") {
     localStorage.clear(); // 로컬 스토리지 비우기
     setIsLogin(false); // 로그인 여부 초기화
     setUserNo(""); // 저장된 user pk 초기화

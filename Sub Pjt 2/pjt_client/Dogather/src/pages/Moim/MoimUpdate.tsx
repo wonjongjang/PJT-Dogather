@@ -86,9 +86,6 @@ function MoimUpdate() {
 
   // form 제출 시 실행
   const onValid = (data: IMoimForm) => {
-    const newDeadline =
-      data.deadline.replace("T", " ").substring(0, 19) + ":00";
-
     const newData = {
       categoryNo: data.categoryNo,
       detail: data.detail,
@@ -97,13 +94,13 @@ function MoimUpdate() {
       originPrice: data.originPrice,
       price: data.price,
       product: data.product,
-      tmpDeadLine: data.deadline
+      tmpDeadLine: data.deadline, // 일자 수정하지 않고 제출 시 문제가 발생하여 deadline 대신 만듬
     };
-    console.log(newData);
+    // console.log(newData);
 
     if (window.confirm("변경 사항을 적용하시겠습니까?") == true) {
       // 데이터 전송
-      fetch(`http://localhost:8080/api/group/${groupNo}`, {
+      fetch(`http://i6e104.p.ssafy.io/api/group/${groupNo}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +130,7 @@ function MoimUpdate() {
           } else {
             // 토큰 만료 아닐 시
             alert("모임 정보를 수정하였습니다.");
-            // navigate(`/user`); // 마이페이지로 이동
+            navigate(`/moim/${groupNo}`); // 마이페이지로 이동
           }
         });
     }
