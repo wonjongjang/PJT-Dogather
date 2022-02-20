@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -122,9 +123,42 @@ public class GroupController {
         }
     }
 
-//    @PutMapping("/{groupNo}")
+    @GetMapping("/detail/update/{groupNo}")
+    public ResponseEntity<GroupOptionDto> updategroup(@PathVariable int groupNo) {
+        List<GroupMediaDto> mediaDtoList = mediaService.fineAllMedia(groupNo);
+        GroupReturnDto groupReturnDto = groupService.group(groupNo);
+        log.info(mediaDtoList.toString());
+        List<FAQDto> faqDtoList = faqService.readFaqAll(groupNo);
+
+        String mainImageName = null;
+        List<String> mediaList = new ArrayList<>();
+        for (GroupMediaDto mediaDto : mediaDtoList ) {
+            if(mediaDto.getMainImageYn().equals("N")){
+                log.info(mediaDto.getMediaTitle());
+                mediaList.add(mediaDto.getMediaTitle());
+            } else {
+                mainImageName = mediaDto.getMediaTitle();
+            }
+        }
+
+        GroupOptionDto ret = new GroupOptionDto();
+        ret.setGroupDto(groupReturnDto);
+        List<OptionDto> options = groupService.getOptions(groupNo);
+        ret.setOptions(options);
+        ret.setMediaList(mediaList);
+        ret.setFaqList(faqDtoList);
+        ret.setMainImage(mainImageName);
+        return new ResponseEntity<GroupOptionDto>(ret, HttpStatus.OK);
+    }
+
+//    @PutMapping("/{groupNo}/{mainYn}/{fileYn}")
 //    public ResponseEntity<Integer> update(@RequestPart(value="GroupDto") GroupDto updategroupDto,
-//                      @RequestPart(value="file", required = false) List<MultipartFile> updateFiles) throws IOException {
+//                                          @RequestPart(value="file", required = false) List<MultipartFile> updateFiles,
+//                                          @RequestPart(value = "mainImage", required = false) MultipartFile mainImage,
+//                                          @PathVariable String mainYn,
+//                                          @PathVariable String fileYn
+//                                          ) throws IOException {
+//
 //        int groupNo = updategroupDto.getGroupNo();
 //        List<GroupMediaDto> dbMediaList = mediaService.fineAllMedia(groupNo);
 //
@@ -160,12 +194,16 @@ public class GroupController {
 //    }
 
     @PutMapping("/{groupNo}")
-    public ResponseEntity<Integer> update(@PathVariable int groupNo, @RequestBody GroupRegisterDto updategroupDto)throws IOException {
-        int updated =  groupService.groupUpdate(groupNo, updategroupDto.getGroup());
+    public ResponseEntity<Integer> update(@PathVariable int groupNo, @RequestBody GroupDto updategroupDto)throws IOException {
+        log.info(updategroupDto.toString());
+        String Deadline = updategroupDto.getTmpDeadLine();
+        if (Deadline.length() == 22) {
+            updategroupDto.setDeadline(LocalDateTime.parse(Deadline.substring(0, 19)));
+        } else {
+            updategroupDto.setDeadline(LocalDateTime.parse(Deadline));
+        }
+        int updated =  groupService.groupUpdate(groupNo, updategroupDto);
         if (updated != 0) {
-                groupService.addOptions(groupNo, updategroupDto.getOptions());
-                groupService.addFaq(groupNo, updategroupDto.getRequestfaq());
-
             return ResponseEntity.status(HttpStatus.OK).body(updated);
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(updated);

@@ -6,6 +6,7 @@ import { fetchSearch } from "../../api/Search";
 import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
 import { useRecoilValue } from "recoil";
 import { ImgAtom } from "../../atoms/HomeMoimImg";
+import Pagination from "@mui/material/Pagination";
 
 interface IOption {
   state: {
@@ -60,7 +61,7 @@ function SearchDetail() {
   const { isLoading, data } = useQuery<IGroups>([keyword, state.option], () =>
     fetchSearch(keyword!, state.option!)
   );
-  console.log(data);
+  // console.log(data);
 
   const onValid = (formData: IForm) => {
     // console.log(formData);
@@ -150,7 +151,13 @@ function SearchDetail() {
             </Grid>
           </ProductList>
         </ProductSub>
+        <CustomPage>
+          <Pagination count={5} variant="text" shape="rounded" />
+        </CustomPage>
       </ProductContainer>
+      <CustomPage>
+        <Pagination count={5} variant="text" shape="rounded" />
+      </CustomPage>
     </Container>
   );
 }
@@ -189,6 +196,12 @@ const animation = keyframes`
 100% {
   opacity: 0;
 }
+`;
+
+const CustomPage = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
 `;
 
 const PriceDiv = styled.div`
@@ -314,7 +327,6 @@ const InputDiv = styled.div`
   border-bottom: 3px solid ${(props) => props.theme.textColor};
 `;
 const SearchDiv = styled.div`
-  padding-bottom: 36px;
   display: flex;
   align-items: center;
   justify-content: center;

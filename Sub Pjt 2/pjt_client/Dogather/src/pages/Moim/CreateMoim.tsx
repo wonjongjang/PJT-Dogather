@@ -133,8 +133,9 @@ function CreateMoim() {
       formData.append("mainImage", file[0]);
     }
 
+    console.log(newData);
     // 데이터 전송
-    fetch("http://i6e104.p.ssafy.io:8090/api/group/register", {
+    fetch("http://i6e104.p.ssafy.io/api/group/register", {
       method: "POST",
       headers: {
         // Interceptor
@@ -145,7 +146,8 @@ function CreateMoim() {
     })
       .then((response) => response.json())
       .then((result) => {
-        if (result) {
+        console.log(result);
+        if (result.msg) {
           if (result.msg === "relogin") {
             // 토큰 만료 시
             localStorage.clear(); // 로컬 스토리지 비우기

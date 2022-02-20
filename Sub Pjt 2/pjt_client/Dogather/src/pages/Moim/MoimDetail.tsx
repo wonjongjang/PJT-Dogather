@@ -18,7 +18,7 @@ import FAQ from "./MoimDetailComponent/MoimTabs/MoimFAQ";
 import Review from "./MoimDetailComponent/MoimTabs/MoimReview";
 import Refund from "./MoimDetailComponent/MoimTabs/MoimRefund";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { userIdAtom, userNoAtom } from "../../atoms/Login";
+import { isLoginAtom, userIdAtom, userNoAtom } from "../../atoms/Login";
 import Hoodie from "../../img/Hoodie.png";
 import MoimDetailImg from "./MoimDetailComponent/MoimDetailImg";
 import KakaoPay from "./KakaoPay";
@@ -30,6 +30,7 @@ import MoimReview from "./MoimDetailComponent/MoimTabs/MoimReview";
 import MoimRefund from "./MoimDetailComponent/MoimTabs/MoimRefund";
 import { ImgAtom } from "../../atoms/HomeMoimImg";
 import Swal from "sweetalert2";
+import { AlarmsAtom, AlarmsCountAtom } from "../../atoms/Alarm";
 
 interface RouteState {
   state: {
@@ -122,31 +123,29 @@ function MoimDetail() {
   const reviewMatch = useMatch("/moim/:groupNo/review");
   const refundMatch = useMatch("/moim/:groupNo/refund");
 
-  const userId = useRecoilValue(userIdAtom);
-  const userNo = useRecoilValue(userNoAtom);
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
+  const [userNo, setUserNo] = useRecoilState(userNoAtom);
+  const [userId, setUserId] = useRecoilState(userIdAtom);
+  const [alarms, setAlarms] = useRecoilState(AlarmsAtom);
+  const [count, setCount] = useRecoilState(AlarmsCountAtom);
   const JWT = localStorage.getItem("login_token");
 
   const { isLoading: groupLoading, data: groupData } = useQuery<IGroupData>(
     ["group", groupNo, userId, JWT, userNo],
     () => FetchMoimGroupAPI(groupNo!, userId!, JWT!, userNo)
   );
+  // console.log(groupData);
 
-  // console.log(groupData?.options);
+  // console.log(groupData?.groupLeader);
+  // console.log(userNo);
   // console.log(groupLoading);
   // console.log(groupData?.mediaList[0]);
 
   // const loading = productLoading || isLoading;
-
   const [loading, setLoading] = useState(true);
+
   const [hidden, setHidden] = useState(true);
   const [moimPrice, setMoimPrice] = useState(groupData?.originPrice!);
-  useEffect(() => {
-    console.log(groupData);
-    setTimeout(() => {
-      setLoading(false);
-      setHidden(false);
-    }, 100);
-  }, []);
 
   const basePrice = groupData?.price!;
   // console.log(basePrice);
@@ -189,7 +188,7 @@ function MoimDetail() {
     setProducts(newObject);
     setTotalPriceByOption(newPrice);
   };
-  console.log(products);
+  // console.log(products);
 
   // const sweetAlertSucc = (title, contents, icon, confirmButtonText) => {
   //   Swal.fire({
@@ -215,14 +214,33 @@ function MoimDetail() {
         },
         body: JSON.stringify(interestData),
       })
-        .then((response) => console.log(response))
-        .then(() => {
-          if (
-            window.confirm(
-              "관심등록에 성공했습니다. 마이페이지로 이동하시겠습니까?"
-            )
-          ) {
-            navigate("/user");
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result.msg);
+          if (result.msg === "relogin") {
+            // 토큰 만료 시
+            localStorage.clear(); // 로컬 스토리지 비우기
+            setIsLogin(false); // 로그인 여부 초기화
+            setUserNo(""); // 저장된 user pk 초기화
+            setUserId(""); // 저장된 user id 초기화
+            setAlarms([]); // 저장된 알람 리스트 초기화
+            setCount(0); // 저장된 읽지 않은 알람 개수 초기화
+            alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
+            setTimeout(() => {
+              // 1ms (0.001초) 후 navigate 실행 (미세한 차이로 isLogin이 false 되는 것 보다 navigate가 빨라 isLogin이 true라고 판단하여 로그인 페이지에서 메인 페이지로 튕김)
+              navigate("/login"); // 로그인 페이지로 이동
+            }, 1);
+          } else if (result.error) {
+            alert(result.status + " " + result.error);
+          } else {
+            // 토큰 만료 아닐 시
+            if (
+              window.confirm(
+                "관심등록에 성공했습니다. 마이페이지로 이동하시겠습니까?"
+              ) == true
+            ) {
+              navigate(`/user`); // 마이페이지로 이동
+            }
           }
         });
     } else {
@@ -277,7 +295,7 @@ function MoimDetail() {
     const value = Number(e.target.value);
     setQuantity(Number(value));
     setTotalPriceByOption(priceByOption);
-    console.log(value);
+    // console.log(value);
   };
 
   // const onApply = () => {
@@ -309,70 +327,92 @@ function MoimDetail() {
 
   const time = Date.now();
   // console.log(time);
+
   const makeComma = (price: number) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const defaultImg = useRecoilValue(ImgAtom);
-  console.log(groupData);
+
+  const goToInfoUpdate = () => {
+    navigate(`/moim/update/${groupNo}`);
+  };
 
   return (
     <Container>
       <MoimWrapper>
-        {loading ? null : (
-          <>
-            <Overview>
-              <ImgWrapper>
-                {/* <Img
+        {/* {loading ? null : (
+          <> */}
+        <Overview>
+          <ImgWrapper>
+            {/* <Img
                   src={process.env.PUBLIC_URL + "/img/Hoodie.png"}
                   alt={"메인 이미지"}
                 /> */}
-                <Img
-                  src={
-                    groupData?.mainImage
-                      ? process.env.PUBLIC_URL +
-                        "/doimage/" +
-                        groupData?.mainImage
-                      : defaultImg
-                  }
-                  alt={mainImgAddress}
-                />
-                {/* <Img src={detailImgAddress} alt={detailImgAddress} /> */}
-                {/* <MoimDetailImg /> */}
-              </ImgWrapper>
-              <OverviewItem>
-                <img
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "120px",
-                    height: "20px",
-                    marginBottom: "3px",
-                  }}
-                  src={process.env.PUBLIC_URL + "/img/베스트라벨.png"}
-                  alt="기본라벨"
-                >
-                  {/* <span>남성패션</span> */}
-                </img>
+            <Img
+              src={
+                groupData?.mainImage
+                  ? process.env.PUBLIC_URL + "/doimage/" + groupData?.mainImage
+                  : defaultImg
+              }
+              alt={mainImgAddress}
+            />
+            {/* <Img src={detailImgAddress} alt={detailImgAddress} /> */}
+            {/* <MoimDetailImg /> */}
+          </ImgWrapper>
+          <OverviewItem>
+            <img
+              style={{
+                display: "flex",
+                alignItems: "center",
+                width: "120px",
+                height: "20px",
+                marginBottom: "3px",
+              }}
+              src={process.env.PUBLIC_URL + "/img/베스트라벨.png"}
+              alt="기본라벨"
+            >
+              {/* <span>남성패션</span> */}
+            </img>
 
-                <CategoryName>{groupData?.categoryName}</CategoryName>
-                <LeaderName>{groupData?.leaderName}</LeaderName>
+            <CategoryName>{groupData?.categoryName}</CategoryName>
+            <LeaderName>{groupData?.leaderName}</LeaderName>
 
-                <ProductTitle>{groupData?.product}</ProductTitle>
-                {/* <ProductDetail>{groupData?.detail}</ProductDetail> */}
-                <ProductPrice>
-                  <ProductOriginalPrice>
-                    {/* {makeComma(groupData?.originPrice!) + "원"} */}
-                  </ProductOriginalPrice>
-                  <ProductMoimPrice>
-                    {makeComma(basePrice) + "원"}
-                  </ProductMoimPrice>
-                </ProductPrice>
-                <Option>{"옵션선택"}</Option>
-                {/* {groupData?.options.map((option, idx) => (
+            <ProductTitle>{groupData?.product}</ProductTitle>
+            {/* <ProductDetail>{groupData?.detail}</ProductDetail> */}
+            <ProductPrice>
+              <ProductOriginalPrice>
+                {/* {makeComma(groupData?.originPrice!) + "원"} */}
+              </ProductOriginalPrice>
+              <ProductMoimPrice>{makeComma(basePrice) + "원"}</ProductMoimPrice>
+            </ProductPrice>
+            <Option>{"옵션선택"}</Option>
+            {/* {groupData?.options.map((option, idx) => (
+            <ProductTitle>{groupData?.product}</ProductTitle>
+            {/* <ProductDetail>{groupData?.detail}</ProductDetail> */}
+            <ProductPrice>
+              <ProductOriginalPrice>
+                {groupData?.originPrice! + "원"}
+              </ProductOriginalPrice>
+              <ProductMoimPrice>{basePrice + "원"}</ProductMoimPrice>
+            </ProductPrice>
+
+            {/* {groupData?.options.map((option, idx) => (
                   <MoimSelect
                     optionName={option.optionName}
                     optionPrice={option.optionPrice}
                   />
                 ))} */}
+            {groupData?.groupLeader === userNo ? (
+              <ButtonDiv>
+                <UpdateButton onClick={goToInfoUpdate}>
+                  모임 정보 수정
+                </UpdateButton>
+                <UpdateButton>모임 이미지 수정</UpdateButton>
+                <UpdateButton>모임 옵션 수정</UpdateButton>
+                <UpdateButton>모임 FAQ 수정</UpdateButton>
+              </ButtonDiv>
+            ) : (
+              <>
+                <Option>{"옵션선택"}</Option>
                 <SelectContainer>
                   <SelectWrapper>
                     <SelectContent>
@@ -449,7 +489,7 @@ function MoimDetail() {
                           <ProductQuantity>
                             {"총 " + totalAmount + "개"}
                           </ProductQuantity>
-                          <FinalPrice>{makeComma(price) + "원"}</FinalPrice>
+                          <FinalPrice>{price + "원"}</FinalPrice>
                         </PriceWrapper>
                       </CartOption>
                     </OptionWrapper>
@@ -486,46 +526,47 @@ function MoimDetail() {
                     </SelectContent>
                   </SelectWrapper>
                 </SelectContainer>
-
-                {/* <span>단돈 {groupData?.price}원</span>
+              </>
+            )}
+            {/* <span>단돈 {groupData?.price}원</span>
                 <span>
                   모임 인원 : 현재신청인원 / {groupData?.maxPeople} (여기는%)
                 </span>
                 <span>마감 기한 : {groupData?.deadline}</span> */}
-              </OverviewItem>
-            </Overview>
-            <Tabs>
-              <Tab isActive={productMatch !== null}>
-                <Link to={`/moim/${groupNo}`}>상품상세</Link>
-              </Tab>
-              <Tab isActive={faqMatch !== null}>
-                <Link
-                  to={`/moim/${groupNo}/faq`}
-                  state={{
-                    faqs: groupData?.faqList,
-                  }}
-                >
-                  FAQ
-                </Link>
-              </Tab>
-              <Tab isActive={reviewMatch !== null}>
-                <Link to={`/moim/${groupNo}/review`}>모임평</Link>
-              </Tab>
-              <Tab isActive={refundMatch !== null}>
-                <Link to={`/moim/${groupNo}/refund`}>교환/환불</Link>
-              </Tab>
-            </Tabs>
-            <Routes>
-              <Route
-                path=""
-                element={<MoimProduct detailImage={groupData?.mediaList!} />}
-              />
-              <Route path="faq" element={<MoimFAQ />} />
-              <Route path="review" element={<MoimReview />} />
-              <Route path="refund" element={<MoimRefund />} />
-            </Routes>
-          </>
-        )}
+          </OverviewItem>
+        </Overview>
+        <Tabs>
+          <Tab isActive={productMatch !== null}>
+            <Link to={`/moim/${groupNo}`}>상품상세</Link>
+          </Tab>
+          <Tab isActive={faqMatch !== null}>
+            <Link
+              to={`/moim/${groupNo}/faq`}
+              state={{
+                faqs: groupData?.faqList,
+              }}
+            >
+              FAQ
+            </Link>
+          </Tab>
+          <Tab isActive={reviewMatch !== null}>
+            <Link to={`/moim/${groupNo}/review`}>모임평</Link>
+          </Tab>
+          <Tab isActive={refundMatch !== null}>
+            <Link to={`/moim/${groupNo}/refund`}>교환/환불</Link>
+          </Tab>
+        </Tabs>
+        <Routes>
+          <Route
+            path=""
+            element={<MoimProduct detailImage={groupData?.mediaList!} />}
+          />
+          <Route path="faq" element={<MoimFAQ />} />
+          <Route path="review" element={<MoimReview />} />
+          <Route path="refund" element={<MoimRefund />} />
+        </Routes>
+        {/* </> */}
+        {/* )} */}
       </MoimWrapper>
     </Container>
   );
@@ -666,6 +707,10 @@ const OptionWrapper = styled.div`
   border-width: 1px;
 `;
 
+const ButtonDiv = styled.div`
+  font-size: 20px;
+`;
+
 const SelectContent = styled.div`
   display: flex;
   justify-content: center;
@@ -776,6 +821,19 @@ const Button = styled.div`
   :hover {
     cursor: pointer;
   }
+`;
+
+const UpdateButton = styled.button`
+  width: 100%;
+  height: 50px;
+  background-color: ${(props) => props.theme.buttonColor};
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 3px 0;
 `;
 
 export default MoimDetail;

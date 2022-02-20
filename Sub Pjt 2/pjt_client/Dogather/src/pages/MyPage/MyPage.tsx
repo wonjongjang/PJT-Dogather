@@ -8,6 +8,7 @@ import { userIdAtom, userNoAtom, isLoginAtom } from "../../atoms/Login";
 import LikeGroup from "./MyPageComponents/LikeGroup";
 import PaymentGroup from "./MyPageComponents/PaymentGroup";
 import { myPageImgAtom } from "../../atoms/HomeMoimImg";
+import { AlarmsAtom, AlarmsCountAtom } from "../../atoms/Alarm";
 
 export interface IPay {
   amount: number;
@@ -62,6 +63,8 @@ function MyPage() {
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const [userNo, setUserNo] = useRecoilState(userNoAtom);
   const [userId, setUserId] = useRecoilState(userIdAtom);
+  const [alarms, setAlarms] = useRecoilState(AlarmsAtom);
+  const [count, setCount] = useRecoilState(AlarmsCountAtom);
   const defaultImg = useRecoilValue(myPageImgAtom);
 
   const { isLoading, data } = useQuery<IUserInfo>([JWT, userId], () =>
@@ -71,11 +74,13 @@ function MyPage() {
   // console.log(data);
 
   // 토큰 만료 시
-  if (data?.msg === "relogin") {
+  if (data?.msg && data?.msg === "relogin") {
     localStorage.clear(); // 로컬 스토리지 비우기
     setIsLogin(false); // 로그인 여부 초기화
     setUserNo(""); // 저장된 user pk 초기화
     setUserId(""); // 저장된 user id 초기화
+    setAlarms([]); // 저장된 알람 리스트 초기화
+    setCount(0); // 저장된 읽지 않은 알람 개수 초기화
     alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
     setTimeout(() => {
       navigate("/login");

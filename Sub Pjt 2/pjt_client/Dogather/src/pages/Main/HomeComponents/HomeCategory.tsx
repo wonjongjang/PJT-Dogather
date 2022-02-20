@@ -39,6 +39,8 @@ function HomeCategory() {
         )
       ).json();
     })();
+    const categoryId = idx + 1;
+    navigate(`/search/${categoryId}`);
   };
   // console.log(categoryData);
 
@@ -57,6 +59,7 @@ function HomeCategory() {
         >
           {categoryImg.slice(0, 16).map((cat, idx) => (
             <Link key={idx} to={"/search"}>
+            <div key={idx}>
               <Grid item>
                 <Card
                   elevation={0}
@@ -68,6 +71,7 @@ function HomeCategory() {
                     justifyContent: "center",
                     alignItems: "center",
                     backgroundColor: "white",
+                    cursor: "pointer",
                     ":hover": {
                       // boxShadow: 20, // theme.shadows[20]
                       transform: "scale3d(1.1, 1.1, 1)",
@@ -87,7 +91,7 @@ function HomeCategory() {
               <CardDetail>
                 <CategoryName>{Category(idx + 1)}</CategoryName>
               </CardDetail>
-            </Link>
+            </div>
           ))}
         </Grid>
         {/* <Grid

@@ -75,15 +75,16 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public int groupUpdate(int groupNo, GroupDto updategroupDto) throws IOException {
+        updategroupDto.setGroupNo(groupNo);
         int queryResult = groupDao.groupUpdate(updategroupDto);
-        if (queryResult == 1) {
-            List<OptionDto> options = groupDao.getOptions(groupNo);
-            List<FAQDto> faqs = faqDao.readFaqAll(groupNo);
-            if (options != null)
-                groupDao.deleteOptions(groupNo);
-            if (faqs != null)
-                faqDao.deleteFaqs(groupNo);
-        }
+//        if (queryResult == 1) {
+//            List<OptionDto> options = groupDao.getOptions(groupNo);
+//            List<FAQDto> faqs = faqDao.readFaqAll(groupNo);
+//            if (options != null)
+//                groupDao.deleteOptions(groupNo);
+//            if (faqs != null)
+//                faqDao.deleteFaqs(groupNo);
+//        }
         return queryResult;
     }
 
@@ -146,7 +147,7 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupReturnDto> getCategoryList(int categoryNo, int page) {
         Map map = new HashMap();
         map.put("categoryNo", categoryNo);
-        map.put("page", 8*(page-1));
+        map.put("page", 24*(page-1));
         List<GroupReturnDto> list = groupDao.getCategoryList(map);
         for (GroupReturnDto group : list) {
 //            if (!groupDao.getMainImage(group.getGroupNo()).toString().equals("no")){
@@ -211,9 +212,19 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupReturnDto> getRecommendList(List<Integer> categories) {
-        List list = groupDao.getRecommendList(categories);
+        List<GroupReturnDto> list = groupDao.getRecommendList(categories);
         Collections.shuffle(list);
         list = list.subList(0,4);
+        for (GroupReturnDto group : list) {
+//            if (!groupDao.getMainImage(group.getGroupNo()).toString().equals("no")){
+            Integer mainImage = groupDao.getMainImage(group.getGroupNo());
+            if (mainImage != null) {
+                GroupMediaDto mediaDto = mediaDao.findMedia(mainImage);
+                String uploadPath = mediaDto.getInsertDate().toString().replace("-", "").substring(2) + "/" + "s_" + mediaDto.getMediaSavename();
+                group.setMainImage(uploadPath);
+            } else
+                group.setMainImage("");
+        }
         return list;
     }
 
@@ -229,7 +240,7 @@ public class GroupServiceImpl implements GroupService {
         if(" ".equals(nickname)){nickname = null;}
         map.put("words", words);
         map.put("nickname", nickname);
-        map.put("page",8*(page-1));
+        map.put("page",24*(page-1));
         List<GroupReturnDto> list = groupDao.search(map);
         for (GroupReturnDto group : list) {
 //            if (!groupDao.getMainImage(group.getGroupNo()).toString().equals("no")){

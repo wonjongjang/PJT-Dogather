@@ -21,7 +21,7 @@ interface RouteState {
 
 function MoimFAQ() {
   const { state } = useLocation();
-  console.log(state);
+  // console.log(state);
 
   const [selectVal, setSelectVal] = React.useState("10");
 
@@ -36,7 +36,7 @@ function MoimFAQ() {
       setExpanded(isExpanded ? panel : false);
     };
 
-  console.log(selectVal);
+  // console.log(selectVal);
   return (
     <div>
       <Box sx={{ minWidth: 120 }}>

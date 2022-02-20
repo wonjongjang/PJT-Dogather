@@ -29,7 +29,7 @@ function HomeNewMoim() {
         <Grid container margin={0} display={"flex"} justifyContent={"center"}>
           {newData?.list.slice(0, 4).map((d, idx) => (
             // <li key={idx}>{d.groupNo}</li>
-            <Grid item key={idx} sx={{ marginLeft: 2, marginRight: 2 }}>
+            <Grid item key={idx} sx={{ margin: 3 }}>
               <Alarm>{/* <Box>마감임박</Box> */}</Alarm>
               <CardActionArea>
                 <Link to={`/moim/${d.groupNo}`}>
@@ -63,8 +63,10 @@ function HomeNewMoim() {
               <CardDetail>
                 <CategoryName>{d.categoryName}</CategoryName>
                 <ProductName>{d.product}</ProductName>
-                <Price>{makeComma(d.price)}원</Price>
-                <PriceDetail>공동구매가</PriceDetail>
+                <PriceDiv>
+                  <Price>{makeComma(d.price)}원</Price>
+                  <PriceDetail>공동구매가</PriceDetail>
+                </PriceDiv>
                 {/* <MaxPeople>80/{d.maxPeople}명</MaxPeople>
                 <DeadLine>마감 {d.deadline}일 전</DeadLine> */}
               </CardDetail>
@@ -114,6 +116,10 @@ const animation = keyframes`
 }
 `;
 
+const PriceDiv = styled.div`
+  padding-top: 7px;
+`;
+
 const Box = styled.div`
   height: 20px;
   width: 50px;
@@ -160,32 +166,36 @@ const MaxPeople = styled.p``;
 const DeadLine = styled.p``;
 
 const PriceDetail = styled.p`
-  font-size: 8px;
-  color: grey;
+  line-height: 13px;
+  font-size: 11px;
+  color: rgba(34, 34, 34, 0.5);
 `;
 
 const ProductName = styled.p`
-  font-size: 12px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  width: 200px;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  width: 250px;
+  letter-spacing: -0.05em;
 `;
 
 const Price = styled.p`
-  font-size: 15px;
-  font-weight: bold;
+  line-height: 17px;
+  font-size: 14px;
+  font-weight: 700;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  padding-bottom: 3px;
 `;
 
 const CategoryName = styled.p`
-  font-size: 10px;
-  font-weight: bold;
-  color: grey;
-  padding-bottom: 5px;
+  display: inline-block;
+  vertical-align: top;
+  font-weight: 700;
+  line-height: 13px;
+  font-size: 12px;
+  color: #3c40c6;
 `;
 
 const CardDetail = styled.div`

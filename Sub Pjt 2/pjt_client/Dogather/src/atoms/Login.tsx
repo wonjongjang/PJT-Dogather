@@ -23,3 +23,10 @@ export const userIdAtom = atom({
   default: "",
   effects_UNSTABLE: [persistAtom],
 });
+
+// 로그인 시 user 닉네임 저장 (Alarm 정보)
+export const userNickAtom = atom({
+  key: "userNick",
+  default: "",
+  effects_UNSTABLE: [persistAtom],
+});

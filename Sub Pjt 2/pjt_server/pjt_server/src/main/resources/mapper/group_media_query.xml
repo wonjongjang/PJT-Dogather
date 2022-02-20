@@ -10,7 +10,7 @@
             (
             #{item.mediaNo},
             #{item.groupNo},
-            #{item.mediaTitile},
+            #{item.mediaTitle},
             #{item.mediaSavename},
             #{item.mediaFilesize},
             #{item.insertDate},
