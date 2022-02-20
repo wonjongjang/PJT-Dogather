@@ -59,39 +59,40 @@ function HomeCategory() {
         >
           {categoryImg.slice(0, 16).map((cat, idx) => (
             <Link key={idx} to={"/search"}>
-            <div key={idx}>
-              <Grid item>
-                <Card
-                  elevation={0}
-                  onClick={() => onClick(idx)}
-                  sx={{
-                    width: "60px",
-                    height: "60px",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "white",
-                    cursor: "pointer",
-                    ":hover": {
-                      // boxShadow: 20, // theme.shadows[20]
-                      transform: "scale3d(1.1, 1.1, 1)",
-                    },
-                    margin: "0px",
-                  }}
-                >
-                  <CardMedia
-                    component="img"
-                    height="100%"
-                    width="100%"
-                    image={cat}
-                    alt="Product Image"
-                  />
-                </Card>
-              </Grid>
-              <CardDetail>
-                <CategoryName>{Category(idx + 1)}</CategoryName>
-              </CardDetail>
-            </div>
+              <div key={idx}>
+                <Grid item>
+                  <Card
+                    elevation={0}
+                    onClick={() => onClick(idx)}
+                    sx={{
+                      width: "60px",
+                      height: "60px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "white",
+                      cursor: "pointer",
+                      ":hover": {
+                        // boxShadow: 20, // theme.shadows[20]
+                        transform: "scale3d(1.1, 1.1, 1)",
+                      },
+                      margin: "0px",
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      height="100%"
+                      width="100%"
+                      image={cat}
+                      alt="Product Image"
+                    />
+                  </Card>
+                </Grid>
+                <CardDetail>
+                  <CategoryName>{Category(idx + 1)}</CategoryName>
+                </CardDetail>
+              </div>
+            </Link>
           ))}
         </Grid>
         {/* <Grid

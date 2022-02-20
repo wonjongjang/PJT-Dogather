@@ -1,128 +1,98 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
 import {
   Route,
   Routes,
-  useLocation,
   useMatch,
   useNavigate,
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
-import { CardMedia, Input, Stack } from "@mui/material";
 import { FetchMoimGroupAPI, FetchMoimMediaAPI } from "../../api/MoimDetail";
-// import { Audio, Hearts } from "react-loader-spinner";
 import { Link } from "react-router-dom";
-import Product from "./MoimDetailComponent/MoimTabs/MoimProduct";
-import FAQ from "./MoimDetailComponent/MoimTabs/MoimFAQ";
-import Review from "./MoimDetailComponent/MoimTabs/MoimReview";
-import Refund from "./MoimDetailComponent/MoimTabs/MoimRefund";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { isLoginAtom, userIdAtom, userNoAtom } from "../../atoms/Login";
-import Hoodie from "../../img/Hoodie.png";
-import MoimDetailImg from "./MoimDetailComponent/MoimDetailImg";
-import KakaoPay from "./KakaoPay";
-import MoimPayment from "./MoimDetailComponent/MoimPayment";
-import { detailProducts } from "../../atoms/MoimDetailProps";
+
 import MoimProduct from "./MoimDetailComponent/MoimTabs/MoimProduct";
 import MoimFAQ from "./MoimDetailComponent/MoimTabs/MoimFAQ";
 import MoimReview from "./MoimDetailComponent/MoimTabs/MoimReview";
 import MoimRefund from "./MoimDetailComponent/MoimTabs/MoimRefund";
 import { ImgAtom } from "../../atoms/HomeMoimImg";
-import Swal from "sweetalert2";
 import { AlarmsAtom, AlarmsCountAtom } from "../../atoms/Alarm";
+// Swal
+import Swal from "sweetalert2";
+// import { Audio, Hearts } from "react-loader-spinner";
 
-interface RouteState {
-  state: {
-    name: string;
-  };
-}
-
-interface IProductData {
-  group: number;
-  products: object;
-}
-
+// 옵션List 안에 들어있는 값들 정의해주기.
 export interface IOptionsData {
-  optionNo: string;
-  optionName: string;
-  optionPrice: number;
+  optionNo: string; // 옵션번호
+  optionName: string; // 옵션 이름
+  optionPrice: number; // 옵션 가격
 }
 
+// FAQList 안에 들어있는 값 정의해주기.
 export interface IFAQData {
-  categoryNo: number;
-  faqAnswer: string;
-  faqNo: number;
-  faqQuestion: string;
-  groupNo: number;
+  categoryNo: number; // FAQ 카테고리
+  faqNo: number; // FAQ 번호
+  faqQuestion: string; // FAQ 질문
+  faqAnswer: string; // FAQ 답변
+  groupNo: number; // 모임 번호
 }
 
+// 그룹 상세 API 안에 들어가 있는 모든 값들 정의해주기
 export interface IGroupData {
-  groupNo: number;
-  groupLeader: number;
-  categoryNo: number;
-  deadline: string;
-  created: string;
-  maxPeople: number;
-  view: number;
-  status: string;
+  groupNo: number; // 모임 번호
+  groupLeader: number; // 모임 대표 번호
+  leaderName: string; // 모임 대표 이름
+  categoryNo: number; // 모임 카테고리 번호
+  categoryName: string; // 모임 카테고리 이름
+  created: string; // 모임 생성일
+  deadline: string; // 모임 마감일
+  maxPeople: number; // 모임 최대인원
+  view: number; // 모임 조회수
+  status: string; // 모임 상태(모집중 -> 모집완료)
   product: string; // 상품이름
   detail: string; // 상품상세정보
   link: string; // 상품링크
   originPrice: number; // 출시가
   price: number; // 공구가
-  mainImage: string;
-  options: Array<IOptionsData>;
-  mediaList: Array<string>;
-  faqList: Array<IFAQData>;
-  categoryName: string;
-  leaderName: string;
-  isliked: number;
+  mainImage: string; // 모임 메인 이미지
+  options: Array<IOptionsData>; // 모임 옵션List
+  mediaList: Array<string>; // 모임 detail 사진 list
+  faqList: Array<IFAQData>; // FAQ 리스트
+  isliked: number; // 모임 관심등록 여부
 }
 
+// 결제 정보에 옵션별로 몇개를 구매하고 옵션별로 가격은 어떻게 되는지 나타내 주기 위한 데이터 정의
 export interface IProductContent {
-  userNo: number;
-  groupNo: string;
-  optionName: string;
-  optionNo: string;
-  amount: number;
-  price: number;
-  // priceByOption: number;
+  userNo: number; // 유저 번호
+  groupNo: string; // 모임 번호
+  optionName: string; // 옵션 이름
+  optionNo: string; // 옵션 번호
+  amount: number; // 상품 수량
+  price: number; // 상품 가격(옵션별 가격)
 }
 
+// 어떤 유저가 어떤 모임에 관심 등록을 했는지 알기 위한 데이터 정의
 interface IInterestData {
-  userNo: number;
-  groupNo: string;
+  userNo: number; // 유저 번호
+  groupNo: string; // 모임 번호
 }
 
 function MoimDetail() {
-  // useEffect(() => {
-  //   (async () => {
-  //     const productData = await (
-  //       await fetch(`http://i6e104.p.ssafy.io:8090/product/78`)
-  //     ).json();
-  //     const data = await (
-  //       await fetch(`http://i6e104.p.ssafy.io:8090/group/78`)
-  //     ).json();
-  //     const groupList = await (
-  //       await fetch(`http://i6e104.p.ssafy.io:8090/group/list`)
-  //     ).json();
-  //     console.log(productData, data);
-  //     console.log(groupList);
-  //   })();
-  // }, []);
-
   // groupNo에 따라 페이지가 변경되므로 그룹No가 넘어갈 수 있도록 해야함.
   const { groupNo } = useParams();
   const navigate = useNavigate();
-  // console.log(typeof groupNo);
-  const [detailProduct, setDetailProduct] = useRecoilState(detailProducts);
-  // const { state } = useLocation() as RouteState;
+
+  // 현재 url 상태가 "" 안에 있는 url이라면 true or false반환
+  // 이 부분은 아래에서 탭별로 activa여부를 나타내주기 위한 값으로 활용
   const productMatch = useMatch("/moim/:groupNo");
   const faqMatch = useMatch("/moim/:groupNo/faq");
   const reviewMatch = useMatch("/moim/:groupNo/review");
   const refundMatch = useMatch("/moim/:groupNo/refund");
 
+  // 로그인 여부, userNo, userId, alarm, 결제참여 인원과 JWT토큰을 받아오기 위한 부분
+  // Atom을 통해 전역으로 활용하고 JWT는 LocalStorage에 있는 것을 가져온다.
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const [userNo, setUserNo] = useRecoilState(userNoAtom);
   const [userId, setUserId] = useRecoilState(userIdAtom);
@@ -130,45 +100,37 @@ function MoimDetail() {
   const [count, setCount] = useRecoilState(AlarmsCountAtom);
   const JWT = localStorage.getItem("login_token");
 
+  // useQuery를 활용해 모임 상세API를 요청을 통해 받아온다.
+  // isLoading, data 부분의 변수 명을 변경하고, 중괄호 안에 키값과 요청에 넣어줄 props 내용들을 넣는다.
+  // 요청 보내는 Fetch 부분도 마찬가지로 props해줄 부분을 괄호에 넣어준다.
   const { isLoading: groupLoading, data: groupData } = useQuery<IGroupData>(
     ["group", groupNo, userId, JWT, userNo],
     () => FetchMoimGroupAPI(groupNo!, userId!, JWT!, userNo)
   );
-  // console.log(groupData);
 
-  // console.log(groupData?.groupLeader);
-  // console.log(userNo);
-  // console.log(groupLoading);
-  // console.log(groupData?.mediaList[0]);
-
-  // const loading = productLoading || isLoading;
-  const [loading, setLoading] = useState(true);
-
-  const [hidden, setHidden] = useState(true);
-  const [moimPrice, setMoimPrice] = useState(groupData?.originPrice!);
-
+  // basePrice 상품의 기본 가격을 담아놓은 변수
   const basePrice = groupData?.price!;
-  // console.log(basePrice);
-  const [optionIdx, setOptionIdx] = useState(0);
+  // 옵션별 수량을 체크하기 위한 변수
   const [quantity, setQuantity] = useState(0);
-  const [isHidden, setIsHidden] = useState(true);
-
+  // 옵션별 총 가격을 담아두기 위한 변수
   const [price, setPrice] = useState(0);
+  // payment에 넘겨줄 내용들을 담아줄 변수
   const [product, setProduct] = useState<Array<IProductContent>>([]);
+  // product를 담아서 옵션별로 해당하는 내용을 모두 담아주는 배열
   const [products, setProducts] = useState<Array<IProductContent>>([]);
+  // 총 개수를 담아줄 변수
   const [totalAmount, setTotalAmount] = useState(0);
+  // 옵션별 가격을 담아줄 변수(값을 계산하기 위해 필요한 변수)
   const [priceByOption, setPriceByOption] = useState(0);
+  // 옵션별 총 가격을 담아줄 변수
   const [totalPriceByOption, setTotalPriceByOption] = useState(0);
-  const [payment, setPayment] = useState("");
-
+  //
   const onSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     // console.log(typeof value);
     const splitValueOption = value.split("/")[0];
     const splitValuePrice = value.split("/")[1];
     const splitValueOptionNo = value.split("/")[2];
-    console.log(totalPriceByOption);
-    console.log(quantity);
     product.splice(product.length, 0, {
       userNo: userNo,
       groupNo: groupNo!,
@@ -176,15 +138,9 @@ function MoimDetail() {
       optionNo: splitValueOptionNo,
       amount: quantity,
       price: Number(splitValuePrice),
-      // priceByOption: totalPriceByOption,
-      // price: totalPriceByOption,
     });
-    // setProducts(newObject);
-
     const newObject = [...product];
     const newPrice = priceByOption;
-    setIsHidden(false);
-    setOptionIdx(Number(value));
     setProducts(newObject);
     setTotalPriceByOption(newPrice);
   };
