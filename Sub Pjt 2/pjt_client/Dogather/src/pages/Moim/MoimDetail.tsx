@@ -359,20 +359,6 @@ function MoimDetail() {
             {/* <MoimDetailImg /> */}
           </ImgWrapper>
           <OverviewItem>
-            <img
-              style={{
-                display: "flex",
-                alignItems: "center",
-                width: "120px",
-                height: "20px",
-                marginBottom: "3px",
-              }}
-              src={process.env.PUBLIC_URL + "/img/베스트라벨.png"}
-              alt="기본라벨"
-            >
-              {/* <span>남성패션</span> */}
-            </img>
-
             <CategoryName>{groupData?.categoryName}</CategoryName>
             <LeaderName>{groupData?.leaderName}</LeaderName>
 
@@ -636,6 +622,7 @@ const Title = styled.p`
 const ImgWrapper = styled.div`
   display: flex;
   justify-content: center;
+  margin-right: 20px;
 `;
 
 const Img = styled.img`
